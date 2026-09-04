@@ -2,8 +2,8 @@
 
 ## Rozpracováno
 
-- [ ] Ručně potvrdit načtení rozbaleného doplňku v Chrome/Edge a povoleného doplňku v Safari.
-- [ ] Zveřejnit veřejný GitHub repozitář a vydání 0.3.0.
+- [ ] Ručně potvrdit načtení rozbaleného doplňku v Edge a povolení přístupu
+  k webům ČHMÚ v Safari.
 
 ## Plánováno
 
@@ -19,3 +19,6 @@
 - [x] Klasický rám a výběr produktů pro současné stránky polárních a geostacionárních družic.
 - [x] Samostatný Tampermonkey userscript generovaný ze stejného JS/CSS s ovládáním přímo na stránce.
 - [x] Radar přes celé okno, výchozí `Web Maps` a zastavení na nejnovějším snímku ve verzi 0.3.0.
+- [x] Načtení skutečného rozbaleného rozšíření v Chromium a ověření radaru i družic na živých stránkách ČHMÚ.
+- [x] Sestavení a spuštění hostitelské Safari aplikace včetně zabalených zdrojů rozšíření.
+- [x] Veřejný GitHub repozitář a vydání 0.3.0 s balíčky pro Chrome/Edge, Safari a Tampermonkey.
