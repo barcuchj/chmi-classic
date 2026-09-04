@@ -1,0 +1,35 @@
+name: Verify
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**/*.md"
+  pull_request:
+    paths-ignore:
+      - "**/*.md"
+
+concurrency:
+  group: verify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  extension:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check JavaScript syntax
+        run: |
+          node --check chrome-edge/content.js
+          node --check chrome-edge/satellite.js
+          node --check chrome-edge/popup.js
+          node --check script/build_userscript.mjs
+      - name: Check manifest
+        run: node -e "JSON.parse(require('fs').readFileSync('chrome-edge/manifest.json', 'utf8'))"
+      - name: Rebuild userscript
+        run: |
+          node script/build_userscript.mjs
+          git diff --exit-code

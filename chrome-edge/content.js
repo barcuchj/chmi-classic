@@ -1,0 +1,428 @@
+(() => {
+  "use strict";
+
+  if (window.top !== window || window.__chmiRadarClassicLoaded) {
+    return;
+  }
+
+  if (location.hostname !== "produkty.chmi.cz" || !location.pathname.startsWith("/radar/")) {
+    return;
+  }
+
+  window.__chmiRadarClassicLoaded = true;
+
+  const STORAGE_KEY = "chmiRadarClassicEnabled";
+  const ROOT_CLASS = "chmi-radar-classic";
+  const TOOLBAR_ID = "chmi-radar-classic-toolbar";
+  const BRAND_ID = "chmi-radar-classic-brand";
+  const HIDDEN_CLASS = "chmi-radar-classic-hidden";
+  const APP_SECTION_CLASS = "chmi-radar-classic-app-section";
+  const APP_ROW_CLASS = "chmi-radar-classic-app-row";
+  const WEB_MAPS_CLASS = "chmi-radar-classic-web-maps";
+
+  const classicLabels = {
+    radio_display1: "Dle okna",
+    radio_display2: "Zoom 4x",
+    radio_display3: "Zoom 8x",
+    radio_display4: "Web Maps"
+  };
+
+  let classicEnabled = true;
+  let updateScheduled = false;
+  let defaultDisplayApplied = false;
+  let defaultPlaybackApplied = false;
+  let layoutResizeObserver = null;
+  let observedLayoutElement = null;
+
+  const storage = globalThis.chrome?.storage?.sync ?? globalThis.__chmiClassicStorage;
+
+  function savePreference(enabled) {
+    if (storage) {
+      storage.set({ [STORAGE_KEY]: enabled });
+    }
+    setClassicMode(enabled);
+  }
+
+  function markNonApplicationSections() {
+    const mainWrapper = document.querySelector(".mainWrapper");
+    if (!mainWrapper) {
+      return false;
+    }
+
+    let changed = false;
+
+    for (const section of mainWrapper.children) {
+      if (
+        section.id === "div_modal" ||
+        section.querySelector("#div_container_data") ||
+        section.querySelector("#div_fake_container_data")
+      ) {
+        continue;
+      }
+
+      const text = section.textContent.replace(/\s+/g, " ").trim();
+      const isTitle = section.querySelector("h1")?.textContent.trim() === "Radar";
+      const isDescription = text.startsWith("Aplikace určená k detailní analýze počasí");
+      const isSpacer = text.length === 0;
+
+      if ((isTitle || isDescription || isSpacer) && !section.classList.contains(HIDDEN_CLASS)) {
+        section.classList.add(HIDDEN_CLASS);
+        changed = true;
+      }
+    }
+
+    return changed;
+  }
+
+  function findCommonAncestor(first, second, boundary) {
+    if (!first || !second) {
+      return null;
+    }
+
+    let current = first;
+    while (current && current !== boundary?.parentElement) {
+      if (current.contains(second)) {
+        return current;
+      }
+      current = current.parentElement;
+    }
+
+    return null;
+  }
+
+  function ensureResponsiveLayout() {
+    const mainWrapper = document.querySelector(".mainWrapper");
+    const dataContainer = document.getElementById("div_container_data");
+    const menuContainer = document.getElementById("div_container_menu");
+
+    if (!mainWrapper || !dataContainer || !menuContainer) {
+      return false;
+    }
+
+    let changed = false;
+    const appRow = findCommonAncestor(dataContainer, menuContainer, mainWrapper);
+    if (appRow && appRow !== mainWrapper && !appRow.classList.contains(APP_ROW_CLASS)) {
+      appRow.classList.add(APP_ROW_CLASS);
+      changed = true;
+    }
+
+    const appSection = [...mainWrapper.children].find((child) => child.contains(dataContainer));
+    if (appSection && !appSection.classList.contains(APP_SECTION_CLASS)) {
+      appSection.classList.add(APP_SECTION_CLASS);
+      changed = true;
+    }
+
+    const resizeTarget = appRow ?? dataContainer;
+    if (globalThis.ResizeObserver && observedLayoutElement !== resizeTarget) {
+      layoutResizeObserver?.disconnect();
+      layoutResizeObserver = new ResizeObserver(() => notifyLayoutChanged());
+      layoutResizeObserver.observe(resizeTarget);
+      observedLayoutElement = resizeTarget;
+    }
+
+    return changed;
+  }
+
+  function describeControl(element) {
+    if (!element) {
+      return "";
+    }
+
+    const attributes = [
+      element.id,
+      element.className,
+      element.getAttribute?.("name"),
+      element.getAttribute?.("title"),
+      element.getAttribute?.("aria-label"),
+      element.getAttribute?.("alt"),
+      element.getAttribute?.("value"),
+      element.getAttribute?.("src")
+    ];
+
+    return `${attributes.filter(Boolean).join(" ")} ${element.innerHTML ?? ""}`.toLowerCase();
+  }
+
+  function findAnimationRange() {
+    const ranges = [...document.querySelectorAll('input[type="range"]')];
+    if (ranges.length === 0) {
+      return null;
+    }
+
+    const scored = ranges.map((range) => {
+      const max = Number(range.max);
+      const min = Number(range.min);
+      const step = Number(range.step || 1);
+      const context = range.parentElement?.parentElement?.textContent?.toLowerCase() ?? "";
+      let score = 0;
+
+      if (Number.isFinite(max) && Number.isFinite(min) && max > min + 2) {
+        score += 5;
+      }
+      if (Number.isFinite(step) && step >= 1) {
+        score += 2;
+      }
+      if (!range.closest(".accordion-body")) {
+        score += 5;
+      }
+      if (/měření|předp|snímk|anim/.test(context)) {
+        score += 4;
+      }
+      if (/odraziv|blesk|opacity|průhled/.test(context)) {
+        score -= 8;
+      }
+
+      return { range, score };
+    });
+
+    scored.sort((a, b) => b.score - a.score);
+    return scored[0]?.score > 0 ? scored[0].range : null;
+  }
+
+  function findPlaybackToggle(range) {
+    if (!range) {
+      return null;
+    }
+
+    const knownToggle = document.getElementById("input_play_pause");
+    if (knownToggle instanceof HTMLInputElement && knownToggle.type === "checkbox") {
+      return knownToggle;
+    }
+
+    const scopes = [];
+    let current = range.parentElement;
+    for (let depth = 0; current && depth < 4; depth += 1, current = current.parentElement) {
+      scopes.push(current);
+    }
+
+    for (const scope of scopes) {
+      const controls = [...scope.querySelectorAll('button, input[type="button"], input[type="image"], input[type="checkbox"], [role="button"]')];
+      const candidates = controls
+        .map((control) => ({ control, description: describeControl(control) }))
+        .filter(({ description }) => /play|pause|stop|anim|přehr|spust|zastav|pozastav|bi-play|bi-pause|fa-play|fa-pause/.test(description));
+
+      if (candidates.length > 0) {
+        return candidates[0].control;
+      }
+    }
+
+    return null;
+  }
+
+  function stopOnLatestFrame() {
+    const range = findAnimationRange();
+    if (!range) {
+      return false;
+    }
+
+    if (range.max !== "" && range.value !== range.max) {
+      range.value = range.max;
+      range.dispatchEvent(new Event("input", { bubbles: true }));
+      range.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    const toggle = findPlaybackToggle(range);
+    if (toggle) {
+      const description = describeControl(toggle);
+      const appearsToBePlaying =
+        toggle instanceof HTMLInputElement && toggle.type === "checkbox"
+          ? toggle.checked
+          : /pause|stop|zastav|pozastav|bi-pause|fa-pause/.test(description) ||
+            toggle.getAttribute?.("aria-pressed") === "true";
+
+      if (appearsToBePlaying) {
+        toggle.click();
+      }
+    }
+
+    return true;
+  }
+
+  function applyInitialRadarState() {
+    if (!defaultDisplayApplied) {
+      const webMaps = document.getElementById("radio_display4");
+      if (!webMaps) {
+        return;
+      }
+
+      if (!webMaps.checked) {
+        webMaps.click();
+        defaultDisplayApplied = true;
+        setTimeout(() => {
+          if (classicEnabled && !defaultPlaybackApplied) {
+            defaultPlaybackApplied = stopOnLatestFrame();
+          }
+        }, 250);
+        return;
+      }
+
+      defaultDisplayApplied = true;
+    }
+
+    if (!defaultPlaybackApplied) {
+      defaultPlaybackApplied = stopOnLatestFrame();
+    }
+  }
+
+  function ensureBrand() {
+    if (document.getElementById(BRAND_ID)) {
+      return false;
+    }
+
+    const mainWrapper = document.querySelector(".mainWrapper");
+    if (!mainWrapper?.parentElement) {
+      return false;
+    }
+
+    const brand = document.createElement("div");
+    brand.id = BRAND_ID;
+    brand.innerHTML = `
+      <strong>ČHMÚ Radar</strong>
+      <span>klasické rozhraní</span>
+      <button type="button" title="Dočasně zobrazit původní vzhled stránky">Nový vzhled</button>
+    `;
+
+    brand.querySelector("button").addEventListener("click", () => savePreference(false));
+    mainWrapper.parentElement.insertBefore(brand, mainWrapper);
+    return true;
+  }
+
+  function ensureDisplayToolbar() {
+    const dataContainer = document.getElementById("div_container_data");
+    const displayInputs = Object.keys(classicLabels).map((id) => document.getElementById(id));
+
+    if (!dataContainer || displayInputs.some((input) => !input)) {
+      return false;
+    }
+
+    let toolbar = document.getElementById(TOOLBAR_ID);
+    if (!toolbar) {
+      toolbar = document.createElement("div");
+      toolbar.id = TOOLBAR_ID;
+      toolbar.setAttribute("aria-label", "Režim zobrazení mapy");
+      toolbar.innerHTML = `
+        <div class="chmi-radar-classic-options" role="radiogroup" aria-label="Režim zobrazení mapy">
+          ${Object.entries(classicLabels).map(([inputId, label]) => `
+            <button type="button" role="radio" data-input-id="${inputId}">${label}</button>
+          `).join("")}
+        </div>
+      `;
+
+      toolbar.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-input-id]");
+        if (!button) {
+          return;
+        }
+
+        document.getElementById(button.dataset.inputId)?.click();
+        requestAnimationFrame(syncDisplayToolbar);
+      });
+
+      dataContainer.prepend(toolbar);
+      syncDisplayToolbar();
+      return true;
+    }
+
+    syncDisplayToolbar();
+    return false;
+  }
+
+  function syncDisplayToolbar() {
+    const toolbar = document.getElementById(TOOLBAR_ID);
+    if (!toolbar) {
+      return;
+    }
+
+    toolbar.querySelectorAll("button[data-input-id]").forEach((button) => {
+      const input = document.getElementById(button.dataset.inputId);
+      const selected = Boolean(input?.checked);
+      button.setAttribute("aria-checked", String(selected));
+      button.classList.toggle("is-active", selected);
+    });
+
+    document.documentElement.classList.toggle(
+      WEB_MAPS_CLASS,
+      Boolean(document.getElementById("radio_display4")?.checked)
+    );
+  }
+
+  function notifyLayoutChanged() {
+    requestAnimationFrame(() => {
+      window.dispatchEvent(new Event("resize"));
+    });
+  }
+
+  function applyClassicMode() {
+    const hadRootClass = document.documentElement.classList.contains(ROOT_CLASS);
+    document.documentElement.classList.add(ROOT_CLASS);
+    const sectionsChanged = markNonApplicationSections();
+    const layoutChanged = ensureResponsiveLayout();
+    const brandChanged = ensureBrand();
+    const toolbarChanged = ensureDisplayToolbar();
+    applyInitialRadarState();
+
+    if (!hadRootClass || sectionsChanged || layoutChanged || brandChanged || toolbarChanged) {
+      notifyLayoutChanged();
+    }
+  }
+
+  function removeClassicMode() {
+    document.getElementById(TOOLBAR_ID)?.remove();
+    document.getElementById(BRAND_ID)?.remove();
+    document.querySelectorAll(`.${HIDDEN_CLASS}`).forEach((element) => {
+      element.classList.remove(HIDDEN_CLASS);
+    });
+    document.querySelectorAll(`.${APP_SECTION_CLASS}, .${APP_ROW_CLASS}`).forEach((element) => {
+      element.classList.remove(APP_SECTION_CLASS, APP_ROW_CLASS);
+    });
+    layoutResizeObserver?.disconnect();
+    layoutResizeObserver = null;
+    observedLayoutElement = null;
+    document.documentElement.classList.remove(ROOT_CLASS);
+    document.documentElement.classList.remove(WEB_MAPS_CLASS);
+    notifyLayoutChanged();
+  }
+
+  function setClassicMode(enabled) {
+    classicEnabled = Boolean(enabled);
+    if (classicEnabled) {
+      applyClassicMode();
+    } else {
+      removeClassicMode();
+    }
+  }
+
+  function scheduleRefresh() {
+    if (!classicEnabled || updateScheduled) {
+      return;
+    }
+
+    updateScheduled = true;
+    requestAnimationFrame(() => {
+      updateScheduled = false;
+      applyClassicMode();
+    });
+  }
+
+  const observer = new MutationObserver(scheduleRefresh);
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+
+  document.addEventListener("change", (event) => {
+    if (event.target instanceof HTMLInputElement && event.target.name === "radio_display") {
+      syncDisplayToolbar();
+    }
+  });
+
+  if (storage) {
+    storage.get({ [STORAGE_KEY]: true }, (result) => {
+      setClassicMode(result[STORAGE_KEY]);
+    });
+
+    globalThis.chrome?.storage?.onChanged?.addListener((changes, areaName) => {
+      if (areaName === "sync" && changes[STORAGE_KEY]) {
+        setClassicMode(changes[STORAGE_KEY].newValue);
+      }
+    });
+  } else {
+    setClassicMode(true);
+  }
+})();

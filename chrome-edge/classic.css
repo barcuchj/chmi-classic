@@ -1,0 +1,291 @@
+html.chmi-radar-classic,
+html.chmi-radar-classic body#mbody {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  background: #8bc6da !important;
+  color: #555 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 13px !important;
+}
+
+html.chmi-radar-classic #content,
+html.chmi-radar-classic #wrapper > nav,
+html.chmi-radar-classic #footer,
+html.chmi-radar-classic #footerBottom,
+html.chmi-radar-classic .material-scrolltop,
+html.chmi-radar-classic .chmi-radar-classic-hidden {
+  display: none !important;
+}
+
+html.chmi-radar-classic #wrapper {
+  box-sizing: border-box;
+  display: flex !important;
+  flex-direction: column !important;
+  width: calc(100vw - 20px) !important;
+  max-width: none !important;
+  height: calc(100vh - 20px) !important;
+  min-height: 560px !important;
+  margin: 10px auto !important;
+}
+
+html.chmi-radar-classic #chmi-radar-classic-brand {
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: baseline;
+  gap: 9px;
+  min-height: 46px;
+  padding: 11px 14px 9px;
+  color: #175f82;
+  background: #fff;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);
+}
+
+html.chmi-radar-classic #chmi-radar-classic-brand strong {
+  color: #176b95;
+  font-size: 16px;
+  letter-spacing: 0.01em;
+}
+
+html.chmi-radar-classic #chmi-radar-classic-brand span {
+  color: #777;
+  font-size: 12px;
+}
+
+html.chmi-radar-classic #chmi-radar-classic-brand button {
+  margin-left: auto;
+  padding: 3px 9px;
+  color: #176b95;
+  background: #eef8fc;
+  border: 1px solid #91c4d9;
+  border-radius: 3px;
+  font: 12px/1.4 Arial, Helvetica, sans-serif;
+  cursor: pointer;
+}
+
+html.chmi-radar-classic #chmi-radar-classic-brand button:hover {
+  background: #dff1f8;
+}
+
+html.chmi-radar-classic .mainWrapper {
+  box-sizing: border-box;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 8px 10px 14px !important;
+  background: #fff !important;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);
+  overflow: hidden;
+}
+
+html.chmi-radar-classic .chmi-radar-classic-app-section {
+  box-sizing: border-box;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+html.chmi-radar-classic .chmi-radar-classic-app-row {
+  box-sizing: border-box;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+}
+
+html.chmi-radar-classic #div_container_data {
+  position: relative !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: auto !important;
+  max-width: none !important;
+  height: 100% !important;
+  background: #d2d2d2 !important;
+  overflow: hidden;
+}
+
+html.chmi-radar-classic #div_container_data .leaflet-container {
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  min-height: 100% !important;
+}
+
+html.chmi-radar-classic.chmi-radar-classic-web-maps #div_container_data #div_bg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+html.chmi-radar-classic #div_container_menu {
+  box-sizing: border-box;
+  flex: 0 0 320px !important;
+  align-self: stretch !important;
+  width: 320px !important;
+  max-width: 320px !important;
+  padding: 10px !important;
+  color: #555 !important;
+  background: #fff !important;
+  border: 0 !important;
+  border-left: 1px solid #bbb !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  min-height: 0 !important;
+  overflow: auto !important;
+  font: 13px/1.35 Arial, Helvetica, sans-serif !important;
+}
+
+html.chmi-radar-classic #div_container_menu .accordion-button {
+  min-height: 34px;
+  padding: 7px 8px !important;
+  color: #176b95 !important;
+  background: #f7fbfd !important;
+  border-bottom: 1px solid #b9cbd3 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font: bold 13px/1.3 Arial, Helvetica, sans-serif !important;
+}
+
+html.chmi-radar-classic #div_container_menu .accordion-body {
+  padding: 8px 0 10px !important;
+}
+
+html.chmi-radar-classic #div_container_menu select,
+html.chmi-radar-classic #div_container_menu input,
+html.chmi-radar-classic #div_container_menu button {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+html.chmi-radar-classic #chmi-radar-classic-toolbar {
+  position: absolute;
+  z-index: 10000;
+  top: 8px;
+  left: 8px;
+  display: block;
+  padding: 3px;
+  background: rgb(255 255 255 / 94%);
+  border: 1px solid #b8cbd4;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 22%);
+}
+
+html.chmi-radar-classic #div_container_menu #div_radio_display {
+  display: none !important;
+}
+
+html.chmi-radar-classic #chmi-radar-classic-toolbar .chmi-radar-classic-options {
+  display: inline-flex !important;
+  flex-wrap: nowrap !important;
+  width: auto !important;
+  white-space: nowrap;
+}
+
+html.chmi-radar-classic #chmi-radar-classic-toolbar button {
+  box-sizing: border-box;
+  display: inline-block !important;
+  min-width: auto !important;
+  margin: 0 -1px 0 0 !important;
+  padding: 5px 11px !important;
+  color: #176b95 !important;
+  background: #f7fcfe !important;
+  border: 1px solid #8fc2d8 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font: 12px/1.25 Arial, Helvetica, sans-serif !important;
+  text-align: center;
+  cursor: pointer;
+}
+
+html.chmi-radar-classic #chmi-radar-classic-toolbar button:first-child {
+  border-radius: 2px 0 0 2px !important;
+}
+
+html.chmi-radar-classic #chmi-radar-classic-toolbar button:last-child {
+  margin-right: 0 !important;
+  border-radius: 0 2px 2px 0 !important;
+}
+
+html.chmi-radar-classic #chmi-radar-classic-toolbar button[aria-checked="true"] {
+  position: relative;
+  z-index: 1;
+  color: #fff !important;
+  background: #4ea8d3 !important;
+  border-color: #2588ba !important;
+}
+
+html.chmi-radar-classic #chmi-radar-classic-toolbar button:focus-visible,
+html.chmi-radar-classic #chmi-radar-classic-brand button:focus-visible {
+  outline: 3px solid #f5a623 !important;
+  outline-offset: 2px;
+}
+
+@media (max-width: 991px) {
+  html.chmi-radar-classic #wrapper {
+    width: calc(100% - 12px) !important;
+    height: auto !important;
+    min-height: calc(100vh - 12px) !important;
+    margin: 6px auto !important;
+  }
+
+  html.chmi-radar-classic .chmi-radar-classic-app-row {
+    flex-direction: column !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  html.chmi-radar-classic #div_container_data {
+    min-height: 60vh !important;
+    height: 60vh !important;
+  }
+
+  html.chmi-radar-classic #div_container_menu {
+    width: 100% !important;
+    max-width: none !important;
+    border-top: 1px solid #bbb !important;
+    border-left: 0 !important;
+  }
+
+  html.chmi-radar-classic #chmi-radar-classic-toolbar {
+    top: 6px;
+    left: 6px;
+    max-width: calc(100% - 12px);
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  html.chmi-radar-classic #chmi-radar-classic-brand span {
+    display: none;
+  }
+
+  html.chmi-radar-classic #chmi-radar-classic-toolbar button {
+    padding: 5px 8px !important;
+    font-size: 11px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.chmi-radar-classic *,
+  html.chmi-radar-classic *::before,
+  html.chmi-radar-classic *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

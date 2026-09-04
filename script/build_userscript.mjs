@@ -1,0 +1,108 @@
+#!/usr/bin/env node
+
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const scriptRoot = dirname(fileURLToPath(import.meta.url));
+const projectRoot = dirname(scriptRoot);
+const sourceRoot = join(projectRoot, "chrome-edge");
+const outputPath = join(projectRoot, "tampermonkey", "chmi-classic.user.js");
+
+const [radarCss, satelliteCss, radarJs, satelliteJs] = await Promise.all([
+  readFile(join(sourceRoot, "classic.css"), "utf8"),
+  readFile(join(sourceRoot, "satellite.css"), "utf8"),
+  readFile(join(sourceRoot, "content.js"), "utf8"),
+  readFile(join(sourceRoot, "satellite.js"), "utf8")
+]);
+
+const metadata = `// ==UserScript==
+// @name         ČHMÚ Classic – radar a družice
+// @namespace    https://github.com/
+// @version      0.3.0
+// @description  Vrací klasický vzhled a ovládání radaru a družicových snímků ČHMÚ.
+// @author       ČHMÚ Classic contributors
+// @homepageURL  https://github.com/barcuchj/chmi-classic
+// @supportURL   https://github.com/barcuchj/chmi-classic/issues
+// @downloadURL  https://raw.githubusercontent.com/barcuchj/chmi-classic/main/tampermonkey/chmi-classic.user.js
+// @updateURL    https://raw.githubusercontent.com/barcuchj/chmi-classic/main/tampermonkey/chmi-classic.user.js
+// @match        https://produkty.chmi.cz/radar/*
+// @match        https://produkty.chmi.cz/druzice/*
+// @match        https://www.chmi.cz/namerena-data/polarni-druzice/*
+// @match        https://www.chmi.cz/namerena-data/geostacionarni-druzice/*
+// @grant        GM_addStyle
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM_registerMenuCommand
+// @run-at       document-idle
+// ==/UserScript==`;
+
+const bridge = `
+(() => {
+  "use strict";
+
+  const key = "chmiRadarClassicEnabled";
+  const restoreId = "chmi-classic-userscript-restore";
+
+  function isEnabled() {
+    return Boolean(GM_getValue(key, true));
+  }
+
+  function renderRestoreButton() {
+    document.getElementById(restoreId)?.remove();
+    if (isEnabled()) {
+      return;
+    }
+
+    const button = document.createElement("button");
+    button.id = restoreId;
+    button.type = "button";
+    button.textContent = "Klasický vzhled";
+    button.title = "Znovu zapnout klasické rozhraní ČHMÚ";
+    button.addEventListener("click", () => {
+      GM_setValue(key, true);
+      location.reload();
+    });
+    document.body.append(button);
+  }
+
+  globalThis.__chmiClassicStorage = {
+    get(defaultValues, callback) {
+      callback({ [key]: GM_getValue(key, defaultValues[key]) });
+    },
+    set(values) {
+      if (Object.hasOwn(values, key)) {
+        GM_setValue(key, Boolean(values[key]));
+        renderRestoreButton();
+      }
+    }
+  };
+
+  GM_registerMenuCommand("Přepnout klasický/nový vzhled", () => {
+    GM_setValue(key, !isEnabled());
+    location.reload();
+  });
+
+  GM_addStyle(${JSON.stringify(`${radarCss}\n${satelliteCss}\n
+#chmi-classic-userscript-restore {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 2147483647;
+  padding: 7px 12px;
+  border: 1px solid #1677a8;
+  border-radius: 2px;
+  background: #eaf7fc;
+  color: #07567e;
+  font: 600 13px Arial, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
+}`)});
+  renderRestoreButton();
+})();`;
+
+const output = `${metadata}\n\n${bridge}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n`;
+
+await mkdir(dirname(outputPath), { recursive: true });
+await writeFile(outputPath, output, "utf8");
+console.log(`Created ${outputPath}`);

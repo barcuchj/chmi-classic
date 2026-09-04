@@ -1,0 +1,8 @@
+.DS_Store
+.build/
+dist/
+xcuserdata/
+*.xcuserstate
+chrome-edge/zip/*.zip
+chmi-radar-classic-0.3.0/
+chmi-radar-classic-fixed-*.zip

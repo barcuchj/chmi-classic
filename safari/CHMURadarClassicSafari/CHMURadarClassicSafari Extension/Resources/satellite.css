@@ -1,0 +1,444 @@
+html.chmi-satellite-classic,
+html.chmi-satellite-classic body {
+  min-height: 100%;
+  background: #8bc6da !important;
+  color: #111 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 14px !important;
+}
+
+html.chmi-satellite-classic #chmi-satellite-classic-brand {
+  box-sizing: border-box;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: baseline !important;
+  gap: 9px;
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px 8px;
+  color: #176b95;
+  background: #fff;
+  border: 1px solid #9bafb7;
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);
+}
+
+html.chmi-satellite-classic #chmi-satellite-classic-brand strong {
+  font-size: 16px;
+}
+
+html.chmi-satellite-classic #chmi-satellite-classic-brand span {
+  color: #777;
+  font-size: 12px;
+}
+
+html.chmi-satellite-classic #chmi-satellite-classic-brand button {
+  margin-left: auto;
+  padding: 3px 9px;
+  color: #176b95;
+  background: #f7fcfe;
+  border: 1px solid #8fc2d8;
+  border-radius: 2px;
+  font: 12px/1.4 Arial, Helvetica, sans-serif;
+  cursor: pointer;
+}
+
+html.chmi-satellite-classic #chmi-satellite-classic-brand button:hover {
+  background: #dff1f8;
+}
+
+html.chmi-satellite-classic-live #content,
+html.chmi-satellite-classic-live #wrapper > nav,
+html.chmi-satellite-classic-live #footer,
+html.chmi-satellite-classic-live #footerBottom,
+html.chmi-satellite-classic-live .material-scrolltop {
+  display: none !important;
+}
+
+html.chmi-satellite-classic-live #wrapper {
+  width: min(1460px, calc(100% - 20px)) !important;
+  min-height: auto !important;
+  margin: 10px auto 40px !important;
+}
+
+html.chmi-satellite-classic-live .mainWrapper {
+  box-sizing: border-box;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 8px 10px 14px !important;
+  background: #fff !important;
+  border: 1px solid #9bafb7;
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);
+}
+
+html.chmi-satellite-classic-live .mainWrapper > .container-fluid {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html.chmi-satellite-classic-live .mainWrapper > .container-fluid > h1,
+html.chmi-satellite-classic-live #btn-desktop-sidebar-toggle,
+html.chmi-satellite-classic-live #animation-controls,
+html.chmi-satellite-classic-live .chmi-satellite-classic-native-choice {
+  display: none !important;
+}
+
+html.chmi-satellite-classic-live #main-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1160px) 250px;
+  justify-content: center;
+  gap: 10px !important;
+  margin: 0 !important;
+}
+
+html.chmi-satellite-classic-live #main-row > .map-col,
+html.chmi-satellite-classic-live #main-row > .desktop-sidebar-col {
+  box-sizing: border-box;
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html.chmi-satellite-classic-live #loaded-product-title {
+  min-height: 24px;
+  margin: 0 0 4px !important;
+  text-align: left !important;
+}
+
+html.chmi-satellite-classic-live #loaded-product-title h2 {
+  margin: 0 !important;
+  color: #176b95 !important;
+  font: bold 16px/1.4 Arial, Helvetica, sans-serif !important;
+}
+
+html.chmi-satellite-classic-live #map-container {
+  max-height: none !important;
+  background: #d2d2d2 !important;
+  border: 1px solid #888;
+  border-radius: 0 !important;
+}
+
+html.chmi-satellite-classic-live #settingsMenu {
+  position: static !important;
+  visibility: visible !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  height: calc(100vh - 84px) !important;
+  max-height: 900px;
+  padding: 0 !important;
+  color: #111 !important;
+  background: #fff !important;
+  border: 1px solid #aaa !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html.chmi-satellite-classic-live #settingsMenu .offcanvas-body {
+  padding: 9px !important;
+  overflow-y: auto !important;
+}
+
+html.chmi-satellite-classic-live #settingsMenu .settings-section {
+  margin: 0 !important;
+  padding: 8px 0 !important;
+  background: #fff !important;
+  border: 0 !important;
+  border-bottom: 1px solid #bbb !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html.chmi-satellite-classic-live #settingsMenu .section-header,
+html.chmi-satellite-classic-live #settingsMenu .form-label {
+  margin-bottom: 4px !important;
+  color: #111 !important;
+  font: bold 13px/1.3 Arial, Helvetica, sans-serif !important;
+}
+
+html.chmi-satellite-classic-live #settingsMenu .btn-info-icon {
+  display: none !important;
+}
+
+html.chmi-satellite-classic-live #settingsMenu select,
+html.chmi-satellite-classic-live #settingsMenu input,
+html.chmi-satellite-classic-live #settingsMenu button {
+  border-radius: 2px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+html.chmi-satellite-classic-live #time-range-group {
+  gap: 4px !important;
+}
+
+html.chmi-satellite-classic-live #time-range-group label {
+  min-width: 39px;
+  margin: 0 !important;
+  padding: 4px 7px !important;
+  color: #14387f !important;
+  background: #f8fbff !important;
+  border: 1px solid #14387f !important;
+  border-radius: 2px !important;
+  font: 13px/1.25 Arial, Helvetica, sans-serif !important;
+}
+
+html.chmi-satellite-classic-live #time-range-group input:checked + label {
+  color: #fff !important;
+  background: #14387f !important;
+}
+
+html.chmi-satellite-classic-live #chmi-satellite-classic-selector {
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #888;
+}
+
+html.chmi-satellite-classic-live .chmi-satellite-classic-satellite-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 9px;
+}
+
+html.chmi-satellite-classic-live .chmi-satellite-classic-satellite-row label,
+html.chmi-satellite-classic-live #chmi-satellite-classic-selector > strong {
+  font-weight: bold;
+}
+
+html.chmi-satellite-classic-live .chmi-satellite-classic-satellite-row select {
+  flex: 1;
+  min-width: 0;
+  padding: 3px 5px;
+}
+
+html.chmi-satellite-classic-live .chmi-satellite-classic-product-matrix {
+  display: grid;
+  gap: 3px;
+  margin-top: 7px;
+}
+
+html.chmi-satellite-classic-live .chmi-satellite-classic-product-row {
+  display: grid;
+  grid-template-columns: minmax(85px, 1fr) repeat(3, 37px);
+  align-items: center;
+  gap: 5px;
+}
+
+html.chmi-satellite-classic-live .chmi-satellite-classic-product-row span {
+  color: #0645ad;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+html.chmi-satellite-classic-live .chmi-satellite-classic-product-row button {
+  min-width: 35px;
+  padding: 2px 4px;
+  color: #111;
+  background: #f3f3f3;
+  border: 1px solid #999;
+  border-radius: 2px;
+  font: 12px/1.3 Arial, Helvetica, sans-serif;
+  cursor: pointer;
+}
+
+html.chmi-satellite-classic-live .chmi-satellite-classic-product-row button:hover,
+html.chmi-satellite-classic-live .chmi-satellite-classic-product-row button.is-active {
+  color: #fff;
+  background: #4ea8d3;
+  border-color: #2588ba;
+}
+
+html.chmi-satellite-classic-live .chmi-satellite-classic-selection {
+  margin-top: 8px;
+  color: #555;
+  font-size: 11px;
+}
+
+html.chmi-satellite-classic-live #chmi-satellite-classic-player {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 0 6px;
+  color: #111;
+  background: #fff;
+  font: 13px/1.3 Arial, Helvetica, sans-serif;
+}
+
+html.chmi-satellite-classic-live #chmi-satellite-classic-player button,
+html.chmi-satellite-classic-live #chmi-satellite-classic-player select {
+  min-height: 25px;
+  padding: 2px 7px;
+  color: #111;
+  background: #f3f3f3;
+  border: 1px solid #999;
+  border-radius: 2px;
+  font: 12px/1.3 Arial, Helvetica, sans-serif;
+}
+
+html.chmi-satellite-classic-live .chmi-satellite-classic-player-buttons {
+  display: inline-flex;
+  gap: 3px;
+}
+
+html.chmi-satellite-classic-live #chmi-satellite-classic-player [data-role="loaded"],
+html.chmi-satellite-classic-live #chmi-satellite-classic-player [data-role="time"] {
+  white-space: nowrap;
+}
+
+html.chmi-satellite-classic-live .product-legend-box {
+  margin-top: 4px !important;
+  padding: 8px !important;
+  background: #fff !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html.chmi-satellite-classic-live #satInfo {
+  color: #d40000 !important;
+  font-size: 13px !important;
+}
+
+html.chmi-satellite-classic-portal header#chmu-header,
+html.chmi-satellite-classic-portal nav[aria-label*="Nach"],
+html.chmi-satellite-classic-portal .menu-bookmarks,
+html.chmi-satellite-classic-portal .lfr-layout-structure-item-chmi---spacer,
+html.chmi-satellite-classic-portal footer,
+html.chmi-satellite-classic-portal #footer,
+html.chmi-satellite-classic-portal .material-scrolltop {
+  display: none !important;
+}
+
+html.chmi-satellite-classic-portal main {
+  box-sizing: border-box;
+  width: min(1460px, calc(100% - 20px)) !important;
+  max-width: none !important;
+  margin: 10px auto 40px !important;
+  padding: 0 10px 14px !important;
+  background: #fff !important;
+  border: 1px solid #9bafb7;
+  border-radius: 10px;
+  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);
+}
+
+html.chmi-satellite-classic-portal main > #chmi-satellite-classic-brand {
+  width: calc(100% + 20px);
+  margin: -1px -10px 0;
+}
+
+html.chmi-satellite-classic-portal main h1 {
+  display: none !important;
+}
+
+html.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 9px 0;
+  padding: 7px 8px;
+  background: #fff;
+  border: 1px solid #aaa;
+}
+
+html.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+html.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products a {
+  padding: 3px 8px;
+  color: #0645ad;
+  background: #f3f3f3;
+  border: 1px solid #999;
+  border-radius: 2px;
+  font: 12px/1.35 Arial, Helvetica, sans-serif;
+  text-decoration: none;
+}
+
+html.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products a:hover,
+html.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products a[aria-current="page"] {
+  color: #fff;
+  background: #4ea8d3;
+  border-color: #2588ba;
+}
+
+html.chmi-satellite-classic-portal .chmi-satellite-classic-live-link {
+  margin-left: auto;
+}
+
+html.chmi-satellite-classic-portal #chmu-map-container {
+  box-sizing: border-box;
+  width: 100% !important;
+  height: min(78vh, 800px) !important;
+  min-height: 520px;
+  background: #d2d2d2;
+  border: 1px solid #888;
+}
+
+html.chmi-satellite-classic button:focus-visible,
+html.chmi-satellite-classic a:focus-visible,
+html.chmi-satellite-classic select:focus-visible,
+html.chmi-satellite-classic input:focus-visible {
+  outline: 3px solid #f5a623 !important;
+  outline-offset: 2px;
+}
+
+@media (max-width: 1100px) {
+  html.chmi-satellite-classic-live #main-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html.chmi-satellite-classic-live #settingsMenu {
+    height: auto !important;
+    max-height: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html.chmi-satellite-classic #chmi-satellite-classic-brand span {
+    display: none;
+  }
+
+  html.chmi-satellite-classic-live #wrapper,
+  html.chmi-satellite-classic-portal main {
+    width: calc(100% - 8px) !important;
+    margin-top: 4px !important;
+  }
+
+  html.chmi-satellite-classic-live .chmi-satellite-classic-product-row {
+    grid-template-columns: minmax(82px, 1fr) repeat(3, 34px);
+    gap: 3px;
+  }
+
+  html.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  html.chmi-satellite-classic-portal .chmi-satellite-classic-live-link {
+    margin-left: 0;
+  }
+
+  html.chmi-satellite-classic-portal #chmu-map-container {
+    min-height: 420px;
+    height: 70vh !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.chmi-satellite-classic *,
+  html.chmi-satellite-classic *::before,
+  html.chmi-satellite-classic *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

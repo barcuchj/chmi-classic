@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "ČHMÚ Classic – radar a družice",
+  "version": "0.3.0",
+  "description": "Vrací současným radarovým a družicovým aplikacím ČHMÚ kompaktní klasické rozhraní.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://produkty.chmi.cz/radar/*",
+    "https://produkty.chmi.cz/druzice/*",
+    "https://www.chmi.cz/namerena-data/polarni-druzice/*",
+    "https://www.chmi.cz/namerena-data/geostacionarni-druzice/*"
+  ],
+  "action": {
+    "default_title": "ČHMÚ Classic – radar a družice",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://produkty.chmi.cz/radar/*"
+      ],
+      "css": [
+        "classic.css"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://produkty.chmi.cz/druzice/*",
+        "https://www.chmi.cz/namerena-data/polarni-druzice/*",
+        "https://www.chmi.cz/namerena-data/geostacionarni-druzice/*"
+      ],
+      "css": [
+        "satellite.css"
+      ],
+      "js": [
+        "satellite.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
