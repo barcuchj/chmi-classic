@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.5.0",
-  "description": "Vrací kompaktní klasické rozhraní radaru, družicím a dalším živým meteorologickým výstupům ČHMÚ a přidává jednotný katalog.",
+  "version": "0.6.0",
+  "description": "Vrací kompaktní klasické rozhraní živým i historickým meteorologickým výstupům ČHMÚ, přidává jednotný katalog a doložené adaptace starých aplikací.",
   "permissions": [
     "storage"
   ],
@@ -11,7 +11,11 @@
     "https://produkty.chmi.cz/druzice/*",
     "https://produkty.chmi.cz/aladin/*",
     "https://www.chmi.cz/*",
-    "https://hydro.chmi.cz/*"
+    "https://hydro.chmi.cz/*",
+    "https://intranet.chmi.cz/*",
+    "http://intranet.chmi.cz/*",
+    "https://portal.chmi.cz/*",
+    "http://portal.chmi.cz/*"
   ],
   "action": {
     "default_title": "ČHMÚ Classic – meteorologické výstupy",
@@ -72,6 +76,23 @@
       ],
       "js": [
         "catalog.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://intranet.chmi.cz/*",
+        "http://intranet.chmi.cz/*",
+        "https://portal.chmi.cz/*",
+        "http://portal.chmi.cz/*",
+        "https://www.chmi.cz/files/portal/docs/meteo/*",
+        "http://www.chmi.cz/files/portal/docs/meteo/*"
+      ],
+      "css": [
+        "legacy.css"
+      ],
+      "js": [
+        "legacy.js"
       ],
       "run_at": "document_idle"
     }

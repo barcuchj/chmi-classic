@@ -163,13 +163,19 @@ html.chmi-catalog-open body {
   gap: 6px;
 }
 
-.chmi-catalog-item a {
+.chmi-catalog-item a,
+.chmi-catalog-item-label {
   flex: 1 1 auto;
   min-width: 0;
   color: #0645ad !important;
   font: 700 12.5px/1.3 Arial, Helvetica, sans-serif !important;
   text-decoration: underline !important;
   overflow-wrap: anywhere;
+}
+
+.chmi-catalog-item-label {
+  color: #333 !important;
+  text-decoration: none !important;
 }
 
 .chmi-catalog-item a[aria-current="page"] {
@@ -198,6 +204,37 @@ html.chmi-catalog-open body {
   color: #765100;
   background: #fff8df;
   border-color: #c8aa5b;
+}
+
+.chmi-catalog-status.is-legacy {
+  color: #07567e;
+  background: #eaf7fc;
+  border-color: #70a8c0;
+}
+
+.chmi-catalog-status.is-direct {
+  color: #4c3b00;
+  background: #f5f1d5;
+  border-color: #aea45a;
+}
+
+.chmi-catalog-status.is-unavailable {
+  color: #6b2a2a;
+  background: #f7eaea;
+  border-color: #bc8a8a;
+}
+
+.chmi-catalog-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin-top: 4px;
+}
+
+.chmi-catalog-item-actions a {
+  flex: 0 1 auto;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
 }
 
 /* Old-look rám pro další živé výstupy. Nezasahuje do datového backendu ani logiky formulářů. */

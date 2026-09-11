@@ -324,31 +324,408 @@
       ]
     },
     {
-      title: "Archiv starých prohlížečů",
+      title: "Historické aplikace – původní endpointy",
       items: [
         {
-          label: "Starý radar INCA",
+          label: "ALADIN animace (alanim)",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html",
+          archiveHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html",
+          replacementHref: "https://produkty.chmi.cz/aladin/",
+          status: "legacy",
+          note: "Doložená stará aplikace s animací, krokováním a klasickými volbami. Historický endpoint může být po odstavení intranet.chmi.cz nedostupný; ČHMÚ Classic na něj aplikuje pouze responzivní rám a zachová nativní ovládání."
+        },
+        {
+          label: "ALADIN – původní mapy",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/ala.html",
+          archiveHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/ala.html",
+          replacementHref: "https://produkty.chmi.cz/aladin/",
+          status: "legacy",
+          note: "Historický mapový výstup ALADIN. Starší dokumentace ČHMÚ potvrzuje výběr veličin a předpovědních termínů; současná náhrada poskytuje i preset 4 map v old-look rozhraní."
+        },
+        {
+          label: "ALADIN – původní meteogramy",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html",
+          archiveHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html",
+          replacementHref: "https://www.chmi.cz/predpoved-pocasi/meteogramy-aladin/obce",
+          status: "legacy",
+          note: "Doložený starý vyhledávač meteogramů podle místa a běhu modelu. Pokud původní JS/backend již nefunguje, použijte současné meteogramy ČHMÚ."
+        },
+        {
+          label: "Webkamery – původní celorepublikový přehled",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/kam/",
+          archiveHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/kam/",
+          replacementHref: "https://www.chmi.cz/namerena-data/webkamery",
+          status: "legacy",
+          note: "Historický přehled s filtrováním kamer. Archivní fotografie se nekopírují; původní stránka uváděla copyright ČHMÚ / All Rights Reserved."
+        },
+        {
+          label: "Webkamera – původní detail a animace",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/kam/prohlizec.html",
+          archiveHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/kam/prohlizec.html",
+          replacementHref: "https://www.chmi.cz/namerena-data/webkamery",
+          status: "legacy",
+          note: "Původní viewer podporoval animaci a odkaz na meteorologické informace. Bez parametru kamery nejde o konkrétní živý snímek; katalog nevytváří smyšlený parametr."
+        },
+        {
+          label: "Blesky – JSCeldnView",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/blesk/data_jsceldnview.html",
+          archiveHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/blesk/data_jsceldnview.html",
+          replacementHref: "https://www.chmi.cz/namerena-data/radar-nowcast/srazky-a-blesky",
+          status: "legacy",
+          note: "Doložený historický interaktivní prohlížeč blesků ČHMÚ. ČHMÚ Classic nekopíruje jeho zdrojový kód, pouze podporuje původní DOM a přidává fit-to-window."
+        },
+        {
+          label: "Radar – původní statický PNG výstup",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/rad/data.html",
+          archiveHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/rad/data.html",
+          replacementHref: "https://produkty.chmi.cz/radar/",
+          status: "legacy",
+          note: "Historická stránka s aktuálním sloučeným radarovým obrázkem a odkazem na interaktivní viewer. Dostupnost starého datového toku již není garantována."
+        },
+        {
+          label: "Blesky – původní statický PNG výstup",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/blesk/data.html",
+          archiveHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/blesk/data.html",
+          replacementHref: "https://www.chmi.cz/namerena-data/radar-nowcast/srazky-a-blesky",
+          status: "legacy",
+          note: "Historická statická stránka bleskových dat s odkazem na interaktivní viewer."
+        },
+        {
+          label: "Blesky – adresář původních PNG",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/blesk/data/",
+          status: "direct",
+          note: "Doložený oficiální adresář historických/timestampovaných PNG. Odkazuje přímo na server ČHMÚ a nic nestahuje ani neobchází; po odstavení legacy hostu může přestat fungovat."
+        },
+        {
+          label: "Meteosat VIS-IR – adresář JPG",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/sat/msg_hrit/img-msgeu-1160x800-vis-ir/",
+          status: "direct",
+          note: "Doložený oficiální adresář timestampovaných JPG VIS-IR. Data/obrazové produkty mohou podléhat podmínkám ČHMÚ a EUMETSAT; projekt je nevkládá do balíku."
+        }
+      ]
+    },
+    {
+      title: "Starý portál – stanice, synoptika, historie a letectví",
+      items: [
+        {
+          label: "Starý portál ČHMÚ – původní rozcestník",
+          href: "https://intranet.chmi.cz/",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/",
+          note: "Historická homepage přímo odkazovala na ALADIN animaci/mapy/meteogramy, radar, kamery, MSG/NOAA, blesky, Klementinum, synoptiku, vertikální profily, sondáže, stanice, sníh a další výstupy."
+        },
+        {
+          label: "Mapa starého portálu",
+          href: "https://intranet.chmi.cz/sitemap",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/",
+          note: "Doložená historická taxonomie produktů – vhodná jako referenční rozcestník pro výstupy, u nichž se samostatný viewer nepodařilo bezpečně rekonstruovat."
+        },
+        {
+          label: "Souhrnný přehled aktuálního počasí",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/souhrnny-prehled",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data",
+          note: "Původní portálový rozcestník naměřených dat, stanic, radarů, družic, blesků, kamer, sondáží a sněhu."
+        },
+        {
+          label: "Aktuální mapy – starý portál",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/aktualni-mapy",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data",
+          note: "Doložený starý rozcestník aktuálních map, srážek radar+srážkoměry, ozonu/UV a sněhového zpravodajství."
+        },
+        {
+          label: "Srážky – radar + srážkoměry (starý portál)",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/srazky-radar-srazkomery",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data/radar-nowcast/srazky-a-blesky",
+          note: "Konkrétní historická vstupní stránka kombinovaného radarového a srážkoměrného výstupu."
+        },
+        {
+          label: "Ozonové a UV zpravodajství – starý portál",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/ozonove-a-uv-zpravodajstvi",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/",
+          note: "Doložená historická stránka s aktuálním UV indexem a ozonovým/UV zpravodajstvím."
+        },
+        {
+          label: "Družicové měření ozonu – starý portál",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/druzicove-mereni-ozonu",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/",
+          note: "Konkrétní historická stránka družicového měření ozonu; pokud původní vložený obsah již nefunguje, rozšíření jej nesimuluje."
+        },
+        {
+          label: "Vertikální profil ozonu – starý portál",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/sondazni-mereni/vertikalni-profil-ozonu",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/",
+          note: "Doložený historický sondážní výstup vertikálního profilu ozonu."
+        },
+        {
+          label: "Staniční data – starý portál",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanicni-data",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data/data-z-mericich-stanic",
+          note: "Starý rozcestník profesionálních stanic: mapy, přehled stanic a tabulky meteorologických veličin."
+        },
+        {
+          label: "Stanice – mapa teploty a vlhkosti",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/profesionalni-stanice/mapy/teplota",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-teplota",
+          note: "Doložená původní mapa teploty a vlhkosti profesionální staniční sítě."
+        },
+        {
+          label: "Stanice – mapa tlaku vzduchu",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/profesionalni-stanice/mapy/tlak-vzduchu",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data",
+          note: "Doložená původní mapa tlaku vzduchu profesionální staniční sítě."
+        },
+        {
+          label: "Sněhové zpravodajství – Sníh ČR / hory",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/snehove_zpravodajstvi/snih-CR-hory",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/",
+          note: "Doložená historická stránka sněhového zpravodajství; další podprodukty staré navigace jsou evidovány samostatně podle míry ověření."
+        },
+        {
+          label: "Automatické sněhoměrné stanice – starý portál",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/snehove_zpravodajstvi/automaticke-snehomerne-stanice",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/",
+          note: "Konkrétní historická stránka automatických sněhoměrných stanic."
+        },
+        {
+          label: "Stanice – grafy automatických stanic",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/grafy-automatickych-stanic",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-teplota",
+          note: "Doložená historická aplikace s 10minutovými měřeními a grafy podle poboček; stará stránka výslovně uváděla, že data nejsou verifikována a grafy nemají archiv."
+        },
+        {
+          label: "Stanice – synoptický detail Praha-Libuš",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/profesionalni-stanice/prehled-stanic/praha-libus",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke",
+          note: "Původní hodinový přehled synoptických veličin včetně historie -1/-2/-3 h. Slouží jako doložený vzor starého staničního detailu."
+        },
+        {
+          label: "Stanice – mapa srážek a sněhu",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/profesionalni-stanice/mapy/srazky",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/denni-uhrn-srazek",
+          note: "Doložená původní mapa profesionálních stanic."
+        },
+        {
+          label: "Stanice – mapa větru",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/profesionalni-stanice/mapy/vitr",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/tabulka-vetru",
+          note: "Doložená původní mapa větru profesionální staniční sítě."
+        },
+        {
+          label: "Stanice – oblačnost a sluneční svit",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/profesionalni-stanice/mapy/oblacnost-a-slunecni-svit",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data",
+          note: "Doložená původní staniční mapa oblačnosti a slunečního svitu."
+        },
+        {
+          label: "Vertikální profily směru a rychlosti větru",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/vertikalni-profily-vetru",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/letectvi/aerologicka-mereni",
+          note: "Původní portálová aplikace pro vertikální profily větru; current replacement je aerologický rozcestník."
+        },
+        {
+          label: "Sondážní měření Praha-Libuš",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/sondazni-mereni/sondazni-mereni-praha-libus",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/letectvi/aerologicka-mereni/radiosondazni-mereni",
+          note: "Doložená stará stránka sondážního měření observatoře Praha-Libuš."
+        },
+        {
+          label: "Evropa – výškové analýzy",
+          href: "https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/evropa/vyskove-analyzy",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/predpoved-pocasi/synopticka-situace",
+          note: "Konkrétní historická stránka výškových analýz starého portálu. Pokud původní obrazový zdroj již není dostupný, rozšíření nevytváří náhradní mapu."
+        },
+        {
+          label: "Přechody front přes Prahu – starý portál",
+          href: "https://intranet.chmi.cz/historicka-data/pocasi/prechody-front-pres-prahu",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/predpoved-pocasi/prechody-front-pres-prahu",
+          note: "Doložená historická stránka, zachována jako rychlý odkaz vedle současné náhrady."
+        },
+        {
+          label: "Praha-Klementinum – starý portál",
+          href: "https://intranet.chmi.cz/historicka-data/pocasi/praha-klementinum",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data/historicka-data/klementinum",
+          note: "Starý portál obsahoval klementinské rekordy a odkazy na základní/stahovatelná data."
+        },
+        {
+          label: "Praha-Klementinum – původní tabulka základních dat",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/ok/klementinum/klemzaklinfo_cs.html",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data/historicka-data/klementinum",
+          note: "Doložený statický historický výstup se základními údaji, dlouhodobými průměry a rekordními hodnotami."
+        },
+        {
+          label: "Historické mapy stanic – starý portál",
+          href: "https://intranet.chmi.cz/historicka-data/pocasi/mapy-stanic",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data/historicka-data",
+          note: "Doložená položka historického portálu."
+        },
+        {
+          label: "Měsíční přehledy pozorování – starý portál",
+          href: "https://intranet.chmi.cz/historicka-data/pocasi/mesicni-data/mesicni-prehledy-pozorovani",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/namerena-data/historicka-data",
+          note: "Původní tabulkový výstup měsíčních teplot, srážek a dalších staničních charakteristik."
+        },
+        {
+          label: "Letecký ALADIN – oblačnost, srážky a vlhkost (WMO bulletin)",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/olm/p_oblbln.html",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/letectvi/predpovedi-pro-letani/predpoved-nizke-oblacnosti",
+          note: "Doložený starý textový výstup ALADIN pro letiště: nízká/střední/vysoká oblačnost, hodinové srážky a relativní vlhkost."
+        },
+        {
+          label: "Sportovní létání – původní textová předpověď",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/olm/predpovedi/p_FRCZ40_.html",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/letectvi",
+          note: "Doložená stará textová předpověď s konvekcí, nízkou oblačností, přízemním/výškovým větrem a dalšími parametry."
+        },
+        {
+          label: "Letecké námrazy FL075/FL100 – starý portál",
+          href: "https://intranet.chmi.cz/predpovedi/predpovedi-pocasi/letecke/namrazy-pro-fl075-a-fl100",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/letectvi",
+          note: "Doložená historická letecká stránka."
+        },
+        {
+          label: "Letecký SIGMET – starý portál",
+          href: "https://intranet.chmi.cz/predpovedi/predpovedi-pocasi/letecke/sigmet",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/letectvi/sigmet-vystrahy-pro-letiste",
+          note: "Historická vstupní stránka SIGMET; živá náhrada zůstává oficiální současný produkt ČHMÚ."
+        },
+        {
+          label: "Letecký přízemní vítr/teplota/tlak – starý portál",
+          href: "https://intranet.chmi.cz/predpovedi/predpovedi-pocasi/letecke/prizemni-vitr-teplota-tlak/liberec-karlovy-vary-plzen",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/letectvi",
+          note: "Doložený ALADIN letištní bulletin starého portálu."
+        },
+        {
+          label: "Letecká oblačnost/srážky/vlhkost – starý portál",
+          href: "https://intranet.chmi.cz/predpovedi/predpovedi-pocasi/letecke/oblacnost-srazky-vlhkost/",
+          status: "legacy",
+          replacementHref: "https://www.chmi.cz/letectvi/predpovedi-pro-letani/predpoved-nizke-oblacnosti",
+          note: "Doložená stará stránka letištních předpovědí oblačnosti, srážek a relativní vlhkosti."
+        }
+      ]
+    },
+    {
+      title: "Web Archive – konkrétní zachycené prohlížeče",
+      items: [
+        {
+          label: "Starý radar INCA – snapshot 2026-08-16 18:05:03",
           href: "https://web.archive.org/web/20260816180503/https://intranet.chmi.cz/files/portal/docs/meteo/rad/inca-cz/short.html",
+          replacementHref: "https://produkty.chmi.cz/radar/",
           status: "archive",
-          note: "Webový archiv vypnuté aplikace intranet.chmi.cz; nejde o živá data."
+          note: "Konkrétní snapshot původního nowcasting vieweru. Archiv zachycuje Dle okna / Zoom / Web Maps, animaci a další původní ovládání; nejde o živá data."
         },
         {
-          label: "Starý Meteosat MSG",
+          label: "Starý Meteosat MSG – snapshot 2026-02-10 15:05:46",
           href: "https://web.archive.org/web/20260210150546/https://intranet.chmi.cz/files/portal/docs/meteo/sat/data_jsmsgview.html",
+          replacementHref: "https://produkty.chmi.cz/druzice/?time_range=24",
           status: "archive",
-          note: "Webový archiv původního MSG prohlížeče; živou náhradou je Meteosat na produkty.chmi.cz."
+          note: "Konkrétní snapshot původního MSG vieweru s IR, IR BT, VIS-IR, WV, Airmass, 24h-M a Night-M. Některé archivované assety mohou v Internet Archive chybět."
         },
         {
-          label: "Starý polární AVHRR",
+          label: "Starý polární AVHRR – snapshot 2026-06-14 09:55:13",
           href: "https://web.archive.org/web/20260614095513/https://intranet.chmi.cz/files/portal/docs/meteo/sat/data_jsavhrrview.html",
+          replacementHref: "https://www.chmi.cz/namerena-data/polarni-druzice/true-color",
           status: "archive",
-          note: "Webový archiv původního AVHRR prohlížeče; nejde o živá data."
+          note: "Konkrétní snapshot původního AVHRR vieweru. Archivní obsah není vydáván za živý."
         },
         {
-          label: "Starý ALADIN – archivní index",
-          href: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/aladin/*",
+          label: "ALADIN animace – index Web Archive",
+          href: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html",
+          replacementHref: "https://produkty.chmi.cz/aladin/",
           status: "archive",
-          note: "Vyhledání archivovaných URL původního ALADINu. Dostupnost konkrétních zachycených stránek se může lišit; živá náhrada je ALADIN na produkty.chmi.cz."
+          note: "Archivní index historické URL; přesný použitelný timestamp se v tomto runtime nepodařilo spolehlivě načíst."
+        },
+        {
+          label: "ALADIN mapy – index Web Archive",
+          href: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/ala.html",
+          replacementHref: "https://produkty.chmi.cz/aladin/",
+          status: "archive",
+          note: "Archivní index původních map ALADIN; dostupnost jednotlivých assetů závisí na zachycení Waybacku."
+        },
+        {
+          label: "ALADIN meteogramy – index Web Archive",
+          href: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html",
+          replacementHref: "https://www.chmi.cz/predpoved-pocasi/meteogramy-aladin/obce",
+          status: "archive",
+          note: "Archivní index starého výběru meteogramů. Pokud historický JavaScript nebo datový backend v archivu chybí, nejde jej bezpečně nahradit falešnou funkcí."
+        },
+        {
+          label: "Webkamery – index Web Archive",
+          href: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/kam/",
+          replacementHref: "https://www.chmi.cz/namerena-data/webkamery",
+          status: "archive",
+          note: "Archivní index přehledu kamer; fotografie ani nedoložené assety nejsou součástí ČHMÚ Classic."
+        },
+        {
+          label: "Blesky JSCeldnView – index Web Archive",
+          href: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/blesk/data_jsceldnview.html",
+          replacementHref: "https://www.chmi.cz/namerena-data/radar-nowcast/srazky-a-blesky",
+          status: "archive",
+          note: "Archivní index historického prohlížeče; konkrétní timestamp se nepodařilo z dostupného rozhraní ověřit."
+        }
+      ]
+    },
+    {
+      title: "Historicky doložené výstupy bez bezpečně obnoveného vieweru",
+      items: [
+        {
+          label: "Mapa sněhu – hodnoty",
+          status: "unavailable",
+          replacementHref: "https://www.chmi.cz/",
+          note: "Název je doložen ve staré navigaci ČHMÚ, ale samostatný bezpečně ověřený endpoint mapového vieweru se v této etapě nepodařilo určit."
+        },
+        {
+          label: "Sníh – zásoby vody",
+          status: "unavailable",
+          replacementHref: "https://www.chmi.cz/",
+          note: "Historická navigace položku potvrzuje, ale přesná vstupní URL/viewer nebyly bezpečně ověřeny; proto není vytvořeno falešné ovládání."
+        },
+        {
+          label: "Mapa zatížení sněhem",
+          status: "unavailable",
+          replacementHref: "https://www.chmi.cz/",
+          note: "Stará homepage tento výstup přímo uváděla. Konkrétní samostatný historický endpoint nebyl při průzkumu spolehlivě získán."
+        },
+        {
+          label: "Synoptická předpověď – původní samostatný výstup",
+          status: "unavailable",
+          replacementHref: "https://www.chmi.cz/predpoved-pocasi/synopticka-situace",
+          note: "Historická homepage uváděla Synoptickou předpověď odděleně od Synoptické situace, ale bezpečně ověřená samostatná původní URL se nepodařila získat."
+        },
+        {
+          label: "CLIMAT / typizace povětrnostních situací / význačné počasí",
+          status: "unavailable",
+          replacementHref: "https://www.chmi.cz/namerena-data/historicka-data",
+          note: "Kategorie jsou doloženy historickou navigací, avšak bez jednoho ověřeného kompletního vieweru a assetového stromu; katalog je proto eviduje pouze jako historické."
         }
       ]
     }
@@ -521,6 +898,15 @@
     if (status === "archive") {
       return "Archiv";
     }
+    if (status === "legacy") {
+      return "Legacy";
+    }
+    if (status === "direct") {
+      return "Přímá data";
+    }
+    if (status === "unavailable") {
+      return "Nedostupné";
+    }
     if (status === "external") {
       return "Externí";
     }
@@ -564,7 +950,7 @@
 
     const intro = document.createElement("p");
     intro.className = "chmi-catalog-intro";
-    intro.innerHTML = "<strong>Živě</strong> = současný oficiální zdroj ČHMÚ. <strong>Archiv</strong> = historická kopie bez živých dat. Přímé PNG/JPG/PDF odkazy se nevytvářejí, pokud je ČHMÚ na zdrojové stránce neposkytuje stabilně.";
+    intro.innerHTML = "<strong>Živě</strong> = současný oficiální zdroj. <strong>Legacy</strong> = původní endpoint ČHMÚ, jehož dostupnost/aktuálnost už není garantována. <strong>Archiv</strong> = historická kopie bez živých dat. <strong>Přímá data</strong> = doložený oficiální adresář/soubor. <strong>Nedostupné</strong> = historicky doložený výstup bez bezpečně obnoveného vieweru.";
     dialog.append(intro);
 
     const quick = document.createElement("div");
@@ -590,16 +976,20 @@
 
         const top = document.createElement("div");
         top.className = "chmi-catalog-item-top";
-        const link = document.createElement("a");
-        link.href = item.href;
+        const link = item.href ? document.createElement("a") : document.createElement("span");
+        if (item.href) {
+          link.href = item.href;
+          if (item.status === "archive") {
+            link.target = "_blank";
+            link.rel = "noreferrer";
+          }
+          if (currentPageMatches(item.href)) {
+            link.setAttribute("aria-current", "page");
+          }
+        } else {
+          link.className = "chmi-catalog-item-label";
+        }
         link.textContent = item.label;
-        if (item.status === "archive") {
-          link.target = "_blank";
-          link.rel = "noreferrer";
-        }
-        if (currentPageMatches(item.href)) {
-          link.setAttribute("aria-current", "page");
-        }
         top.append(link);
 
         const badge = document.createElement("span");
@@ -611,6 +1001,26 @@
         const note = document.createElement("p");
         note.textContent = item.note;
         article.append(note);
+
+        if (item.archiveHref || item.replacementHref) {
+          const actions = document.createElement("div");
+          actions.className = "chmi-catalog-item-actions";
+          if (item.archiveHref) {
+            const archiveLink = document.createElement("a");
+            archiveLink.href = item.archiveHref;
+            archiveLink.target = "_blank";
+            archiveLink.rel = "noreferrer";
+            archiveLink.textContent = "Web Archive";
+            actions.append(archiveLink);
+          }
+          if (item.replacementHref) {
+            const replacementLink = document.createElement("a");
+            replacementLink.href = item.replacementHref;
+            replacementLink.textContent = "Aktuální náhrada";
+            actions.append(replacementLink);
+          }
+          article.append(actions);
+        }
         list.append(article);
       }
       section.append(list);

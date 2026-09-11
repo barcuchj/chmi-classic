@@ -7,7 +7,7 @@ prohlížeči.
 
 ## Hlavní živé referenční zdroje
 
-Ověřeno pro implementaci verze 0.5.0 dne 11. 9. 2026:
+Ověřeno pro implementaci verzí 0.5.0–0.6.0 dne 11. 9. 2026:
 
 - Radar: <https://produkty.chmi.cz/radar/>
 - Meteosat: <https://produkty.chmi.cz/druzice/>
@@ -42,8 +42,13 @@ Ověřeno pro implementaci verze 0.5.0 dne 11. 9. 2026:
   <https://web.archive.org/web/20260210150546/https://intranet.chmi.cz/files/portal/docs/meteo/sat/data_jsmsgview.html>
 - Starý prohlížeč AVHRR:
   <https://web.archive.org/web/20260614095513/https://intranet.chmi.cz/files/portal/docs/meteo/sat/data_jsavhrrview.html>
-- Starý ALADIN: v katalogu je použit pouze obecný Wayback index pro původní
-  adresář, nikoli tvrzení o jedné ověřené kanonické archivní aplikaci.
+- Starý ALADIN animace/mapy/meteogramy, webkamery a CELDN: jsou evidovány
+  konkrétní původní URL a obecné Wayback indexy; přesný snapshot se netvrdí,
+  pokud nebyl z dostupného rozhraní ověřen.
+- Stará homepage a sitemap `intranet.chmi.cz`: použity pro doložení historické
+  taxonomie výstupů a původních vazeb mezi aplikacemi.
+- Doložené staré portálové endpointy stanic, ozonu, sněhu, synoptiky, historie
+  a letectví jsou odkazy/provenience; jejich HTML/CSS/JS není součástí projektu.
 
 Archivní položky jsou v UI označeny `Archiv` a nesmějí být interpretovány jako
 aktuální meteorologická data.
@@ -59,3 +64,13 @@ aktuální meteorologická data.
 existující aplikaci (např. radar nebo ALADIN preset), vyvolává původní
 formulářové prvky/eventy stránky ČHMÚ. Neobchází autentizaci, cookies ani jiná
 přístupová omezení a neobnovuje vypnutý server `intranet.chmi.cz`.
+
+## Archivní licence a vlastní adaptace 0.6.0
+
+- INCA snapshot uvádí autora RNDr. Petra Nováka Ph.D., ČHMÚ, a CC BY-NC-ND 3.0 CZ.
+- MSG stránka uvádí © ČHMÚ & EUMETSAT a další původ mapových hranic; satelitní snímky se nekopírují.
+- AVHRR stránka uvádí © ČHMÚ; METOP podléhá podmínkám EUMETSAT; obrazová data se nekopírují.
+- U starých webkamer byla zjištěna restriktivní copyrightová poznámka; fotografie ani původní kód se proto nepřebírají.
+- Pokud nebyla konkrétní licence historického HTML/CSS/JS bezpečně doložena, ČHMÚ Classic přebírá jen faktické URL/názvy a používá vlastní `legacy.css` / `legacy.js`.
+
+Detailní tabulka URL, timestampů, stavu a způsobu použití je v `ARCHIVE_RESEARCH.md`.

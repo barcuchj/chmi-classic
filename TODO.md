@@ -2,7 +2,7 @@
 
 ## Rozpracováno / vyžaduje ruční živý browser test
 
-- [ ] Ověřit verzi 0.5.0 v Chrome/Edge proti živému DOM ALADINu a potvrdit, že
+- [ ] Ověřit verzi 0.6.0 v Chrome/Edge proti živému DOM ALADINu a potvrdit, že
   tlačítko `4 mapy` skutečně aktivuje přesně teplotu ve 2 m, oblačnost, srážky
   za 3 h a vítr v 10 m a že při současné struktuře stránky funguje volba čtyř
   sloupců.
@@ -21,11 +21,12 @@
 - [ ] Dohledat stabilní oficiální přímé PNG/JPG endpointy pouze tam, kde je ČHMÚ
   veřejně dokumentuje nebo dlouhodobě odkazuje. Do té doby používat živé
   produktové stránky a Open Data, nikoli odhadnuté URL.
-- [ ] Pokud se podaří ověřit jednu kanonickou historickou vstupní URL starého
-  ALADINu, nahradit obecný Wayback index konkrétním archivním snímkem.
-- [ ] Prozkoumat, zda současný web nabízí samostatný veřejný produkt klasických
-  výškových synoptických map nad rámec leteckých výškových map a aerologie;
-  bez ověření nevytvářet falešný odkaz.
+- [ ] U ALADIN animace/map/meteogramů, webkamer a CELDN doplnit konkrétní Wayback
+  timestamp pouze tehdy, když jej lze spolehlivě ověřit v Internet Archive; do té
+  doby ponechat index `web/*/` a stav jasně označený jako archivní.
+- [ ] Dohledat samostatné původní endpointy pouze pro zbývající položky označené
+  `Nedostupné` (např. mapa sněhu – hodnoty, zásoby vody, mapa zatížení sněhem,
+  samostatná synoptická předpověď); bez ověření nevytvářet falešný viewer.
 - [ ] U webkamer ověřovat grafy teploty/dalších veličin pouze u konkrétních kamer,
   kde je zdrojová stránka skutečně nabízí; katalog nic nesimuluje.
 
@@ -38,6 +39,9 @@
 
 ## Dokončeno
 
+- [x] Verze 0.6.0: systematický archivní průzkum staré homepage/sitemapu, původních endpointů a dostupných Wayback snapshotů; provenance v `ARCHIVE_RESEARCH.md`.
+- [x] Verze 0.6.0: responzivní legacy shell pro `intranet.chmi.cz` / `portal.chmi.cz` a historické statické aplikace bez kopírování nedoložených CSS/JS/obrazových assetů.
+- [x] Verze 0.6.0: rozšířený katalog s rozlišením `Legacy` / `Přímý` / `Archiv` / `Nedostupné` a odkazy na současné náhrady.
 - [x] Verze 0.5.0: jednotný katalog živých a archivních meteorologických výstupů.
 - [x] Verze 0.5.0: ALADIN old-look rám a volitelný preset čtyř klasických map.
 - [x] Verze 0.5.0: meteogramy, webkamery, naměřená data, synoptika, letectví,

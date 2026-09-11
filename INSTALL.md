@@ -1,4 +1,4 @@
-# Jak nainstalovat ČHMÚ Classic 0.5.0
+# Jak nainstalovat ČHMÚ Classic 0.6.0
 
 ČHMÚ Classic vrací kompaktní old-look vybraným živým aplikacím ČHMÚ a přidává
 jednotný katalog dalších meteorologických výstupů. Meteorologická data stále
@@ -20,9 +20,9 @@ Tampermonkey nebo plovoucím tlačítkem **Klasický vzhled**.
 
 ## 2. Chrome / Edge bez Tampermonkey
 
-Pro verzi 0.5.0 použijte distribuční soubor:
+Pro verzi 0.6.0 použijte distribuční soubor:
 
-`chmi-classic-chrome-edge-0.5.0.zip`
+`chmi-classic-chrome-edge-0.6.0.zip`
 
 1. ZIP rozbalte do trvalé složky.
 2. Otevřete `chrome://extensions` nebo `edge://extensions`.
@@ -35,16 +35,18 @@ Popup rozšíření obsahuje přímý vstup do katalogu a nejčastější živé
 
 ## 3. Safari na macOS
 
-Pro verzi 0.5.0 použijte zdrojový balík:
+Pro verzi 0.6.0 použijte zdrojový balík:
 
-`chmi-classic-safari-source-0.5.0.zip`
+`chmi-classic-safari-source-0.6.0.zip`
 
 1. ZIP rozbalte.
 2. Otevřete `safari/CHMURadarClassicSafari/CHMURadarClassicSafari.xcodeproj`.
 3. Vyberte schéma `CHMURadarClassicSafari` a spusťte aplikaci.
 4. V Safari otevřete **Nastavení → Rozšíření** a povolte ČHMÚ Classic.
 5. Povolte přístup k `produkty.chmi.cz`, `www.chmi.cz` a podle použití také
-   `hydro.chmi.cz`.
+   `hydro.chmi.cz`. Pro historické old-look stránky povolte navíc
+   `intranet.chmi.cz` / `portal.chmi.cz`; rozšíření tím neobchází případnou
+   nedostupnost starého serveru.
 6. Pro lokální nepodepsané rozšíření může být nutné povolit nepodepsaná
    rozšíření v nabídce Vývojář.
 
@@ -108,3 +110,11 @@ násilně neodstraňuje tak, aby se neztratily ovládací prvky nebo data.
 
 ČHMÚ Classic neobchází cookies, přístupová omezení ani nedostupnost původního
 `intranet.chmi.cz`.
+
+## 7. Historické aplikace / Web Archive
+
+Katalog **Produkty** ve verzi 0.6.0 rozlišuje `Živě`, `Legacy`, `Přímý`,
+`Archiv` a `Nedostupné`. Odkaz `Legacy` otevírá původní ČHMÚ endpoint; pokud je
+starý server vypnutý, použijte vedle něj `Web Archive` nebo `Aktuální náhrada`.
+Rozšíření nevkládá vlastní meteorologická data a nenahrazuje chybějící archivní
+JavaScript falešnou funkcí. Podrobnosti jsou v `ARCHIVE_RESEARCH.md`.

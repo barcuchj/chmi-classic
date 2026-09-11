@@ -9,22 +9,24 @@ const projectRoot = dirname(scriptRoot);
 const sourceRoot = join(projectRoot, "chrome-edge");
 const outputPath = join(projectRoot, "tampermonkey", "chmi-classic.user.js");
 
-const [radarCss, satelliteCss, navigationCss, catalogCss, navigationJs, radarJs, satelliteJs, catalogJs] = await Promise.all([
+const [radarCss, satelliteCss, navigationCss, catalogCss, legacyCss, navigationJs, radarJs, satelliteJs, catalogJs, legacyJs] = await Promise.all([
   readFile(join(sourceRoot, "classic.css"), "utf8"),
   readFile(join(sourceRoot, "satellite.css"), "utf8"),
   readFile(join(sourceRoot, "navigation.css"), "utf8"),
   readFile(join(sourceRoot, "catalog.css"), "utf8"),
+  readFile(join(sourceRoot, "legacy.css"), "utf8"),
   readFile(join(sourceRoot, "navigation.js"), "utf8"),
   readFile(join(sourceRoot, "content.js"), "utf8"),
   readFile(join(sourceRoot, "satellite.js"), "utf8"),
-  readFile(join(sourceRoot, "catalog.js"), "utf8")
+  readFile(join(sourceRoot, "catalog.js"), "utf8"),
+  readFile(join(sourceRoot, "legacy.js"), "utf8")
 ]);
 
 const metadata = `// ==UserScript==
 // @name         ČHMÚ Classic – meteorologické výstupy
 // @namespace    https://github.com/
-// @version      0.5.0
-// @description  Vrací klasický vzhled a jednotný katalog živých i archivních meteorologických výstupů ČHMÚ.
+// @version      0.6.0
+// @description  Vrací klasický vzhled, historické adaptace a jednotný katalog živých i archivních meteorologických výstupů ČHMÚ.
 // @author       ČHMÚ Classic contributors
 // @homepageURL  https://github.com/barcuchj/chmi-classic
 // @supportURL   https://github.com/barcuchj/chmi-classic/issues
@@ -35,6 +37,10 @@ const metadata = `// ==UserScript==
 // @match        https://produkty.chmi.cz/aladin/*
 // @match        https://www.chmi.cz/*
 // @match        https://hydro.chmi.cz/*
+// @match        https://intranet.chmi.cz/*
+// @match        http://intranet.chmi.cz/*
+// @match        https://portal.chmi.cz/*
+// @match        http://portal.chmi.cz/*
 // @grant        GM_addStyle
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -60,6 +66,9 @@ const bridge = `
     }
     if (location.hostname === "hydro.chmi.cz") {
       return path.startsWith("/hpps/srz");
+    }
+    if (location.hostname === "intranet.chmi.cz" || location.hostname === "portal.chmi.cz") {
+      return true;
     }
     if (location.hostname !== "www.chmi.cz") {
       return false;
@@ -121,7 +130,7 @@ const bridge = `
     location.reload();
   });
 
-  GM_addStyle(${JSON.stringify(`${radarCss}\n${satelliteCss}\n${navigationCss}\n${catalogCss}\n
+  GM_addStyle(${JSON.stringify(`${radarCss}\n${satelliteCss}\n${navigationCss}\n${catalogCss}\n${legacyCss}\n
 #chmi-classic-userscript-restore {
   position: fixed;
   right: 12px;
@@ -139,7 +148,7 @@ const bridge = `
   renderRestoreButton();
 })();`;
 
-const output = `${metadata}\n\n${bridge}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n\n${catalogJs.trimEnd()}\n`;
+const output = `${metadata}\n\n${bridge}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n\n${catalogJs.trimEnd()}\n\n${legacyJs.trimEnd()}\n`;
 
 await mkdir(dirname(outputPath), { recursive: true });
 await writeFile(outputPath, output, "utf8");

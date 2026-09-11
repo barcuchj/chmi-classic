@@ -1,0 +1,174 @@
+/*
+ * Doložená adaptace historických aplikací ČHMÚ.
+ * Nekopíruje původní CSS/JS ani archivní obrázky. Zachovává DOM a nativní
+ * ovládání zdrojové aplikace a pouze přidává společný rám a responzivní fit.
+ */
+html.chmi-legacy-classic,
+html.chmi-legacy-classic body {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  overflow-x: hidden !important;
+  background: #8bc6da !important;
+  color: #111;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+html.chmi-legacy-classic body *,
+html.chmi-legacy-classic body *::before,
+html.chmi-legacy-classic body *::after {
+  box-sizing: border-box;
+}
+
+#chmi-legacy-classic-header {
+  position: relative;
+  z-index: 2147483000;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 5px 9px;
+  width: 100%;
+  min-width: 0;
+  padding: 4px 7px;
+  border: 1px solid #3a819e;
+  border-width: 0 0 1px;
+  background: linear-gradient(#eaf8fd, #ccebf5);
+  color: #111;
+  font: 12px/1.25 Arial, Helvetica, sans-serif;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 18%);
+}
+
+#chmi-legacy-classic-header .chmi-legacy-brand,
+#chmi-legacy-classic-header nav,
+#chmi-legacy-classic-header .chmi-legacy-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+#chmi-legacy-classic-header .chmi-legacy-brand strong {
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+#chmi-legacy-classic-header .chmi-legacy-badge {
+  padding: 1px 4px;
+  border: 1px solid #c3a65b;
+  background: #fff7dc;
+  color: #6e5000;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+#chmi-legacy-classic-header nav {
+  flex-wrap: wrap;
+}
+
+#chmi-legacy-classic-header a {
+  display: inline-block;
+  max-width: 100%;
+  padding: 2px 5px;
+  border: 1px solid #87b8cb;
+  border-radius: 2px;
+  background: #f6fcff;
+  color: #064f76 !important;
+  font: 700 10.5px/1.25 Arial, Helvetica, sans-serif !important;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+
+#chmi-legacy-classic-header a:hover,
+#chmi-legacy-classic-header a:focus-visible {
+  background: #fff;
+  border-color: #397f9c;
+  text-decoration: underline !important;
+}
+
+#chmi-legacy-classic-header .chmi-legacy-actions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+#chmi-legacy-classic-header .chmi-legacy-actions a.is-primary {
+  border-color: #4c8e5e;
+  background: #edf8f0;
+  color: #245d35 !important;
+}
+
+html.chmi-legacy-classic body > :not(#chmi-legacy-classic-header) {
+  max-width: 100% !important;
+}
+
+html.chmi-legacy-classic img,
+html.chmi-legacy-classic canvas,
+html.chmi-legacy-classic svg,
+html.chmi-legacy-classic video,
+html.chmi-legacy-classic object,
+html.chmi-legacy-classic embed,
+html.chmi-legacy-classic iframe {
+  max-width: 100% !important;
+}
+
+html.chmi-legacy-classic[data-chmi-legacy-layout="viewer"] img,
+html.chmi-legacy-classic[data-chmi-legacy-layout="viewer"] canvas,
+html.chmi-legacy-classic[data-chmi-legacy-layout="viewer"] svg,
+html.chmi-legacy-classic[data-chmi-legacy-layout="viewer"] object,
+html.chmi-legacy-classic[data-chmi-legacy-layout="viewer"] embed,
+html.chmi-legacy-classic[data-chmi-legacy-layout="viewer"] iframe {
+  max-height: var(--chmi-legacy-available-height, calc(100vh - 54px)) !important;
+  object-fit: contain;
+}
+
+html.chmi-legacy-classic table {
+  max-width: 100% !important;
+}
+
+html.chmi-legacy-classic input,
+html.chmi-legacy-classic select,
+html.chmi-legacy-classic button,
+html.chmi-legacy-classic textarea {
+  max-width: 100%;
+}
+
+html.chmi-legacy-classic [style*="min-width"] {
+  min-width: 0 !important;
+}
+
+html.chmi-legacy-classic[data-chmi-legacy-layout="gallery"] img {
+  height: auto !important;
+}
+
+@media (max-width: 1050px) {
+  #chmi-legacy-classic-header {
+    grid-template-columns: 1fr auto;
+  }
+
+  #chmi-legacy-classic-header nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 700px) {
+  #chmi-legacy-classic-header {
+    grid-template-columns: 1fr;
+  }
+
+  #chmi-legacy-classic-header nav,
+  #chmi-legacy-classic-header .chmi-legacy-actions {
+    grid-column: 1;
+  }
+
+  #chmi-legacy-classic-header .chmi-legacy-actions {
+    justify-content: flex-start;
+  }
+
+  #chmi-legacy-classic-header .chmi-legacy-brand {
+    flex-wrap: wrap;
+  }
+}

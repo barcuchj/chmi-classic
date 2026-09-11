@@ -2,7 +2,7 @@
 
 ČHMÚ Classic je rozšíření a Tampermonkey userscript pro Chrome, Edge a Safari.
 Na současných stránkách ČHMÚ vrací kompaktní vzhled inspirovaný původním webem,
-zachovává živé komponenty a datové backendy ČHMÚ a od verze **0.5.0** přidává
+zachovává živé komponenty a datové backendy ČHMÚ a od verze **0.6.0** rozšiřuje
 jednotný katalog současných i archivních meteorologických výstupů.
 
 Rozšíření **nenahrazuje data ČHMÚ vlastními mapami ani hodnotami**. Kde současný
@@ -11,7 +11,7 @@ prohlížeče jsou označeny jako **Archiv** a vedou na Internet Archive. Přím
 PNG/JPG/PDF adresy se nevymýšlejí ani nehardcodují, pokud je zdrojová stránka
 ČHMÚ neposkytuje stabilně.
 
-## Co umí verze 0.5.0
+## Co umí verze 0.6.0
 
 ### Původních šest old-look aplikací
 
@@ -53,7 +53,30 @@ Katalog obsahuje:
 Stav odkazů v katalogu je viditelně rozlišen:
 
 - **Živě** – současný oficiální zdroj ČHMÚ;
-- **Archiv** – historická kopie vypnutého prohlížeče, bez živých dat.
+- **Legacy** – doložený původní endpoint starého portálu; může být po odstavení serveru nedostupný;
+- **Přímý soubor/adresář** – doložený původní PNG/JPG/datový endpoint; data se do projektu nekopírují;
+- **Archiv** – odkaz na konkrétní snapshot nebo Wayback index, bez živých dat;
+- **Nedostupné** – historicky doložený produkt bez bezpečně ověřeného samostatného vieweru/endpointu.
+
+## Historické aplikace a Web Archive
+
+Verze 0.6.0 přidává samostatnou vrstvu `legacy.js` + `legacy.css` pro původní
+`intranet.chmi.cz` / `portal.chmi.cz` a doložené statické aplikace pod
+`/files/portal/docs/meteo/`. Jde o **vlastní adaptaci**, nikoli kopii starých
+CSS/JS nebo obrazových assetů. Pokud původní DOM/backend ještě odpovídá, zůstává
+zachován a rozšíření pouze přidá kompaktní klasický header, odkazy na současnou
+náhradu/Web Archive a responzivní geometrii.
+
+Systematicky jsou evidovány mimo jiné: starý radar INCA i statický radar, MSG,
+AVHRR, ALADIN animace/mapy/meteogramy, webkamery, CELDN blesky a PNG adresář,
+VIS-IR JPG adresář, staniční mapy/tabulky/grafy, radar+srážkoměry, aktuální
+mapy, ozon/UV, sondáže a vertikální profily, sněhové zpravodajství, výškové
+analýzy, Klementinum, přechody front a staré letecké ALADIN/WMO výstupy.
+
+Přesná evidence původních URL, ověřených Wayback timestampů, stavu a licenčního
+rozhodnutí je v [ARCHIVE_RESEARCH.md](ARCHIVE_RESEARCH.md). Kde nebyl bezpečně
+ověřen konkrétní viewer, položka je v katalogu označena jako `Nedostupné`;
+ČHMÚ Classic v takovém případě nevytváří falešné ovládání ani data.
 
 ## ALADIN – čtyři klasické mapy
 
@@ -99,13 +122,15 @@ Ověřené současné rozcestníky zahrnují mimo jiné:
 - `https://www.chmi.cz/namerena-data/historicka-data/klementinum`
 - `https://opendata.chmi.cz/`
 
-### Archiv
+### Archiv a legacy
 
-- starý radar INCA – konkrétní zachycený snímek Internet Archive;
-- starý MSG prohlížeč – konkrétní zachycený snímek;
-- starý AVHRR prohlížeč – konkrétní zachycený snímek;
-- starý ALADIN – pouze archivní index URL, protože nebyla potvrzena jedna
-  univerzální historická vstupní stránka vhodná pro všechny staré produkty.
+- radar INCA – konkrétní Wayback snapshot z 16. 8. 2026;
+- MSG – konkrétní Wayback snapshot z 10. 2. 2026;
+- AVHRR – konkrétní Wayback snapshot z 14. 6. 2026;
+- ALADIN animace/mapy/meteogramy, webkamery a CELDN – doložené původní endpointy
+  a Wayback indexy, pokud nebyl spolehlivě ověřen jeden konkrétní timestamp;
+- staré portálové stránky stanic, synoptiky, ozonu, sněhu, historie a letectví
+  jsou vedeny jako `Legacy` s odkazem na současnou náhradu, pokud je známa.
 
 ### PNG/JPG/PDF a export
 
@@ -160,13 +185,19 @@ Apple signing/notarization workflow.
 Rozšíření ukládá pouze synchronizovanou volbu, zda je klasické rozhraní
 zapnuté. Nemá telemetrii a neposílá uživatelská data.
 
-Host permissions ve verzi 0.5.0:
+Host permissions ve verzi 0.6.0:
 
 - `https://produkty.chmi.cz/radar/*`
 - `https://produkty.chmi.cz/druzice/*`
 - `https://produkty.chmi.cz/aladin/*`
 - `https://www.chmi.cz/*`
 - `https://hydro.chmi.cz/*`
+- `https://intranet.chmi.cz/*` a `http://intranet.chmi.cz/*`
+- `https://portal.chmi.cz/*` a `http://portal.chmi.cz/*`
+
+Oprávnění pro staré domény slouží výhradně k lokálnímu old-look rámci a
+propojení na současnou náhradu/Web Archive; nerozšiřují dostupnost vypnutého
+serveru ani neobcházejí přístupová omezení.
 
 Široký match na `www.chmi.cz/*` slouží pro jednotný katalog a allowlistované
 živé produkty; mimo allowlist se stránka nemění.
@@ -206,6 +237,6 @@ Release balíčky:
 ./script/package_release.sh
 ```
 
-Podklady a původ odkazů jsou popsány v [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Podklady a původ odkazů jsou popsány v [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) a detailní archivní inventura v [ARCHIVE_RESEARCH.md](ARCHIVE_RESEARCH.md).
 Přehled změn je v [CHANGELOG.md](CHANGELOG.md).
 Projekt je licencován pod [MIT licencí](LICENSE).

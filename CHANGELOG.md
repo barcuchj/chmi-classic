@@ -1,5 +1,19 @@
 # Přehled změn
 
+## 0.6.0 – 2026-09-11
+
+- Proveden systematický průzkum historických aplikací ČHMÚ podle staré homepage, sitemapu, indexovaných původních endpointů a dostupných snapshotů Wayback Machine; evidence je v `ARCHIVE_RESEARCH.md`.
+- Přidány `legacy.js` a `legacy.css`: vlastní licenčně bezpečná old-look adaptace pro staré `intranet.chmi.cz` / `portal.chmi.cz` a statické aplikace `/files/portal/docs/meteo/`; původní DOM, ovládání a backend se zachovávají.
+- Historické stránky dostávají společnou navigaci na Radar, ALADIN, meteogramy, kamery, družice, blesky, stanice, synoptiku, letectví, houby a katalog; u známých viewerů také `Aktuální náhrada` a `Web Archive`.
+- Katalog rozšířen o doložené staré aplikace: ALADIN animace/mapy/meteogramy, webkamery, CELDN blesky, statické radarové/bleskové výstupy, VIS-IR JPG adresář, staniční data/mapy/grafy, radar+srážkoměry, aktuální mapy, ozon/UV, sondáže, sníh, výškové analýzy, Klementinum, fronty a letecké ALADIN/WMO výstupy.
+- Konkrétní Wayback snapshoty jsou nadále použity jen tam, kde byl timestamp ověřen: INCA `20260816180503`, MSG `20260210150546`, AVHRR `20260614095513`; ostatní archivní položky používají pravdivě označený Wayback index nebo `Nedostupné`.
+- Stav položek katalogu nyní rozlišuje `Živě`, `Legacy`, `Přímý`, `Archiv` a `Nedostupné`; chybějící historický backend se nesimuluje.
+- Manifest a Tampermonkey byly rozšířeny o staré domény `intranet.chmi.cz` / `portal.chmi.cz`; Safari Resources a release skripty synchronizují nové legacy zdroje z `chrome-edge/`.
+- Safari Xcode target nyní skutečně přibaluje `catalog.js`, `catalog.css`, `legacy.js` a `legacy.css` do výsledného `.appex`, nejen do zdrojového ZIPu.
+- Opravena ochrana proti rekurzivní resize smyčce v legacy fit-to-window vrstvě.
+- Původní specializované fit-to-window soubory radaru, homepage radaru, Meteosatu, Polární/Geo a Hub nebyly měněny.
+- Distribuční verze zvýšena na 0.6.0.
+
 ## 0.5.0 – 2026-09-11
 
 - Přidán jednotný katalog `Produkty` pro staré i současné meteorologické výstupy: ALADIN, meteogramy, webkamery, naměřená data, synoptiku, letectví, historická data, Open Data a archivní prohlížeče.
