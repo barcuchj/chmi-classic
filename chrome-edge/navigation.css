@@ -1,0 +1,64 @@
+/* Společná kompaktní navigace mezi podporovanými částmi ČHMÚ Classic. */
+#chmi-radar-classic-brand,
+#chmi-home-radar-classic-brand,
+#chmi-satellite-classic-brand,
+#chmi-hub-classic-brand {
+  flex-wrap: wrap !important;
+  row-gap: 5px !important;
+}
+
+.chmi-classic-navigation {
+  box-sizing: border-box;
+  display: inline-flex !important;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  margin: 0 4px 0 8px;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.chmi-classic-navigation a {
+  box-sizing: border-box;
+  display: inline-block !important;
+  padding: 3px 6px !important;
+  color: #176b95 !important;
+  background: #f7fcfe !important;
+  border: 1px solid #b2cfdb !important;
+  border-radius: 2px !important;
+  font: 11px/1.25 Arial, Helvetica, sans-serif !important;
+  text-decoration: none !important;
+}
+
+.chmi-classic-navigation a:hover,
+.chmi-classic-navigation a.is-active,
+.chmi-classic-navigation a[aria-current="page"] {
+  color: #fff !important;
+  background: #4ea8d3 !important;
+  border-color: #2588ba !important;
+}
+
+.chmi-classic-navigation a:focus-visible {
+  outline: 3px solid #f5a623 !important;
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .chmi-classic-navigation {
+    order: 3;
+    flex: 1 0 100%;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+}
+
+@media (max-width: 520px) {
+  .chmi-classic-navigation a {
+    padding: 3px 5px !important;
+    font-size: 10.5px !important;
+  }
+}

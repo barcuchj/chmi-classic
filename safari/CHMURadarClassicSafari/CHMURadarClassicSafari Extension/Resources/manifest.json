@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "ČHMÚ Classic – radar a družice",
-  "version": "0.3.0",
-  "description": "Vrací současným radarovým a družicovým aplikacím ČHMÚ kompaktní klasické rozhraní.",
+  "name": "ČHMÚ Classic – radar, družice a mapy",
+  "version": "0.4.0",
+  "description": "Vrací současným radarovým, družicovým a vybraným mapovým stránkám ČHMÚ kompaktní klasické rozhraní.",
   "permissions": [
     "storage"
   ],
@@ -10,21 +10,27 @@
     "https://produkty.chmi.cz/radar/*",
     "https://produkty.chmi.cz/druzice/*",
     "https://www.chmi.cz/namerena-data/polarni-druzice/*",
-    "https://www.chmi.cz/namerena-data/geostacionarni-druzice/*"
+    "https://www.chmi.cz/namerena-data/geostacionarni-druzice/*",
+    "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub*",
+    "https://www.chmi.cz/"
   ],
   "action": {
-    "default_title": "ČHMÚ Classic – radar a družice",
+    "default_title": "ČHMÚ Classic – radar, družice a mapy",
     "default_popup": "popup.html"
   },
   "content_scripts": [
     {
       "matches": [
-        "https://produkty.chmi.cz/radar/*"
+        "https://produkty.chmi.cz/radar/*",
+        "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub*",
+        "https://www.chmi.cz/"
       ],
       "css": [
-        "classic.css"
+        "classic.css",
+        "navigation.css"
       ],
       "js": [
+        "navigation.js",
         "content.js"
       ],
       "run_at": "document_idle"
@@ -36,9 +42,11 @@
         "https://www.chmi.cz/namerena-data/geostacionarni-druzice/*"
       ],
       "css": [
-        "satellite.css"
+        "satellite.css",
+        "navigation.css"
       ],
       "js": [
+        "navigation.js",
         "satellite.js"
       ],
       "run_at": "document_idle"

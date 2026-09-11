@@ -2,21 +2,27 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION="0.3.0"
+VERSION="0.4.0"
 DIST_ROOT="$PROJECT_ROOT/dist"
 CHROMIUM_STAGE="$DIST_ROOT/chmi-classic-chrome-edge-$VERSION"
 SAFARI_STAGE="$DIST_ROOT/chmi-classic-safari-source-$VERSION"
+SAFARI_RESOURCES="$PROJECT_ROOT/safari/CHMURadarClassicSafari/CHMURadarClassicSafari Extension/Resources"
+
+node "$PROJECT_ROOT/script/build_userscript.mjs"
+for file in manifest.json navigation.js navigation.css content.js classic.css satellite.js satellite.css popup.html popup.css popup.js; do
+  cp "$PROJECT_ROOT/chrome-edge/$file" "$SAFARI_RESOURCES/$file"
+done
 
 rm -rf "$CHROMIUM_STAGE" "$SAFARI_STAGE"
 mkdir -p "$CHROMIUM_STAGE" "$SAFARI_STAGE"
 
-for file in manifest.json content.js classic.css satellite.js satellite.css popup.html popup.css popup.js; do
+for file in manifest.json navigation.js navigation.css content.js classic.css satellite.js satellite.css popup.html popup.css popup.js; do
   cp "$PROJECT_ROOT/chrome-edge/$file" "$CHROMIUM_STAGE/$file"
 done
 
 cp -R "$PROJECT_ROOT/safari/CHMURadarClassicSafari" "$SAFARI_STAGE/safari"
 mkdir -p "$SAFARI_STAGE/chrome-edge" "$SAFARI_STAGE/script"
-for file in manifest.json content.js classic.css satellite.js satellite.css popup.html popup.css popup.js; do
+for file in manifest.json navigation.js navigation.css content.js classic.css satellite.js satellite.css popup.html popup.css popup.js; do
   cp "$PROJECT_ROOT/chrome-edge/$file" "$SAFARI_STAGE/chrome-edge/$file"
 done
 cp "$PROJECT_ROOT/script/build_and_run.sh" "$SAFARI_STAGE/script/build_and_run.sh"

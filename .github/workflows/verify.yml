@@ -23,6 +23,7 @@ jobs:
           node-version: 22
       - name: Check JavaScript syntax
         run: |
+          node --check chrome-edge/navigation.js
           node --check chrome-edge/content.js
           node --check chrome-edge/satellite.js
           node --check chrome-edge/popup.js
