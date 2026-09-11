@@ -27,7 +27,7 @@ esac
 
 pkill -x "$APP_NAME" >/dev/null 2>&1 || true
 
-for file in manifest.json content.js classic.css satellite.js satellite.css popup.html popup.css popup.js; do
+for file in manifest.json navigation.js navigation.css content.js classic.css satellite.js satellite.css popup.html popup.css popup.js; do
   cp "$CHROMIUM_ROOT/$file" "$EXTENSION_RESOURCES/$file"
 done
 

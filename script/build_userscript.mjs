@@ -9,18 +9,20 @@ const projectRoot = dirname(scriptRoot);
 const sourceRoot = join(projectRoot, "chrome-edge");
 const outputPath = join(projectRoot, "tampermonkey", "chmi-classic.user.js");
 
-const [radarCss, satelliteCss, radarJs, satelliteJs] = await Promise.all([
+const [radarCss, satelliteCss, navigationCss, navigationJs, radarJs, satelliteJs] = await Promise.all([
   readFile(join(sourceRoot, "classic.css"), "utf8"),
   readFile(join(sourceRoot, "satellite.css"), "utf8"),
+  readFile(join(sourceRoot, "navigation.css"), "utf8"),
+  readFile(join(sourceRoot, "navigation.js"), "utf8"),
   readFile(join(sourceRoot, "content.js"), "utf8"),
   readFile(join(sourceRoot, "satellite.js"), "utf8")
 ]);
 
 const metadata = `// ==UserScript==
-// @name         ČHMÚ Classic – radar a družice
+// @name         ČHMÚ Classic – radar, družice a mapy
 // @namespace    https://github.com/
-// @version      0.3.0
-// @description  Vrací klasický vzhled a ovládání radaru a družicových snímků ČHMÚ.
+// @version      0.4.1
+// @description  Vrací klasický vzhled radaru, družicových snímků a vybraných map ČHMÚ.
 // @author       ČHMÚ Classic contributors
 // @homepageURL  https://github.com/barcuchj/chmi-classic
 // @supportURL   https://github.com/barcuchj/chmi-classic/issues
@@ -30,6 +32,8 @@ const metadata = `// ==UserScript==
 // @match        https://produkty.chmi.cz/druzice/*
 // @match        https://www.chmi.cz/namerena-data/polarni-druzice/*
 // @match        https://www.chmi.cz/namerena-data/geostacionarni-druzice/*
+// @match        https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub*
+// @match        https://www.chmi.cz/
 // @grant        GM_addStyle
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -83,7 +87,7 @@ const bridge = `
     location.reload();
   });
 
-  GM_addStyle(${JSON.stringify(`${radarCss}\n${satelliteCss}\n
+  GM_addStyle(${JSON.stringify(`${radarCss}\n${satelliteCss}\n${navigationCss}\n
 #chmi-classic-userscript-restore {
   position: fixed;
   right: 12px;
@@ -101,7 +105,7 @@ const bridge = `
   renderRestoreButton();
 })();`;
 
-const output = `${metadata}\n\n${bridge}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n`;
+const output = `${metadata}\n\n${bridge}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n`;
 
 await mkdir(dirname(outputPath), { recursive: true });
 await writeFile(outputPath, output, "utf8");
