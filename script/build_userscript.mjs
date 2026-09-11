@@ -9,20 +9,22 @@ const projectRoot = dirname(scriptRoot);
 const sourceRoot = join(projectRoot, "chrome-edge");
 const outputPath = join(projectRoot, "tampermonkey", "chmi-classic.user.js");
 
-const [radarCss, satelliteCss, navigationCss, navigationJs, radarJs, satelliteJs] = await Promise.all([
+const [radarCss, satelliteCss, navigationCss, catalogCss, navigationJs, radarJs, satelliteJs, catalogJs] = await Promise.all([
   readFile(join(sourceRoot, "classic.css"), "utf8"),
   readFile(join(sourceRoot, "satellite.css"), "utf8"),
   readFile(join(sourceRoot, "navigation.css"), "utf8"),
+  readFile(join(sourceRoot, "catalog.css"), "utf8"),
   readFile(join(sourceRoot, "navigation.js"), "utf8"),
   readFile(join(sourceRoot, "content.js"), "utf8"),
-  readFile(join(sourceRoot, "satellite.js"), "utf8")
+  readFile(join(sourceRoot, "satellite.js"), "utf8"),
+  readFile(join(sourceRoot, "catalog.js"), "utf8")
 ]);
 
 const metadata = `// ==UserScript==
-// @name         ČHMÚ Classic – radar, družice a mapy
+// @name         ČHMÚ Classic – meteorologické výstupy
 // @namespace    https://github.com/
-// @version      0.4.1
-// @description  Vrací klasický vzhled radaru, družicových snímků a vybraných map ČHMÚ.
+// @version      0.5.0
+// @description  Vrací klasický vzhled a jednotný katalog živých i archivních meteorologických výstupů ČHMÚ.
 // @author       ČHMÚ Classic contributors
 // @homepageURL  https://github.com/barcuchj/chmi-classic
 // @supportURL   https://github.com/barcuchj/chmi-classic/issues
@@ -30,10 +32,9 @@ const metadata = `// ==UserScript==
 // @updateURL    https://raw.githubusercontent.com/barcuchj/chmi-classic/main/tampermonkey/chmi-classic.user.js
 // @match        https://produkty.chmi.cz/radar/*
 // @match        https://produkty.chmi.cz/druzice/*
-// @match        https://www.chmi.cz/namerena-data/polarni-druzice/*
-// @match        https://www.chmi.cz/namerena-data/geostacionarni-druzice/*
-// @match        https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub*
-// @match        https://www.chmi.cz/
+// @match        https://produkty.chmi.cz/aladin/*
+// @match        https://www.chmi.cz/*
+// @match        https://hydro.chmi.cz/*
 // @grant        GM_addStyle
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -52,9 +53,42 @@ const bridge = `
     return Boolean(GM_getValue(key, true));
   }
 
+  function isRelevantPage() {
+    const path = location.pathname.replace(/\\/+$/, "") || "/";
+    if (location.hostname === "produkty.chmi.cz") {
+      return path.startsWith("/radar") || path.startsWith("/druzice") || path.startsWith("/aladin");
+    }
+    if (location.hostname === "hydro.chmi.cz") {
+      return path.startsWith("/hpps/srz");
+    }
+    if (location.hostname !== "www.chmi.cz") {
+      return false;
+    }
+    const prefixes = [
+      "/predpoved-pocasi/meteogramy-aladin",
+      "/meteogram/",
+      "/namerena-data/webkamery",
+      "/predpoved-pocasi/synopticka-situace",
+      "/predpoved-pocasi/synopticke-situace-v-minulosti",
+      "/predpoved-pocasi/pocasi-evropa",
+      "/predpoved-pocasi/prechody-front-pres-prahu",
+      "/namerena-data/data-z-mericich-stanic",
+      "/namerena-data/umisteni-mericich-stanic/meteorologicke",
+      "/namerena-data/radar-nowcast/srazky-a-blesky",
+      "/namerena-data/historicka-data",
+      "/namerena-data/polarni-druzice",
+      "/namerena-data/geostacionarni-druzice",
+      "/namerena-data/pravdepodobnost-rustu-hub",
+      "/o-chmu/produkty-a-sluzby/data-a-vyhodnoceni",
+      "/o-chmu/publikace-a-vzdelavani/zpravy-a-datove-prehledy",
+      "/letectvi"
+    ];
+    return path === "/" || prefixes.some((prefix) => path.startsWith(prefix));
+  }
+
   function renderRestoreButton() {
     document.getElementById(restoreId)?.remove();
-    if (isEnabled()) {
+    if (isEnabled() || !isRelevantPage()) {
       return;
     }
 
@@ -87,7 +121,7 @@ const bridge = `
     location.reload();
   });
 
-  GM_addStyle(${JSON.stringify(`${radarCss}\n${satelliteCss}\n${navigationCss}\n
+  GM_addStyle(${JSON.stringify(`${radarCss}\n${satelliteCss}\n${navigationCss}\n${catalogCss}\n
 #chmi-classic-userscript-restore {
   position: fixed;
   right: 12px;
@@ -105,7 +139,7 @@ const bridge = `
   renderRestoreButton();
 })();`;
 
-const output = `${metadata}\n\n${bridge}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n`;
+const output = `${metadata}\n\n${bridge}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n\n${catalogJs.trimEnd()}\n`;
 
 await mkdir(dirname(outputPath), { recursive: true });
 await writeFile(outputPath, output, "utf8");

@@ -1,5 +1,20 @@
 # Přehled změn
 
+## 0.5.0 – 2026-09-11
+
+- Přidán jednotný katalog `Produkty` pro staré i současné meteorologické výstupy: ALADIN, meteogramy, webkamery, naměřená data, synoptiku, letectví, historická data, Open Data a archivní prohlížeče.
+- Katalog jednoznačně rozlišuje `Živě` a `Archiv`; archivní položky neimitují živé ovládání a odkazují pouze na existující historické kopie.
+- Přidán lehký old-look rám pro allowlistované živé stránky `www.chmi.cz`, ALADIN na `produkty.chmi.cz` a srážkoměry HPPS na `hydro.chmi.cz`; původní mapy, tabulky, formuláře, exporty a event handlery zůstávají zdrojové.
+- ALADIN dostal volitelné tlačítko `4 mapy`, které používá původní ovládací prvky ČHMÚ pro teplotu ve 2 m, oblačnost, srážky za 3 h a vítr v 10 m a při dostupnosti volí rozložení do čtyř sloupců.
+- Letecký katalog obsahuje přímo METAR/SPECI, SIGMET, TAF, SWL, nízkou oblačnost, výškový vítr, radiosondáže, aerologii/pseudosondáže, VIS-IR, radar/blesky a další související živé zdroje.
+- Přidány živé historické produkty: přechody front, Klementinum, mapy teploty a srážek, územní teplota/srážky a oficiální zprávy/datové přehledy.
+- Přidány archivní odkazy na starý radar INCA, MSG, AVHRR a archivní index starého ALADINu.
+- Společná navigace se na menších šířkách zalamuje místo vodorovného scrollování.
+- Popup rozšíření obsahuje vstup do katalogu a odkazy na nejčastější nové skupiny produktů.
+- `chrome-edge/` zůstává jediným zdrojem pravdy; `catalog.js` a `catalog.css` jsou zahrnuty do Safari synchronizace, Tampermonkey generátoru i release balení.
+- Oprávnění verze 0.5.0 byla rozšířena na ALADIN, allowlistované cesty na `www.chmi.cz` a HPPS; mimo interní allowlist katalogový skript stránku nestyluje.
+- Distribuční verze zvýšena na 0.5.0.
+
 ## 0.4.1 – 2026-09-11
 
 - Opraveno dynamické rozložení všech podporovaných old-look aplikací podle skutečné šířky a výšky viewportu; desktopové zobrazení již nepoužívá zbytečné pevné maximální šířky a výšky.
@@ -9,7 +24,6 @@
 - Polární a geostacionární mapy používají plnou dostupnou šířku a výšku odvozenou od pozice mapy ve viewportu; mapové ovladače jsou mírně odsazené od hran.
 - Pravděpodobnost růstu hub používá plnou šířku okna a dynamickou výšku mapy, takže odpadá nevyužitá plocha kolem aplikace a ovladače zůstávají uvnitř mapového prostoru.
 - Přidány `ResizeObserver`/resize notifikace, aby původní živé komponenty ČHMÚ po změně rozměrů přepočítaly interní mapu místo pouhého vizuálního ořezu.
-- Zjednodušen instalační návod pro běžné uživatele včetně přímých odkazů na Tampermonkey, Chrome/Edge balíček a Safari balíček.
 - Distribuční verze zvýšena na 0.4.1.
 
 ## 0.4.0 – 2026-09-11

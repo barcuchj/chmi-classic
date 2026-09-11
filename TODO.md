@@ -1,36 +1,60 @@
 # ToDo
 
-## Rozpracováno
+## Rozpracováno / vyžaduje ruční živý browser test
 
-- [ ] Ručně potvrdit dynamické rozložení verze 0.4.1 na šesti referenčních stránkách a alespoň ve dvou desktopových rozměrech okna; zvlášť ověřit, že nikde nevznikl zbytečný horizontální scrollbar.
-- [ ] Ručně ověřit, že `Dle okna` na produktovém radaru a případné zrcadlené režimy na homepage radaru nepřekrývají nativní zoom a stále aktivují původní vstupy ČHMÚ.
-- [ ] Ručně potvrdit načtení rozbaleného doplňku v Edge a povolení přístupu
-  k webům ČHMÚ v Safari.
-- [ ] Ručně potvrdit stránku `pravdepodobnost-rustu-hub` v Safari a Tampermonkey
-  proti živé interaktivní mapě v běžném prohlížeči.
-- [ ] Ručně potvrdit homepage radar na `https://www.chmi.cz/` ve všech třech variantách
-  proti živému DOM portálu, zejména časovou osu, vrstvy a responzivní resize.
+- [ ] Ověřit verzi 0.5.0 v Chrome/Edge proti živému DOM ALADINu a potvrdit, že
+  tlačítko `4 mapy` skutečně aktivuje přesně teplotu ve 2 m, oblačnost, srážky
+  za 3 h a vítr v 10 m a že při současné struktuře stránky funguje volba čtyř
+  sloupců.
+- [ ] Projít reprezentativní stránky každé nové katalogové skupiny v desktopovém
+  i menším okně: meteogram, webkamery, naměřená data, synoptika, letectví,
+  historická data a HPPS. Potvrdit, že old-look rám nezakrývá nativní ovládání.
+- [ ] Znovu ručně potvrdit původních šest aplikací verze 0.4.1: Radar, homepage
+  radar, Meteosat, Polární, Geo a Houby; zvlášť režimy `Dle okna / Zoom 4x /
+  Zoom 8x / Web Maps`, mapové vrstvy a časové osy.
+- [ ] Ověřit Safari build na macOS přes `./script/build_and_run.sh --verify` a
+  přístup k novým doménám/cestám v oprávněních Safari Web Extension.
+- [ ] Ověřit katalog a archivní odkazy v Tampermonkey v Safari/Firefox/Chromium.
+
+## Neověřené nebo záměrně nehardcodované body
+
+- [ ] Dohledat stabilní oficiální přímé PNG/JPG endpointy pouze tam, kde je ČHMÚ
+  veřejně dokumentuje nebo dlouhodobě odkazuje. Do té doby používat živé
+  produktové stránky a Open Data, nikoli odhadnuté URL.
+- [ ] Pokud se podaří ověřit jednu kanonickou historickou vstupní URL starého
+  ALADINu, nahradit obecný Wayback index konkrétním archivním snímkem.
+- [ ] Prozkoumat, zda současný web nabízí samostatný veřejný produkt klasických
+  výškových synoptických map nad rámec leteckých výškových map a aerologie;
+  bez ověření nevytvářet falešný odkaz.
+- [ ] U webkamer ověřovat grafy teploty/dalších veličin pouze u konkrétních kamer,
+  kde je zdrojová stránka skutečně nabízí; katalog nic nesimuluje.
 
 ## Plánováno
 
-- [ ] Připravit publikační balíčky a metadata pro katalogy prohlížečů a katalog userscriptů.
-- [ ] Ověřit vzhled polárních družic proti archivnímu snímku AVHRR, až bude daný záznam Internet Archive znovu dostupný.
-- [ ] Doplnit případné další polární produkty pouze podle ověřených aktuálních stránek ČHMÚ.
+- [ ] Připravit publikační balíčky a metadata pro katalogy prohlížečů až po
+  ručním převzetí této verze.
+- [ ] Doplňovat nové položky katalogu pouze po ověření současné oficiální URL
+  nebo jednoznačného archivního snímku.
 
 ## Dokončeno
 
-- [x] Verze 0.4.1: společné dynamické fit-to-window rozložení pro radar, homepage radar, Meteosat, polární a geostacionární družice a pravděpodobnost růstu hub.
-- [x] Verze 0.4.1: odstranění překryvu radarového přepínače s nativními mapovými ovladači pomocí dynamického odsazení.
+- [x] Verze 0.5.0: jednotný katalog živých a archivních meteorologických výstupů.
+- [x] Verze 0.5.0: ALADIN old-look rám a volitelný preset čtyř klasických map.
+- [x] Verze 0.5.0: meteogramy, webkamery, naměřená data, synoptika, letectví,
+  historické výstupy, Open Data a archivy v jedné navigaci.
+- [x] Verze 0.5.0: zalamování společné navigace bez povinného horizontálního scrollu.
+- [x] Verze 0.5.0: synchronizace nových společných zdrojů do Safari,
+  Tampermonkey a release skriptů.
+- [x] Verze 0.4.1: společné dynamické fit-to-window rozložení pro radar, homepage
+  radar, Meteosat, polární a geostacionární družice a pravděpodobnost růstu hub.
+- [x] Verze 0.4.1: odstranění překryvu radarového přepínače s nativními mapovými
+  ovladači pomocí dynamického odsazení.
 - [x] Klasický režim radaru včetně přepínače `Dle okna / Zoom 4x / Zoom 8x / Web Maps`.
 - [x] Společný zdroj rozšíření pro Chrome/Edge a Safari.
-- [x] Klasický režim animovaného prohlížeče Meteosat s produktovou maticí, přehráváním, aktualizací a zachovanými živými daty.
-- [x] Klasický rám a výběr produktů pro současné stránky polárních a geostacionárních družic.
-- [x] Samostatný Tampermonkey userscript generovaný ze stejného JS/CSS s ovládáním přímo na stránce.
-- [x] Radar přes celé okno, výchozí `Web Maps` a zastavení na nejnovějším snímku ve verzi 0.3.0.
-- [x] Načtení skutečného rozbaleného rozšíření v Chromium a ověření radaru i družic na živých stránkách ČHMÚ.
-- [x] Sestavení a spuštění hostitelské Safari aplikace včetně zabalených zdrojů rozšíření.
-- [x] Veřejný GitHub repozitář a vydání 0.3.0 s balíčky pro Chrome/Edge, Safari a Tampermonkey.
-- [x] Verze 0.4.0: klasický rám stránky pravděpodobnosti růstu hub při zachování originální živé mapy a jejích funkcí.
-- [x] Verze 0.4.0: společná URL podpora pro Chrome/Edge, Safari a generovaný Tampermonkey userscript.
-- [x] Verze 0.4.0: společná kompaktní navigace mezi všemi podporovanými old-look stránkami.
-- [x] Verze 0.4.0: izolovaný old-look rám pro radarovou sekci na úvodní stránce `www.chmi.cz/`.
+- [x] Klasický režim animovaného prohlížeče Meteosat s produktovou maticí,
+  přehráváním, aktualizací a zachovanými živými daty.
+- [x] Klasický rám a výběr produktů pro současné stránky polárních a
+  geostacionárních družic.
+- [x] Samostatný Tampermonkey userscript generovaný ze stejného JS/CSS.
+- [x] Verze 0.4.0: společná kompaktní navigace mezi původními old-look stránkami.
+- [x] Verze 0.4.0: izolovaný old-look rám pro radarovou sekci na úvodní stránce.
