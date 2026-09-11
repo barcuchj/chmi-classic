@@ -4,7 +4,11 @@ Rozšíření a Tampermonkey userscript pro Chrome, Edge a Safari. Na současný
 stránkách ČHMÚ vrací kompaktní vzhled inspirovaný původními prohlížeči radaru,
 družicových snímků a jednoduchými klasickými mapovými stránkami.
 
-**Chcete jej pouze používat? Pokračujte návodem [Jak nainstalovat ČHMÚ Classic](INSTALL.md).**
+**Chcete jej pouze používat? Začněte [instalačním návodem pro běžné uživatele](INSTALL.md).**
+
+Nejjednodušší cesta je nainstalovat [Tampermonkey](https://www.tampermonkey.net/)
+a potom otevřít [instalaci ČHMÚ Classic](https://raw.githubusercontent.com/barcuchj/chmi-classic/main/tampermonkey/chmi-classic.user.js).
+Pro Chrome a Edge je připraven také [balíček bez Tampermonkey](https://github.com/barcuchj/chmi-classic/releases/latest/download/chmi-classic-chrome-edge-0.4.1.zip).
 
 Rozšíření nekopíruje meteorologická data ani starý web. Používá současné aplikace a jejich živá data; pouze upravuje rozložení a přidává ovladače napojené na skutečné prvky aplikací ČHMÚ. U stránky pravděpodobnosti růstu hub zůstává původní živá mapa, její vrstvy, legenda, ovladače, navigace i datové zdroje beze změny.
 
@@ -44,9 +48,10 @@ Pro [Pravděpodobnost růstu hub](https://www.chmi.cz/namerena-data/pravdepodobn
 
 ## Rychlá instalace přes Tampermonkey
 
-1. Nainstalujte Tampermonkey.
+1. Nainstalujte [Tampermonkey](https://www.tampermonkey.net/).
 2. Otevřete [userscript ČHMÚ Classic](https://raw.githubusercontent.com/barcuchj/chmi-classic/main/tampermonkey/chmi-classic.user.js).
-3. Potvrďte instalaci a otevřete některou z podporovaných stránek.
+3. Potvrďte instalaci a případně jednou obnovte stránku ČHMÚ.
+4. Otevřete některou z podporovaných stránek.
 
 Userscript používá stejné JS/CSS jako rozšíření. Liší se jen instalací a tím,
 že klasický režim lze znovu zapnout plovoucím tlačítkem nebo z nabídky
@@ -54,11 +59,12 @@ Tampermonkey.
 
 ## Instalace v Chrome nebo Edge bez Tampermonkey
 
-1. Otevřete `chrome://extensions` nebo `edge://extensions`.
-2. Zapněte **Režim pro vývojáře**.
-3. Zvolte **Načíst rozbalené**.
-4. Vyberte tuto složku `chrome-edge`.
-5. Otevřete některou z podporovaných stránek:
+1. Stáhněte [balíček pro Chrome a Edge](https://github.com/barcuchj/chmi-classic/releases/latest/download/chmi-classic-chrome-edge-0.4.1.zip) a rozbalte jej.
+2. Otevřete `chrome://extensions` nebo `edge://extensions`.
+3. Zapněte **Režim pro vývojáře**.
+4. Zvolte **Načíst rozbalené**.
+5. Vyberte rozbalenou složku, ve které přímo vidíte `manifest.json`.
+6. Otevřete některou z podporovaných stránek:
 
    - [Radar a srážky](https://produkty.chmi.cz/radar/)
    - [Radar na úvodní stránce ČHMÚ](https://www.chmi.cz/#chmi-classic-home-radar)
@@ -79,10 +85,10 @@ Safari používá samostatný macOS/Xcode wrapper v
 `classic.css`, `satellite.js`, `satellite.css` a `popup.*`) zůstávají zdrojem pravdy; build skript je před
 sestavením synchronizuje do Safari targetu.
 
-Pro sestavení a spuštění lokální verze:
+Pro sestavení a spuštění lokální verze z kořene rozbaleného projektu:
 
 ```sh
-cd ..
+cd /cesta/k/chmi-classic
 ./script/build_and_run.sh
 ```
 
@@ -90,7 +96,7 @@ Po prvním spuštění otevřete Safari → **Nastavení → Rozšíření** a p
 **ČHMÚ Classic – radar, družice a mapy**. Pro ověření, že se wrapper spustil, lze použít:
 
 ```sh
-cd ..
+cd /cesta/k/chmi-classic
 ./script/build_and_run.sh --verify
 ```
 

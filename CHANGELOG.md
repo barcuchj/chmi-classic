@@ -9,6 +9,7 @@
 - Polární a geostacionární mapy používají plnou dostupnou šířku a výšku odvozenou od pozice mapy ve viewportu; mapové ovladače jsou mírně odsazené od hran.
 - Pravděpodobnost růstu hub používá plnou šířku okna a dynamickou výšku mapy, takže odpadá nevyužitá plocha kolem aplikace a ovladače zůstávají uvnitř mapového prostoru.
 - Přidány `ResizeObserver`/resize notifikace, aby původní živé komponenty ČHMÚ po změně rozměrů přepočítaly interní mapu místo pouhého vizuálního ořezu.
+- Zjednodušen instalační návod pro běžné uživatele včetně přímých odkazů na Tampermonkey, Chrome/Edge balíček a Safari balíček.
 - Distribuční verze zvýšena na 0.4.1.
 
 ## 0.4.0 – 2026-09-11
