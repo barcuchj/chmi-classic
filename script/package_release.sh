@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION="0.4.0"
+VERSION="0.4.1"
 DIST_ROOT="$PROJECT_ROOT/dist"
 CHROMIUM_STAGE="$DIST_ROOT/chmi-classic-chrome-edge-$VERSION"
 SAFARI_STAGE="$DIST_ROOT/chmi-classic-safari-source-$VERSION"

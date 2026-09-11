@@ -12,12 +12,13 @@ Rozšíření nekopíruje meteorologická data ani starý web. Používá souča
 
 - výrazný přepínač `Dle okna / Zoom 4x / Zoom 8x / Web Maps`,
 - výchozí radar v režimu `Web Maps`, zastavený na nejnovějším snímku,
-- radarovou mapu pružně využívající celé dostupné okno,
+- radarovou mapu pružně využívající celé dostupné okno bez překryvu klasického přepínače s nativními mapovými ovladači,
 - kompaktní mapu a ovládací panel vedle sebe,
 - světle modré pozadí a jednoduché bílé pracovní okno,
 - přepnutí mezi klasickým a současným vzhledem přes ikonu rozšíření,
 - zachování původních funkcí, událostí a živých dat ČHMÚ,
-- společnou kompaktní navigaci mezi radarem, radarem na úvodní stránce, Meteosatem, polárními a geostacionárními družicemi a mapou růstu hub.
+- společnou kompaktní navigaci mezi radarem, radarem na úvodní stránce, Meteosatem, polárními a geostacionárními družicemi a mapou růstu hub,
+- od verze 0.4.1 společné dynamické „fit-to-window“ rozložení: mapy, boční panely a přehrávač využívají dostupnou šířku a výšku viewportu a interním mapám se po změně velikosti posílá resize událost.
 
 Pro družicová data navíc vrací:
 
@@ -26,18 +27,19 @@ Pro družicová data navíc vrací:
 - zachované volby MTG/MSG, časového rozsahu, mapových vrstev a navigačního kříže,
 - klasický rám a přímou volbu produktů na současných stránkách polárních a geostacionárních družic.
 
-Pro radar na [úvodní stránce ČHMÚ](https://www.chmi.cz/#chmi-classic-home-radar) verze 0.4.0 přidává:
+Pro radar na [úvodní stránce ČHMÚ](https://www.chmi.cz/#chmi-classic-home-radar) od verze 0.4.0 přidává:
 
 - old-look rám pouze kolem homepage radarové sekce, nikoli kolem celé úvodní stránky,
 - vlastní kompaktní header se společnou navigací ČHMÚ Classic,
 - zachování původního radaru/embedu, časové osy, vrstev a původních událostí bez kopírování dat,
-- bezpečnou detekci podle nadpisu `Srážky podle radaru` a radarových prvků uvnitř stejné sekce.
+- bezpečnou detekci podle nadpisu `Srážky podle radaru` a radarových prvků uvnitř stejné sekce,
+- od verze 0.4.1 dynamickou geometrii stejného typu jako produktový radar; pokud homepage obsahuje stejné nativní režimy `Dle okna / Zoom 4x / Zoom 8x / Web Maps`, zobrazí se nad mapou jejich klasické zrcadlené ovládání.
 
-Pro [Pravděpodobnost růstu hub](https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub) verze 0.4.0 přidává:
+Pro [Pravděpodobnost růstu hub](https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub) od verze 0.4.0 přidává:
 
 - stejný kompaktní klasický rám a horní lištu jako u ostatních podporovaných stránek,
 - odstranění nadbytečné portálové navigace z pracovního pohledu,
-- pružné využití šířky stránky a responzivní mapový prostor,
+- pružné využití celé šířky stránky a od verze 0.4.1 mapový prostor dopočítaný podle zbývající výšky viewportu,
 - zachování původní živé mapové komponenty ČHMÚ včetně vrstev, legendy, ovladačů, navigace a dat.
 
 ## Rychlá instalace přes Tampermonkey

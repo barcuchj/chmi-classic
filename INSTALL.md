@@ -19,7 +19,7 @@ tlačítkem **Klasický vzhled** nebo z nabídky Tampermonkey.
 ## Chrome a Edge bez Tampermonkey
 
 1. Na stránce [Releases](https://github.com/barcuchj/chmi-classic/releases/latest)
-   stáhněte soubor `chmi-classic-chrome-edge-0.4.0.zip`.
+   stáhněte soubor `chmi-classic-chrome-edge-0.4.1.zip`.
 2. ZIP rozbalte do složky, kterou později nepřesunete ani nesmažete.
 3. Otevřete `chrome://extensions` nebo `edge://extensions`.
 4. Zapněte **Režim pro vývojáře**.
@@ -34,7 +34,7 @@ Bez účtu Apple Developer nelze nabídnout běžně podepsanou instalaci jední
 kliknutím. GitHub proto obsahuje zdrojový Xcode projekt pro lokální použití:
 
 1. Na stránce [Releases](https://github.com/barcuchj/chmi-classic/releases/latest)
-   stáhněte `chmi-classic-safari-source-0.4.0.zip` a rozbalte jej.
+   stáhněte `chmi-classic-safari-source-0.4.1.zip` a rozbalte jej.
 2. Otevřete `safari/CHMURadarClassicSafari/CHMURadarClassicSafari.xcodeproj` v Xcode.
 3. Vyberte schéma `CHMURadarClassicSafari` a spusťte aplikaci na svém Macu.
 4. V Safari otevřete **Nastavení → Rozšíření** a povolte ČHMÚ Classic.

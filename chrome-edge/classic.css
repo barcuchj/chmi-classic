@@ -612,3 +612,315 @@ html.chmi-hub-classic main input:focus-visible {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* 0.4.1 – dynamické přizpůsobení pracovního prostoru dostupnému oknu. */
+html.chmi-radar-classic,
+html.chmi-radar-classic body#mbody {
+  overflow: hidden !important;
+}
+
+html.chmi-radar-classic #wrapper {
+  width: calc(100vw - 12px) !important;
+  height: calc(100dvh - 12px) !important;
+  min-height: 0 !important;
+  margin: 6px auto !important;
+}
+
+html.chmi-radar-classic #chmi-radar-classic-brand {
+  min-height: 40px;
+  padding-top: 8px;
+  padding-bottom: 7px;
+}
+
+html.chmi-radar-classic .mainWrapper {
+  padding: 6px 8px 8px !important;
+}
+
+html.chmi-radar-classic #div_container_menu {
+  flex: 0 0 clamp(260px, 20vw, 340px) !important;
+  width: clamp(260px, 20vw, 340px) !important;
+  max-width: clamp(260px, 20vw, 340px) !important;
+  overscroll-behavior: contain;
+}
+
+html.chmi-radar-classic #chmi-radar-classic-toolbar {
+  top: 8px;
+  left: var(--chmi-radar-toolbar-left, 56px);
+  max-width: calc(100% - var(--chmi-radar-toolbar-left, 56px) - 8px);
+}
+
+html.chmi-radar-classic #div_container_data .leaflet-left {
+  left: 6px !important;
+}
+
+html.chmi-radar-classic #div_container_data .leaflet-right {
+  right: 6px !important;
+}
+
+html.chmi-radar-classic #div_container_data .leaflet-top {
+  top: 6px !important;
+}
+
+html.chmi-radar-classic #div_container_data .leaflet-bottom {
+  bottom: 6px !important;
+}
+
+/* Homepage radar: stejný kompaktní pracovní rám a geometrie jako u produktového radaru. */
+html.chmi-home-radar-classic-active .chmi-home-radar-classic {
+  width: calc(100vw - 12px) !important;
+  max-width: none !important;
+  margin: 6px 0 8px calc(50% - 50vw + 6px) !important;
+  padding: 0 8px 8px !important;
+  overflow: hidden !important;
+}
+
+html.chmi-home-radar-classic-active #chmi-home-radar-classic-brand {
+  width: calc(100% + 16px);
+  min-height: 40px;
+  margin: -1px -8px 6px;
+  padding: 8px 10px 7px;
+}
+
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-section {
+  box-sizing: border-box;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row {
+  box-sizing: border-box;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  height: var(--chmi-home-radar-fit-height, 72dvh) !important;
+  overflow: hidden !important;
+}
+
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_data {
+  position: relative !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_menu {
+  box-sizing: border-box;
+  flex: 0 0 clamp(260px, 20vw, 340px) !important;
+  width: clamp(260px, 20vw, 340px) !important;
+  max-width: clamp(260px, 20vw, 340px) !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  padding: 10px !important;
+  border-left: 1px solid #bbb !important;
+  overflow: auto !important;
+  overscroll-behavior: contain;
+}
+
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host {
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--chmi-home-radar-fit-height, 72dvh) !important;
+  min-height: min(360px, 60dvh) !important;
+}
+
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host.leaflet-container,
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host.maplibregl-map,
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host.ol-viewport {
+  height: var(--chmi-home-radar-fit-height, 72dvh) !important;
+}
+
+html.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar {
+  position: absolute;
+  z-index: 10000;
+  top: 8px;
+  left: var(--chmi-home-radar-toolbar-left, 56px);
+  display: block;
+  max-width: calc(100% - var(--chmi-home-radar-toolbar-left, 56px) - 8px);
+  padding: 3px;
+  overflow-x: auto;
+  white-space: nowrap;
+  background: rgb(255 255 255 / 94%);
+  border: 1px solid #b8cbd4;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 22%);
+}
+
+html.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar .chmi-radar-classic-options {
+  display: inline-flex !important;
+  flex-wrap: nowrap !important;
+}
+
+html.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar button {
+  box-sizing: border-box;
+  margin: 0 -1px 0 0 !important;
+  padding: 5px 10px !important;
+  color: #176b95 !important;
+  background: #f7fcfe !important;
+  border: 1px solid #8fc2d8 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font: 12px/1.25 Arial, Helvetica, sans-serif !important;
+  cursor: pointer;
+}
+
+html.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar button:first-child {
+  border-radius: 2px 0 0 2px !important;
+}
+
+html.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar button:last-child {
+  margin-right: 0 !important;
+  border-radius: 0 2px 2px 0 !important;
+}
+
+html.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar button[aria-checked="true"] {
+  color: #fff !important;
+  background: #4ea8d3 !important;
+  border-color: #2588ba !important;
+}
+
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host .leaflet-left,
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_data .leaflet-left {
+  left: 6px !important;
+}
+
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host .leaflet-right,
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_data .leaflet-right {
+  right: 6px !important;
+}
+
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host .maplibregl-ctrl-top-left {
+  top: 6px !important;
+  left: 6px !important;
+}
+
+html.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host .maplibregl-ctrl-top-right {
+  top: 6px !important;
+  right: 6px !important;
+}
+
+/* Houby: plná šířka okna, mapa vyplní zbylou výšku viewportu. */
+html.chmi-hub-classic,
+html.chmi-hub-classic body {
+  overflow-x: hidden !important;
+}
+
+html.chmi-hub-classic main {
+  width: calc(100vw - 12px) !important;
+  margin: 6px auto 8px !important;
+  padding: 0 8px 8px !important;
+  overflow-x: hidden !important;
+}
+
+html.chmi-hub-classic #chmi-hub-classic-brand {
+  width: calc(100% + 16px);
+  min-height: 40px;
+  margin: -1px -8px 6px;
+  padding: 8px 10px 7px;
+}
+
+html.chmi-hub-classic #chmu-map-container,
+html.chmi-hub-classic iframe.chmi-hub-classic-map-host,
+html.chmi-hub-classic .chmi-hub-classic-map-host.leaflet-container,
+html.chmi-hub-classic .chmi-hub-classic-map-host.maplibregl-map,
+html.chmi-hub-classic .chmi-hub-classic-map-host.ol-viewport {
+  width: 100% !important;
+  max-width: none !important;
+  height: var(--chmi-hub-fit-height, calc(100dvh - 150px)) !important;
+  min-height: min(420px, calc(100dvh - 120px)) !important;
+  overflow: hidden !important;
+}
+
+html.chmi-hub-classic #chmu-map-container > *,
+html.chmi-hub-classic .chmi-hub-classic-map-host > * {
+  max-width: 100%;
+}
+
+html.chmi-hub-classic #chmu-map-container .leaflet-left,
+html.chmi-hub-classic .chmi-hub-classic-map-host .leaflet-left {
+  left: 8px !important;
+}
+
+html.chmi-hub-classic #chmu-map-container .leaflet-right,
+html.chmi-hub-classic .chmi-hub-classic-map-host .leaflet-right {
+  right: 8px !important;
+}
+
+html.chmi-hub-classic #chmu-map-container .maplibregl-ctrl-top-left,
+html.chmi-hub-classic .chmi-hub-classic-map-host .maplibregl-ctrl-top-left {
+  top: 8px !important;
+  left: 8px !important;
+}
+
+html.chmi-hub-classic #chmu-map-container .maplibregl-ctrl-top-right,
+html.chmi-hub-classic .chmi-hub-classic-map-host .maplibregl-ctrl-top-right {
+  top: 8px !important;
+  right: 8px !important;
+}
+
+@media (max-width: 760px) {
+  html.chmi-radar-classic,
+  html.chmi-radar-classic body#mbody {
+    overflow: auto !important;
+  }
+
+  html.chmi-radar-classic #wrapper {
+    width: calc(100% - 8px) !important;
+    height: auto !important;
+    min-height: calc(100dvh - 8px) !important;
+    margin: 4px auto !important;
+  }
+
+  html.chmi-radar-classic .chmi-radar-classic-app-row,
+  html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row {
+    flex-direction: column !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  html.chmi-radar-classic #div_container_data,
+  html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_data,
+  html.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host {
+    height: 62dvh !important;
+    min-height: 320px !important;
+  }
+
+  html.chmi-radar-classic #div_container_menu,
+  html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_menu {
+    flex-basis: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    border-top: 1px solid #bbb !important;
+    border-left: 0 !important;
+  }
+
+  html.chmi-home-radar-classic-active .chmi-home-radar-classic {
+    width: calc(100vw - 8px) !important;
+    margin-left: calc(50% - 50vw + 4px) !important;
+  }
+
+  html.chmi-hub-classic main {
+    width: calc(100vw - 8px) !important;
+    margin-top: 4px !important;
+  }
+}
+
+/* Prevent browser default body margins from reintroducing viewport scrollbars in full-window classic apps. */
+html.chmi-radar-classic body#mbody,
+html.chmi-hub-classic body {
+    margin: 0 !important;
+    padding: 0 !important;
+}

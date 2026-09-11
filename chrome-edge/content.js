@@ -145,6 +145,26 @@
     return changed;
   }
 
+  function updateRadarFitGeometry() {
+    const dataContainer = document.getElementById("div_container_data");
+    if (!dataContainer) {
+      return;
+    }
+
+    const nativeControls = dataContainer.querySelector(
+      ".leaflet-top.leaflet-left, .maplibregl-ctrl-top-left"
+    );
+    let toolbarLeft = 56;
+    if (nativeControls) {
+      const dataRect = dataContainer.getBoundingClientRect();
+      const controlsRect = nativeControls.getBoundingClientRect();
+      if (controlsRect.width > 0) {
+        toolbarLeft = Math.max(56, Math.ceil(controlsRect.right - dataRect.left + 8));
+      }
+    }
+    dataContainer.style.setProperty("--chmi-radar-toolbar-left", `${toolbarLeft}px`);
+  }
+
   function describeControl(element) {
     if (!element) {
       return "";
@@ -336,15 +356,20 @@
         }
 
         document.getElementById(button.dataset.inputId)?.click();
-        requestAnimationFrame(syncDisplayToolbar);
+        requestAnimationFrame(() => {
+          syncDisplayToolbar();
+          notifyLayoutChanged();
+        });
       });
 
       dataContainer.prepend(toolbar);
       syncDisplayToolbar();
+      updateRadarFitGeometry();
       return true;
     }
 
     syncDisplayToolbar();
+    updateRadarFitGeometry();
     return false;
   }
 
@@ -369,6 +394,7 @@
 
   function notifyLayoutChanged() {
     requestAnimationFrame(() => {
+      updateRadarFitGeometry();
       window.dispatchEvent(new Event("resize"));
     });
   }
@@ -399,6 +425,7 @@
     layoutResizeObserver?.disconnect();
     layoutResizeObserver = null;
     observedLayoutElement = null;
+    document.getElementById("div_container_data")?.style.removeProperty("--chmi-radar-toolbar-left");
     document.documentElement.classList.remove(ROOT_CLASS);
     document.documentElement.classList.remove(WEB_MAPS_CLASS);
     notifyLayoutChanged();
@@ -434,6 +461,12 @@
     }
   });
 
+  window.addEventListener("resize", () => {
+    if (classicEnabled) {
+      requestAnimationFrame(updateRadarFitGeometry);
+    }
+  });
+
   if (storage) {
     storage.get({ [STORAGE_KEY]: true }, (result) => {
       setClassicMode(result[STORAGE_KEY]);
@@ -462,10 +495,22 @@
     const mapHostClass = "chmi-home-radar-classic-map-host";
     const nativeTitleClass = "chmi-home-radar-classic-native-title";
     const nativeSubtitleClass = "chmi-home-radar-classic-native-subtitle";
+    const appSectionClass = "chmi-home-radar-classic-app-section";
+    const appRowClass = "chmi-home-radar-classic-app-row";
+    const toolbarId = "chmi-home-radar-classic-toolbar";
+    const displayLabels = {
+      radio_display1: "Dle okna",
+      radio_display2: "Zoom 4x",
+      radio_display3: "Zoom 8x",
+      radio_display4: "Web Maps"
+    };
     const portalStorage = globalThis.chrome?.storage?.sync ?? globalThis.__chmiClassicStorage;
     let enabled = true;
     let refreshScheduled = false;
+    let geometryScheduled = false;
     let anchorScrolled = false;
+    let homepageResizeObserver = null;
+    let homepageObservedElement = null;
 
     function normalizeText(value) {
       return String(value ?? "").replace(/\s+/g, " ").trim();
@@ -569,6 +614,129 @@
       return null;
     }
 
+    function findHomepageAppLayout(section) {
+      const dataContainer = section?.querySelector("#div_container_data") ?? null;
+      const menuContainer = section?.querySelector("#div_container_menu") ?? null;
+      if (!dataContainer || !menuContainer) {
+        return { dataContainer, menuContainer, appRow: null, appSection: null };
+      }
+
+      let appRow = dataContainer;
+      while (appRow && appRow !== section && !appRow.contains(menuContainer)) {
+        appRow = appRow.parentElement;
+      }
+      if (!appRow || appRow === section) {
+        appRow = dataContainer.parentElement;
+      }
+
+      const appSection = [...section.children].find((child) => child.contains(dataContainer)) ?? appRow;
+      return { dataContainer, menuContainer, appRow, appSection };
+    }
+
+    function syncHomepageDisplayToolbar() {
+      const toolbar = document.getElementById(toolbarId);
+      if (!toolbar) {
+        return;
+      }
+      toolbar.querySelectorAll("button[data-input-id]").forEach((button) => {
+        const input = document.getElementById(button.dataset.inputId);
+        const selected = Boolean(input?.checked);
+        button.setAttribute("aria-checked", String(selected));
+      });
+    }
+
+    function ensureHomepageDisplayToolbar(section) {
+      const { dataContainer } = findHomepageAppLayout(section);
+      const inputs = Object.keys(displayLabels).map((id) => document.getElementById(id));
+      if (!dataContainer || inputs.some((input) => !input)) {
+        return false;
+      }
+
+      let toolbar = document.getElementById(toolbarId);
+      if (!toolbar) {
+        toolbar = document.createElement("div");
+        toolbar.id = toolbarId;
+        toolbar.setAttribute("aria-label", "Režim zobrazení mapy");
+        toolbar.innerHTML = `
+          <div class="chmi-radar-classic-options" role="radiogroup" aria-label="Režim zobrazení mapy">
+            ${Object.entries(displayLabels).map(([inputId, label]) => `
+              <button type="button" role="radio" data-input-id="${inputId}">${label}</button>
+            `).join("")}
+          </div>
+        `;
+        toolbar.addEventListener("click", (event) => {
+          const button = event.target.closest("button[data-input-id]");
+          if (!button) {
+            return;
+          }
+          document.getElementById(button.dataset.inputId)?.click();
+          requestAnimationFrame(() => {
+            syncHomepageDisplayToolbar();
+            scheduleHomepageGeometry();
+          });
+        });
+        dataContainer.prepend(toolbar);
+        syncHomepageDisplayToolbar();
+        return true;
+      }
+
+      syncHomepageDisplayToolbar();
+      return false;
+    }
+
+    function updateHomepageGeometry(section) {
+      if (!enabled || !section) {
+        return;
+      }
+
+      const { dataContainer, appRow } = findHomepageAppLayout(section);
+      const mapHost = findHomepageRadarMapHost(section);
+      const fitTarget = appRow ?? mapHost;
+      if (fitTarget) {
+        const rect = fitTarget.getBoundingClientRect();
+        const top = Math.max(0, rect.top);
+        const available = Math.floor(window.innerHeight - top - 8);
+        const fitHeight = Math.max(320, available);
+        document.documentElement.style.setProperty("--chmi-home-radar-fit-height", `${fitHeight}px`);
+      }
+
+      if (dataContainer) {
+        const nativeControls = dataContainer.querySelector(
+          ".leaflet-top.leaflet-left, .maplibregl-ctrl-top-left"
+        );
+        let toolbarLeft = 56;
+        if (nativeControls) {
+          const dataRect = dataContainer.getBoundingClientRect();
+          const controlsRect = nativeControls.getBoundingClientRect();
+          if (controlsRect.width > 0) {
+            toolbarLeft = Math.max(56, Math.ceil(controlsRect.right - dataRect.left + 8));
+          }
+        }
+        dataContainer.style.setProperty("--chmi-home-radar-toolbar-left", `${toolbarLeft}px`);
+      }
+
+      const observeTarget = appRow ?? mapHost ?? section;
+      if (globalThis.ResizeObserver && homepageObservedElement !== observeTarget) {
+        homepageResizeObserver?.disconnect();
+        homepageResizeObserver = new ResizeObserver(() => scheduleHomepageGeometry());
+        homepageResizeObserver.observe(observeTarget);
+        homepageObservedElement = observeTarget;
+      }
+    }
+
+    function scheduleHomepageGeometry() {
+      if (!enabled || geometryScheduled) {
+        return;
+      }
+      geometryScheduled = true;
+      requestAnimationFrame(() => {
+        geometryScheduled = false;
+        const section = findHomepageRadarSection();
+        updateHomepageGeometry(section);
+        window.dispatchEvent(new Event("resize"));
+      });
+    }
+
     function markHomepageRadarSection() {
       const section = findHomepageRadarSection();
       if (!section) {
@@ -595,6 +763,16 @@
         !subtitle.classList.contains(nativeSubtitleClass)
       ) {
         subtitle.classList.add(nativeSubtitleClass);
+        changed = true;
+      }
+
+      const { appRow, appSection } = findHomepageAppLayout(section);
+      if (appRow && !appRow.classList.contains(appRowClass)) {
+        appRow.classList.add(appRowClass);
+        changed = true;
+      }
+      if (appSection && !appSection.classList.contains(appSectionClass)) {
+        appSection.classList.add(appSectionClass);
         changed = true;
       }
 
@@ -634,6 +812,7 @@
 
     function notifyHomepageLayoutChanged() {
       requestAnimationFrame(() => {
+        updateHomepageGeometry(findHomepageRadarSection());
         window.dispatchEvent(new Event("resize"));
       });
     }
@@ -655,9 +834,11 @@
       const hadRootClass = document.documentElement.classList.contains(rootClass);
       document.documentElement.classList.add(rootClass);
       const brandChanged = ensureHomepageBrand(section);
+      const toolbarChanged = ensureHomepageDisplayToolbar(section);
       scrollToHomepageRadarIfRequested(section);
+      updateHomepageGeometry(section);
 
-      if (!hadRootClass || sectionChanged || brandChanged) {
+      if (!hadRootClass || sectionChanged || brandChanged || toolbarChanged) {
         notifyHomepageLayoutChanged();
       }
     }
@@ -665,6 +846,7 @@
     function removeHomepageClassicMode() {
       document.getElementById(brandId)?.remove();
       document.getElementById(anchorId)?.remove();
+      document.getElementById(toolbarId)?.remove();
       document.querySelectorAll(`.${sectionClass}`).forEach((element) => {
         element.classList.remove(sectionClass);
       });
@@ -677,6 +859,14 @@
       document.querySelectorAll(`.${nativeSubtitleClass}`).forEach((element) => {
         element.classList.remove(nativeSubtitleClass);
       });
+      document.querySelectorAll(`.${appRowClass}, .${appSectionClass}`).forEach((element) => {
+        element.classList.remove(appRowClass, appSectionClass);
+      });
+      homepageResizeObserver?.disconnect();
+      homepageResizeObserver = null;
+      homepageObservedElement = null;
+      document.documentElement.style.removeProperty("--chmi-home-radar-fit-height");
+      document.querySelector("#div_container_data")?.style.removeProperty("--chmi-home-radar-toolbar-left");
       document.documentElement.classList.remove(rootClass);
       notifyHomepageLayoutChanged();
     }
@@ -700,6 +890,19 @@
         applyHomepageClassicMode();
       });
     }
+
+    document.addEventListener("change", (event) => {
+      if (event.target instanceof HTMLInputElement && event.target.name === "radio_display") {
+        syncHomepageDisplayToolbar();
+        scheduleHomepageGeometry();
+      }
+    });
+    window.addEventListener("resize", () => {
+      if (enabled) {
+        requestAnimationFrame(() => updateHomepageGeometry(findHomepageRadarSection()));
+      }
+    });
+    window.addEventListener("scroll", scheduleHomepageGeometry, { passive: true });
 
     const homepageObserver = new MutationObserver(scheduleHomepageRefresh);
     homepageObserver.observe(document.documentElement, { childList: true, subtree: true });
@@ -732,6 +935,9 @@
     const portalStorage = globalThis.chrome?.storage?.sync ?? globalThis.__chmiClassicStorage;
     let enabled = true;
     let refreshScheduled = false;
+    let geometryScheduled = false;
+    let mushroomResizeObserver = null;
+    let mushroomObservedElement = null;
 
     function saveMushroomPreference(value) {
       if (portalStorage) {
@@ -807,8 +1013,47 @@
       return changed;
     }
 
+    function updateMushroomGeometry() {
+      if (!enabled) {
+        return;
+      }
+      const map = findMushroomMap();
+      if (!map) {
+        return;
+      }
+      const host = map.closest(
+        "#chmu-map-container, [id$='map-container'], [class*='map-container']"
+      ) ?? map;
+      const rect = host.getBoundingClientRect();
+      const available = Math.floor(window.innerHeight - Math.max(0, rect.top) - 8);
+      document.documentElement.style.setProperty(
+        "--chmi-hub-fit-height",
+        `${Math.max(320, available)}px`
+      );
+
+      if (globalThis.ResizeObserver && mushroomObservedElement !== host) {
+        mushroomResizeObserver?.disconnect();
+        mushroomResizeObserver = new ResizeObserver(() => scheduleMushroomGeometry());
+        mushroomResizeObserver.observe(host);
+        mushroomObservedElement = host;
+      }
+    }
+
+    function scheduleMushroomGeometry() {
+      if (!enabled || geometryScheduled) {
+        return;
+      }
+      geometryScheduled = true;
+      requestAnimationFrame(() => {
+        geometryScheduled = false;
+        updateMushroomGeometry();
+        window.dispatchEvent(new Event("resize"));
+      });
+    }
+
     function notifyMushroomLayoutChanged() {
       requestAnimationFrame(() => {
+        updateMushroomGeometry();
         window.dispatchEvent(new Event("resize"));
       });
     }
@@ -818,6 +1063,7 @@
       document.documentElement.classList.add(rootClass);
       const brandChanged = ensureMushroomBrand();
       const mapChanged = markMushroomMap();
+      updateMushroomGeometry();
 
       if (!hadRootClass || brandChanged || mapChanged) {
         notifyMushroomLayoutChanged();
@@ -832,6 +1078,10 @@
       document.querySelectorAll(`.${mapSectionClass}`).forEach((element) => {
         element.classList.remove(mapSectionClass);
       });
+      mushroomResizeObserver?.disconnect();
+      mushroomResizeObserver = null;
+      mushroomObservedElement = null;
+      document.documentElement.style.removeProperty("--chmi-hub-fit-height");
       document.documentElement.classList.remove(rootClass);
       notifyMushroomLayoutChanged();
     }
@@ -855,6 +1105,13 @@
         applyMushroomClassicMode();
       });
     }
+
+    window.addEventListener("resize", () => {
+      if (enabled) {
+        requestAnimationFrame(updateMushroomGeometry);
+      }
+    });
+    window.addEventListener("scroll", scheduleMushroomGeometry, { passive: true });
 
     const mushroomObserver = new MutationObserver(scheduleMushroomRefresh);
     mushroomObserver.observe(document.documentElement, { childList: true, subtree: true });

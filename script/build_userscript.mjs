@@ -21,7 +21,7 @@ const [radarCss, satelliteCss, navigationCss, navigationJs, radarJs, satelliteJs
 const metadata = `// ==UserScript==
 // @name         ČHMÚ Classic – radar, družice a mapy
 // @namespace    https://github.com/
-// @version      0.4.0
+// @version      0.4.1
 // @description  Vrací klasický vzhled radaru, družicových snímků a vybraných map ČHMÚ.
 // @author       ČHMÚ Classic contributors
 // @homepageURL  https://github.com/barcuchj/chmi-classic

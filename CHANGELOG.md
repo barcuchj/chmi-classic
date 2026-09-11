@@ -1,5 +1,16 @@
 # Přehled změn
 
+## 0.4.1 – 2026-09-11
+
+- Opraveno dynamické rozložení všech podporovaných old-look aplikací podle skutečné šířky a výšky viewportu; desktopové zobrazení již nepoužívá zbytečné pevné maximální šířky a výšky.
+- Produktový radar zachovává přepínač `Dle okna / Zoom 4x / Zoom 8x / Web Maps`, ale jeho poloha se nyní odvozuje od nativních levých mapových ovladačů, takže nepřekrývá zoom `+/-`.
+- Radar na úvodní stránce ČHMÚ používá stejný pracovní old-look rám a dynamickou geometrii; pokud jsou v homepage komponentě dostupné původní režimy `radio_display1` až `radio_display4`, zobrazí se i stejné zrcadlené klasické ovládání.
+- Meteosat používá flex/grid přes zbývající prostor okna; mapa, klasický přehrávač a nastavení zůstávají dostupné bez prázdné pravé spodní plochy a panel nastavení nemá zbytečný vodorovný posuvník.
+- Polární a geostacionární mapy používají plnou dostupnou šířku a výšku odvozenou od pozice mapy ve viewportu; mapové ovladače jsou mírně odsazené od hran.
+- Pravděpodobnost růstu hub používá plnou šířku okna a dynamickou výšku mapy, takže odpadá nevyužitá plocha kolem aplikace a ovladače zůstávají uvnitř mapového prostoru.
+- Přidány `ResizeObserver`/resize notifikace, aby původní živé komponenty ČHMÚ po změně rozměrů přepočítaly interní mapu místo pouhého vizuálního ořezu.
+- Distribuční verze zvýšena na 0.4.1.
+
 ## 0.4.0 – 2026-09-11
 
 - Přidána společná kompaktní navigace v old-look headeru mezi produktovým radarem, radarem na úvodní stránce ČHMÚ, Meteosatem, polárními družicemi, geostacionárními družicemi a pravděpodobností růstu hub.

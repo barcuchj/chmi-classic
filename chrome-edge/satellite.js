@@ -73,12 +73,69 @@
   const storage = globalThis.chrome?.storage?.sync ?? globalThis.__chmiClassicStorage;
   let classicEnabled = true;
   let updateScheduled = false;
+  let resizeDispatchScheduled = false;
+  let layoutResizeObserver = null;
+  let observedLayoutElement = null;
 
   function savePreference(enabled) {
     if (storage) {
       storage.set({ [STORAGE_KEY]: enabled });
     }
     setClassicMode(enabled);
+  }
+
+  function dispatchLayoutResize() {
+    if (resizeDispatchScheduled) {
+      return;
+    }
+    resizeDispatchScheduled = true;
+    requestAnimationFrame(() => {
+      resizeDispatchScheduled = false;
+      window.dispatchEvent(new Event("resize"));
+    });
+  }
+
+  function observeLayout(element) {
+    if (!globalThis.ResizeObserver || !element || observedLayoutElement === element) {
+      return;
+    }
+    layoutResizeObserver?.disconnect();
+    layoutResizeObserver = new ResizeObserver(() => dispatchLayoutResize());
+    layoutResizeObserver.observe(element);
+    observedLayoutElement = element;
+  }
+
+  function updateLiveFitGeometry() {
+    const mainRow = document.getElementById("main-row");
+    if (!mainRow) {
+      return;
+    }
+    observeLayout(mainRow);
+  }
+
+  function updatePortalFitGeometry() {
+    const map = document.getElementById("chmu-map-container");
+    if (!map) {
+      return;
+    }
+    const rect = map.getBoundingClientRect();
+    const available = Math.floor(window.innerHeight - Math.max(0, rect.top) - 8);
+    document.documentElement.style.setProperty(
+      "--chmi-satellite-portal-fit-height",
+      `${Math.max(320, available)}px`
+    );
+    observeLayout(map);
+  }
+
+  function updateFitGeometry() {
+    if (!classicEnabled) {
+      return;
+    }
+    if (isLiveViewer) {
+      updateLiveFitGeometry();
+    } else {
+      updatePortalFitGeometry();
+    }
   }
 
   function createBrand(title) {
@@ -455,9 +512,10 @@
 
     renderProductMatrix();
     syncPlayer();
+    updateLiveFitGeometry();
 
     if (brandChanged || selectorChanged || playerChanged) {
-      window.dispatchEvent(new Event("resize"));
+      dispatchLayoutResize();
     }
   }
 
@@ -472,8 +530,9 @@
       : "Aktuální data z geostacionárních družic ČHMÚ";
     const changed = createBrand(title) || ensurePortalProducts();
     ensurePortalProducts();
+    updatePortalFitGeometry();
     if (changed) {
-      window.dispatchEvent(new Event("resize"));
+      dispatchLayoutResize();
     }
   }
 
@@ -484,6 +543,10 @@
     document.querySelectorAll(".chmi-satellite-classic-native-choice").forEach((element) => {
       element.classList.remove("chmi-satellite-classic-native-choice");
     });
+    layoutResizeObserver?.disconnect();
+    layoutResizeObserver = null;
+    observedLayoutElement = null;
+    document.documentElement.style.removeProperty("--chmi-satellite-portal-fit-height");
     document.documentElement.classList.remove(
       ROOT_CLASS,
       "chmi-satellite-classic-live",
@@ -491,7 +554,7 @@
       "chmi-satellite-classic-polar",
       "chmi-satellite-classic-geo"
     );
-    window.dispatchEvent(new Event("resize"));
+    dispatchLayoutResize();
   }
 
   function setClassicMode(enabled) {
@@ -520,6 +583,19 @@
         applyPortalViewer();
       }
     });
+  }
+
+  window.addEventListener("resize", () => {
+    if (classicEnabled) {
+      requestAnimationFrame(updateFitGeometry);
+    }
+  });
+  if (!isLiveViewer) {
+    window.addEventListener("scroll", () => {
+      if (classicEnabled) {
+        requestAnimationFrame(updatePortalFitGeometry);
+      }
+    }, { passive: true });
   }
 
   const observer = new MutationObserver(scheduleRefresh);

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – radar, družice a mapy",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Vrací současným radarovým, družicovým a vybraným mapovým stránkám ČHMÚ kompaktní klasické rozhraní.",
   "permissions": [
     "storage"

@@ -442,3 +442,336 @@ html.chmi-satellite-classic input:focus-visible {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* 0.4.1 – dynamické využití viewportu pro Meteosat a portálové družicové mapy. */
+html.chmi-satellite-classic-live,
+html.chmi-satellite-classic-live body {
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
+  overflow: hidden !important;
+}
+
+html.chmi-satellite-classic-live #wrapper {
+  box-sizing: border-box;
+  display: flex !important;
+  flex-direction: column !important;
+  width: calc(100vw - 12px) !important;
+  max-width: none !important;
+  height: calc(100dvh - 12px) !important;
+  min-height: 0 !important;
+  margin: 6px auto !important;
+  overflow: hidden !important;
+}
+
+html.chmi-satellite-classic-live #chmi-satellite-classic-brand {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding-top: 8px;
+  padding-bottom: 7px;
+}
+
+html.chmi-satellite-classic-live .mainWrapper {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  padding: 6px 8px 8px !important;
+  overflow: hidden !important;
+}
+
+html.chmi-satellite-classic-live .mainWrapper > .container-fluid {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+html.chmi-satellite-classic-live #main-row {
+  display: grid !important;
+  flex: 1 1 auto !important;
+  grid-template-columns: minmax(0, 1fr) clamp(230px, 18vw, 300px) !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  gap: 8px !important;
+  overflow: hidden !important;
+}
+
+html.chmi-satellite-classic-live #main-row > .map-col {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+html.chmi-satellite-classic-live #main-row > .desktop-sidebar-col {
+  display: flex !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+html.chmi-satellite-classic-live #loaded-product-title {
+  flex: 0 0 auto;
+  min-height: 20px;
+  margin-bottom: 3px !important;
+}
+
+html.chmi-satellite-classic-live #map-container {
+  box-sizing: border-box;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  min-height: 180px !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+html.chmi-satellite-classic-live #map-container img,
+html.chmi-satellite-classic-live #map-container canvas,
+html.chmi-satellite-classic-live #map-container video {
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+
+html.chmi-satellite-classic-live #settingsMenu {
+  box-sizing: border-box;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+html.chmi-satellite-classic-live #settingsMenu .offcanvas-body {
+  box-sizing: border-box;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 8px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+html.chmi-satellite-classic-live #settingsMenu .settings-section,
+html.chmi-satellite-classic-live #chmi-satellite-classic-selector,
+html.chmi-satellite-classic-live #time-range-group {
+  box-sizing: border-box;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+html.chmi-satellite-classic-live #time-range-group {
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
+
+html.chmi-satellite-classic-live #settingsMenu input[type="range"],
+html.chmi-satellite-classic-live #settingsMenu select {
+  max-width: 100% !important;
+}
+
+html.chmi-satellite-classic-live #settingsMenu .form-check,
+html.chmi-satellite-classic-live #settingsMenu label {
+  min-width: 0 !important;
+}
+
+html.chmi-satellite-classic-live #chmi-satellite-classic-player {
+  flex: 0 0 auto !important;
+  min-width: 0 !important;
+  padding: 5px 0 1px;
+}
+
+/* Portálové polární/geostacionární mapy vyplní šířku i zbývající výšku okna. */
+html.chmi-satellite-classic-portal,
+html.chmi-satellite-classic-portal body {
+  overflow-x: hidden !important;
+}
+
+html.chmi-satellite-classic-portal main {
+  width: calc(100vw - 12px) !important;
+  max-width: none !important;
+  margin: 6px auto 8px !important;
+  padding: 0 8px 8px !important;
+  overflow-x: hidden !important;
+}
+
+html.chmi-satellite-classic-portal main > #chmi-satellite-classic-brand {
+  width: calc(100% + 16px);
+  min-height: 40px;
+  margin: -1px -8px 0;
+  padding-top: 8px;
+  padding-bottom: 7px;
+}
+
+html.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products {
+  margin: 6px 0;
+  padding: 5px 7px;
+}
+
+html.chmi-satellite-classic-portal #chmu-map-container {
+  width: 100% !important;
+  max-width: none !important;
+  height: var(--chmi-satellite-portal-fit-height, calc(100dvh - 140px)) !important;
+  min-height: min(420px, calc(100dvh - 120px)) !important;
+  overflow: hidden !important;
+}
+
+html.chmi-satellite-classic-portal #chmu-map-container > * {
+  max-width: 100%;
+}
+
+html.chmi-satellite-classic-portal #chmu-map-container .leaflet-left {
+  left: 8px !important;
+}
+
+html.chmi-satellite-classic-portal #chmu-map-container .leaflet-right {
+  right: 8px !important;
+}
+
+html.chmi-satellite-classic-portal #chmu-map-container .leaflet-top {
+  top: 8px !important;
+}
+
+html.chmi-satellite-classic-portal #chmu-map-container .leaflet-bottom {
+  bottom: 8px !important;
+}
+
+html.chmi-satellite-classic-portal #chmu-map-container .maplibregl-ctrl-top-left {
+  top: 8px !important;
+  left: 8px !important;
+}
+
+html.chmi-satellite-classic-portal #chmu-map-container .maplibregl-ctrl-top-right {
+  top: 8px !important;
+  right: 8px !important;
+}
+
+@media (max-width: 760px) {
+  html.chmi-satellite-classic-live,
+  html.chmi-satellite-classic-live body {
+    height: auto;
+    overflow: auto !important;
+  }
+
+  html.chmi-satellite-classic-live #wrapper {
+    width: calc(100% - 8px) !important;
+    height: auto !important;
+    min-height: calc(100dvh - 8px) !important;
+    margin: 4px auto !important;
+    overflow: visible !important;
+  }
+
+  html.chmi-satellite-classic-live .mainWrapper,
+  html.chmi-satellite-classic-live .mainWrapper > .container-fluid,
+  html.chmi-satellite-classic-live #main-row {
+    overflow: visible !important;
+  }
+
+  html.chmi-satellite-classic-live #main-row {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
+    height: auto !important;
+  }
+
+  html.chmi-satellite-classic-live #main-row > .map-col,
+  html.chmi-satellite-classic-live #main-row > .desktop-sidebar-col {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  html.chmi-satellite-classic-live #map-container {
+    height: 58dvh !important;
+    min-height: 320px !important;
+  }
+
+  html.chmi-satellite-classic-live #settingsMenu {
+    height: auto !important;
+    max-height: 55dvh !important;
+  }
+
+  html.chmi-satellite-classic-live #settingsMenu .offcanvas-body {
+    height: auto !important;
+    max-height: 55dvh !important;
+  }
+
+  html.chmi-satellite-classic-portal main {
+    width: calc(100vw - 8px) !important;
+    margin-top: 4px !important;
+  }
+
+  html.chmi-satellite-classic-portal #chmu-map-container {
+    height: 68dvh !important;
+    min-height: 320px !important;
+  }
+}
+
+@media (max-height: 650px) and (min-width: 761px) {
+  html.chmi-satellite-classic-live #chmi-satellite-classic-brand {
+    min-height: 34px;
+    padding-top: 5px;
+    padding-bottom: 4px;
+  }
+
+  html.chmi-satellite-classic-live .mainWrapper {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+
+  html.chmi-satellite-classic-live #settingsMenu .offcanvas-body {
+    padding: 6px !important;
+  }
+
+  html.chmi-satellite-classic-live #settingsMenu .settings-section {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+  }
+}
+
+/* Full-window satellite views own the viewport; remove UA body margins that would create 8px overflow. */
+html.chmi-satellite-classic-live body,
+html.chmi-satellite-classic-portal body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Narrow desktop sidebars: keep every mirrored control inside the settings column. */
+html.chmi-satellite-classic-live .chmi-satellite-classic-product-matrix,
+html.chmi-satellite-classic-live .chmi-satellite-classic-product-row {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+html.chmi-satellite-classic-live .chmi-satellite-classic-product-row {
+  grid-template-columns: minmax(0, 1fr) repeat(3, minmax(35px, 37px)) !important;
+  gap: 3px !important;
+}
+
+html.chmi-satellite-classic-live .chmi-satellite-classic-product-row span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+html.chmi-satellite-classic-live #settingsMenu input[type="range"],
+html.chmi-satellite-classic-live #settingsMenu select {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
