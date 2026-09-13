@@ -18,6 +18,10 @@ označeny jako archiv.
 Tlačítko **Nový vzhled** vypne klasický režim. Znovu jej zapnete z nabídky
 Tampermonkey nebo plovoucím tlačítkem **Klasický vzhled**.
 
+V katalogu jsou položky bez bezpečně rekonstruované aplikace záměrně zobrazené
+červeně a přeškrtnutě. Nejsou klikatelné ani neobsahují náhradní URL; po najetí
+myší na název se zobrazí důvod, proč zatím nejsou dostupné.
+
 ## 2. Chrome / Edge bez Tampermonkey
 
 Pro verzi 0.6.0 použijte distribuční soubor:

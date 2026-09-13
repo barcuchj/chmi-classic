@@ -178,6 +178,23 @@ html.chmi-catalog-open body {
   text-decoration: none !important;
 }
 
+.chmi-catalog-item.is-unavailable {
+  background: #fff8f8;
+}
+
+.chmi-catalog-item.is-unavailable .chmi-catalog-item-label {
+  color: #b4232d !important;
+  cursor: help;
+  text-decoration: line-through !important;
+  text-decoration-color: #b4232d !important;
+  text-decoration-thickness: 1.5px;
+}
+
+.chmi-catalog-item.is-unavailable .chmi-catalog-item-label:focus-visible {
+  outline: 2px solid #b4232d;
+  outline-offset: 2px;
+}
+
 .chmi-catalog-item a[aria-current="page"] {
   color: #8b1b1b !important;
 }
@@ -219,9 +236,9 @@ html.chmi-catalog-open body {
 }
 
 .chmi-catalog-status.is-unavailable {
-  color: #6b2a2a;
-  background: #f7eaea;
-  border-color: #bc8a8a;
+  color: #a01825;
+  background: #fff0f1;
+  border-color: #d18a91;
 }
 
 .chmi-catalog-item-actions {

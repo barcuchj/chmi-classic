@@ -14,6 +14,8 @@ Od verze 0.6.0 podporuje:
 - vlastní responzivní legacy adaptaci doložených starých aplikací na
   `intranet.chmi.cz` / `portal.chmi.cz` včetně navigace na současnou náhradu
   a Web Archive; historický kód ani obrazová data se do userscriptu nekopírují.
+- položky katalogu bez rekonstruované aplikace jako červený přeškrtnutý text
+  bez odkazu s vysvětlením v informační bublině.
 
 Userscript má široký `@match` pro `www.chmi.cz/*`, ale `catalog.js` mimo
 explicitní allowlist podporovaných cest nic nestyluje.

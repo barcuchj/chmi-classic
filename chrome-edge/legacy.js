@@ -60,7 +60,7 @@
       label: "ALADIN animace",
       match: /\/meteo\/ov\/aladin\/alanim\/alanim\.html$/i,
       replacement: "https://produkty.chmi.cz/aladin/",
-      archive: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html",
+      archive: "https://web.archive.org/web/20260210160917/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html",
       layout: "viewer"
     },
     {
@@ -68,7 +68,7 @@
       label: "ALADIN mapy",
       match: /\/meteo\/ov\/aladin\/results\/ala\.html$/i,
       replacement: "https://produkty.chmi.cz/aladin/",
-      archive: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/ala.html",
+      archive: "https://web.archive.org/web/20260512090206/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/ala.html",
       layout: "content"
     },
     {
@@ -76,8 +76,24 @@
       label: "Meteogramy",
       match: /\/meteo\/ov\/aladin\/results\/public\/meteogramy\/mhtml\/m\.html$/i,
       replacement: "https://www.chmi.cz/predpoved-pocasi/meteogramy-aladin/obce",
-      archive: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html",
+      archive: "https://web.archive.org/web/20260614103003/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html",
       layout: "content"
+    },
+    {
+      key: "hydrology-map",
+      label: "Hydrologie – původní mapa",
+      match: /\/files\/portal\/docs\/hydro\/hydro_map\.html$/i,
+      replacement: "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa",
+      archive: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/hydro/hydro_map.html",
+      layout: "viewer"
+    },
+    {
+      key: "air-map",
+      label: "Ovzduší – původní mapa kvality",
+      match: /\/files\/portal\/docs\/uoco\/map_uoco_portal\/air\.html$/i,
+      replacement: "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr",
+      archive: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/uoco/map_uoco_portal/air.html",
+      layout: "viewer"
     },
     {
       key: "webcams",
@@ -158,6 +174,8 @@
     ["Synoptika", "https://www.chmi.cz/predpoved-pocasi/synopticka-situace"],
     ["Letectví", "https://www.chmi.cz/letectvi"],
     ["Houby", "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub"],
+    ["Voda", "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa"],
+    ["Ovzduší", "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr"],
     ["Produkty", "https://www.chmi.cz/#chmi-classic-products"]
   ];
 

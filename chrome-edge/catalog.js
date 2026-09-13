@@ -329,26 +329,63 @@
         {
           label: "ALADIN animace (alanim)",
           href: "https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html",
-          archiveHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html",
+          archiveHref: "https://web.archive.org/web/20260210160917/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html",
+          archiveIndexHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html",
           replacementHref: "https://produkty.chmi.cz/aladin/",
           status: "legacy",
-          note: "Doložená stará aplikace s animací, krokováním a klasickými volbami. Historický endpoint může být po odstavení intranet.chmi.cz nedostupný; ČHMÚ Classic na něj aplikuje pouze responzivní rám a zachová nativní ovládání."
+          note: "Doložená stará aplikace s animací, krokováním a volbami proměnné velikosti, 4× a GoogleMaps. Historický endpoint může být po odstavení intranet.chmi.cz nedostupný; ČHMÚ Classic na něj aplikuje pouze responzivní rám a zachová nativní ovládání."
         },
         {
           label: "ALADIN – původní mapy",
           href: "https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/ala.html",
-          archiveHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/ala.html",
+          archiveHref: "https://web.archive.org/web/20260512090206/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/ala.html",
+          archiveIndexHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/ala.html",
           replacementHref: "https://produkty.chmi.cz/aladin/",
           status: "legacy",
-          note: "Historický mapový výstup ALADIN. Starší dokumentace ČHMÚ potvrzuje výběr veličin a předpovědních termínů; současná náhrada poskytuje i preset 4 map v old-look rozhraní."
+          note: "Historický mapový výstup ALADIN. HTML potvrzuje výběr veličin a předpovědních termínů; obrázky se načítaly z adresářů běhů modelu, takže snapshot bez datového backendu nemusí vykreslit mapy."
         },
         {
           label: "ALADIN – původní meteogramy",
           href: "https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html",
-          archiveHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html",
+          archiveHref: "https://web.archive.org/web/20260614103003/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html",
+          archiveIndexHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html",
           replacementHref: "https://www.chmi.cz/predpoved-pocasi/meteogramy-aladin/obce",
           status: "legacy",
-          note: "Doložený starý vyhledávač meteogramů podle místa a běhu modelu. Pokud původní JS/backend již nefunguje, použijte současné meteogramy ČHMÚ."
+          note: "Doložený starý vyhledávač meteogramů podle místa a běhu modelu. Stránka načítá seznam běhů, seznam ID míst a následně PNG; pokud historický backend nefunguje, použijte současné meteogramy ČHMÚ."
+        },
+        {
+          label: "Meteogramy – příklad lokality Prostějov",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html#Prost%C4%9Bjov%20(okr.%20Prost%C4%9Bjov)",
+          archiveHref: "https://web.archive.org/web/20260614103003/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html#Prost%C4%9Bjov%20(okr.%20Prost%C4%9Bjov)",
+          archiveIndexHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html",
+          replacementHref: "https://www.chmi.cz/predpoved-pocasi/meteogramy-aladin/obce",
+          status: "legacy",
+          note: "Ověřený formát starého odkazu s lokalitou v hashi URL. Výběr názvu se po načtení porovnává se souborem nameid; samotný hash proto nenahrazuje chybějící historická data."
+        },
+        {
+          label: "Starý panel POČASÍ – mapa ČR",
+          href: "https://intranet.chmi.cz/files/portal/docs/meteo/map_meteo_portal/CR.html",
+          archiveHref: "https://web.archive.org/web/20260825190443/https://intranet.chmi.cz/files/portal/docs/meteo/map_meteo_portal/CR.html",
+          archiveIndexHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/map_meteo_portal/*",
+          replacementHref: "https://www.chmi.cz/",
+          status: "legacy",
+          note: "Samostatný panel, který stará homepage načítala do záložky POČASÍ; obsahoval mapu ČR, legendu a rozcestník produktů."
+        },
+        {
+          label: "Starý panel VODA – hydrologická mapa",
+          href: "https://intranet.chmi.cz/files/portal/docs/hydro/hydro_map.html",
+          archiveIndexHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/hydro/*",
+          replacementHref: "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa",
+          status: "legacy",
+          note: "Homepage jej načítala po kliknutí na HYDROLOGIE. Wayback nyní nemá samostatný snapshot hydro_map.html; zachován je původní endpoint a index celé hydro větve."
+        },
+        {
+          label: "Starý panel OVZDUŠÍ – mapa kvality ovzduší",
+          href: "https://intranet.chmi.cz/files/portal/docs/uoco/map_uoco_portal/air.html",
+          archiveIndexHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/uoco/*",
+          replacementHref: "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr",
+          status: "legacy",
+          note: "Homepage jej načítala po kliknutí na OVZDUŠÍ; panel měl vlastní legendu a rozcestník airqual-links.html. Samostatný snapshot map_uoco_portal/* se ve Waybacku nepodařilo ověřit."
         },
         {
           label: "Webkamery – původní celorepublikový přehled",
@@ -637,6 +674,14 @@
       title: "Web Archive – konkrétní zachycené prohlížeče",
       items: [
         {
+          label: "Starý intranet – homepage POČASÍ / VODA / OVZDUŠÍ – snapshot 2026-08-25 19:04:37",
+          href: "https://web.archive.org/web/20260825190437/https://intranet.chmi.cz/",
+          archiveIndexHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/*",
+          replacementHref: "https://www.chmi.cz/",
+          status: "archive",
+          note: "Referenční snapshot společného portálu se záložkami POČASÍ, HYDROLOGIE a OVZDUŠÍ. Homepage načítá jednotlivé panely dynamicky; nejde o statickou kopii živých dat."
+        },
+        {
           label: "Starý radar INCA – snapshot 2026-08-16 18:05:03",
           href: "https://web.archive.org/web/20260816180503/https://intranet.chmi.cz/files/portal/docs/meteo/rad/inca-cz/short.html",
           replacementHref: "https://produkty.chmi.cz/radar/",
@@ -658,25 +703,36 @@
           note: "Konkrétní snapshot původního AVHRR vieweru. Archivní obsah není vydáván za živý."
         },
         {
-          label: "ALADIN animace – index Web Archive",
-          href: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html",
+          label: "ALADIN animace – snapshot 2026-02-10 16:09:17",
+          href: "https://web.archive.org/web/20260210160917/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html",
+          archiveIndexHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html",
           replacementHref: "https://produkty.chmi.cz/aladin/",
           status: "archive",
-          note: "Archivní index historické URL; přesný použitelný timestamp se v tomto runtime nepodařilo spolehlivě načíst."
+          note: "Ověřený HTML snapshot původní animace s volbami produktu, průhlednosti, velikosti, rychlosti animace, posledního snímku a navigačního kříže."
         },
         {
-          label: "ALADIN mapy – index Web Archive",
-          href: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/ala.html",
+          label: "ALADIN animace – snapshot s presetem Praha-Libuš",
+          href: "https://web.archive.org/web/20260512092211/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html?display=var&gmap_zoom=7&prod=prec&opa1=0.81&opa2=1&nselect=73&nselect_fct=undefined&di=1&rep=3&add=4&update=5&lat=50.008&lon=14.447&lang=CZ",
+          archiveIndexHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/alanim/alanim.html",
           replacementHref: "https://produkty.chmi.cz/aladin/",
           status: "archive",
-          note: "Archivní index původních map ALADIN; dostupnost jednotlivých assetů závisí na zachycení Waybacku."
+          note: "Archivní URL zachovává nastavení `display=var`, produkt srážek a polohu Praha-Libuš; stará stránka výslovně uvádí, že parametry URL mají přednost před cookies."
         },
         {
-          label: "ALADIN meteogramy – index Web Archive",
-          href: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html",
+          label: "ALADIN mapy – snapshot 2026-05-12 09:02:06",
+          href: "https://web.archive.org/web/20260512090206/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/ala.html",
+          archiveIndexHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/ala.html",
+          replacementHref: "https://produkty.chmi.cz/aladin/",
+          status: "archive",
+          note: "Ověřený HTML snapshot původních map; inline JavaScript skládá mapovou tabulku z běhu modelu, veličiny a termínu platnosti."
+        },
+        {
+          label: "ALADIN meteogramy – snapshot 2026-06-14 10:30:03",
+          href: "https://web.archive.org/web/20260614103003/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html",
+          archiveIndexHref: "https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html",
           replacementHref: "https://www.chmi.cz/predpoved-pocasi/meteogramy-aladin/obce",
           status: "archive",
-          note: "Archivní index starého výběru meteogramů. Pokud historický JavaScript nebo datový backend v archivu chybí, nejde jej bezpečně nahradit falešnou funkcí."
+          note: "Ověřený HTML snapshot starého výběru meteogramů. Archiv obsahuje i CSS a podpůrné knihovny, ale běhy modelu, nameid a PNG nemusí být zachyceny."
         },
         {
           label: "Webkamery – index Web Archive",
@@ -971,13 +1027,17 @@
       const list = document.createElement("div");
       list.className = "chmi-catalog-list";
       for (const item of group.items) {
+        const isUnavailable = item.status === "unavailable";
         const article = document.createElement("article");
         article.className = `chmi-catalog-item is-${item.status}`;
+        if (isUnavailable) {
+          article.setAttribute("aria-disabled", "true");
+        }
 
         const top = document.createElement("div");
         top.className = "chmi-catalog-item-top";
-        const link = item.href ? document.createElement("a") : document.createElement("span");
-        if (item.href) {
+        const link = item.href && !isUnavailable ? document.createElement("a") : document.createElement("span");
+        if (item.href && !isUnavailable) {
           link.href = item.href;
           if (item.status === "archive") {
             link.target = "_blank";
@@ -988,6 +1048,13 @@
           }
         } else {
           link.className = "chmi-catalog-item-label";
+          if (isUnavailable) {
+            const explanation = item.note || "Rekonstruovaná aplikace není dostupná.";
+            link.classList.add("is-unavailable");
+            link.title = `Nedostupné: ${explanation}`;
+            link.setAttribute("aria-label", `${item.label}. ${explanation}`);
+            link.tabIndex = 0;
+          }
         }
         link.textContent = item.label;
         top.append(link);
@@ -1002,7 +1069,7 @@
         note.textContent = item.note;
         article.append(note);
 
-        if (item.archiveHref || item.replacementHref) {
+        if (!isUnavailable && (item.archiveHref || item.replacementHref)) {
           const actions = document.createElement("div");
           actions.className = "chmi-catalog-item-actions";
           if (item.archiveHref) {
@@ -1012,6 +1079,14 @@
             archiveLink.rel = "noreferrer";
             archiveLink.textContent = "Web Archive";
             actions.append(archiveLink);
+          }
+          if (item.archiveIndexHref) {
+            const archiveIndexLink = document.createElement("a");
+            archiveIndexLink.href = item.archiveIndexHref;
+            archiveIndexLink.target = "_blank";
+            archiveIndexLink.rel = "noreferrer";
+            archiveIndexLink.textContent = "Všechny snapshoty";
+            actions.append(archiveIndexLink);
           }
           if (item.replacementHref) {
             const replacementLink = document.createElement("a");

@@ -21,9 +21,9 @@
 - [ ] Dohledat stabilní oficiální přímé PNG/JPG endpointy pouze tam, kde je ČHMÚ
   veřejně dokumentuje nebo dlouhodobě odkazuje. Do té doby používat živé
   produktové stránky a Open Data, nikoli odhadnuté URL.
-- [ ] U ALADIN animace/map/meteogramů, webkamer a CELDN doplnit konkrétní Wayback
-  timestamp pouze tehdy, když jej lze spolehlivě ověřit v Internet Archive; do té
-  doby ponechat index `web/*/` a stav jasně označený jako archivní.
+- [ ] U webkamer a CELDN doplnit konkrétní Wayback timestamp pouze tehdy, když jej
+  lze spolehlivě ověřit v Internet Archive; do té doby ponechat index `web/*/` a
+  stav jasně označený jako archivní.
 - [ ] Dohledat samostatné původní endpointy pouze pro zbývající položky označené
   `Nedostupné` (např. mapa sněhu – hodnoty, zásoby vody, mapa zatížení sněhem,
   samostatná synoptická předpověď); bez ověření nevytvářet falešný viewer.
@@ -39,6 +39,12 @@
 
 ## Dokončeno
 
+- [x] Doplněny ověřené HTML snapshoty ALADIN animace, ALADIN map a meteogramů;
+  zdokumentovány datové cesty `mdirs.txt`, `nameid`, mapové PNG a hash lokality.
+- [x] Katalog dostal přímé archivní odkazy, odkaz na všechny snapshoty, parametrizovaný
+  preset Praha-Libuš a příklad meteogramu pro Prostějov.
+- [x] Katalog vizuálně odlišuje položky bez rekonstruované aplikace: červený
+  přeškrtnutý text bez URL a informační bublina s důvodem nedostupnosti.
 - [x] Verze 0.6.0: systematický archivní průzkum staré homepage/sitemapu, původních endpointů a dostupných Wayback snapshotů; provenance v `ARCHIVE_RESEARCH.md`.
 - [x] Verze 0.6.0: responzivní legacy shell pro `intranet.chmi.cz` / `portal.chmi.cz` a historické statické aplikace bez kopírování nedoložených CSS/JS/obrazových assetů.
 - [x] Verze 0.6.0: rozšířený katalog s rozlišením `Legacy` / `Přímý` / `Archiv` / `Nedostupné` a odkazy na současné náhrady.

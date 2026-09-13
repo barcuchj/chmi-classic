@@ -1,5 +1,20 @@
 # Přehled změn
 
+## Unreleased – archivní HTML ALADINu a meteogramů
+
+- Ověřeny konkrétní Wayback snapshoty HTML pro ALADIN animaci (`20260210160917`),
+  parametrizovaný preset Praha-Libuš (`20260512092211`), ALADIN mapy (`20260512090206`)
+  a meteogramy (`20260614103003`).
+- Katalog nyní nabízí přímý snapshot i odkaz na všechny snapshoty; doplněn je
+  parametrizovaný starý ALADIN preset a odkaz na meteogram pro Prostějov.
+- `ARCHIVE_RESEARCH.md` popisuje skutečné datové cesty starých aplikací:
+  `mdirs.txt`, `nameid`, mapové PNG a meteogramové PNG podle ID místa.
+- Historický kód a data se do balíku nekopírují; použity jsou pouze ověřené
+  URL, zdokumentované chování a vlastní old-look adaptace.
+- Položky bez bezpečně obnovené aplikace jsou v katalogu bez odkazu, červeně
+  přeškrtnuté a s vysvětlením v informační bublině; případná náhradní URL se
+  u těchto položek nezobrazuje jako funkční odkaz.
+
 ## 0.6.0 – 2026-09-11
 
 - Proveden systematický průzkum historických aplikací ČHMÚ podle staré homepage, sitemapu, indexovaných původních endpointů a dostupných snapshotů Wayback Machine; evidence je v `ARCHIVE_RESEARCH.md`.
