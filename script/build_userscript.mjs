@@ -8,6 +8,10 @@ const scriptRoot = dirname(fileURLToPath(import.meta.url));
 const projectRoot = dirname(scriptRoot);
 const sourceRoot = join(projectRoot, "chrome-edge");
 const outputPath = join(projectRoot, "tampermonkey", "chmi-classic.user.js");
+const [portalRegistryJs, embeddedJs, portalJs, portalCss, embeddedCss, aladinJs, aladinCss] = await Promise.all(
+  ["portal-registry.js", "embedded.js", "portal.js", "portal.css", "embedded.css", "aladin.js", "aladin.css"]
+    .map(name => readFile(join(sourceRoot, name), "utf8"))
+);
 
 const [radarCss, satelliteCss, navigationCss, catalogCss, legacyCss, navigationJs, radarJs, satelliteJs, catalogJs, legacyJs] = await Promise.all([
   readFile(join(sourceRoot, "classic.css"), "utf8"),
@@ -25,7 +29,7 @@ const [radarCss, satelliteCss, navigationCss, catalogCss, legacyCss, navigationJ
 const metadata = `// ==UserScript==
 // @name         ČHMÚ Classic – meteorologické výstupy
 // @namespace    https://github.com/
-// @version      0.6.0
+// @version      0.7.0-beta.1
 // @description  Vrací klasický vzhled, historické adaptace a jednotný katalog živých i archivních meteorologických výstupů ČHMÚ.
 // @author       ČHMÚ Classic contributors
 // @homepageURL  https://github.com/barcuchj/chmi-classic
@@ -36,6 +40,7 @@ const metadata = `// ==UserScript==
 // @match        https://produkty.chmi.cz/druzice/*
 // @match        https://produkty.chmi.cz/aladin/*
 // @match        https://www.chmi.cz/*
+// @match        https://chmi.cz/*
 // @match        https://hydro.chmi.cz/*
 // @match        https://intranet.chmi.cz/*
 // @match        http://intranet.chmi.cz/*
@@ -70,7 +75,7 @@ const bridge = `
     if (location.hostname === "intranet.chmi.cz" || location.hostname === "portal.chmi.cz") {
       return true;
     }
-    if (location.hostname !== "www.chmi.cz") {
+    if (location.hostname !== "www.chmi.cz" && location.hostname !== "chmi.cz") {
       return false;
     }
     const prefixes = [
@@ -92,7 +97,7 @@ const bridge = `
       "/o-chmu/publikace-a-vzdelavani/zpravy-a-datove-prehledy",
       "/letectvi"
     ];
-    return path === "/" || prefixes.some((prefix) => path.startsWith(prefix));
+    return path === "/" || path === "/uvod" || prefixes.some((prefix) => path.startsWith(prefix));
   }
 
   function renderRestoreButton() {
@@ -125,12 +130,12 @@ const bridge = `
     }
   };
 
-  GM_registerMenuCommand("Přepnout klasický/nový vzhled", () => {
+  if (window.top === window) GM_registerMenuCommand("Přepnout klasický/nový vzhled", () => {
     GM_setValue(key, !isEnabled());
     location.reload();
   });
 
-  GM_addStyle(${JSON.stringify(`${radarCss}\n${satelliteCss}\n${navigationCss}\n${catalogCss}\n${legacyCss}\n
+  GM_addStyle(${JSON.stringify(`${radarCss}\n${satelliteCss}\n${navigationCss}\n${catalogCss}\n${legacyCss}\n${aladinCss}\n${portalCss}\n${embeddedCss}\n
 #chmi-classic-userscript-restore {
   position: fixed;
   right: 12px;
@@ -148,7 +153,7 @@ const bridge = `
   renderRestoreButton();
 })();`;
 
-const output = `${metadata}\n\n${bridge}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n\n${catalogJs.trimEnd()}\n\n${legacyJs.trimEnd()}\n`;
+const output = `${metadata}\n\n${bridge}\n\n${portalRegistryJs}\n\n${embeddedJs}\n\n${portalJs}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n\n${aladinJs.trimEnd()}\n\n${catalogJs.trimEnd()}\n\n${legacyJs.trimEnd()}\n`;
 
 await mkdir(dirname(outputPath), { recursive: true });
 await writeFile(outputPath, output, "utf8");

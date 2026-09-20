@@ -538,6 +538,40 @@ html.chmi-satellite-classic-live #map-container {
   overflow: hidden !important;
 }
 
+html.chmi-satellite-classic-live #main-row .map-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+html.chmi-satellite-classic-live #map-container {
+  flex: 1 1 0 !important;
+  aspect-ratio: auto !important;
+}
+html.chmi-satellite-classic-live #settingsMenu .chmi-classic-disclosure > summary {
+  display: list-item;
+  cursor: pointer;
+  padding: 4px 0;
+  color: #154e73;
+  font: bold 12px/1.3 Arial, sans-serif;
+}
+html.chmi-satellite-classic-live #settingsMenu .chmi-classic-disclosure > summary .section-header {
+  display: inline-flex !important;
+  margin: 0 !important;
+}
+html.chmi-satellite-classic-live #settingsMenu .settings-section { padding: 4px 0 !important; }
+html.chmi-satellite-classic-live #settingsMenu .form-check { margin-bottom: 3px !important; }
+html.chmi-satellite-classic-live #settingsMenu .form-check-label { font-size: 12px !important; }
+html.chmi-satellite-classic-live #settingsMenu #satInfo { font: 12px/1.35 Arial, sans-serif !important; }
+html.chmi-satellite-classic-live #settingsMenu #satInfo p { font: inherit !important; }
+html.chmi-satellite-classic-live #time-range-group label { min-width: 34px; padding: 3px 5px !important; font-size: 12px !important; }
+html.chmi-satellite-classic-live .chmi-satellite-classic-product-row span { font-size: 12px; }
+html.chmi-satellite-classic-live .chmi-satellite-classic-satellite-row { margin-bottom: 5px; }
+html.chmi-satellite-classic-live #chmi-satellite-classic-selector { margin-bottom: 4px; padding-bottom: 5px; }
+
 html.chmi-satellite-classic-live #map-container img,
 html.chmi-satellite-classic-live #map-container canvas,
 html.chmi-satellite-classic-live #map-container video {

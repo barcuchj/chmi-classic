@@ -1,3 +1,24 @@
+/* Keep the complete native scale inside the map, independently of map zoom.
+   Native inline pixel sizes otherwise push the lowest values below the viewport. */
+html.chmi-radar-classic #div_scl {
+  top: auto !important;
+  bottom: 22px !important;
+  left: 6px !important;
+  width: auto !important;
+  height: min(55%, 440px) !important;
+  max-height: calc(100% - 160px) !important;
+  z-index: 450;
+  pointer-events: none;
+}
+html.chmi-radar-classic #div_scl #img_scl {
+  display: block !important;
+  width: auto !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  max-width: 100% !important;
+  object-fit: contain;
+}
+
 html.chmi-radar-classic,
 html.chmi-radar-classic body#mbody {
   width: 100%;

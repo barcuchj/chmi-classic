@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  if (window.top !== window || window.__chmiSatelliteClassicLoaded) {
+  if ((window.top !== window && !window.__chmiClassicEmbedded) || window.__chmiSatelliteClassicLoaded) {
     return;
   }
 
@@ -76,6 +76,53 @@
   let resizeDispatchScheduled = false;
   let layoutResizeObserver = null;
   let observedLayoutElement = null;
+  const compactSections = [];
+  const movedInfo = [];
+
+  function compactLiveControls() {
+    const sidebar = document.querySelector("#settingsMenu .offcanvas-body");
+    if (!sidebar) return;
+    for (const section of sidebar.querySelectorAll(".settings-section")) {
+      if (section.classList.contains("chmi-satellite-classic-native-choice") ||
+          section.querySelector("#time-range-group, .chmi-classic-disclosure")) continue;
+      const header = section.querySelector(".section-header");
+      if (!header) continue;
+      const details = document.createElement("details");
+      details.className = "chmi-classic-disclosure";
+      const summary = document.createElement("summary");
+      const nodes = [...section.childNodes];
+      summary.append(header);
+      details.append(summary, ...nodes.filter(node => node !== header));
+      section.append(details);
+      compactSections.push({ section, nodes, details });
+    }
+    if (!document.getElementById("chmi-satellite-classic-info")) {
+      const nodes = [...document.querySelectorAll(".map-wrapper > .product-legend-box, .map-wrapper > #satInfo")];
+      if (!nodes.length) return;
+      const details = document.createElement("details");
+      details.id = "chmi-satellite-classic-info";
+      details.className = "chmi-classic-disclosure";
+      const summary = document.createElement("summary");
+      summary.textContent = "Legenda a informace ke snímku";
+      details.append(summary);
+      for (const node of nodes) {
+        const placeholder = document.createComment("chmi-classic-info-position");
+        node.before(placeholder);
+        movedInfo.push({ node, placeholder });
+        details.append(node);
+      }
+      sidebar.append(details);
+    }
+  }
+
+  function restoreLiveControls() {
+    for (const { section, nodes, details } of compactSections.splice(0)) {
+      section.append(...nodes);
+      details.remove();
+    }
+    for (const { node, placeholder } of movedInfo.splice(0)) placeholder.replaceWith(node);
+    document.getElementById("chmi-satellite-classic-info")?.remove();
+  }
 
   function savePreference(enabled) {
     if (storage) {
@@ -509,6 +556,7 @@
     const brandChanged = createBrand("Aktuální data z družic MSG/MTG ČHMÚ");
     const selectorChanged = ensureProductSelector();
     const playerChanged = ensurePlayer();
+    compactLiveControls();
 
     renderProductMatrix();
     syncPlayer();
@@ -537,6 +585,7 @@
   }
 
   function removeClassicMode() {
+    restoreLiveControls();
     [BRAND_ID, SELECTOR_ID, PLAYER_ID, PORTAL_PRODUCTS_ID].forEach((id) => {
       document.getElementById(id)?.remove();
     });

@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  if (window.top !== window || window.__chmiClassicNavigationLoaded) {
+  if (window.top !== window || window.__chmiClassicPortalCandidate || window.__chmiClassicNavigationLoaded) {
     return;
   }
 

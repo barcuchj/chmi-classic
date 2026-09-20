@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ČHMÚ Classic – meteorologické výstupy
 // @namespace    https://github.com/
-// @version      0.6.0
+// @version      0.7.0-beta.1
 // @description  Vrací klasický vzhled, historické adaptace a jednotný katalog živých i archivních meteorologických výstupů ČHMÚ.
 // @author       ČHMÚ Classic contributors
 // @homepageURL  https://github.com/barcuchj/chmi-classic
@@ -12,6 +12,7 @@
 // @match        https://produkty.chmi.cz/druzice/*
 // @match        https://produkty.chmi.cz/aladin/*
 // @match        https://www.chmi.cz/*
+// @match        https://chmi.cz/*
 // @match        https://hydro.chmi.cz/*
 // @match        https://intranet.chmi.cz/*
 // @match        http://intranet.chmi.cz/*
@@ -46,7 +47,7 @@
     if (location.hostname === "intranet.chmi.cz" || location.hostname === "portal.chmi.cz") {
       return true;
     }
-    if (location.hostname !== "www.chmi.cz") {
+    if (location.hostname !== "www.chmi.cz" && location.hostname !== "chmi.cz") {
       return false;
     }
     const prefixes = [
@@ -68,7 +69,7 @@
       "/o-chmu/publikace-a-vzdelavani/zpravy-a-datove-prehledy",
       "/letectvi"
     ];
-    return path === "/" || prefixes.some((prefix) => path.startsWith(prefix));
+    return path === "/" || path === "/uvod" || prefixes.some((prefix) => path.startsWith(prefix));
   }
 
   function renderRestoreButton() {
@@ -101,19 +102,373 @@
     }
   };
 
-  GM_registerMenuCommand("Přepnout klasický/nový vzhled", () => {
+  if (window.top === window) GM_registerMenuCommand("Přepnout klasický/nový vzhled", () => {
     GM_setValue(key, !isEnabled());
     location.reload();
   });
 
-  GM_addStyle("html.chmi-radar-classic,\nhtml.chmi-radar-classic body#mbody {\n  width: 100%;\n  height: 100%;\n  min-height: 100vh;\n  background: #8bc6da !important;\n  color: #555 !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n  font-size: 13px !important;\n}\n\nhtml.chmi-radar-classic #content,\nhtml.chmi-radar-classic #wrapper > nav,\nhtml.chmi-radar-classic #footer,\nhtml.chmi-radar-classic #footerBottom,\nhtml.chmi-radar-classic .material-scrolltop,\nhtml.chmi-radar-classic .chmi-radar-classic-hidden {\n  display: none !important;\n}\n\nhtml.chmi-radar-classic #wrapper {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: column !important;\n  width: calc(100vw - 20px) !important;\n  max-width: none !important;\n  height: calc(100vh - 20px) !important;\n  min-height: 560px !important;\n  margin: 10px auto !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-brand {\n  box-sizing: border-box;\n  display: flex;\n  flex: 0 0 auto;\n  align-items: baseline;\n  gap: 9px;\n  min-height: 46px;\n  padding: 11px 14px 9px;\n  color: #175f82;\n  background: #fff;\n  border-radius: 12px 12px 0 0;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-brand strong {\n  color: #176b95;\n  font-size: 16px;\n  letter-spacing: 0.01em;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-brand span {\n  color: #777;\n  font-size: 12px;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-brand button {\n  margin-left: auto;\n  padding: 3px 9px;\n  color: #176b95;\n  background: #eef8fc;\n  border: 1px solid #91c4d9;\n  border-radius: 3px;\n  font: 12px/1.4 Arial, Helvetica, sans-serif;\n  cursor: pointer;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-brand button:hover {\n  background: #dff1f8;\n}\n\nhtml.chmi-radar-classic .mainWrapper {\n  box-sizing: border-box;\n  display: flex !important;\n  flex: 1 1 auto !important;\n  flex-direction: column !important;\n  min-height: 0 !important;\n  width: 100% !important;\n  margin: 0 !important;\n  padding: 8px 10px 14px !important;\n  background: #fff !important;\n  border-radius: 0 0 12px 12px;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n  overflow: hidden;\n}\n\nhtml.chmi-radar-classic .chmi-radar-classic-app-section {\n  box-sizing: border-box;\n  display: flex !important;\n  flex: 1 1 auto !important;\n  flex-direction: column !important;\n  min-height: 0 !important;\n  width: 100% !important;\n  max-width: none !important;\n  margin: 0 !important;\n}\n\nhtml.chmi-radar-classic .chmi-radar-classic-app-row {\n  box-sizing: border-box;\n  display: flex !important;\n  flex: 1 1 auto !important;\n  flex-direction: row !important;\n  align-items: stretch !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  width: 100% !important;\n  max-width: none !important;\n  height: 100% !important;\n}\n\nhtml.chmi-radar-classic #div_container_data {\n  position: relative !important;\n  flex: 1 1 auto !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  width: auto !important;\n  max-width: none !important;\n  height: 100% !important;\n  background: #d2d2d2 !important;\n  overflow: hidden;\n}\n\nhtml.chmi-radar-classic #div_container_data .leaflet-container {\n  width: 100% !important;\n  max-width: none !important;\n  height: 100% !important;\n  min-height: 100% !important;\n}\n\nhtml.chmi-radar-classic.chmi-radar-classic-web-maps #div_container_data #div_bg {\n  width: 100% !important;\n  height: 100% !important;\n}\n\nhtml.chmi-radar-classic #div_container_menu {\n  box-sizing: border-box;\n  flex: 0 0 320px !important;\n  align-self: stretch !important;\n  width: 320px !important;\n  max-width: 320px !important;\n  padding: 10px !important;\n  color: #555 !important;\n  background: #fff !important;\n  border: 0 !important;\n  border-left: 1px solid #bbb !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n  min-height: 0 !important;\n  overflow: auto !important;\n  font: 13px/1.35 Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-radar-classic #div_container_menu .accordion-button {\n  min-height: 34px;\n  padding: 7px 8px !important;\n  color: #176b95 !important;\n  background: #f7fbfd !important;\n  border-bottom: 1px solid #b9cbd3 !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n  font: bold 13px/1.3 Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-radar-classic #div_container_menu .accordion-body {\n  padding: 8px 0 10px !important;\n}\n\nhtml.chmi-radar-classic #div_container_menu select,\nhtml.chmi-radar-classic #div_container_menu input,\nhtml.chmi-radar-classic #div_container_menu button {\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar {\n  position: absolute;\n  z-index: 10000;\n  top: 8px;\n  left: 8px;\n  display: block;\n  padding: 3px;\n  background: rgb(255 255 255 / 94%);\n  border: 1px solid #b8cbd4;\n  border-radius: 3px;\n  box-shadow: 0 1px 4px rgb(0 0 0 / 22%);\n}\n\nhtml.chmi-radar-classic #div_container_menu #div_radio_display {\n  display: none !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar .chmi-radar-classic-options {\n  display: inline-flex !important;\n  flex-wrap: nowrap !important;\n  width: auto !important;\n  white-space: nowrap;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar button {\n  box-sizing: border-box;\n  display: inline-block !important;\n  min-width: auto !important;\n  margin: 0 -1px 0 0 !important;\n  padding: 5px 11px !important;\n  color: #176b95 !important;\n  background: #f7fcfe !important;\n  border: 1px solid #8fc2d8 !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n  font: 12px/1.25 Arial, Helvetica, sans-serif !important;\n  text-align: center;\n  cursor: pointer;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar button:first-child {\n  border-radius: 2px 0 0 2px !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar button:last-child {\n  margin-right: 0 !important;\n  border-radius: 0 2px 2px 0 !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar button[aria-checked=\"true\"] {\n  position: relative;\n  z-index: 1;\n  color: #fff !important;\n  background: #4ea8d3 !important;\n  border-color: #2588ba !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar button:focus-visible,\nhtml.chmi-radar-classic #chmi-radar-classic-brand button:focus-visible {\n  outline: 3px solid #f5a623 !important;\n  outline-offset: 2px;\n}\n\n@media (max-width: 991px) {\n  html.chmi-radar-classic #wrapper {\n    width: calc(100% - 12px) !important;\n    height: auto !important;\n    min-height: calc(100vh - 12px) !important;\n    margin: 6px auto !important;\n  }\n\n  html.chmi-radar-classic .chmi-radar-classic-app-row {\n    flex-direction: column !important;\n    height: auto !important;\n    overflow: visible !important;\n  }\n\n  html.chmi-radar-classic #div_container_data {\n    min-height: 60vh !important;\n    height: 60vh !important;\n  }\n\n  html.chmi-radar-classic #div_container_menu {\n    width: 100% !important;\n    max-width: none !important;\n    border-top: 1px solid #bbb !important;\n    border-left: 0 !important;\n  }\n\n  html.chmi-radar-classic #chmi-radar-classic-toolbar {\n    top: 6px;\n    left: 6px;\n    max-width: calc(100% - 12px);\n    overflow-x: auto;\n  }\n}\n\n@media (max-width: 560px) {\n  html.chmi-radar-classic #chmi-radar-classic-brand span {\n    display: none;\n  }\n\n  html.chmi-radar-classic #chmi-radar-classic-toolbar button {\n    padding: 5px 8px !important;\n    font-size: 11px !important;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  html.chmi-radar-classic *,\n  html.chmi-radar-classic *::before,\n  html.chmi-radar-classic *::after {\n    scroll-behavior: auto !important;\n    transition-duration: 0.01ms !important;\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n  }\n}\n\n/* Radar vložený na úvodní stránce ČHMÚ – stylujeme jen jeho sekci. */\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic {\n  box-sizing: border-box;\n  position: relative;\n  width: 100% !important;\n  max-width: none !important;\n  margin: 12px 0 !important;\n  padding: 0 10px 12px !important;\n  background: #fff !important;\n  border: 1px solid #9bafb7 !important;\n  border-radius: 10px !important;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 18%);\n  overflow: hidden;\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: row !important;\n  flex-wrap: nowrap !important;\n  align-items: baseline !important;\n  gap: 9px;\n  width: calc(100% + 20px);\n  min-height: 42px;\n  margin: -1px -10px 8px;\n  padding: 10px 12px 8px;\n  color: #176b95;\n  background: #fff;\n  border-bottom: 1px solid #b8cbd4;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand strong {\n  color: #176b95;\n  font-size: 16px;\n  letter-spacing: 0.01em;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand span {\n  color: #777;\n  font-size: 12px;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand > button {\n  margin-left: auto;\n  padding: 3px 9px;\n  color: #176b95;\n  background: #eef8fc;\n  border: 1px solid #91c4d9;\n  border-radius: 3px;\n  font: 12px/1.4 Arial, Helvetica, sans-serif;\n  cursor: pointer;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand > button:hover {\n  background: #dff1f8;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-native-title,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-native-subtitle {\n  display: none !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host {\n  box-sizing: border-box;\n  width: 100% !important;\n  max-width: none !important;\n  margin-right: 0 !important;\n  margin-left: 0 !important;\n  background: #d2d2d2;\n  border: 1px solid #888 !important;\n  border-radius: 0 !important;\n  overflow: hidden;\n}\n\nhtml.chmi-home-radar-classic-active iframe.chmi-home-radar-classic-map-host {\n  min-height: 360px;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host img,\nhtml.chmi-home-radar-classic-active img.chmi-home-radar-classic-map-host {\n  display: block;\n  max-width: 100% !important;\n  height: auto !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic select,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic input,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic button {\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic select,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic button:not(#chmi-home-radar-classic-brand > button) {\n  border-radius: 2px !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand button:focus-visible,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic button:focus-visible,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic a:focus-visible,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic select:focus-visible,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic input:focus-visible {\n  outline: 3px solid #f5a623 !important;\n  outline-offset: 2px;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-anchor {\n  display: block;\n  position: relative;\n  top: -8px;\n  visibility: hidden;\n}\n\n@media (max-width: 640px) {\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic {\n    margin: 6px 0 !important;\n    padding-right: 6px !important;\n    padding-left: 6px !important;\n  }\n\n  html.chmi-home-radar-classic-active #chmi-home-radar-classic-brand {\n    width: calc(100% + 12px);\n    margin-right: -6px;\n    margin-left: -6px;\n  }\n\n  html.chmi-home-radar-classic-active #chmi-home-radar-classic-brand span {\n    display: none;\n  }\n\n  html.chmi-home-radar-classic-active iframe.chmi-home-radar-classic-map-host {\n    min-height: 300px;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic *,\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic *::before,\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic *::after {\n    scroll-behavior: auto !important;\n    transition-duration: 0.01ms !important;\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n  }\n}\n\n/* Pravděpodobnost růstu hub – portálová stránka ČHMÚ. */\nhtml.chmi-hub-classic,\nhtml.chmi-hub-classic body {\n  min-height: 100%;\n  background: #8bc6da !important;\n  color: #111 !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n  font-size: 14px !important;\n}\n\nhtml.chmi-hub-classic header#chmu-header,\nhtml.chmi-hub-classic nav[aria-label*=\"Nach\"],\nhtml.chmi-hub-classic .menu-bookmarks,\nhtml.chmi-hub-classic .lfr-layout-structure-item-chmi---spacer,\nhtml.chmi-hub-classic footer,\nhtml.chmi-hub-classic #footer,\nhtml.chmi-hub-classic .material-scrolltop {\n  display: none !important;\n}\n\nhtml.chmi-hub-classic main {\n  box-sizing: border-box;\n  width: min(1460px, calc(100% - 20px)) !important;\n  max-width: none !important;\n  margin: 10px auto 40px !important;\n  padding: 0 10px 14px !important;\n  background: #fff !important;\n  border: 1px solid #9bafb7;\n  border-radius: 10px;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: row !important;\n  flex-wrap: nowrap !important;\n  align-items: baseline !important;\n  gap: 9px;\n  width: calc(100% + 20px);\n  min-height: 42px;\n  margin: -1px -10px 8px;\n  padding: 10px 12px 8px;\n  color: #176b95;\n  background: #fff;\n  border: 1px solid #9bafb7;\n  border-bottom: 0;\n  border-radius: 10px 10px 0 0;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand strong {\n  font-size: 16px;\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand span {\n  color: #777;\n  font-size: 12px;\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand button {\n  margin-left: auto;\n  padding: 3px 9px;\n  color: #176b95;\n  background: #f7fcfe;\n  border: 1px solid #8fc2d8;\n  border-radius: 2px;\n  font: 12px/1.4 Arial, Helvetica, sans-serif;\n  cursor: pointer;\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand button:hover {\n  background: #dff1f8;\n}\n\nhtml.chmi-hub-classic main h1 {\n  display: none !important;\n}\n\nhtml.chmi-hub-classic main h2,\nhtml.chmi-hub-classic main h3,\nhtml.chmi-hub-classic main h4 {\n  margin-top: 10px !important;\n  margin-bottom: 7px !important;\n  color: #176b95 !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-hub-classic main h3 {\n  font-size: 16px !important;\n}\n\nhtml.chmi-hub-classic main h4 {\n  font-size: 14px !important;\n}\n\nhtml.chmi-hub-classic .chmi-hub-classic-map-section {\n  box-sizing: border-box;\n  width: 100% !important;\n  max-width: none !important;\n  margin: 0 !important;\n  padding: 0 !important;\n}\n\nhtml.chmi-hub-classic #chmu-map-container,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host {\n  box-sizing: border-box;\n  width: 100% !important;\n  max-width: none !important;\n  background: #d2d2d2;\n  border-radius: 0 !important;\n}\n\nhtml.chmi-hub-classic #chmu-map-container,\nhtml.chmi-hub-classic iframe.chmi-hub-classic-map-host,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host.leaflet-container,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host.maplibregl-map,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host.ol-viewport {\n  height: min(78vh, 800px) !important;\n  min-height: 520px !important;\n  border: 1px solid #888;\n}\n\nhtml.chmi-hub-classic .chmi-hub-classic-map-host iframe,\nhtml.chmi-hub-classic #chmu-map-container iframe {\n  width: 100% !important;\n  max-width: none !important;\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand button:focus-visible,\nhtml.chmi-hub-classic main button:focus-visible,\nhtml.chmi-hub-classic main a:focus-visible,\nhtml.chmi-hub-classic main select:focus-visible,\nhtml.chmi-hub-classic main input:focus-visible {\n  outline: 3px solid #f5a623 !important;\n  outline-offset: 2px;\n}\n\n@media (max-width: 640px) {\n  html.chmi-hub-classic main {\n    width: calc(100% - 8px) !important;\n    margin-top: 4px !important;\n    padding-right: 6px !important;\n    padding-left: 6px !important;\n  }\n\n  html.chmi-hub-classic #chmi-hub-classic-brand {\n    width: calc(100% + 12px);\n    margin-right: -6px;\n    margin-left: -6px;\n  }\n\n  html.chmi-hub-classic #chmi-hub-classic-brand span {\n    display: none;\n  }\n\n  html.chmi-hub-classic #chmu-map-container,\n  html.chmi-hub-classic iframe.chmi-hub-classic-map-host,\n  html.chmi-hub-classic .chmi-hub-classic-map-host.leaflet-container,\n  html.chmi-hub-classic .chmi-hub-classic-map-host.maplibregl-map,\n  html.chmi-hub-classic .chmi-hub-classic-map-host.ol-viewport {\n    height: 70vh !important;\n    min-height: 420px !important;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  html.chmi-hub-classic *,\n  html.chmi-hub-classic *::before,\n  html.chmi-hub-classic *::after {\n    scroll-behavior: auto !important;\n    transition-duration: 0.01ms !important;\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n  }\n}\n\n/* 0.4.1 – dynamické přizpůsobení pracovního prostoru dostupnému oknu. */\nhtml.chmi-radar-classic,\nhtml.chmi-radar-classic body#mbody {\n  overflow: hidden !important;\n}\n\nhtml.chmi-radar-classic #wrapper {\n  width: calc(100vw - 12px) !important;\n  height: calc(100dvh - 12px) !important;\n  min-height: 0 !important;\n  margin: 6px auto !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-brand {\n  min-height: 40px;\n  padding-top: 8px;\n  padding-bottom: 7px;\n}\n\nhtml.chmi-radar-classic .mainWrapper {\n  padding: 6px 8px 8px !important;\n}\n\nhtml.chmi-radar-classic #div_container_menu {\n  flex: 0 0 clamp(260px, 20vw, 340px) !important;\n  width: clamp(260px, 20vw, 340px) !important;\n  max-width: clamp(260px, 20vw, 340px) !important;\n  overscroll-behavior: contain;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar {\n  top: 8px;\n  left: var(--chmi-radar-toolbar-left, 56px);\n  max-width: calc(100% - var(--chmi-radar-toolbar-left, 56px) - 8px);\n}\n\nhtml.chmi-radar-classic #div_container_data .leaflet-left {\n  left: 6px !important;\n}\n\nhtml.chmi-radar-classic #div_container_data .leaflet-right {\n  right: 6px !important;\n}\n\nhtml.chmi-radar-classic #div_container_data .leaflet-top {\n  top: 6px !important;\n}\n\nhtml.chmi-radar-classic #div_container_data .leaflet-bottom {\n  bottom: 6px !important;\n}\n\n/* Homepage radar: stejný kompaktní pracovní rám a geometrie jako u produktového radaru. */\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic {\n  width: calc(100vw - 12px) !important;\n  max-width: none !important;\n  margin: 6px 0 8px calc(50% - 50vw + 6px) !important;\n  padding: 0 8px 8px !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand {\n  width: calc(100% + 16px);\n  min-height: 40px;\n  margin: -1px -8px 6px;\n  padding: 8px 10px 7px;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-app-section {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: column !important;\n  width: 100% !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  max-width: none !important;\n  margin: 0 !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: row !important;\n  align-items: stretch !important;\n  width: 100% !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  max-width: none !important;\n  height: var(--chmi-home-radar-fit-height, 72dvh) !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_data {\n  position: relative !important;\n  flex: 1 1 auto !important;\n  width: auto !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  max-width: none !important;\n  height: 100% !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_menu {\n  box-sizing: border-box;\n  flex: 0 0 clamp(260px, 20vw, 340px) !important;\n  width: clamp(260px, 20vw, 340px) !important;\n  max-width: clamp(260px, 20vw, 340px) !important;\n  min-height: 0 !important;\n  height: 100% !important;\n  padding: 10px !important;\n  border-left: 1px solid #bbb !important;\n  overflow: auto !important;\n  overscroll-behavior: contain;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host {\n  min-width: 0 !important;\n  max-width: none !important;\n  height: var(--chmi-home-radar-fit-height, 72dvh) !important;\n  min-height: min(360px, 60dvh) !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host.leaflet-container,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host.maplibregl-map,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host.ol-viewport {\n  height: var(--chmi-home-radar-fit-height, 72dvh) !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar {\n  position: absolute;\n  z-index: 10000;\n  top: 8px;\n  left: var(--chmi-home-radar-toolbar-left, 56px);\n  display: block;\n  max-width: calc(100% - var(--chmi-home-radar-toolbar-left, 56px) - 8px);\n  padding: 3px;\n  overflow-x: auto;\n  white-space: nowrap;\n  background: rgb(255 255 255 / 94%);\n  border: 1px solid #b8cbd4;\n  border-radius: 3px;\n  box-shadow: 0 1px 4px rgb(0 0 0 / 22%);\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar .chmi-radar-classic-options {\n  display: inline-flex !important;\n  flex-wrap: nowrap !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar button {\n  box-sizing: border-box;\n  margin: 0 -1px 0 0 !important;\n  padding: 5px 10px !important;\n  color: #176b95 !important;\n  background: #f7fcfe !important;\n  border: 1px solid #8fc2d8 !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n  font: 12px/1.25 Arial, Helvetica, sans-serif !important;\n  cursor: pointer;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar button:first-child {\n  border-radius: 2px 0 0 2px !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar button:last-child {\n  margin-right: 0 !important;\n  border-radius: 0 2px 2px 0 !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar button[aria-checked=\"true\"] {\n  color: #fff !important;\n  background: #4ea8d3 !important;\n  border-color: #2588ba !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host .leaflet-left,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_data .leaflet-left {\n  left: 6px !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host .leaflet-right,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_data .leaflet-right {\n  right: 6px !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host .maplibregl-ctrl-top-left {\n  top: 6px !important;\n  left: 6px !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host .maplibregl-ctrl-top-right {\n  top: 6px !important;\n  right: 6px !important;\n}\n\n/* Houby: plná šířka okna, mapa vyplní zbylou výšku viewportu. */\nhtml.chmi-hub-classic,\nhtml.chmi-hub-classic body {\n  overflow-x: hidden !important;\n}\n\nhtml.chmi-hub-classic main {\n  width: calc(100vw - 12px) !important;\n  margin: 6px auto 8px !important;\n  padding: 0 8px 8px !important;\n  overflow-x: hidden !important;\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand {\n  width: calc(100% + 16px);\n  min-height: 40px;\n  margin: -1px -8px 6px;\n  padding: 8px 10px 7px;\n}\n\nhtml.chmi-hub-classic #chmu-map-container,\nhtml.chmi-hub-classic iframe.chmi-hub-classic-map-host,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host.leaflet-container,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host.maplibregl-map,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host.ol-viewport {\n  width: 100% !important;\n  max-width: none !important;\n  height: var(--chmi-hub-fit-height, calc(100dvh - 150px)) !important;\n  min-height: min(420px, calc(100dvh - 120px)) !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-hub-classic #chmu-map-container > *,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host > * {\n  max-width: 100%;\n}\n\nhtml.chmi-hub-classic #chmu-map-container .leaflet-left,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host .leaflet-left {\n  left: 8px !important;\n}\n\nhtml.chmi-hub-classic #chmu-map-container .leaflet-right,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host .leaflet-right {\n  right: 8px !important;\n}\n\nhtml.chmi-hub-classic #chmu-map-container .maplibregl-ctrl-top-left,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host .maplibregl-ctrl-top-left {\n  top: 8px !important;\n  left: 8px !important;\n}\n\nhtml.chmi-hub-classic #chmu-map-container .maplibregl-ctrl-top-right,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host .maplibregl-ctrl-top-right {\n  top: 8px !important;\n  right: 8px !important;\n}\n\n@media (max-width: 760px) {\n  html.chmi-radar-classic,\n  html.chmi-radar-classic body#mbody {\n    overflow: auto !important;\n  }\n\n  html.chmi-radar-classic #wrapper {\n    width: calc(100% - 8px) !important;\n    height: auto !important;\n    min-height: calc(100dvh - 8px) !important;\n    margin: 4px auto !important;\n  }\n\n  html.chmi-radar-classic .chmi-radar-classic-app-row,\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row {\n    flex-direction: column !important;\n    height: auto !important;\n    overflow: visible !important;\n  }\n\n  html.chmi-radar-classic #div_container_data,\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_data,\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host {\n    height: 62dvh !important;\n    min-height: 320px !important;\n  }\n\n  html.chmi-radar-classic #div_container_menu,\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_menu {\n    flex-basis: auto !important;\n    width: 100% !important;\n    max-width: none !important;\n    height: auto !important;\n    border-top: 1px solid #bbb !important;\n    border-left: 0 !important;\n  }\n\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic {\n    width: calc(100vw - 8px) !important;\n    margin-left: calc(50% - 50vw + 4px) !important;\n  }\n\n  html.chmi-hub-classic main {\n    width: calc(100vw - 8px) !important;\n    margin-top: 4px !important;\n  }\n}\n\n/* Prevent browser default body margins from reintroducing viewport scrollbars in full-window classic apps. */\nhtml.chmi-radar-classic body#mbody,\nhtml.chmi-hub-classic body {\n    margin: 0 !important;\n    padding: 0 !important;\n}\n\nhtml.chmi-satellite-classic,\nhtml.chmi-satellite-classic body {\n  min-height: 100%;\n  background: #8bc6da !important;\n  color: #111 !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n  font-size: 14px !important;\n}\n\nhtml.chmi-satellite-classic #chmi-satellite-classic-brand {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: row !important;\n  flex-wrap: nowrap !important;\n  align-items: baseline !important;\n  gap: 9px;\n  width: 100%;\n  min-height: 42px;\n  padding: 10px 12px 8px;\n  color: #176b95;\n  background: #fff;\n  border: 1px solid #9bafb7;\n  border-bottom: 0;\n  border-radius: 10px 10px 0 0;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-satellite-classic #chmi-satellite-classic-brand strong {\n  font-size: 16px;\n}\n\nhtml.chmi-satellite-classic #chmi-satellite-classic-brand span {\n  color: #777;\n  font-size: 12px;\n}\n\nhtml.chmi-satellite-classic #chmi-satellite-classic-brand button {\n  margin-left: auto;\n  padding: 3px 9px;\n  color: #176b95;\n  background: #f7fcfe;\n  border: 1px solid #8fc2d8;\n  border-radius: 2px;\n  font: 12px/1.4 Arial, Helvetica, sans-serif;\n  cursor: pointer;\n}\n\nhtml.chmi-satellite-classic #chmi-satellite-classic-brand button:hover {\n  background: #dff1f8;\n}\n\nhtml.chmi-satellite-classic-live #content,\nhtml.chmi-satellite-classic-live #wrapper > nav,\nhtml.chmi-satellite-classic-live #footer,\nhtml.chmi-satellite-classic-live #footerBottom,\nhtml.chmi-satellite-classic-live .material-scrolltop {\n  display: none !important;\n}\n\nhtml.chmi-satellite-classic-live #wrapper {\n  width: min(1460px, calc(100% - 20px)) !important;\n  min-height: auto !important;\n  margin: 10px auto 40px !important;\n}\n\nhtml.chmi-satellite-classic-live .mainWrapper {\n  box-sizing: border-box;\n  width: 100% !important;\n  margin: 0 !important;\n  padding: 8px 10px 14px !important;\n  background: #fff !important;\n  border: 1px solid #9bafb7;\n  border-top: 0;\n  border-radius: 0 0 10px 10px;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-satellite-classic-live .mainWrapper > .container-fluid {\n  margin: 0 !important;\n  padding: 0 !important;\n}\n\nhtml.chmi-satellite-classic-live .mainWrapper > .container-fluid > h1,\nhtml.chmi-satellite-classic-live #btn-desktop-sidebar-toggle,\nhtml.chmi-satellite-classic-live #animation-controls,\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-native-choice {\n  display: none !important;\n}\n\nhtml.chmi-satellite-classic-live #main-row {\n  display: grid !important;\n  grid-template-columns: minmax(0, 1160px) 250px;\n  justify-content: center;\n  gap: 10px !important;\n  margin: 0 !important;\n}\n\nhtml.chmi-satellite-classic-live #main-row > .map-col,\nhtml.chmi-satellite-classic-live #main-row > .desktop-sidebar-col {\n  box-sizing: border-box;\n  width: auto !important;\n  max-width: none !important;\n  margin: 0 !important;\n  padding: 0 !important;\n}\n\nhtml.chmi-satellite-classic-live #loaded-product-title {\n  min-height: 24px;\n  margin: 0 0 4px !important;\n  text-align: left !important;\n}\n\nhtml.chmi-satellite-classic-live #loaded-product-title h2 {\n  margin: 0 !important;\n  color: #176b95 !important;\n  font: bold 16px/1.4 Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-satellite-classic-live #map-container {\n  max-height: none !important;\n  background: #d2d2d2 !important;\n  border: 1px solid #888;\n  border-radius: 0 !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu {\n  position: static !important;\n  visibility: visible !important;\n  width: 100% !important;\n  min-height: 0 !important;\n  height: calc(100vh - 84px) !important;\n  max-height: 900px;\n  padding: 0 !important;\n  color: #111 !important;\n  background: #fff !important;\n  border: 1px solid #aaa !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n  transform: none !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .offcanvas-body {\n  padding: 9px !important;\n  overflow-y: auto !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .settings-section {\n  margin: 0 !important;\n  padding: 8px 0 !important;\n  background: #fff !important;\n  border: 0 !important;\n  border-bottom: 1px solid #bbb !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .section-header,\nhtml.chmi-satellite-classic-live #settingsMenu .form-label {\n  margin-bottom: 4px !important;\n  color: #111 !important;\n  font: bold 13px/1.3 Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .btn-info-icon {\n  display: none !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu select,\nhtml.chmi-satellite-classic-live #settingsMenu input,\nhtml.chmi-satellite-classic-live #settingsMenu button {\n  border-radius: 2px !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-satellite-classic-live #time-range-group {\n  gap: 4px !important;\n}\n\nhtml.chmi-satellite-classic-live #time-range-group label {\n  min-width: 39px;\n  margin: 0 !important;\n  padding: 4px 7px !important;\n  color: #14387f !important;\n  background: #f8fbff !important;\n  border: 1px solid #14387f !important;\n  border-radius: 2px !important;\n  font: 13px/1.25 Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-satellite-classic-live #time-range-group input:checked + label {\n  color: #fff !important;\n  background: #14387f !important;\n}\n\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-selector {\n  margin-bottom: 8px;\n  padding-bottom: 8px;\n  border-bottom: 1px solid #888;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-satellite-row {\n  display: flex;\n  align-items: center;\n  gap: 7px;\n  margin-bottom: 9px;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-satellite-row label,\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-selector > strong {\n  font-weight: bold;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-satellite-row select {\n  flex: 1;\n  min-width: 0;\n  padding: 3px 5px;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-matrix {\n  display: grid;\n  gap: 3px;\n  margin-top: 7px;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row {\n  display: grid;\n  grid-template-columns: minmax(85px, 1fr) repeat(3, 37px);\n  align-items: center;\n  gap: 5px;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row span {\n  color: #0645ad;\n  font-weight: bold;\n  text-decoration: underline;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row button {\n  min-width: 35px;\n  padding: 2px 4px;\n  color: #111;\n  background: #f3f3f3;\n  border: 1px solid #999;\n  border-radius: 2px;\n  font: 12px/1.3 Arial, Helvetica, sans-serif;\n  cursor: pointer;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row button:hover,\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row button.is-active {\n  color: #fff;\n  background: #4ea8d3;\n  border-color: #2588ba;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-selection {\n  margin-top: 8px;\n  color: #555;\n  font-size: 11px;\n}\n\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-player {\n  display: flex;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 6px;\n  padding: 8px 0 6px;\n  color: #111;\n  background: #fff;\n  font: 13px/1.3 Arial, Helvetica, sans-serif;\n}\n\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-player button,\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-player select {\n  min-height: 25px;\n  padding: 2px 7px;\n  color: #111;\n  background: #f3f3f3;\n  border: 1px solid #999;\n  border-radius: 2px;\n  font: 12px/1.3 Arial, Helvetica, sans-serif;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-player-buttons {\n  display: inline-flex;\n  gap: 3px;\n}\n\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-player [data-role=\"loaded\"],\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-player [data-role=\"time\"] {\n  white-space: nowrap;\n}\n\nhtml.chmi-satellite-classic-live .product-legend-box {\n  margin-top: 4px !important;\n  padding: 8px !important;\n  background: #fff !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n}\n\nhtml.chmi-satellite-classic-live #satInfo {\n  color: #d40000 !important;\n  font-size: 13px !important;\n}\n\nhtml.chmi-satellite-classic-portal header#chmu-header,\nhtml.chmi-satellite-classic-portal nav[aria-label*=\"Nach\"],\nhtml.chmi-satellite-classic-portal .menu-bookmarks,\nhtml.chmi-satellite-classic-portal .lfr-layout-structure-item-chmi---spacer,\nhtml.chmi-satellite-classic-portal footer,\nhtml.chmi-satellite-classic-portal #footer,\nhtml.chmi-satellite-classic-portal .material-scrolltop {\n  display: none !important;\n}\n\nhtml.chmi-satellite-classic-portal main {\n  box-sizing: border-box;\n  width: min(1460px, calc(100% - 20px)) !important;\n  max-width: none !important;\n  margin: 10px auto 40px !important;\n  padding: 0 10px 14px !important;\n  background: #fff !important;\n  border: 1px solid #9bafb7;\n  border-radius: 10px;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-satellite-classic-portal main > #chmi-satellite-classic-brand {\n  width: calc(100% + 20px);\n  margin: -1px -10px 0;\n}\n\nhtml.chmi-satellite-classic-portal main h1 {\n  display: none !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products {\n  display: flex;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 7px;\n  margin: 9px 0;\n  padding: 7px 8px;\n  background: #fff;\n  border: 1px solid #aaa;\n}\n\nhtml.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products > div {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px;\n}\n\nhtml.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products a {\n  padding: 3px 8px;\n  color: #0645ad;\n  background: #f3f3f3;\n  border: 1px solid #999;\n  border-radius: 2px;\n  font: 12px/1.35 Arial, Helvetica, sans-serif;\n  text-decoration: none;\n}\n\nhtml.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products a:hover,\nhtml.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products a[aria-current=\"page\"] {\n  color: #fff;\n  background: #4ea8d3;\n  border-color: #2588ba;\n}\n\nhtml.chmi-satellite-classic-portal .chmi-satellite-classic-live-link {\n  margin-left: auto;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container {\n  box-sizing: border-box;\n  width: 100% !important;\n  height: min(78vh, 800px) !important;\n  min-height: 520px;\n  background: #d2d2d2;\n  border: 1px solid #888;\n}\n\nhtml.chmi-satellite-classic button:focus-visible,\nhtml.chmi-satellite-classic a:focus-visible,\nhtml.chmi-satellite-classic select:focus-visible,\nhtml.chmi-satellite-classic input:focus-visible {\n  outline: 3px solid #f5a623 !important;\n  outline-offset: 2px;\n}\n\n@media (max-width: 1100px) {\n  html.chmi-satellite-classic-live #main-row {\n    grid-template-columns: minmax(0, 1fr);\n  }\n\n  html.chmi-satellite-classic-live #settingsMenu {\n    height: auto !important;\n    max-height: none !important;\n  }\n}\n\n@media (max-width: 640px) {\n  html.chmi-satellite-classic #chmi-satellite-classic-brand span {\n    display: none;\n  }\n\n  html.chmi-satellite-classic-live #wrapper,\n  html.chmi-satellite-classic-portal main {\n    width: calc(100% - 8px) !important;\n    margin-top: 4px !important;\n  }\n\n  html.chmi-satellite-classic-live .chmi-satellite-classic-product-row {\n    grid-template-columns: minmax(82px, 1fr) repeat(3, 34px);\n    gap: 3px;\n  }\n\n  html.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n\n  html.chmi-satellite-classic-portal .chmi-satellite-classic-live-link {\n    margin-left: 0;\n  }\n\n  html.chmi-satellite-classic-portal #chmu-map-container {\n    min-height: 420px;\n    height: 70vh !important;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  html.chmi-satellite-classic *,\n  html.chmi-satellite-classic *::before,\n  html.chmi-satellite-classic *::after {\n    scroll-behavior: auto !important;\n    transition-duration: 0.01ms !important;\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n  }\n}\n\n/* 0.4.1 – dynamické využití viewportu pro Meteosat a portálové družicové mapy. */\nhtml.chmi-satellite-classic-live,\nhtml.chmi-satellite-classic-live body {\n  width: 100%;\n  height: 100%;\n  min-height: 100dvh;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #wrapper {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: column !important;\n  width: calc(100vw - 12px) !important;\n  max-width: none !important;\n  height: calc(100dvh - 12px) !important;\n  min-height: 0 !important;\n  margin: 6px auto !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-brand {\n  flex: 0 0 auto;\n  min-height: 40px;\n  padding-top: 8px;\n  padding-bottom: 7px;\n}\n\nhtml.chmi-satellite-classic-live .mainWrapper {\n  display: flex !important;\n  flex: 1 1 auto !important;\n  min-height: 0 !important;\n  padding: 6px 8px 8px !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live .mainWrapper > .container-fluid {\n  display: flex !important;\n  flex: 1 1 auto !important;\n  flex-direction: column !important;\n  width: 100% !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n}\n\nhtml.chmi-satellite-classic-live #main-row {\n  display: grid !important;\n  flex: 1 1 auto !important;\n  grid-template-columns: minmax(0, 1fr) clamp(230px, 18vw, 300px) !important;\n  grid-template-rows: minmax(0, 1fr) !important;\n  align-items: stretch !important;\n  justify-content: stretch !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  width: 100% !important;\n  height: 100% !important;\n  gap: 8px !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #main-row > .map-col {\n  display: flex !important;\n  flex-direction: column !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  height: 100% !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #main-row > .desktop-sidebar-col {\n  display: flex !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  height: 100% !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #loaded-product-title {\n  flex: 0 0 auto;\n  min-height: 20px;\n  margin-bottom: 3px !important;\n}\n\nhtml.chmi-satellite-classic-live #map-container {\n  box-sizing: border-box;\n  flex: 1 1 auto !important;\n  width: 100% !important;\n  max-width: none !important;\n  min-width: 0 !important;\n  min-height: 180px !important;\n  height: auto !important;\n  max-height: none !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #map-container img,\nhtml.chmi-satellite-classic-live #map-container canvas,\nhtml.chmi-satellite-classic-live #map-container video {\n  max-width: 100% !important;\n  max-height: 100% !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu {\n  box-sizing: border-box;\n  flex: 1 1 auto !important;\n  width: 100% !important;\n  min-width: 0 !important;\n  max-width: 100% !important;\n  min-height: 0 !important;\n  height: 100% !important;\n  max-height: none !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .offcanvas-body {\n  box-sizing: border-box;\n  width: 100% !important;\n  min-width: 0 !important;\n  height: 100% !important;\n  min-height: 0 !important;\n  padding: 8px !important;\n  overflow-x: hidden !important;\n  overflow-y: auto !important;\n  overscroll-behavior: contain;\n  scrollbar-gutter: stable;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .settings-section,\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-selector,\nhtml.chmi-satellite-classic-live #time-range-group {\n  box-sizing: border-box;\n  min-width: 0 !important;\n  max-width: 100% !important;\n}\n\nhtml.chmi-satellite-classic-live #time-range-group {\n  display: flex !important;\n  flex-wrap: wrap !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu input[type=\"range\"],\nhtml.chmi-satellite-classic-live #settingsMenu select {\n  max-width: 100% !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .form-check,\nhtml.chmi-satellite-classic-live #settingsMenu label {\n  min-width: 0 !important;\n}\n\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-player {\n  flex: 0 0 auto !important;\n  min-width: 0 !important;\n  padding: 5px 0 1px;\n}\n\n/* Portálové polární/geostacionární mapy vyplní šířku i zbývající výšku okna. */\nhtml.chmi-satellite-classic-portal,\nhtml.chmi-satellite-classic-portal body {\n  overflow-x: hidden !important;\n}\n\nhtml.chmi-satellite-classic-portal main {\n  width: calc(100vw - 12px) !important;\n  max-width: none !important;\n  margin: 6px auto 8px !important;\n  padding: 0 8px 8px !important;\n  overflow-x: hidden !important;\n}\n\nhtml.chmi-satellite-classic-portal main > #chmi-satellite-classic-brand {\n  width: calc(100% + 16px);\n  min-height: 40px;\n  margin: -1px -8px 0;\n  padding-top: 8px;\n  padding-bottom: 7px;\n}\n\nhtml.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products {\n  margin: 6px 0;\n  padding: 5px 7px;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container {\n  width: 100% !important;\n  max-width: none !important;\n  height: var(--chmi-satellite-portal-fit-height, calc(100dvh - 140px)) !important;\n  min-height: min(420px, calc(100dvh - 120px)) !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container > * {\n  max-width: 100%;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container .leaflet-left {\n  left: 8px !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container .leaflet-right {\n  right: 8px !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container .leaflet-top {\n  top: 8px !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container .leaflet-bottom {\n  bottom: 8px !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container .maplibregl-ctrl-top-left {\n  top: 8px !important;\n  left: 8px !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container .maplibregl-ctrl-top-right {\n  top: 8px !important;\n  right: 8px !important;\n}\n\n@media (max-width: 760px) {\n  html.chmi-satellite-classic-live,\n  html.chmi-satellite-classic-live body {\n    height: auto;\n    overflow: auto !important;\n  }\n\n  html.chmi-satellite-classic-live #wrapper {\n    width: calc(100% - 8px) !important;\n    height: auto !important;\n    min-height: calc(100dvh - 8px) !important;\n    margin: 4px auto !important;\n    overflow: visible !important;\n  }\n\n  html.chmi-satellite-classic-live .mainWrapper,\n  html.chmi-satellite-classic-live .mainWrapper > .container-fluid,\n  html.chmi-satellite-classic-live #main-row {\n    overflow: visible !important;\n  }\n\n  html.chmi-satellite-classic-live #main-row {\n    grid-template-columns: minmax(0, 1fr) !important;\n    grid-template-rows: auto auto !important;\n    height: auto !important;\n  }\n\n  html.chmi-satellite-classic-live #main-row > .map-col,\n  html.chmi-satellite-classic-live #main-row > .desktop-sidebar-col {\n    height: auto !important;\n    overflow: visible !important;\n  }\n\n  html.chmi-satellite-classic-live #map-container {\n    height: 58dvh !important;\n    min-height: 320px !important;\n  }\n\n  html.chmi-satellite-classic-live #settingsMenu {\n    height: auto !important;\n    max-height: 55dvh !important;\n  }\n\n  html.chmi-satellite-classic-live #settingsMenu .offcanvas-body {\n    height: auto !important;\n    max-height: 55dvh !important;\n  }\n\n  html.chmi-satellite-classic-portal main {\n    width: calc(100vw - 8px) !important;\n    margin-top: 4px !important;\n  }\n\n  html.chmi-satellite-classic-portal #chmu-map-container {\n    height: 68dvh !important;\n    min-height: 320px !important;\n  }\n}\n\n@media (max-height: 650px) and (min-width: 761px) {\n  html.chmi-satellite-classic-live #chmi-satellite-classic-brand {\n    min-height: 34px;\n    padding-top: 5px;\n    padding-bottom: 4px;\n  }\n\n  html.chmi-satellite-classic-live .mainWrapper {\n    padding-top: 4px !important;\n    padding-bottom: 4px !important;\n  }\n\n  html.chmi-satellite-classic-live #settingsMenu .offcanvas-body {\n    padding: 6px !important;\n  }\n\n  html.chmi-satellite-classic-live #settingsMenu .settings-section {\n    padding-top: 5px !important;\n    padding-bottom: 5px !important;\n  }\n}\n\n/* Full-window satellite views own the viewport; remove UA body margins that would create 8px overflow. */\nhtml.chmi-satellite-classic-live body,\nhtml.chmi-satellite-classic-portal body {\n    margin: 0 !important;\n    padding: 0 !important;\n}\n\n/* Narrow desktop sidebars: keep every mirrored control inside the settings column. */\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-matrix,\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row {\n  min-width: 0 !important;\n  max-width: 100% !important;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row {\n  grid-template-columns: minmax(0, 1fr) repeat(3, minmax(35px, 37px)) !important;\n  gap: 3px !important;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row span {\n  min-width: 0;\n  overflow-wrap: anywhere;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu input[type=\"range\"],\nhtml.chmi-satellite-classic-live #settingsMenu select {\n  box-sizing: border-box !important;\n  width: 100% !important;\n  min-width: 0 !important;\n}\n\n/* Společná kompaktní navigace mezi podporovanými částmi ČHMÚ Classic. */\n#chmi-radar-classic-brand,\n#chmi-home-radar-classic-brand,\n#chmi-satellite-classic-brand,\n#chmi-hub-classic-brand {\n  flex-wrap: wrap !important;\n  row-gap: 5px !important;\n}\n\n.chmi-classic-navigation {\n  box-sizing: border-box;\n  display: inline-flex !important;\n  flex: 0 1 auto;\n  align-items: center;\n  gap: 2px;\n  min-width: 0;\n  margin: 0 4px 0 8px;\n  padding: 0;\n  white-space: nowrap;\n}\n\n.chmi-classic-navigation a {\n  box-sizing: border-box;\n  display: inline-block !important;\n  padding: 3px 6px !important;\n  color: #176b95 !important;\n  background: #f7fcfe !important;\n  border: 1px solid #b2cfdb !important;\n  border-radius: 2px !important;\n  font: 11px/1.25 Arial, Helvetica, sans-serif !important;\n  text-decoration: none !important;\n}\n\n.chmi-classic-navigation a:hover,\n.chmi-classic-navigation a.is-active,\n.chmi-classic-navigation a[aria-current=\"page\"] {\n  color: #fff !important;\n  background: #4ea8d3 !important;\n  border-color: #2588ba !important;\n}\n\n.chmi-classic-navigation a:focus-visible {\n  outline: 3px solid #f5a623 !important;\n  outline-offset: 2px;\n}\n\n@media (max-width: 900px) {\n  .chmi-classic-navigation {\n    order: 3;\n    flex: 1 0 100%;\n    width: 100%;\n    max-width: 100%;\n    margin: 0;\n    flex-wrap: wrap !important;\n    overflow-x: visible;\n    white-space: normal;\n  }\n}\n\n@media (max-width: 520px) {\n  .chmi-classic-navigation a {\n    padding: 3px 5px !important;\n    font-size: 10.5px !important;\n  }\n}\n\n/* Jednotný katalog a kompaktní old-look rám dalších meteorologických výstupů ČHMÚ. */\n\n.chmi-classic-catalog-button,\n#chmi-aladin-four-map-preset,\n#chmi-catalog-classic-brand > button {\n  box-sizing: border-box;\n  flex: 0 0 auto;\n  padding: 3px 8px !important;\n  color: #176b95 !important;\n  background: #f7fcfe !important;\n  border: 1px solid #8fc2d8 !important;\n  border-radius: 2px !important;\n  font: 12px/1.35 Arial, Helvetica, sans-serif !important;\n  cursor: pointer;\n}\n\n.chmi-classic-catalog-button:hover,\n#chmi-aladin-four-map-preset:hover,\n#chmi-catalog-classic-brand > button:hover {\n  color: #fff !important;\n  background: #4ea8d3 !important;\n  border-color: #2588ba !important;\n}\n\n.chmi-classic-catalog-button:focus-visible,\n#chmi-aladin-four-map-preset:focus-visible,\n#chmi-catalog-classic-brand button:focus-visible,\n#chmi-classic-catalog-dialog a:focus-visible,\n#chmi-classic-catalog-dialog button:focus-visible {\n  outline: 3px solid #f5a623 !important;\n  outline-offset: 2px;\n}\n\nhtml.chmi-catalog-open,\nhtml.chmi-catalog-open body {\n  overflow: hidden !important;\n}\n\n#chmi-classic-catalog-overlay[hidden] {\n  display: none !important;\n}\n\n#chmi-classic-catalog-overlay {\n  position: fixed;\n  inset: 0;\n  z-index: 2147483600;\n  display: grid;\n  place-items: center;\n  box-sizing: border-box;\n  padding: 14px;\n  background: rgb(15 50 65 / 56%);\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\n#chmi-classic-catalog-dialog {\n  box-sizing: border-box;\n  display: flex;\n  flex-direction: column;\n  width: min(1180px, 100%);\n  max-height: calc(100vh - 28px);\n  overflow: hidden;\n  color: #222;\n  background: #fff;\n  border: 1px solid #6b8c9b;\n  border-radius: 7px;\n  box-shadow: 0 8px 28px rgb(0 0 0 / 38%);\n}\n\n#chmi-classic-catalog-dialog > header {\n  display: flex;\n  flex: 0 0 auto;\n  align-items: center;\n  gap: 12px;\n  padding: 9px 11px;\n  color: #176b95;\n  background: #e8f6fb;\n  border-bottom: 1px solid #9cc5d5;\n}\n\n#chmi-classic-catalog-dialog h2 {\n  flex: 1 1 auto;\n  margin: 0 !important;\n  color: #176b95 !important;\n  font: 700 17px/1.25 Arial, Helvetica, sans-serif !important;\n}\n\n#chmi-classic-catalog-dialog .chmi-catalog-close {\n  flex: 0 0 auto;\n  padding: 4px 9px;\n  color: #176b95;\n  background: #fff;\n  border: 1px solid #8fb9ca;\n  border-radius: 2px;\n  font: 12px/1.35 Arial, Helvetica, sans-serif;\n  cursor: pointer;\n}\n\n.chmi-catalog-intro {\n  flex: 0 0 auto;\n  margin: 0 !important;\n  padding: 7px 11px !important;\n  color: #555 !important;\n  background: #fbfbfb;\n  border-bottom: 1px solid #ddd;\n  font: 12px/1.4 Arial, Helvetica, sans-serif !important;\n}\n\n.chmi-catalog-quick {\n  flex: 0 0 auto;\n  padding: 6px 8px;\n  border-bottom: 1px solid #ddd;\n}\n\n.chmi-catalog-quick .chmi-classic-navigation {\n  display: flex !important;\n  flex-wrap: wrap !important;\n  width: 100%;\n  margin: 0;\n  white-space: normal;\n}\n\n.chmi-catalog-groups {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 9px;\n  min-height: 0;\n  padding: 9px;\n  overflow: auto;\n  overscroll-behavior: contain;\n}\n\n.chmi-catalog-group {\n  min-width: 0;\n  border: 1px solid #b7cbd4;\n  background: #fafcfd;\n}\n\n.chmi-catalog-group > h3 {\n  margin: 0 !important;\n  padding: 6px 8px !important;\n  color: #176b95 !important;\n  background: #eaf5f9;\n  border-bottom: 1px solid #b7cbd4;\n  font: 700 14px/1.3 Arial, Helvetica, sans-serif !important;\n}\n\n.chmi-catalog-list {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 1px;\n  background: #dfe7ea;\n}\n\n.chmi-catalog-item {\n  min-width: 0;\n  padding: 6px 7px;\n  background: #fff;\n}\n\n.chmi-catalog-item-top {\n  display: flex;\n  align-items: flex-start;\n  gap: 6px;\n}\n\n.chmi-catalog-item a,\n.chmi-catalog-item-label {\n  flex: 1 1 auto;\n  min-width: 0;\n  color: #0645ad !important;\n  font: 700 12.5px/1.3 Arial, Helvetica, sans-serif !important;\n  text-decoration: underline !important;\n  overflow-wrap: anywhere;\n}\n\n.chmi-catalog-item-label {\n  color: #333 !important;\n  text-decoration: none !important;\n}\n\n.chmi-catalog-item.is-unavailable {\n  background: #fff8f8;\n}\n\n.chmi-catalog-item.is-unavailable .chmi-catalog-item-label {\n  color: #b4232d !important;\n  cursor: help;\n  text-decoration: line-through !important;\n  text-decoration-color: #b4232d !important;\n  text-decoration-thickness: 1.5px;\n}\n\n.chmi-catalog-item.is-unavailable .chmi-catalog-item-label:focus-visible {\n  outline: 2px solid #b4232d;\n  outline-offset: 2px;\n}\n\n.chmi-catalog-item a[aria-current=\"page\"] {\n  color: #8b1b1b !important;\n}\n\n.chmi-catalog-item p {\n  margin: 3px 0 0 !important;\n  color: #555 !important;\n  font: 11px/1.35 Arial, Helvetica, sans-serif !important;\n}\n\n.chmi-catalog-status {\n  flex: 0 0 auto;\n  padding: 1px 4px;\n  border: 1px solid #8cad99;\n  border-radius: 2px;\n  color: #28623a;\n  background: #edf8f0;\n  font: 700 9.5px/1.35 Arial, Helvetica, sans-serif !important;\n  text-transform: uppercase;\n  letter-spacing: .02em;\n}\n\n.chmi-catalog-status.is-archive {\n  color: #765100;\n  background: #fff8df;\n  border-color: #c8aa5b;\n}\n\n.chmi-catalog-status.is-legacy {\n  color: #07567e;\n  background: #eaf7fc;\n  border-color: #70a8c0;\n}\n\n.chmi-catalog-status.is-direct {\n  color: #4c3b00;\n  background: #f5f1d5;\n  border-color: #aea45a;\n}\n\n.chmi-catalog-status.is-unavailable {\n  color: #a01825;\n  background: #fff0f1;\n  border-color: #d18a91;\n}\n\n.chmi-catalog-item-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 8px;\n  margin-top: 4px;\n}\n\n.chmi-catalog-item-actions a {\n  flex: 0 1 auto;\n  font-size: 10.5px !important;\n  font-weight: 600 !important;\n}\n\n/* Old-look rám pro další živé výstupy. Nezasahuje do datového backendu ani logiky formulářů. */\nhtml.chmi-catalog-shell,\nhtml.chmi-catalog-shell body {\n  box-sizing: border-box;\n  min-width: 0 !important;\n  min-height: 100%;\n  margin: 0 !important;\n  overflow-x: hidden !important;\n  color: #111 !important;\n  background: #8bc6da !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n  font-size: 14px !important;\n}\n\nhtml.chmi-catalog-shell body *,\nhtml.chmi-catalog-shell body *::before,\nhtml.chmi-catalog-shell body *::after {\n  box-sizing: border-box;\n}\n\nhtml.chmi-catalog-shell header#chmu-header,\nhtml.chmi-catalog-shell nav[aria-label*=\"Nach\"],\nhtml.chmi-catalog-shell .menu-bookmarks,\nhtml.chmi-catalog-shell .lfr-layout-structure-item-chmi---spacer,\nhtml.chmi-catalog-shell footer,\nhtml.chmi-catalog-shell #footer,\nhtml.chmi-catalog-shell #footerBottom,\nhtml.chmi-catalog-shell .material-scrolltop {\n  display: none !important;\n}\n\nhtml.chmi-catalog-shell main {\n  box-sizing: border-box;\n  width: calc(100% - 12px) !important;\n  max-width: none !important;\n  min-height: min(var(--chmi-catalog-available-height, 640px), calc(100vh - 12px));\n  margin: 6px auto 12px !important;\n  padding: 0 8px 10px !important;\n  overflow: visible !important;\n  background: #fff !important;\n  border: 1px solid #9bafb7;\n  border-radius: 7px;\n  box-shadow: 0 3px 8px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-catalog-shell #chmi-catalog-classic-brand {\n  position: relative;\n  z-index: 1000;\n  display: flex !important;\n  flex-wrap: wrap !important;\n  align-items: center !important;\n  gap: 5px 7px;\n  width: calc(100% + 16px);\n  min-width: 0;\n  min-height: 38px;\n  margin: -1px -8px 7px;\n  padding: 6px 8px;\n  color: #176b95;\n  background: #fff;\n  border: 1px solid #9bafb7;\n  border-top: 0;\n  border-radius: 7px 7px 0 0;\n  box-shadow: 0 2px 6px rgb(40 83 101 / 18%);\n}\n\nhtml.chmi-catalog-shell #chmi-catalog-classic-brand > strong {\n  flex: 0 1 auto;\n  min-width: 0;\n  font-size: 15px;\n}\n\nhtml.chmi-catalog-shell #chmi-catalog-classic-brand > span {\n  flex: 0 0 auto;\n  color: #777;\n  font-size: 11px;\n}\n\nhtml.chmi-catalog-shell #chmi-catalog-classic-brand .chmi-classic-navigation {\n  flex: 1 1 430px;\n  flex-wrap: wrap !important;\n  margin: 0 2px;\n  white-space: normal;\n}\n\nhtml.chmi-catalog-shell #chmi-catalog-classic-brand .chmi-catalog-new-look {\n  margin-left: auto;\n}\n\nhtml.chmi-catalog-shell main > h1:first-of-type {\n  margin-top: 4px !important;\n  margin-bottom: 8px !important;\n  color: #176b95 !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n  font-size: 20px !important;\n}\n\nhtml.chmi-catalog-shell main h2,\nhtml.chmi-catalog-shell main h3,\nhtml.chmi-catalog-shell main h4 {\n  color: #176b95 !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-catalog-shell main img,\nhtml.chmi-catalog-shell main iframe,\nhtml.chmi-catalog-shell main svg,\nhtml.chmi-catalog-shell main video {\n  max-width: 100% !important;\n}\n\nhtml.chmi-catalog-shell main table {\n  max-width: 100% !important;\n}\n\nhtml.chmi-catalog-shell main input,\nhtml.chmi-catalog-shell main select,\nhtml.chmi-catalog-shell main textarea,\nhtml.chmi-catalog-shell main button {\n  max-width: 100%;\n}\n\nhtml.chmi-catalog-shell [id*=\"map\" i],\nhtml.chmi-catalog-shell [class*=\"map\" i] {\n  min-width: 0;\n}\n\n/* ALADIN: roztažení pracovního prostoru bez nahrazování map nebo časových ovladačů. */\nhtml.chmi-catalog-aladin .mainWrapper,\nhtml.chmi-catalog-aladin .main-wrapper,\nhtml.chmi-catalog-aladin main > .container,\nhtml.chmi-catalog-aladin main > .container-fluid {\n  width: 100% !important;\n  max-width: none !important;\n  margin-right: 0 !important;\n  margin-left: 0 !important;\n  padding-right: 4px !important;\n  padding-left: 4px !important;\n}\n\nhtml.chmi-catalog-aladin main img {\n  height: auto !important;\n  object-fit: contain;\n}\n\nhtml.chmi-catalog-aladin main form,\nhtml.chmi-catalog-aladin main fieldset {\n  min-width: 0 !important;\n}\n\n@media (max-width: 900px) {\n  .chmi-catalog-groups {\n    grid-template-columns: 1fr;\n  }\n\n  .chmi-catalog-list {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n\n  html.chmi-catalog-shell #chmi-catalog-classic-brand .chmi-classic-navigation {\n    flex-basis: 100%;\n    order: 3;\n  }\n}\n\n@media (max-width: 620px) {\n  #chmi-classic-catalog-overlay {\n    padding: 4px;\n  }\n\n  #chmi-classic-catalog-dialog {\n    max-height: calc(100vh - 8px);\n  }\n\n  .chmi-catalog-list {\n    grid-template-columns: 1fr;\n  }\n\n  html.chmi-catalog-shell main {\n    width: 100% !important;\n    margin-top: 0 !important;\n    border-right: 0;\n    border-left: 0;\n    border-radius: 0;\n  }\n\n  html.chmi-catalog-shell #chmi-catalog-classic-brand {\n    border-radius: 0;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  #chmi-classic-catalog-overlay *,\n  html.chmi-catalog-shell * {\n    scroll-behavior: auto !important;\n    transition-duration: 0.01ms !important;\n    animation-duration: 0.01ms !important;\n  }\n}\n\n/*\n * Doložená adaptace historických aplikací ČHMÚ.\n * Nekopíruje původní CSS/JS ani archivní obrázky. Zachovává DOM a nativní\n * ovládání zdrojové aplikace a pouze přidává společný rám a responzivní fit.\n */\nhtml.chmi-legacy-classic,\nhtml.chmi-legacy-classic body {\n  box-sizing: border-box;\n  width: 100% !important;\n  max-width: 100% !important;\n  min-width: 0 !important;\n  margin: 0 !important;\n  overflow-x: hidden !important;\n  background: #8bc6da !important;\n  color: #111;\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-legacy-classic body *,\nhtml.chmi-legacy-classic body *::before,\nhtml.chmi-legacy-classic body *::after {\n  box-sizing: border-box;\n}\n\n#chmi-legacy-classic-header {\n  position: relative;\n  z-index: 2147483000;\n  display: grid;\n  grid-template-columns: auto minmax(0, 1fr) auto;\n  align-items: center;\n  gap: 5px 9px;\n  width: 100%;\n  min-width: 0;\n  padding: 4px 7px;\n  border: 1px solid #3a819e;\n  border-width: 0 0 1px;\n  background: linear-gradient(#eaf8fd, #ccebf5);\n  color: #111;\n  font: 12px/1.25 Arial, Helvetica, sans-serif;\n  box-shadow: 0 1px 2px rgb(0 0 0 / 18%);\n}\n\n#chmi-legacy-classic-header .chmi-legacy-brand,\n#chmi-legacy-classic-header nav,\n#chmi-legacy-classic-header .chmi-legacy-actions {\n  display: flex;\n  align-items: center;\n  gap: 4px;\n  min-width: 0;\n}\n\n#chmi-legacy-classic-header .chmi-legacy-brand strong {\n  white-space: nowrap;\n  font-size: 13px;\n}\n\n#chmi-legacy-classic-header .chmi-legacy-badge {\n  padding: 1px 4px;\n  border: 1px solid #c3a65b;\n  background: #fff7dc;\n  color: #6e5000;\n  font-size: 9px;\n  font-weight: 700;\n  text-transform: uppercase;\n  white-space: nowrap;\n}\n\n#chmi-legacy-classic-header nav {\n  flex-wrap: wrap;\n}\n\n#chmi-legacy-classic-header a {\n  display: inline-block;\n  max-width: 100%;\n  padding: 2px 5px;\n  border: 1px solid #87b8cb;\n  border-radius: 2px;\n  background: #f6fcff;\n  color: #064f76 !important;\n  font: 700 10.5px/1.25 Arial, Helvetica, sans-serif !important;\n  text-decoration: none !important;\n  white-space: nowrap;\n}\n\n#chmi-legacy-classic-header a:hover,\n#chmi-legacy-classic-header a:focus-visible {\n  background: #fff;\n  border-color: #397f9c;\n  text-decoration: underline !important;\n}\n\n#chmi-legacy-classic-header .chmi-legacy-actions {\n  justify-content: flex-end;\n  flex-wrap: wrap;\n}\n\n#chmi-legacy-classic-header .chmi-legacy-actions a.is-primary {\n  border-color: #4c8e5e;\n  background: #edf8f0;\n  color: #245d35 !important;\n}\n\nhtml.chmi-legacy-classic body > :not(#chmi-legacy-classic-header) {\n  max-width: 100% !important;\n}\n\nhtml.chmi-legacy-classic img,\nhtml.chmi-legacy-classic canvas,\nhtml.chmi-legacy-classic svg,\nhtml.chmi-legacy-classic video,\nhtml.chmi-legacy-classic object,\nhtml.chmi-legacy-classic embed,\nhtml.chmi-legacy-classic iframe {\n  max-width: 100% !important;\n}\n\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"viewer\"] img,\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"viewer\"] canvas,\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"viewer\"] svg,\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"viewer\"] object,\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"viewer\"] embed,\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"viewer\"] iframe {\n  max-height: var(--chmi-legacy-available-height, calc(100vh - 54px)) !important;\n  object-fit: contain;\n}\n\nhtml.chmi-legacy-classic table {\n  max-width: 100% !important;\n}\n\nhtml.chmi-legacy-classic input,\nhtml.chmi-legacy-classic select,\nhtml.chmi-legacy-classic button,\nhtml.chmi-legacy-classic textarea {\n  max-width: 100%;\n}\n\nhtml.chmi-legacy-classic [style*=\"min-width\"] {\n  min-width: 0 !important;\n}\n\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"gallery\"] img {\n  height: auto !important;\n}\n\n@media (max-width: 1050px) {\n  #chmi-legacy-classic-header {\n    grid-template-columns: 1fr auto;\n  }\n\n  #chmi-legacy-classic-header nav {\n    grid-column: 1 / -1;\n    grid-row: 2;\n  }\n}\n\n@media (max-width: 700px) {\n  #chmi-legacy-classic-header {\n    grid-template-columns: 1fr;\n  }\n\n  #chmi-legacy-classic-header nav,\n  #chmi-legacy-classic-header .chmi-legacy-actions {\n    grid-column: 1;\n  }\n\n  #chmi-legacy-classic-header .chmi-legacy-actions {\n    justify-content: flex-start;\n  }\n\n  #chmi-legacy-classic-header .chmi-legacy-brand {\n    flex-wrap: wrap;\n  }\n}\n\n\n#chmi-classic-userscript-restore {\n  position: fixed;\n  right: 12px;\n  bottom: 12px;\n  z-index: 2147483647;\n  padding: 7px 12px;\n  border: 1px solid #1677a8;\n  border-radius: 2px;\n  background: #eaf7fc;\n  color: #07567e;\n  font: 600 13px Arial, sans-serif;\n  cursor: pointer;\n  box-shadow: 0 2px 8px rgb(0 0 0 / 25%);\n}");
+  GM_addStyle("/* Keep the complete native scale inside the map, independently of map zoom.\n   Native inline pixel sizes otherwise push the lowest values below the viewport. */\nhtml.chmi-radar-classic #div_scl {\n  top: auto !important;\n  bottom: 22px !important;\n  left: 6px !important;\n  width: auto !important;\n  height: min(55%, 440px) !important;\n  max-height: calc(100% - 160px) !important;\n  z-index: 450;\n  pointer-events: none;\n}\nhtml.chmi-radar-classic #div_scl #img_scl {\n  display: block !important;\n  width: auto !important;\n  height: 100% !important;\n  max-height: 100% !important;\n  max-width: 100% !important;\n  object-fit: contain;\n}\n\nhtml.chmi-radar-classic,\nhtml.chmi-radar-classic body#mbody {\n  width: 100%;\n  height: 100%;\n  min-height: 100vh;\n  background: #8bc6da !important;\n  color: #555 !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n  font-size: 13px !important;\n}\n\nhtml.chmi-radar-classic #content,\nhtml.chmi-radar-classic #wrapper > nav,\nhtml.chmi-radar-classic #footer,\nhtml.chmi-radar-classic #footerBottom,\nhtml.chmi-radar-classic .material-scrolltop,\nhtml.chmi-radar-classic .chmi-radar-classic-hidden {\n  display: none !important;\n}\n\nhtml.chmi-radar-classic #wrapper {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: column !important;\n  width: calc(100vw - 20px) !important;\n  max-width: none !important;\n  height: calc(100vh - 20px) !important;\n  min-height: 560px !important;\n  margin: 10px auto !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-brand {\n  box-sizing: border-box;\n  display: flex;\n  flex: 0 0 auto;\n  align-items: baseline;\n  gap: 9px;\n  min-height: 46px;\n  padding: 11px 14px 9px;\n  color: #175f82;\n  background: #fff;\n  border-radius: 12px 12px 0 0;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-brand strong {\n  color: #176b95;\n  font-size: 16px;\n  letter-spacing: 0.01em;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-brand span {\n  color: #777;\n  font-size: 12px;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-brand button {\n  margin-left: auto;\n  padding: 3px 9px;\n  color: #176b95;\n  background: #eef8fc;\n  border: 1px solid #91c4d9;\n  border-radius: 3px;\n  font: 12px/1.4 Arial, Helvetica, sans-serif;\n  cursor: pointer;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-brand button:hover {\n  background: #dff1f8;\n}\n\nhtml.chmi-radar-classic .mainWrapper {\n  box-sizing: border-box;\n  display: flex !important;\n  flex: 1 1 auto !important;\n  flex-direction: column !important;\n  min-height: 0 !important;\n  width: 100% !important;\n  margin: 0 !important;\n  padding: 8px 10px 14px !important;\n  background: #fff !important;\n  border-radius: 0 0 12px 12px;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n  overflow: hidden;\n}\n\nhtml.chmi-radar-classic .chmi-radar-classic-app-section {\n  box-sizing: border-box;\n  display: flex !important;\n  flex: 1 1 auto !important;\n  flex-direction: column !important;\n  min-height: 0 !important;\n  width: 100% !important;\n  max-width: none !important;\n  margin: 0 !important;\n}\n\nhtml.chmi-radar-classic .chmi-radar-classic-app-row {\n  box-sizing: border-box;\n  display: flex !important;\n  flex: 1 1 auto !important;\n  flex-direction: row !important;\n  align-items: stretch !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  width: 100% !important;\n  max-width: none !important;\n  height: 100% !important;\n}\n\nhtml.chmi-radar-classic #div_container_data {\n  position: relative !important;\n  flex: 1 1 auto !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  width: auto !important;\n  max-width: none !important;\n  height: 100% !important;\n  background: #d2d2d2 !important;\n  overflow: hidden;\n}\n\nhtml.chmi-radar-classic #div_container_data .leaflet-container {\n  width: 100% !important;\n  max-width: none !important;\n  height: 100% !important;\n  min-height: 100% !important;\n}\n\nhtml.chmi-radar-classic.chmi-radar-classic-web-maps #div_container_data #div_bg {\n  width: 100% !important;\n  height: 100% !important;\n}\n\nhtml.chmi-radar-classic #div_container_menu {\n  box-sizing: border-box;\n  flex: 0 0 320px !important;\n  align-self: stretch !important;\n  width: 320px !important;\n  max-width: 320px !important;\n  padding: 10px !important;\n  color: #555 !important;\n  background: #fff !important;\n  border: 0 !important;\n  border-left: 1px solid #bbb !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n  min-height: 0 !important;\n  overflow: auto !important;\n  font: 13px/1.35 Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-radar-classic #div_container_menu .accordion-button {\n  min-height: 34px;\n  padding: 7px 8px !important;\n  color: #176b95 !important;\n  background: #f7fbfd !important;\n  border-bottom: 1px solid #b9cbd3 !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n  font: bold 13px/1.3 Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-radar-classic #div_container_menu .accordion-body {\n  padding: 8px 0 10px !important;\n}\n\nhtml.chmi-radar-classic #div_container_menu select,\nhtml.chmi-radar-classic #div_container_menu input,\nhtml.chmi-radar-classic #div_container_menu button {\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar {\n  position: absolute;\n  z-index: 10000;\n  top: 8px;\n  left: 8px;\n  display: block;\n  padding: 3px;\n  background: rgb(255 255 255 / 94%);\n  border: 1px solid #b8cbd4;\n  border-radius: 3px;\n  box-shadow: 0 1px 4px rgb(0 0 0 / 22%);\n}\n\nhtml.chmi-radar-classic #div_container_menu #div_radio_display {\n  display: none !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar .chmi-radar-classic-options {\n  display: inline-flex !important;\n  flex-wrap: nowrap !important;\n  width: auto !important;\n  white-space: nowrap;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar button {\n  box-sizing: border-box;\n  display: inline-block !important;\n  min-width: auto !important;\n  margin: 0 -1px 0 0 !important;\n  padding: 5px 11px !important;\n  color: #176b95 !important;\n  background: #f7fcfe !important;\n  border: 1px solid #8fc2d8 !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n  font: 12px/1.25 Arial, Helvetica, sans-serif !important;\n  text-align: center;\n  cursor: pointer;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar button:first-child {\n  border-radius: 2px 0 0 2px !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar button:last-child {\n  margin-right: 0 !important;\n  border-radius: 0 2px 2px 0 !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar button[aria-checked=\"true\"] {\n  position: relative;\n  z-index: 1;\n  color: #fff !important;\n  background: #4ea8d3 !important;\n  border-color: #2588ba !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar button:focus-visible,\nhtml.chmi-radar-classic #chmi-radar-classic-brand button:focus-visible {\n  outline: 3px solid #f5a623 !important;\n  outline-offset: 2px;\n}\n\n@media (max-width: 991px) {\n  html.chmi-radar-classic #wrapper {\n    width: calc(100% - 12px) !important;\n    height: auto !important;\n    min-height: calc(100vh - 12px) !important;\n    margin: 6px auto !important;\n  }\n\n  html.chmi-radar-classic .chmi-radar-classic-app-row {\n    flex-direction: column !important;\n    height: auto !important;\n    overflow: visible !important;\n  }\n\n  html.chmi-radar-classic #div_container_data {\n    min-height: 60vh !important;\n    height: 60vh !important;\n  }\n\n  html.chmi-radar-classic #div_container_menu {\n    width: 100% !important;\n    max-width: none !important;\n    border-top: 1px solid #bbb !important;\n    border-left: 0 !important;\n  }\n\n  html.chmi-radar-classic #chmi-radar-classic-toolbar {\n    top: 6px;\n    left: 6px;\n    max-width: calc(100% - 12px);\n    overflow-x: auto;\n  }\n}\n\n@media (max-width: 560px) {\n  html.chmi-radar-classic #chmi-radar-classic-brand span {\n    display: none;\n  }\n\n  html.chmi-radar-classic #chmi-radar-classic-toolbar button {\n    padding: 5px 8px !important;\n    font-size: 11px !important;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  html.chmi-radar-classic *,\n  html.chmi-radar-classic *::before,\n  html.chmi-radar-classic *::after {\n    scroll-behavior: auto !important;\n    transition-duration: 0.01ms !important;\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n  }\n}\n\n/* Radar vložený na úvodní stránce ČHMÚ – stylujeme jen jeho sekci. */\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic {\n  box-sizing: border-box;\n  position: relative;\n  width: 100% !important;\n  max-width: none !important;\n  margin: 12px 0 !important;\n  padding: 0 10px 12px !important;\n  background: #fff !important;\n  border: 1px solid #9bafb7 !important;\n  border-radius: 10px !important;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 18%);\n  overflow: hidden;\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: row !important;\n  flex-wrap: nowrap !important;\n  align-items: baseline !important;\n  gap: 9px;\n  width: calc(100% + 20px);\n  min-height: 42px;\n  margin: -1px -10px 8px;\n  padding: 10px 12px 8px;\n  color: #176b95;\n  background: #fff;\n  border-bottom: 1px solid #b8cbd4;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand strong {\n  color: #176b95;\n  font-size: 16px;\n  letter-spacing: 0.01em;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand span {\n  color: #777;\n  font-size: 12px;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand > button {\n  margin-left: auto;\n  padding: 3px 9px;\n  color: #176b95;\n  background: #eef8fc;\n  border: 1px solid #91c4d9;\n  border-radius: 3px;\n  font: 12px/1.4 Arial, Helvetica, sans-serif;\n  cursor: pointer;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand > button:hover {\n  background: #dff1f8;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-native-title,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-native-subtitle {\n  display: none !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host {\n  box-sizing: border-box;\n  width: 100% !important;\n  max-width: none !important;\n  margin-right: 0 !important;\n  margin-left: 0 !important;\n  background: #d2d2d2;\n  border: 1px solid #888 !important;\n  border-radius: 0 !important;\n  overflow: hidden;\n}\n\nhtml.chmi-home-radar-classic-active iframe.chmi-home-radar-classic-map-host {\n  min-height: 360px;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host img,\nhtml.chmi-home-radar-classic-active img.chmi-home-radar-classic-map-host {\n  display: block;\n  max-width: 100% !important;\n  height: auto !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic select,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic input,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic button {\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic select,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic button:not(#chmi-home-radar-classic-brand > button) {\n  border-radius: 2px !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand button:focus-visible,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic button:focus-visible,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic a:focus-visible,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic select:focus-visible,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic input:focus-visible {\n  outline: 3px solid #f5a623 !important;\n  outline-offset: 2px;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-anchor {\n  display: block;\n  position: relative;\n  top: -8px;\n  visibility: hidden;\n}\n\n@media (max-width: 640px) {\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic {\n    margin: 6px 0 !important;\n    padding-right: 6px !important;\n    padding-left: 6px !important;\n  }\n\n  html.chmi-home-radar-classic-active #chmi-home-radar-classic-brand {\n    width: calc(100% + 12px);\n    margin-right: -6px;\n    margin-left: -6px;\n  }\n\n  html.chmi-home-radar-classic-active #chmi-home-radar-classic-brand span {\n    display: none;\n  }\n\n  html.chmi-home-radar-classic-active iframe.chmi-home-radar-classic-map-host {\n    min-height: 300px;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic *,\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic *::before,\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic *::after {\n    scroll-behavior: auto !important;\n    transition-duration: 0.01ms !important;\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n  }\n}\n\n/* Pravděpodobnost růstu hub – portálová stránka ČHMÚ. */\nhtml.chmi-hub-classic,\nhtml.chmi-hub-classic body {\n  min-height: 100%;\n  background: #8bc6da !important;\n  color: #111 !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n  font-size: 14px !important;\n}\n\nhtml.chmi-hub-classic header#chmu-header,\nhtml.chmi-hub-classic nav[aria-label*=\"Nach\"],\nhtml.chmi-hub-classic .menu-bookmarks,\nhtml.chmi-hub-classic .lfr-layout-structure-item-chmi---spacer,\nhtml.chmi-hub-classic footer,\nhtml.chmi-hub-classic #footer,\nhtml.chmi-hub-classic .material-scrolltop {\n  display: none !important;\n}\n\nhtml.chmi-hub-classic main {\n  box-sizing: border-box;\n  width: min(1460px, calc(100% - 20px)) !important;\n  max-width: none !important;\n  margin: 10px auto 40px !important;\n  padding: 0 10px 14px !important;\n  background: #fff !important;\n  border: 1px solid #9bafb7;\n  border-radius: 10px;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: row !important;\n  flex-wrap: nowrap !important;\n  align-items: baseline !important;\n  gap: 9px;\n  width: calc(100% + 20px);\n  min-height: 42px;\n  margin: -1px -10px 8px;\n  padding: 10px 12px 8px;\n  color: #176b95;\n  background: #fff;\n  border: 1px solid #9bafb7;\n  border-bottom: 0;\n  border-radius: 10px 10px 0 0;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand strong {\n  font-size: 16px;\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand span {\n  color: #777;\n  font-size: 12px;\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand button {\n  margin-left: auto;\n  padding: 3px 9px;\n  color: #176b95;\n  background: #f7fcfe;\n  border: 1px solid #8fc2d8;\n  border-radius: 2px;\n  font: 12px/1.4 Arial, Helvetica, sans-serif;\n  cursor: pointer;\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand button:hover {\n  background: #dff1f8;\n}\n\nhtml.chmi-hub-classic main h1 {\n  display: none !important;\n}\n\nhtml.chmi-hub-classic main h2,\nhtml.chmi-hub-classic main h3,\nhtml.chmi-hub-classic main h4 {\n  margin-top: 10px !important;\n  margin-bottom: 7px !important;\n  color: #176b95 !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-hub-classic main h3 {\n  font-size: 16px !important;\n}\n\nhtml.chmi-hub-classic main h4 {\n  font-size: 14px !important;\n}\n\nhtml.chmi-hub-classic .chmi-hub-classic-map-section {\n  box-sizing: border-box;\n  width: 100% !important;\n  max-width: none !important;\n  margin: 0 !important;\n  padding: 0 !important;\n}\n\nhtml.chmi-hub-classic #chmu-map-container,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host {\n  box-sizing: border-box;\n  width: 100% !important;\n  max-width: none !important;\n  background: #d2d2d2;\n  border-radius: 0 !important;\n}\n\nhtml.chmi-hub-classic #chmu-map-container,\nhtml.chmi-hub-classic iframe.chmi-hub-classic-map-host,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host.leaflet-container,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host.maplibregl-map,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host.ol-viewport {\n  height: min(78vh, 800px) !important;\n  min-height: 520px !important;\n  border: 1px solid #888;\n}\n\nhtml.chmi-hub-classic .chmi-hub-classic-map-host iframe,\nhtml.chmi-hub-classic #chmu-map-container iframe {\n  width: 100% !important;\n  max-width: none !important;\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand button:focus-visible,\nhtml.chmi-hub-classic main button:focus-visible,\nhtml.chmi-hub-classic main a:focus-visible,\nhtml.chmi-hub-classic main select:focus-visible,\nhtml.chmi-hub-classic main input:focus-visible {\n  outline: 3px solid #f5a623 !important;\n  outline-offset: 2px;\n}\n\n@media (max-width: 640px) {\n  html.chmi-hub-classic main {\n    width: calc(100% - 8px) !important;\n    margin-top: 4px !important;\n    padding-right: 6px !important;\n    padding-left: 6px !important;\n  }\n\n  html.chmi-hub-classic #chmi-hub-classic-brand {\n    width: calc(100% + 12px);\n    margin-right: -6px;\n    margin-left: -6px;\n  }\n\n  html.chmi-hub-classic #chmi-hub-classic-brand span {\n    display: none;\n  }\n\n  html.chmi-hub-classic #chmu-map-container,\n  html.chmi-hub-classic iframe.chmi-hub-classic-map-host,\n  html.chmi-hub-classic .chmi-hub-classic-map-host.leaflet-container,\n  html.chmi-hub-classic .chmi-hub-classic-map-host.maplibregl-map,\n  html.chmi-hub-classic .chmi-hub-classic-map-host.ol-viewport {\n    height: 70vh !important;\n    min-height: 420px !important;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  html.chmi-hub-classic *,\n  html.chmi-hub-classic *::before,\n  html.chmi-hub-classic *::after {\n    scroll-behavior: auto !important;\n    transition-duration: 0.01ms !important;\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n  }\n}\n\n/* 0.4.1 – dynamické přizpůsobení pracovního prostoru dostupnému oknu. */\nhtml.chmi-radar-classic,\nhtml.chmi-radar-classic body#mbody {\n  overflow: hidden !important;\n}\n\nhtml.chmi-radar-classic #wrapper {\n  width: calc(100vw - 12px) !important;\n  height: calc(100dvh - 12px) !important;\n  min-height: 0 !important;\n  margin: 6px auto !important;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-brand {\n  min-height: 40px;\n  padding-top: 8px;\n  padding-bottom: 7px;\n}\n\nhtml.chmi-radar-classic .mainWrapper {\n  padding: 6px 8px 8px !important;\n}\n\nhtml.chmi-radar-classic #div_container_menu {\n  flex: 0 0 clamp(260px, 20vw, 340px) !important;\n  width: clamp(260px, 20vw, 340px) !important;\n  max-width: clamp(260px, 20vw, 340px) !important;\n  overscroll-behavior: contain;\n}\n\nhtml.chmi-radar-classic #chmi-radar-classic-toolbar {\n  top: 8px;\n  left: var(--chmi-radar-toolbar-left, 56px);\n  max-width: calc(100% - var(--chmi-radar-toolbar-left, 56px) - 8px);\n}\n\nhtml.chmi-radar-classic #div_container_data .leaflet-left {\n  left: 6px !important;\n}\n\nhtml.chmi-radar-classic #div_container_data .leaflet-right {\n  right: 6px !important;\n}\n\nhtml.chmi-radar-classic #div_container_data .leaflet-top {\n  top: 6px !important;\n}\n\nhtml.chmi-radar-classic #div_container_data .leaflet-bottom {\n  bottom: 6px !important;\n}\n\n/* Homepage radar: stejný kompaktní pracovní rám a geometrie jako u produktového radaru. */\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic {\n  width: calc(100vw - 12px) !important;\n  max-width: none !important;\n  margin: 6px 0 8px calc(50% - 50vw + 6px) !important;\n  padding: 0 8px 8px !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-brand {\n  width: calc(100% + 16px);\n  min-height: 40px;\n  margin: -1px -8px 6px;\n  padding: 8px 10px 7px;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-app-section {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: column !important;\n  width: 100% !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  max-width: none !important;\n  margin: 0 !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: row !important;\n  align-items: stretch !important;\n  width: 100% !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  max-width: none !important;\n  height: var(--chmi-home-radar-fit-height, 72dvh) !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_data {\n  position: relative !important;\n  flex: 1 1 auto !important;\n  width: auto !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  max-width: none !important;\n  height: 100% !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_menu {\n  box-sizing: border-box;\n  flex: 0 0 clamp(260px, 20vw, 340px) !important;\n  width: clamp(260px, 20vw, 340px) !important;\n  max-width: clamp(260px, 20vw, 340px) !important;\n  min-height: 0 !important;\n  height: 100% !important;\n  padding: 10px !important;\n  border-left: 1px solid #bbb !important;\n  overflow: auto !important;\n  overscroll-behavior: contain;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host {\n  min-width: 0 !important;\n  max-width: none !important;\n  height: var(--chmi-home-radar-fit-height, 72dvh) !important;\n  min-height: min(360px, 60dvh) !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host.leaflet-container,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host.maplibregl-map,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host.ol-viewport {\n  height: var(--chmi-home-radar-fit-height, 72dvh) !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar {\n  position: absolute;\n  z-index: 10000;\n  top: 8px;\n  left: var(--chmi-home-radar-toolbar-left, 56px);\n  display: block;\n  max-width: calc(100% - var(--chmi-home-radar-toolbar-left, 56px) - 8px);\n  padding: 3px;\n  overflow-x: auto;\n  white-space: nowrap;\n  background: rgb(255 255 255 / 94%);\n  border: 1px solid #b8cbd4;\n  border-radius: 3px;\n  box-shadow: 0 1px 4px rgb(0 0 0 / 22%);\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar .chmi-radar-classic-options {\n  display: inline-flex !important;\n  flex-wrap: nowrap !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar button {\n  box-sizing: border-box;\n  margin: 0 -1px 0 0 !important;\n  padding: 5px 10px !important;\n  color: #176b95 !important;\n  background: #f7fcfe !important;\n  border: 1px solid #8fc2d8 !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n  font: 12px/1.25 Arial, Helvetica, sans-serif !important;\n  cursor: pointer;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar button:first-child {\n  border-radius: 2px 0 0 2px !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar button:last-child {\n  margin-right: 0 !important;\n  border-radius: 0 2px 2px 0 !important;\n}\n\nhtml.chmi-home-radar-classic-active #chmi-home-radar-classic-toolbar button[aria-checked=\"true\"] {\n  color: #fff !important;\n  background: #4ea8d3 !important;\n  border-color: #2588ba !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host .leaflet-left,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_data .leaflet-left {\n  left: 6px !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host .leaflet-right,\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_data .leaflet-right {\n  right: 6px !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host .maplibregl-ctrl-top-left {\n  top: 6px !important;\n  left: 6px !important;\n}\n\nhtml.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host .maplibregl-ctrl-top-right {\n  top: 6px !important;\n  right: 6px !important;\n}\n\n/* Houby: plná šířka okna, mapa vyplní zbylou výšku viewportu. */\nhtml.chmi-hub-classic,\nhtml.chmi-hub-classic body {\n  overflow-x: hidden !important;\n}\n\nhtml.chmi-hub-classic main {\n  width: calc(100vw - 12px) !important;\n  margin: 6px auto 8px !important;\n  padding: 0 8px 8px !important;\n  overflow-x: hidden !important;\n}\n\nhtml.chmi-hub-classic #chmi-hub-classic-brand {\n  width: calc(100% + 16px);\n  min-height: 40px;\n  margin: -1px -8px 6px;\n  padding: 8px 10px 7px;\n}\n\nhtml.chmi-hub-classic #chmu-map-container,\nhtml.chmi-hub-classic iframe.chmi-hub-classic-map-host,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host.leaflet-container,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host.maplibregl-map,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host.ol-viewport {\n  width: 100% !important;\n  max-width: none !important;\n  height: var(--chmi-hub-fit-height, calc(100dvh - 150px)) !important;\n  min-height: min(420px, calc(100dvh - 120px)) !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-hub-classic #chmu-map-container > *,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host > * {\n  max-width: 100%;\n}\n\nhtml.chmi-hub-classic #chmu-map-container .leaflet-left,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host .leaflet-left {\n  left: 8px !important;\n}\n\nhtml.chmi-hub-classic #chmu-map-container .leaflet-right,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host .leaflet-right {\n  right: 8px !important;\n}\n\nhtml.chmi-hub-classic #chmu-map-container .maplibregl-ctrl-top-left,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host .maplibregl-ctrl-top-left {\n  top: 8px !important;\n  left: 8px !important;\n}\n\nhtml.chmi-hub-classic #chmu-map-container .maplibregl-ctrl-top-right,\nhtml.chmi-hub-classic .chmi-hub-classic-map-host .maplibregl-ctrl-top-right {\n  top: 8px !important;\n  right: 8px !important;\n}\n\n@media (max-width: 760px) {\n  html.chmi-radar-classic,\n  html.chmi-radar-classic body#mbody {\n    overflow: auto !important;\n  }\n\n  html.chmi-radar-classic #wrapper {\n    width: calc(100% - 8px) !important;\n    height: auto !important;\n    min-height: calc(100dvh - 8px) !important;\n    margin: 4px auto !important;\n  }\n\n  html.chmi-radar-classic .chmi-radar-classic-app-row,\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row {\n    flex-direction: column !important;\n    height: auto !important;\n    overflow: visible !important;\n  }\n\n  html.chmi-radar-classic #div_container_data,\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_data,\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic-map-host {\n    height: 62dvh !important;\n    min-height: 320px !important;\n  }\n\n  html.chmi-radar-classic #div_container_menu,\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic-app-row #div_container_menu {\n    flex-basis: auto !important;\n    width: 100% !important;\n    max-width: none !important;\n    height: auto !important;\n    border-top: 1px solid #bbb !important;\n    border-left: 0 !important;\n  }\n\n  html.chmi-home-radar-classic-active .chmi-home-radar-classic {\n    width: calc(100vw - 8px) !important;\n    margin-left: calc(50% - 50vw + 4px) !important;\n  }\n\n  html.chmi-hub-classic main {\n    width: calc(100vw - 8px) !important;\n    margin-top: 4px !important;\n  }\n}\n\n/* Prevent browser default body margins from reintroducing viewport scrollbars in full-window classic apps. */\nhtml.chmi-radar-classic body#mbody,\nhtml.chmi-hub-classic body {\n    margin: 0 !important;\n    padding: 0 !important;\n}\n\nhtml.chmi-satellite-classic,\nhtml.chmi-satellite-classic body {\n  min-height: 100%;\n  background: #8bc6da !important;\n  color: #111 !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n  font-size: 14px !important;\n}\n\nhtml.chmi-satellite-classic #chmi-satellite-classic-brand {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: row !important;\n  flex-wrap: nowrap !important;\n  align-items: baseline !important;\n  gap: 9px;\n  width: 100%;\n  min-height: 42px;\n  padding: 10px 12px 8px;\n  color: #176b95;\n  background: #fff;\n  border: 1px solid #9bafb7;\n  border-bottom: 0;\n  border-radius: 10px 10px 0 0;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-satellite-classic #chmi-satellite-classic-brand strong {\n  font-size: 16px;\n}\n\nhtml.chmi-satellite-classic #chmi-satellite-classic-brand span {\n  color: #777;\n  font-size: 12px;\n}\n\nhtml.chmi-satellite-classic #chmi-satellite-classic-brand button {\n  margin-left: auto;\n  padding: 3px 9px;\n  color: #176b95;\n  background: #f7fcfe;\n  border: 1px solid #8fc2d8;\n  border-radius: 2px;\n  font: 12px/1.4 Arial, Helvetica, sans-serif;\n  cursor: pointer;\n}\n\nhtml.chmi-satellite-classic #chmi-satellite-classic-brand button:hover {\n  background: #dff1f8;\n}\n\nhtml.chmi-satellite-classic-live #content,\nhtml.chmi-satellite-classic-live #wrapper > nav,\nhtml.chmi-satellite-classic-live #footer,\nhtml.chmi-satellite-classic-live #footerBottom,\nhtml.chmi-satellite-classic-live .material-scrolltop {\n  display: none !important;\n}\n\nhtml.chmi-satellite-classic-live #wrapper {\n  width: min(1460px, calc(100% - 20px)) !important;\n  min-height: auto !important;\n  margin: 10px auto 40px !important;\n}\n\nhtml.chmi-satellite-classic-live .mainWrapper {\n  box-sizing: border-box;\n  width: 100% !important;\n  margin: 0 !important;\n  padding: 8px 10px 14px !important;\n  background: #fff !important;\n  border: 1px solid #9bafb7;\n  border-top: 0;\n  border-radius: 0 0 10px 10px;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-satellite-classic-live .mainWrapper > .container-fluid {\n  margin: 0 !important;\n  padding: 0 !important;\n}\n\nhtml.chmi-satellite-classic-live .mainWrapper > .container-fluid > h1,\nhtml.chmi-satellite-classic-live #btn-desktop-sidebar-toggle,\nhtml.chmi-satellite-classic-live #animation-controls,\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-native-choice {\n  display: none !important;\n}\n\nhtml.chmi-satellite-classic-live #main-row {\n  display: grid !important;\n  grid-template-columns: minmax(0, 1160px) 250px;\n  justify-content: center;\n  gap: 10px !important;\n  margin: 0 !important;\n}\n\nhtml.chmi-satellite-classic-live #main-row > .map-col,\nhtml.chmi-satellite-classic-live #main-row > .desktop-sidebar-col {\n  box-sizing: border-box;\n  width: auto !important;\n  max-width: none !important;\n  margin: 0 !important;\n  padding: 0 !important;\n}\n\nhtml.chmi-satellite-classic-live #loaded-product-title {\n  min-height: 24px;\n  margin: 0 0 4px !important;\n  text-align: left !important;\n}\n\nhtml.chmi-satellite-classic-live #loaded-product-title h2 {\n  margin: 0 !important;\n  color: #176b95 !important;\n  font: bold 16px/1.4 Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-satellite-classic-live #map-container {\n  max-height: none !important;\n  background: #d2d2d2 !important;\n  border: 1px solid #888;\n  border-radius: 0 !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu {\n  position: static !important;\n  visibility: visible !important;\n  width: 100% !important;\n  min-height: 0 !important;\n  height: calc(100vh - 84px) !important;\n  max-height: 900px;\n  padding: 0 !important;\n  color: #111 !important;\n  background: #fff !important;\n  border: 1px solid #aaa !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n  transform: none !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .offcanvas-body {\n  padding: 9px !important;\n  overflow-y: auto !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .settings-section {\n  margin: 0 !important;\n  padding: 8px 0 !important;\n  background: #fff !important;\n  border: 0 !important;\n  border-bottom: 1px solid #bbb !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .section-header,\nhtml.chmi-satellite-classic-live #settingsMenu .form-label {\n  margin-bottom: 4px !important;\n  color: #111 !important;\n  font: bold 13px/1.3 Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .btn-info-icon {\n  display: none !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu select,\nhtml.chmi-satellite-classic-live #settingsMenu input,\nhtml.chmi-satellite-classic-live #settingsMenu button {\n  border-radius: 2px !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-satellite-classic-live #time-range-group {\n  gap: 4px !important;\n}\n\nhtml.chmi-satellite-classic-live #time-range-group label {\n  min-width: 39px;\n  margin: 0 !important;\n  padding: 4px 7px !important;\n  color: #14387f !important;\n  background: #f8fbff !important;\n  border: 1px solid #14387f !important;\n  border-radius: 2px !important;\n  font: 13px/1.25 Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-satellite-classic-live #time-range-group input:checked + label {\n  color: #fff !important;\n  background: #14387f !important;\n}\n\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-selector {\n  margin-bottom: 8px;\n  padding-bottom: 8px;\n  border-bottom: 1px solid #888;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-satellite-row {\n  display: flex;\n  align-items: center;\n  gap: 7px;\n  margin-bottom: 9px;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-satellite-row label,\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-selector > strong {\n  font-weight: bold;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-satellite-row select {\n  flex: 1;\n  min-width: 0;\n  padding: 3px 5px;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-matrix {\n  display: grid;\n  gap: 3px;\n  margin-top: 7px;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row {\n  display: grid;\n  grid-template-columns: minmax(85px, 1fr) repeat(3, 37px);\n  align-items: center;\n  gap: 5px;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row span {\n  color: #0645ad;\n  font-weight: bold;\n  text-decoration: underline;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row button {\n  min-width: 35px;\n  padding: 2px 4px;\n  color: #111;\n  background: #f3f3f3;\n  border: 1px solid #999;\n  border-radius: 2px;\n  font: 12px/1.3 Arial, Helvetica, sans-serif;\n  cursor: pointer;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row button:hover,\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row button.is-active {\n  color: #fff;\n  background: #4ea8d3;\n  border-color: #2588ba;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-selection {\n  margin-top: 8px;\n  color: #555;\n  font-size: 11px;\n}\n\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-player {\n  display: flex;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 6px;\n  padding: 8px 0 6px;\n  color: #111;\n  background: #fff;\n  font: 13px/1.3 Arial, Helvetica, sans-serif;\n}\n\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-player button,\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-player select {\n  min-height: 25px;\n  padding: 2px 7px;\n  color: #111;\n  background: #f3f3f3;\n  border: 1px solid #999;\n  border-radius: 2px;\n  font: 12px/1.3 Arial, Helvetica, sans-serif;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-player-buttons {\n  display: inline-flex;\n  gap: 3px;\n}\n\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-player [data-role=\"loaded\"],\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-player [data-role=\"time\"] {\n  white-space: nowrap;\n}\n\nhtml.chmi-satellite-classic-live .product-legend-box {\n  margin-top: 4px !important;\n  padding: 8px !important;\n  background: #fff !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n}\n\nhtml.chmi-satellite-classic-live #satInfo {\n  color: #d40000 !important;\n  font-size: 13px !important;\n}\n\nhtml.chmi-satellite-classic-portal header#chmu-header,\nhtml.chmi-satellite-classic-portal nav[aria-label*=\"Nach\"],\nhtml.chmi-satellite-classic-portal .menu-bookmarks,\nhtml.chmi-satellite-classic-portal .lfr-layout-structure-item-chmi---spacer,\nhtml.chmi-satellite-classic-portal footer,\nhtml.chmi-satellite-classic-portal #footer,\nhtml.chmi-satellite-classic-portal .material-scrolltop {\n  display: none !important;\n}\n\nhtml.chmi-satellite-classic-portal main {\n  box-sizing: border-box;\n  width: min(1460px, calc(100% - 20px)) !important;\n  max-width: none !important;\n  margin: 10px auto 40px !important;\n  padding: 0 10px 14px !important;\n  background: #fff !important;\n  border: 1px solid #9bafb7;\n  border-radius: 10px;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-satellite-classic-portal main > #chmi-satellite-classic-brand {\n  width: calc(100% + 20px);\n  margin: -1px -10px 0;\n}\n\nhtml.chmi-satellite-classic-portal main h1 {\n  display: none !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products {\n  display: flex;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 7px;\n  margin: 9px 0;\n  padding: 7px 8px;\n  background: #fff;\n  border: 1px solid #aaa;\n}\n\nhtml.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products > div {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px;\n}\n\nhtml.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products a {\n  padding: 3px 8px;\n  color: #0645ad;\n  background: #f3f3f3;\n  border: 1px solid #999;\n  border-radius: 2px;\n  font: 12px/1.35 Arial, Helvetica, sans-serif;\n  text-decoration: none;\n}\n\nhtml.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products a:hover,\nhtml.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products a[aria-current=\"page\"] {\n  color: #fff;\n  background: #4ea8d3;\n  border-color: #2588ba;\n}\n\nhtml.chmi-satellite-classic-portal .chmi-satellite-classic-live-link {\n  margin-left: auto;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container {\n  box-sizing: border-box;\n  width: 100% !important;\n  height: min(78vh, 800px) !important;\n  min-height: 520px;\n  background: #d2d2d2;\n  border: 1px solid #888;\n}\n\nhtml.chmi-satellite-classic button:focus-visible,\nhtml.chmi-satellite-classic a:focus-visible,\nhtml.chmi-satellite-classic select:focus-visible,\nhtml.chmi-satellite-classic input:focus-visible {\n  outline: 3px solid #f5a623 !important;\n  outline-offset: 2px;\n}\n\n@media (max-width: 1100px) {\n  html.chmi-satellite-classic-live #main-row {\n    grid-template-columns: minmax(0, 1fr);\n  }\n\n  html.chmi-satellite-classic-live #settingsMenu {\n    height: auto !important;\n    max-height: none !important;\n  }\n}\n\n@media (max-width: 640px) {\n  html.chmi-satellite-classic #chmi-satellite-classic-brand span {\n    display: none;\n  }\n\n  html.chmi-satellite-classic-live #wrapper,\n  html.chmi-satellite-classic-portal main {\n    width: calc(100% - 8px) !important;\n    margin-top: 4px !important;\n  }\n\n  html.chmi-satellite-classic-live .chmi-satellite-classic-product-row {\n    grid-template-columns: minmax(82px, 1fr) repeat(3, 34px);\n    gap: 3px;\n  }\n\n  html.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n\n  html.chmi-satellite-classic-portal .chmi-satellite-classic-live-link {\n    margin-left: 0;\n  }\n\n  html.chmi-satellite-classic-portal #chmu-map-container {\n    min-height: 420px;\n    height: 70vh !important;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  html.chmi-satellite-classic *,\n  html.chmi-satellite-classic *::before,\n  html.chmi-satellite-classic *::after {\n    scroll-behavior: auto !important;\n    transition-duration: 0.01ms !important;\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n  }\n}\n\n/* 0.4.1 – dynamické využití viewportu pro Meteosat a portálové družicové mapy. */\nhtml.chmi-satellite-classic-live,\nhtml.chmi-satellite-classic-live body {\n  width: 100%;\n  height: 100%;\n  min-height: 100dvh;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #wrapper {\n  box-sizing: border-box;\n  display: flex !important;\n  flex-direction: column !important;\n  width: calc(100vw - 12px) !important;\n  max-width: none !important;\n  height: calc(100dvh - 12px) !important;\n  min-height: 0 !important;\n  margin: 6px auto !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-brand {\n  flex: 0 0 auto;\n  min-height: 40px;\n  padding-top: 8px;\n  padding-bottom: 7px;\n}\n\nhtml.chmi-satellite-classic-live .mainWrapper {\n  display: flex !important;\n  flex: 1 1 auto !important;\n  min-height: 0 !important;\n  padding: 6px 8px 8px !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live .mainWrapper > .container-fluid {\n  display: flex !important;\n  flex: 1 1 auto !important;\n  flex-direction: column !important;\n  width: 100% !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n}\n\nhtml.chmi-satellite-classic-live #main-row {\n  display: grid !important;\n  flex: 1 1 auto !important;\n  grid-template-columns: minmax(0, 1fr) clamp(230px, 18vw, 300px) !important;\n  grid-template-rows: minmax(0, 1fr) !important;\n  align-items: stretch !important;\n  justify-content: stretch !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  width: 100% !important;\n  height: 100% !important;\n  gap: 8px !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #main-row > .map-col {\n  display: flex !important;\n  flex-direction: column !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  height: 100% !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #main-row > .desktop-sidebar-col {\n  display: flex !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  height: 100% !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #loaded-product-title {\n  flex: 0 0 auto;\n  min-height: 20px;\n  margin-bottom: 3px !important;\n}\n\nhtml.chmi-satellite-classic-live #map-container {\n  box-sizing: border-box;\n  flex: 1 1 auto !important;\n  width: 100% !important;\n  max-width: none !important;\n  min-width: 0 !important;\n  min-height: 180px !important;\n  height: auto !important;\n  max-height: none !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #main-row .map-wrapper {\n  display: flex !important;\n  flex-direction: column !important;\n  flex: 1 1 0 !important;\n  min-height: 0 !important;\n  width: 100% !important;\n  max-width: none !important;\n  margin: 0 !important;\n}\nhtml.chmi-satellite-classic-live #map-container {\n  flex: 1 1 0 !important;\n  aspect-ratio: auto !important;\n}\nhtml.chmi-satellite-classic-live #settingsMenu .chmi-classic-disclosure > summary {\n  display: list-item;\n  cursor: pointer;\n  padding: 4px 0;\n  color: #154e73;\n  font: bold 12px/1.3 Arial, sans-serif;\n}\nhtml.chmi-satellite-classic-live #settingsMenu .chmi-classic-disclosure > summary .section-header {\n  display: inline-flex !important;\n  margin: 0 !important;\n}\nhtml.chmi-satellite-classic-live #settingsMenu .settings-section { padding: 4px 0 !important; }\nhtml.chmi-satellite-classic-live #settingsMenu .form-check { margin-bottom: 3px !important; }\nhtml.chmi-satellite-classic-live #settingsMenu .form-check-label { font-size: 12px !important; }\nhtml.chmi-satellite-classic-live #settingsMenu #satInfo { font: 12px/1.35 Arial, sans-serif !important; }\nhtml.chmi-satellite-classic-live #settingsMenu #satInfo p { font: inherit !important; }\nhtml.chmi-satellite-classic-live #time-range-group label { min-width: 34px; padding: 3px 5px !important; font-size: 12px !important; }\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row span { font-size: 12px; }\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-satellite-row { margin-bottom: 5px; }\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-selector { margin-bottom: 4px; padding-bottom: 5px; }\n\nhtml.chmi-satellite-classic-live #map-container img,\nhtml.chmi-satellite-classic-live #map-container canvas,\nhtml.chmi-satellite-classic-live #map-container video {\n  max-width: 100% !important;\n  max-height: 100% !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu {\n  box-sizing: border-box;\n  flex: 1 1 auto !important;\n  width: 100% !important;\n  min-width: 0 !important;\n  max-width: 100% !important;\n  min-height: 0 !important;\n  height: 100% !important;\n  max-height: none !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .offcanvas-body {\n  box-sizing: border-box;\n  width: 100% !important;\n  min-width: 0 !important;\n  height: 100% !important;\n  min-height: 0 !important;\n  padding: 8px !important;\n  overflow-x: hidden !important;\n  overflow-y: auto !important;\n  overscroll-behavior: contain;\n  scrollbar-gutter: stable;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .settings-section,\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-selector,\nhtml.chmi-satellite-classic-live #time-range-group {\n  box-sizing: border-box;\n  min-width: 0 !important;\n  max-width: 100% !important;\n}\n\nhtml.chmi-satellite-classic-live #time-range-group {\n  display: flex !important;\n  flex-wrap: wrap !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu input[type=\"range\"],\nhtml.chmi-satellite-classic-live #settingsMenu select {\n  max-width: 100% !important;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu .form-check,\nhtml.chmi-satellite-classic-live #settingsMenu label {\n  min-width: 0 !important;\n}\n\nhtml.chmi-satellite-classic-live #chmi-satellite-classic-player {\n  flex: 0 0 auto !important;\n  min-width: 0 !important;\n  padding: 5px 0 1px;\n}\n\n/* Portálové polární/geostacionární mapy vyplní šířku i zbývající výšku okna. */\nhtml.chmi-satellite-classic-portal,\nhtml.chmi-satellite-classic-portal body {\n  overflow-x: hidden !important;\n}\n\nhtml.chmi-satellite-classic-portal main {\n  width: calc(100vw - 12px) !important;\n  max-width: none !important;\n  margin: 6px auto 8px !important;\n  padding: 0 8px 8px !important;\n  overflow-x: hidden !important;\n}\n\nhtml.chmi-satellite-classic-portal main > #chmi-satellite-classic-brand {\n  width: calc(100% + 16px);\n  min-height: 40px;\n  margin: -1px -8px 0;\n  padding-top: 8px;\n  padding-bottom: 7px;\n}\n\nhtml.chmi-satellite-classic-portal #chmi-satellite-classic-portal-products {\n  margin: 6px 0;\n  padding: 5px 7px;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container {\n  width: 100% !important;\n  max-width: none !important;\n  height: var(--chmi-satellite-portal-fit-height, calc(100dvh - 140px)) !important;\n  min-height: min(420px, calc(100dvh - 120px)) !important;\n  overflow: hidden !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container > * {\n  max-width: 100%;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container .leaflet-left {\n  left: 8px !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container .leaflet-right {\n  right: 8px !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container .leaflet-top {\n  top: 8px !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container .leaflet-bottom {\n  bottom: 8px !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container .maplibregl-ctrl-top-left {\n  top: 8px !important;\n  left: 8px !important;\n}\n\nhtml.chmi-satellite-classic-portal #chmu-map-container .maplibregl-ctrl-top-right {\n  top: 8px !important;\n  right: 8px !important;\n}\n\n@media (max-width: 760px) {\n  html.chmi-satellite-classic-live,\n  html.chmi-satellite-classic-live body {\n    height: auto;\n    overflow: auto !important;\n  }\n\n  html.chmi-satellite-classic-live #wrapper {\n    width: calc(100% - 8px) !important;\n    height: auto !important;\n    min-height: calc(100dvh - 8px) !important;\n    margin: 4px auto !important;\n    overflow: visible !important;\n  }\n\n  html.chmi-satellite-classic-live .mainWrapper,\n  html.chmi-satellite-classic-live .mainWrapper > .container-fluid,\n  html.chmi-satellite-classic-live #main-row {\n    overflow: visible !important;\n  }\n\n  html.chmi-satellite-classic-live #main-row {\n    grid-template-columns: minmax(0, 1fr) !important;\n    grid-template-rows: auto auto !important;\n    height: auto !important;\n  }\n\n  html.chmi-satellite-classic-live #main-row > .map-col,\n  html.chmi-satellite-classic-live #main-row > .desktop-sidebar-col {\n    height: auto !important;\n    overflow: visible !important;\n  }\n\n  html.chmi-satellite-classic-live #map-container {\n    height: 58dvh !important;\n    min-height: 320px !important;\n  }\n\n  html.chmi-satellite-classic-live #settingsMenu {\n    height: auto !important;\n    max-height: 55dvh !important;\n  }\n\n  html.chmi-satellite-classic-live #settingsMenu .offcanvas-body {\n    height: auto !important;\n    max-height: 55dvh !important;\n  }\n\n  html.chmi-satellite-classic-portal main {\n    width: calc(100vw - 8px) !important;\n    margin-top: 4px !important;\n  }\n\n  html.chmi-satellite-classic-portal #chmu-map-container {\n    height: 68dvh !important;\n    min-height: 320px !important;\n  }\n}\n\n@media (max-height: 650px) and (min-width: 761px) {\n  html.chmi-satellite-classic-live #chmi-satellite-classic-brand {\n    min-height: 34px;\n    padding-top: 5px;\n    padding-bottom: 4px;\n  }\n\n  html.chmi-satellite-classic-live .mainWrapper {\n    padding-top: 4px !important;\n    padding-bottom: 4px !important;\n  }\n\n  html.chmi-satellite-classic-live #settingsMenu .offcanvas-body {\n    padding: 6px !important;\n  }\n\n  html.chmi-satellite-classic-live #settingsMenu .settings-section {\n    padding-top: 5px !important;\n    padding-bottom: 5px !important;\n  }\n}\n\n/* Full-window satellite views own the viewport; remove UA body margins that would create 8px overflow. */\nhtml.chmi-satellite-classic-live body,\nhtml.chmi-satellite-classic-portal body {\n    margin: 0 !important;\n    padding: 0 !important;\n}\n\n/* Narrow desktop sidebars: keep every mirrored control inside the settings column. */\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-matrix,\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row {\n  min-width: 0 !important;\n  max-width: 100% !important;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row {\n  grid-template-columns: minmax(0, 1fr) repeat(3, minmax(35px, 37px)) !important;\n  gap: 3px !important;\n}\n\nhtml.chmi-satellite-classic-live .chmi-satellite-classic-product-row span {\n  min-width: 0;\n  overflow-wrap: anywhere;\n}\n\nhtml.chmi-satellite-classic-live #settingsMenu input[type=\"range\"],\nhtml.chmi-satellite-classic-live #settingsMenu select {\n  box-sizing: border-box !important;\n  width: 100% !important;\n  min-width: 0 !important;\n}\n\n/* Společná kompaktní navigace mezi podporovanými částmi ČHMÚ Classic. */\n#chmi-radar-classic-brand,\n#chmi-home-radar-classic-brand,\n#chmi-satellite-classic-brand,\n#chmi-hub-classic-brand {\n  flex-wrap: wrap !important;\n  row-gap: 5px !important;\n}\n\n.chmi-classic-navigation {\n  box-sizing: border-box;\n  display: inline-flex !important;\n  flex: 0 1 auto;\n  align-items: center;\n  gap: 2px;\n  min-width: 0;\n  margin: 0 4px 0 8px;\n  padding: 0;\n  white-space: nowrap;\n}\n\n.chmi-classic-navigation a {\n  box-sizing: border-box;\n  display: inline-block !important;\n  padding: 3px 6px !important;\n  color: #176b95 !important;\n  background: #f7fcfe !important;\n  border: 1px solid #b2cfdb !important;\n  border-radius: 2px !important;\n  font: 11px/1.25 Arial, Helvetica, sans-serif !important;\n  text-decoration: none !important;\n}\n\n.chmi-classic-navigation a:hover,\n.chmi-classic-navigation a.is-active,\n.chmi-classic-navigation a[aria-current=\"page\"] {\n  color: #fff !important;\n  background: #4ea8d3 !important;\n  border-color: #2588ba !important;\n}\n\n.chmi-classic-navigation a:focus-visible {\n  outline: 3px solid #f5a623 !important;\n  outline-offset: 2px;\n}\n\n@media (max-width: 900px) {\n  .chmi-classic-navigation {\n    order: 3;\n    flex: 1 0 100%;\n    width: 100%;\n    max-width: 100%;\n    margin: 0;\n    flex-wrap: wrap !important;\n    overflow-x: visible;\n    white-space: normal;\n  }\n}\n\n@media (max-width: 520px) {\n  .chmi-classic-navigation a {\n    padding: 3px 5px !important;\n    font-size: 10.5px !important;\n  }\n}\n\n/* Jednotný katalog a kompaktní old-look rám dalších meteorologických výstupů ČHMÚ. */\n\n.chmi-classic-catalog-button,\n#chmi-aladin-four-map-preset,\n#chmi-catalog-classic-brand > button {\n  box-sizing: border-box;\n  flex: 0 0 auto;\n  padding: 3px 8px !important;\n  color: #176b95 !important;\n  background: #f7fcfe !important;\n  border: 1px solid #8fc2d8 !important;\n  border-radius: 2px !important;\n  font: 12px/1.35 Arial, Helvetica, sans-serif !important;\n  cursor: pointer;\n}\n\n.chmi-classic-catalog-button:hover,\n#chmi-aladin-four-map-preset:hover,\n#chmi-catalog-classic-brand > button:hover {\n  color: #fff !important;\n  background: #4ea8d3 !important;\n  border-color: #2588ba !important;\n}\n\n.chmi-classic-catalog-button:focus-visible,\n#chmi-aladin-four-map-preset:focus-visible,\n#chmi-catalog-classic-brand button:focus-visible,\n#chmi-classic-catalog-dialog a:focus-visible,\n#chmi-classic-catalog-dialog button:focus-visible {\n  outline: 3px solid #f5a623 !important;\n  outline-offset: 2px;\n}\n\nhtml.chmi-catalog-open,\nhtml.chmi-catalog-open body {\n  overflow: hidden !important;\n}\n\n#chmi-classic-catalog-overlay[hidden] {\n  display: none !important;\n}\n\n#chmi-classic-catalog-overlay {\n  position: fixed;\n  inset: 0;\n  z-index: 2147483600;\n  display: grid;\n  place-items: center;\n  box-sizing: border-box;\n  padding: 14px;\n  background: rgb(15 50 65 / 56%);\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\n#chmi-classic-catalog-dialog {\n  box-sizing: border-box;\n  display: flex;\n  flex-direction: column;\n  width: min(1180px, 100%);\n  max-height: calc(100vh - 28px);\n  overflow: hidden;\n  color: #222;\n  background: #fff;\n  border: 1px solid #6b8c9b;\n  border-radius: 7px;\n  box-shadow: 0 8px 28px rgb(0 0 0 / 38%);\n}\n\n#chmi-classic-catalog-dialog > header {\n  display: flex;\n  flex: 0 0 auto;\n  align-items: center;\n  gap: 12px;\n  padding: 9px 11px;\n  color: #176b95;\n  background: #e8f6fb;\n  border-bottom: 1px solid #9cc5d5;\n}\n\n#chmi-classic-catalog-dialog h2 {\n  flex: 1 1 auto;\n  margin: 0 !important;\n  color: #176b95 !important;\n  font: 700 17px/1.25 Arial, Helvetica, sans-serif !important;\n}\n\n#chmi-classic-catalog-dialog .chmi-catalog-close {\n  flex: 0 0 auto;\n  padding: 4px 9px;\n  color: #176b95;\n  background: #fff;\n  border: 1px solid #8fb9ca;\n  border-radius: 2px;\n  font: 12px/1.35 Arial, Helvetica, sans-serif;\n  cursor: pointer;\n}\n\n.chmi-catalog-intro {\n  flex: 0 0 auto;\n  margin: 0 !important;\n  padding: 7px 11px !important;\n  color: #555 !important;\n  background: #fbfbfb;\n  border-bottom: 1px solid #ddd;\n  font: 12px/1.4 Arial, Helvetica, sans-serif !important;\n}\n\n.chmi-catalog-quick {\n  flex: 0 0 auto;\n  padding: 6px 8px;\n  border-bottom: 1px solid #ddd;\n}\n\n.chmi-catalog-quick .chmi-classic-navigation {\n  display: flex !important;\n  flex-wrap: wrap !important;\n  width: 100%;\n  margin: 0;\n  white-space: normal;\n}\n\n.chmi-catalog-groups {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 9px;\n  min-height: 0;\n  padding: 9px;\n  overflow: auto;\n  overscroll-behavior: contain;\n}\n\n.chmi-catalog-group {\n  min-width: 0;\n  border: 1px solid #b7cbd4;\n  background: #fafcfd;\n}\n\n.chmi-catalog-group > h3 {\n  margin: 0 !important;\n  padding: 6px 8px !important;\n  color: #176b95 !important;\n  background: #eaf5f9;\n  border-bottom: 1px solid #b7cbd4;\n  font: 700 14px/1.3 Arial, Helvetica, sans-serif !important;\n}\n\n.chmi-catalog-list {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 1px;\n  background: #dfe7ea;\n}\n\n.chmi-catalog-item {\n  min-width: 0;\n  padding: 6px 7px;\n  background: #fff;\n}\n\n.chmi-catalog-item-top {\n  display: flex;\n  align-items: flex-start;\n  gap: 6px;\n}\n\n.chmi-catalog-item a,\n.chmi-catalog-item-label {\n  flex: 1 1 auto;\n  min-width: 0;\n  color: #0645ad !important;\n  font: 700 12.5px/1.3 Arial, Helvetica, sans-serif !important;\n  text-decoration: underline !important;\n  overflow-wrap: anywhere;\n}\n\n.chmi-catalog-item-label {\n  color: #333 !important;\n  text-decoration: none !important;\n}\n\n.chmi-catalog-item.is-unavailable {\n  background: #fff8f8;\n}\n\n.chmi-catalog-item.is-unavailable .chmi-catalog-item-label {\n  color: #b4232d !important;\n  cursor: help;\n  text-decoration: line-through !important;\n  text-decoration-color: #b4232d !important;\n  text-decoration-thickness: 1.5px;\n}\n\n.chmi-catalog-item.is-unavailable .chmi-catalog-item-label:focus-visible {\n  outline: 2px solid #b4232d;\n  outline-offset: 2px;\n}\n\n.chmi-catalog-item a[aria-current=\"page\"] {\n  color: #8b1b1b !important;\n}\n\n.chmi-catalog-item p {\n  margin: 3px 0 0 !important;\n  color: #555 !important;\n  font: 11px/1.35 Arial, Helvetica, sans-serif !important;\n}\n\n.chmi-catalog-status {\n  flex: 0 0 auto;\n  padding: 1px 4px;\n  border: 1px solid #8cad99;\n  border-radius: 2px;\n  color: #28623a;\n  background: #edf8f0;\n  font: 700 9.5px/1.35 Arial, Helvetica, sans-serif !important;\n  text-transform: uppercase;\n  letter-spacing: .02em;\n}\n\n.chmi-catalog-status.is-archive {\n  color: #765100;\n  background: #fff8df;\n  border-color: #c8aa5b;\n}\n\n.chmi-catalog-status.is-legacy {\n  color: #07567e;\n  background: #eaf7fc;\n  border-color: #70a8c0;\n}\n\n.chmi-catalog-status.is-direct {\n  color: #4c3b00;\n  background: #f5f1d5;\n  border-color: #aea45a;\n}\n\n.chmi-catalog-status.is-unavailable {\n  color: #a01825;\n  background: #fff0f1;\n  border-color: #d18a91;\n}\n\n.chmi-catalog-item-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 8px;\n  margin-top: 4px;\n}\n\n.chmi-catalog-item-actions a {\n  flex: 0 1 auto;\n  font-size: 10.5px !important;\n  font-weight: 600 !important;\n}\n\n/* Old-look rám pro další živé výstupy. Nezasahuje do datového backendu ani logiky formulářů. */\nhtml.chmi-catalog-shell,\nhtml.chmi-catalog-shell body {\n  box-sizing: border-box;\n  min-width: 0 !important;\n  min-height: 100%;\n  margin: 0 !important;\n  overflow-x: hidden !important;\n  color: #111 !important;\n  background: #8bc6da !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n  font-size: 14px !important;\n}\n\nhtml.chmi-catalog-shell body *,\nhtml.chmi-catalog-shell body *::before,\nhtml.chmi-catalog-shell body *::after {\n  box-sizing: border-box;\n}\n\nhtml.chmi-catalog-shell header#chmu-header,\nhtml.chmi-catalog-shell nav[aria-label*=\"Nach\"],\nhtml.chmi-catalog-shell .menu-bookmarks,\nhtml.chmi-catalog-shell .lfr-layout-structure-item-chmi---spacer,\nhtml.chmi-catalog-shell footer,\nhtml.chmi-catalog-shell #footer,\nhtml.chmi-catalog-shell #footerBottom,\nhtml.chmi-catalog-shell .material-scrolltop {\n  display: none !important;\n}\n\nhtml.chmi-catalog-shell main {\n  box-sizing: border-box;\n  width: calc(100% - 12px) !important;\n  max-width: none !important;\n  min-height: min(var(--chmi-catalog-available-height, 640px), calc(100vh - 12px));\n  margin: 6px auto 12px !important;\n  padding: 0 8px 10px !important;\n  overflow: visible !important;\n  background: #fff !important;\n  border: 1px solid #9bafb7;\n  border-radius: 7px;\n  box-shadow: 0 3px 8px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-catalog-shell #chmi-catalog-classic-brand {\n  position: relative;\n  z-index: 1000;\n  display: flex !important;\n  flex-wrap: wrap !important;\n  align-items: center !important;\n  gap: 5px 7px;\n  width: calc(100% + 16px);\n  min-width: 0;\n  min-height: 38px;\n  margin: -1px -8px 7px;\n  padding: 6px 8px;\n  color: #176b95;\n  background: #fff;\n  border: 1px solid #9bafb7;\n  border-top: 0;\n  border-radius: 7px 7px 0 0;\n  box-shadow: 0 2px 6px rgb(40 83 101 / 18%);\n}\n\nhtml.chmi-catalog-shell #chmi-catalog-classic-brand > strong {\n  flex: 0 1 auto;\n  min-width: 0;\n  font-size: 15px;\n}\n\nhtml.chmi-catalog-shell #chmi-catalog-classic-brand > span {\n  flex: 0 0 auto;\n  color: #777;\n  font-size: 11px;\n}\n\nhtml.chmi-catalog-shell #chmi-catalog-classic-brand .chmi-classic-navigation {\n  flex: 1 1 430px;\n  flex-wrap: wrap !important;\n  margin: 0 2px;\n  white-space: normal;\n}\n\nhtml.chmi-catalog-shell #chmi-catalog-classic-brand .chmi-catalog-new-look {\n  margin-left: auto;\n}\n\nhtml.chmi-catalog-shell main > h1:first-of-type {\n  margin-top: 4px !important;\n  margin-bottom: 8px !important;\n  color: #176b95 !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n  font-size: 20px !important;\n}\n\nhtml.chmi-catalog-shell main h2,\nhtml.chmi-catalog-shell main h3,\nhtml.chmi-catalog-shell main h4 {\n  color: #176b95 !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-catalog-shell main img,\nhtml.chmi-catalog-shell main iframe,\nhtml.chmi-catalog-shell main svg,\nhtml.chmi-catalog-shell main video {\n  max-width: 100% !important;\n}\n\nhtml.chmi-catalog-shell main table {\n  max-width: 100% !important;\n}\n\nhtml.chmi-catalog-shell main input,\nhtml.chmi-catalog-shell main select,\nhtml.chmi-catalog-shell main textarea,\nhtml.chmi-catalog-shell main button {\n  max-width: 100%;\n}\n\nhtml.chmi-catalog-shell [id*=\"map\" i],\nhtml.chmi-catalog-shell [class*=\"map\" i] {\n  min-width: 0;\n}\n\n/* ALADIN: roztažení pracovního prostoru bez nahrazování map nebo časových ovladačů. */\nhtml.chmi-catalog-aladin .mainWrapper,\nhtml.chmi-catalog-aladin .main-wrapper,\nhtml.chmi-catalog-aladin main > .container,\nhtml.chmi-catalog-aladin main > .container-fluid {\n  width: 100% !important;\n  max-width: none !important;\n  margin-right: 0 !important;\n  margin-left: 0 !important;\n  padding-right: 4px !important;\n  padding-left: 4px !important;\n}\n\nhtml.chmi-catalog-aladin main img {\n  height: auto !important;\n  object-fit: contain;\n}\n\nhtml.chmi-catalog-aladin main form,\nhtml.chmi-catalog-aladin main fieldset {\n  min-width: 0 !important;\n}\n\n@media (max-width: 900px) {\n  .chmi-catalog-groups {\n    grid-template-columns: 1fr;\n  }\n\n  .chmi-catalog-list {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n\n  html.chmi-catalog-shell #chmi-catalog-classic-brand .chmi-classic-navigation {\n    flex-basis: 100%;\n    order: 3;\n  }\n}\n\n@media (max-width: 620px) {\n  #chmi-classic-catalog-overlay {\n    padding: 4px;\n  }\n\n  #chmi-classic-catalog-dialog {\n    max-height: calc(100vh - 8px);\n  }\n\n  .chmi-catalog-list {\n    grid-template-columns: 1fr;\n  }\n\n  html.chmi-catalog-shell main {\n    width: 100% !important;\n    margin-top: 0 !important;\n    border-right: 0;\n    border-left: 0;\n    border-radius: 0;\n  }\n\n  html.chmi-catalog-shell #chmi-catalog-classic-brand {\n    border-radius: 0;\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  #chmi-classic-catalog-overlay *,\n  html.chmi-catalog-shell * {\n    scroll-behavior: auto !important;\n    transition-duration: 0.01ms !important;\n    animation-duration: 0.01ms !important;\n  }\n}\n\n/*\n * Doložená adaptace historických aplikací ČHMÚ.\n * Nekopíruje původní CSS/JS ani archivní obrázky. Zachovává DOM a nativní\n * ovládání zdrojové aplikace a pouze přidává společný rám a responzivní fit.\n */\nhtml.chmi-legacy-classic,\nhtml.chmi-legacy-classic body {\n  box-sizing: border-box;\n  width: 100% !important;\n  max-width: 100% !important;\n  min-width: 0 !important;\n  margin: 0 !important;\n  overflow-x: hidden !important;\n  background: #8bc6da !important;\n  color: #111;\n  font-family: Arial, Helvetica, sans-serif !important;\n}\n\nhtml.chmi-legacy-classic body *,\nhtml.chmi-legacy-classic body *::before,\nhtml.chmi-legacy-classic body *::after {\n  box-sizing: border-box;\n}\n\n#chmi-legacy-classic-header {\n  position: relative;\n  z-index: 2147483000;\n  display: grid;\n  grid-template-columns: auto minmax(0, 1fr) auto;\n  align-items: center;\n  gap: 5px 9px;\n  width: 100%;\n  min-width: 0;\n  padding: 4px 7px;\n  border: 1px solid #3a819e;\n  border-width: 0 0 1px;\n  background: linear-gradient(#eaf8fd, #ccebf5);\n  color: #111;\n  font: 12px/1.25 Arial, Helvetica, sans-serif;\n  box-shadow: 0 1px 2px rgb(0 0 0 / 18%);\n}\n\n#chmi-legacy-classic-header .chmi-legacy-brand,\n#chmi-legacy-classic-header nav,\n#chmi-legacy-classic-header .chmi-legacy-actions {\n  display: flex;\n  align-items: center;\n  gap: 4px;\n  min-width: 0;\n}\n\n#chmi-legacy-classic-header .chmi-legacy-brand strong {\n  white-space: nowrap;\n  font-size: 13px;\n}\n\n#chmi-legacy-classic-header .chmi-legacy-badge {\n  padding: 1px 4px;\n  border: 1px solid #c3a65b;\n  background: #fff7dc;\n  color: #6e5000;\n  font-size: 9px;\n  font-weight: 700;\n  text-transform: uppercase;\n  white-space: nowrap;\n}\n\n#chmi-legacy-classic-header nav {\n  flex-wrap: wrap;\n}\n\n#chmi-legacy-classic-header a {\n  display: inline-block;\n  max-width: 100%;\n  padding: 2px 5px;\n  border: 1px solid #87b8cb;\n  border-radius: 2px;\n  background: #f6fcff;\n  color: #064f76 !important;\n  font: 700 10.5px/1.25 Arial, Helvetica, sans-serif !important;\n  text-decoration: none !important;\n  white-space: nowrap;\n}\n\n#chmi-legacy-classic-header a:hover,\n#chmi-legacy-classic-header a:focus-visible {\n  background: #fff;\n  border-color: #397f9c;\n  text-decoration: underline !important;\n}\n\n#chmi-legacy-classic-header .chmi-legacy-actions {\n  justify-content: flex-end;\n  flex-wrap: wrap;\n}\n\n#chmi-legacy-classic-header .chmi-legacy-actions a.is-primary {\n  border-color: #4c8e5e;\n  background: #edf8f0;\n  color: #245d35 !important;\n}\n\nhtml.chmi-legacy-classic body > :not(#chmi-legacy-classic-header) {\n  max-width: 100% !important;\n}\n\nhtml.chmi-legacy-classic img,\nhtml.chmi-legacy-classic canvas,\nhtml.chmi-legacy-classic svg,\nhtml.chmi-legacy-classic video,\nhtml.chmi-legacy-classic object,\nhtml.chmi-legacy-classic embed,\nhtml.chmi-legacy-classic iframe {\n  max-width: 100% !important;\n}\n\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"viewer\"] img,\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"viewer\"] canvas,\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"viewer\"] svg,\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"viewer\"] object,\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"viewer\"] embed,\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"viewer\"] iframe {\n  max-height: var(--chmi-legacy-available-height, calc(100vh - 54px)) !important;\n  object-fit: contain;\n}\n\nhtml.chmi-legacy-classic table {\n  max-width: 100% !important;\n}\n\nhtml.chmi-legacy-classic input,\nhtml.chmi-legacy-classic select,\nhtml.chmi-legacy-classic button,\nhtml.chmi-legacy-classic textarea {\n  max-width: 100%;\n}\n\nhtml.chmi-legacy-classic [style*=\"min-width\"] {\n  min-width: 0 !important;\n}\n\nhtml.chmi-legacy-classic[data-chmi-legacy-layout=\"gallery\"] img {\n  height: auto !important;\n}\n\n@media (max-width: 1050px) {\n  #chmi-legacy-classic-header {\n    grid-template-columns: 1fr auto;\n  }\n\n  #chmi-legacy-classic-header nav {\n    grid-column: 1 / -1;\n    grid-row: 2;\n  }\n}\n\n@media (max-width: 700px) {\n  #chmi-legacy-classic-header {\n    grid-template-columns: 1fr;\n  }\n\n  #chmi-legacy-classic-header nav,\n  #chmi-legacy-classic-header .chmi-legacy-actions {\n    grid-column: 1;\n  }\n\n  #chmi-legacy-classic-header .chmi-legacy-actions {\n    justify-content: flex-start;\n  }\n\n  #chmi-legacy-classic-header .chmi-legacy-brand {\n    flex-wrap: wrap;\n  }\n}\n\nhtml.chmi-aladin-classic,\nhtml.chmi-aladin-classic body {\n  min-height: 100%;\n  background: #8bc6da !important;\n  color: #111 !important;\n  font-family: Arial, Helvetica, sans-serif !important;\n  font-size: 14px !important;\n}\n\nhtml.chmi-aladin-classic #wrapper {\n  width: 100% !important;\n  min-height: 100vh !important;\n}\n\nhtml.chmi-aladin-classic #chmu-header,\nhtml.chmi-aladin-classic #wrapper > [aria-label*=\"Nach\"],\nhtml.chmi-aladin-classic #wrapper > nav,\nhtml.chmi-aladin-classic #footer,\nhtml.chmi-aladin-classic #footerBottom,\nhtml.chmi-aladin-classic .material-scrolltop,\nhtml.chmi-aladin-classic .mainWrapper > .container-fluid > h1,\nhtml.chmi-aladin-classic #settingsWrapper,\nhtml.chmi-aladin-classic .scroll-controls {\n  display: none !important;\n}\n\nhtml.chmi-aladin-classic .mainWrapper {\n  box-sizing: border-box;\n  width: min(1540px, calc(100% - 16px)) !important;\n  max-width: none !important;\n  margin: 8px auto !important;\n  padding: 0 8px 8px !important;\n  background: #fff !important;\n  border: 1px solid #9bafb7;\n  border-radius: 10px;\n  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);\n}\n\nhtml.chmi-aladin-classic-embedded,\nhtml.chmi-aladin-classic-embedded body,\nhtml.chmi-aladin-classic-embedded #wrapper {\n  min-height: 100% !important;\n  background: #fff !important;\n}\n\nhtml.chmi-aladin-classic-embedded .mainWrapper {\n  width: 100% !important;\n  margin: 0 !important;\n  border: 0;\n  border-radius: 0;\n  box-shadow: none;\n}\n\nhtml.chmi-aladin-classic #chmi-aladin-classic-brand {\n  box-sizing: border-box;\n  display: flex;\n  align-items: baseline;\n  gap: 9px;\n  width: calc(100% + 16px);\n  min-height: 42px;\n  margin: 0 -8px;\n  padding: 10px 12px 8px;\n  color: #176b95;\n  background: #fff;\n  border-bottom: 1px solid #9bafb7;\n  border-radius: 10px 10px 0 0;\n}\n\nhtml.chmi-aladin-classic #chmi-aladin-classic-brand > div {\n  display: flex;\n  align-items: baseline;\n  gap: 9px;\n}\n\nhtml.chmi-aladin-classic #chmi-aladin-classic-brand strong {\n  font-size: 17px;\n}\n\nhtml.chmi-aladin-classic #chmi-aladin-classic-brand span {\n  color: #666;\n  font-size: 12px;\n}\n\nhtml.chmi-aladin-classic #chmi-aladin-classic-brand button {\n  margin-left: auto;\n  padding: 3px 9px;\n  color: #176b95;\n  background: #f7fcfe;\n  border: 1px solid #8fc2d8;\n  border-radius: 2px;\n  font: 12px/1.4 Arial, Helvetica, sans-serif;\n  cursor: pointer;\n}\n\nhtml.chmi-aladin-classic #chmi-aladin-classic-brand button:hover {\n  background: #dff1f8;\n}\n\nhtml.chmi-aladin-classic #chmi-aladin-classic-controls {\n  box-sizing: border-box;\n  display: grid;\n  grid-template-columns: minmax(270px, 1fr) minmax(230px, 0.7fr) minmax(430px, 1.3fr);\n  align-items: center;\n  gap: 8px 14px;\n  margin: 8px 0;\n  padding: 8px 10px;\n  color: #111;\n  background: #edf7fb;\n  border: 1px solid #9bafb7;\n  border-radius: 3px;\n  font: 13px/1.3 Arial, Helvetica, sans-serif;\n}\n\nhtml.chmi-aladin-classic .chmi-aladin-classic-products {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 4px;\n}\n\nhtml.chmi-aladin-classic .chmi-aladin-classic-products span {\n  padding: 4px 5px;\n  color: #fff;\n  background: #176b95;\n  border: 1px solid #0b587c;\n  text-align: center;\n  white-space: nowrap;\n}\n\nhtml.chmi-aladin-classic .chmi-aladin-classic-run-control,\nhtml.chmi-aladin-classic .chmi-aladin-classic-time-control,\nhtml.chmi-aladin-classic .chmi-aladin-classic-time-control > div {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\nhtml.chmi-aladin-classic .chmi-aladin-classic-run-control label,\nhtml.chmi-aladin-classic .chmi-aladin-classic-time-control > span {\n  font-weight: bold;\n  white-space: nowrap;\n}\n\nhtml.chmi-aladin-classic #chmi-aladin-classic-controls select,\nhtml.chmi-aladin-classic #chmi-aladin-classic-controls button {\n  box-sizing: border-box;\n  min-height: 27px;\n  padding: 3px 7px;\n  color: #111;\n  background: #fff;\n  border: 1px solid #888;\n  border-radius: 2px;\n  font: 12px/1.3 Arial, Helvetica, sans-serif;\n}\n\nhtml.chmi-aladin-classic #chmi-aladin-classic-controls button {\n  min-width: 30px;\n  color: #0645ad;\n  background: #f5f5f5;\n  cursor: pointer;\n}\n\nhtml.chmi-aladin-classic #chmi-aladin-classic-controls button:hover:not(:disabled) {\n  color: #fff;\n  background: #176b95;\n}\n\nhtml.chmi-aladin-classic #chmi-aladin-classic-controls button:disabled {\n  color: #999;\n  cursor: default;\n}\n\nhtml.chmi-aladin-classic #chmi-aladin-classic-run {\n  width: min(100%, 190px);\n}\n\nhtml.chmi-aladin-classic #chmi-aladin-classic-time {\n  min-width: 160px;\n  max-width: 230px;\n}\n\nhtml.chmi-aladin-classic .chmi-aladin-classic-time-control small {\n  display: block;\n  padding: 5px 8px;\n  color: #153e65;\n  background: #e5f2ff;\n  border-left: 3px solid #2473a8;\n  border-radius: 2px;\n  font: 600 12px/1.35 Arial, sans-serif;\n  white-space: normal;\n}\n\nhtml.chmi-aladin-classic .chmi-aladin-classic-status {\n  grid-column: 1 / -1;\n  min-height: 16px;\n  margin: -2px 0 0;\n  color: #555;\n  font-size: 11px;\n}\n\nhtml.chmi-aladin-classic .model-wrapper {\n  position: relative;\n  min-height: min(280px, var(--chmi-aladin-available-height, 70vh));\n  overflow: hidden !important;\n  background: #dce8ed;\n  border: 1px solid #8a9ca4;\n}\n\nhtml.chmi-aladin-classic #loadingDiv {\n  z-index: 5;\n  background: rgb(255 255 255 / 88%) !important;\n}\n\nhtml.chmi-aladin-classic #modelGrid {\n  box-sizing: border-box;\n  display: block !important;\n  width: 100% !important;\n  max-width: none !important;\n  height: auto !important;\n  max-height: var(--chmi-aladin-available-height, 70vh);\n  padding: 0 !important;\n  overflow: hidden !important;\n  scroll-behavior: auto !important;\n  touch-action: pan-x;\n}\n\nhtml.chmi-aladin-classic #modelGrid > .time-row {\n  display: none !important;\n}\n\nhtml.chmi-aladin-classic #modelGrid > .chmi-aladin-classic-header-row,\nhtml.chmi-aladin-classic #modelGrid > .chmi-aladin-classic-time-row.is-active {\n  display: grid !important;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  align-items: start;\n  gap: 2px;\n  width: 100% !important;\n}\n\nhtml.chmi-aladin-classic #modelGrid > .chmi-aladin-classic-header-row {\n  position: sticky;\n  top: 0;\n  z-index: 2;\n}\n\nhtml.chmi-aladin-classic #modelGrid .map-cell {\n  box-sizing: border-box;\n  order: var(--chmi-aladin-product-order, 9);\n  width: auto !important;\n  min-width: 0 !important;\n  max-width: none !important;\n  margin: 0 !important;\n}\n\nhtml.chmi-aladin-classic #modelGrid .map-header {\n  min-height: 31px;\n  padding: 6px 4px !important;\n  color: #fff !important;\n  background: #2e3a87 !important;\n  border: 0 !important;\n  font: 12px/1.25 Arial, Helvetica, sans-serif !important;\n  text-align: center;\n}\n\nhtml.chmi-aladin-classic #modelGrid .map-cell[data-param=\"T\"] {\n  --chmi-aladin-product-order: 1;\n}\n\nhtml.chmi-aladin-classic #modelGrid .map-cell[data-param=\"C\"] {\n  --chmi-aladin-product-order: 2;\n}\n\nhtml.chmi-aladin-classic #modelGrid .map-cell[data-param=\"R3\"] {\n  --chmi-aladin-product-order: 3;\n}\n\nhtml.chmi-aladin-classic #modelGrid .map-cell[data-param=\"W\"] {\n  --chmi-aladin-product-order: 4;\n}\n\nhtml.chmi-aladin-classic #modelGrid .map-bg-wrapper,\nhtml.chmi-aladin-classic #modelGrid a[data-lightbox] {\n  display: block;\n  width: 100% !important;\n}\n\nhtml.chmi-aladin-classic #modelGrid .mapImg {\n  display: block;\n  width: 100% !important;\n  max-width: 100% !important;\n  height: auto !important;\n  max-height: calc(var(--chmi-aladin-available-height, 70vh) - 35px);\n  margin: 0 !important;\n  object-fit: contain;\n  object-position: top center;\n}\n\nhtml.chmi-aladin-classic #modelGrid .mapImgTimeLabel {\n  z-index: 1;\n  max-width: calc(100% - 6px);\n  padding: 2px 4px !important;\n  overflow: hidden;\n  font: bold 11px/1.2 Arial, Helvetica, sans-serif !important;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n@media (max-width: 1050px) {\n  html.chmi-aladin-classic #chmi-aladin-classic-controls {\n    grid-template-columns: 1fr 1fr;\n  }\n\n  html.chmi-aladin-classic .chmi-aladin-classic-products {\n    grid-column: 1 / -1;\n  }\n\n  html.chmi-aladin-classic .chmi-aladin-classic-time-control {\n    justify-content: flex-end;\n  }\n}\n\n@media (max-width: 760px) {\n  html.chmi-aladin-classic .mainWrapper {\n    width: 100% !important;\n    margin: 0 !important;\n    border-radius: 0;\n  }\n\n  html.chmi-aladin-classic #chmi-aladin-classic-controls {\n    display: flex;\n    flex-direction: column;\n    align-items: stretch;\n  }\n\n  html.chmi-aladin-classic .chmi-aladin-classic-products {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n\n  html.chmi-aladin-classic .chmi-aladin-classic-run-control,\n  html.chmi-aladin-classic .chmi-aladin-classic-time-control {\n    justify-content: space-between;\n    flex-wrap: wrap;\n  }\n\n  html.chmi-aladin-classic .chmi-aladin-classic-time-control small {\n    width: 100%;\n  }\n\n  html.chmi-aladin-classic #modelGrid > .chmi-aladin-classic-header-row,\n  html.chmi-aladin-classic #modelGrid > .chmi-aladin-classic-time-row.is-active {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n\n  html.chmi-aladin-classic #modelGrid .mapImg {\n    max-height: none;\n  }\n}\n\n@media (max-width: 440px) {\n  html.chmi-aladin-classic #chmi-aladin-classic-brand {\n    align-items: center;\n  }\n\n  html.chmi-aladin-classic #chmi-aladin-classic-brand > div {\n    display: block;\n  }\n\n  html.chmi-aladin-classic #chmi-aladin-classic-brand span {\n    display: block;\n  }\n\n  html.chmi-aladin-classic .chmi-aladin-classic-time-control > div {\n    width: 100%;\n  }\n\n  html.chmi-aladin-classic #chmi-aladin-classic-time {\n    flex: 1;\n    min-width: 0;\n  }\n}\n\n/* Familiar intranet shell; no archive data or destructive DOM replacement. */\nhtml.chmi-classic-portal-active { background: #8bc6da !important; }\nhtml.chmi-classic-portal-active body { margin: 0 !important; padding: 6px !important; min-width: 0 !important; background: linear-gradient(#8bc6da,#d7eaf0) !important; }\nhtml.chmi-classic-portal-active body > :not(#chmi-classic-portal):not(script):not(style) { display: none !important; }\n#chmi-classic-portal, #chmi-classic-portal * { box-sizing: border-box; }\n#chmi-classic-portal {\n  --ink: #123477; --edge: #afbbc6;\n  display: flex; flex-direction: column; width: 100%; max-width: none;\n  height: calc(100dvh - 12px); min-height: 480px; margin: 0; padding: 0;\n  color: var(--ink); background: #fff; border: 1px solid #7294a2; border-radius: 6px;\n  overflow: hidden; box-shadow: 0 2px 5px #31566a55; font: 12px/1.3 Arial, Helvetica, sans-serif;\n}\n#chmi-classic-portal [hidden] { display: none !important; }\n#chmi-classic-portal a { color: var(--ink); text-decoration: none; }\n#chmi-classic-portal a:hover { text-decoration: underline; }\n#chmi-classic-portal :focus-visible { outline: 2px solid #d57900; outline-offset: 2px; }\n#chmi-classic-portal button { cursor: pointer; font-family: Arial, Helvetica, sans-serif; }\n#chmi-classic-portal .chmi-portal-topbar { display: flex; flex-direction: row; align-items: center; flex-wrap: wrap; flex: 0 0 auto; min-height: 32px; gap: 3px 8px; padding: 3px 6px; background: linear-gradient(#fff,#dce1e7); border-bottom: 1px solid var(--edge); }\n#chmi-classic-portal .chmi-portal-utilities { display: flex; flex-direction: row; gap: 10px; align-items: center; margin-left: auto; }\n#chmi-classic-portal a.chmi-portal-warning-link { color: #a82020; font-size: 10px; font-weight: bold; white-space: nowrap; }\n#chmi-classic-portal .chmi-portal-button, #chmi-portal-restore { border: 1px solid #8eb4c4; border-radius: 2px; padding: 4px 9px; background: linear-gradient(#fff,#e6f3f7); color: #17577a; font: 12px/1.2 Arial, sans-serif; }\n#chmi-portal-restore { position: fixed; right: 12px; bottom: 12px; z-index: 2147483647; cursor: pointer; }\n#chmi-classic-portal .chmi-portal-primary { display: flex; flex-direction: row; flex-wrap: wrap; flex: 1 1 auto; border: 0; background: transparent; }\n#chmi-classic-portal .chmi-portal-primary a { flex: 1 1 auto; padding: 6px 8px; border-right: 1px solid #c3c5cd; text-align: center; color: #222; font-size: 10px; font-weight: 700; }\n#chmi-classic-portal .chmi-portal-main { display: flex; flex: 1; flex-direction: column; min-height: 0; width: auto; max-width: none; margin: 3px 4px 4px; padding: 0; border: 1px solid var(--edge); background: #fff; }\n#chmi-classic-portal .chmi-portal-tabs { display: flex; flex-direction: row; justify-content: flex-start; flex: 0 0 auto; align-items: center; border: 0; }\n#chmi-classic-portal .chmi-portal-tab { min-width: 80px; height: 25px; margin: 0; padding: 3px 9px; border: 1px solid #b7c1c8; border-radius: 3px; background: linear-gradient(#fff,#dfe4e5); color: var(--ink); font-size: 11px; font-weight: 700; text-align: left; }\n#chmi-classic-portal .chmi-portal-tab[aria-selected=\"true\"] { color: #fff; background: linear-gradient(#77d0e5,#237ba1 75%,#a5d7e6); }\n#chmi-classic-portal .chmi-portal-workspace { display: flex; flex: 1; flex-direction: column; min-height: 280px; }\n#chmi-classic-portal .chmi-portal-app-toolbar { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 12px; flex: 0 0 auto; min-height: 29px; padding: 3px 6px; background: #edf4f0; border-bottom: 1px solid #c0c8c2; }\n#chmi-classic-portal .chmi-portal-app-title { margin: 0; padding: 0; color: var(--ink); font: bold 12px/1.3 Verdana, sans-serif; }\n#chmi-classic-portal .chmi-portal-status { margin-left: auto; color: #56676a; font-size: 10px; }\n#chmi-classic-portal .chmi-portal-stage { position: relative; display: flex; flex: 1; min-height: 0; background: #fff; }\n#chmi-classic-portal .chmi-portal-app-frame { display: block; width: 100%; height: 100%; min-height: 0; border: 0; }\n#chmi-classic-portal .chmi-portal-notice { position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 2; padding: 10px; border: 1px solid #b5a978; background: #fffbea; color: #594d20; font-size: 12px; }\n#chmi-classic-portal .chmi-portal-notice p { margin: 0 0 6px; font: inherit; }\n#chmi-classic-portal .chmi-portal-directory { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 0 10px; flex: 0 0 auto; padding: 6px 10px; border-top: 1px solid var(--edge); background: #f8fbfd; }\n#chmi-classic-portal .chmi-portal-link { display: block; padding: 1px 0; font: bold 10px/1.3 Verdana, Arial, sans-serif; overflow-wrap: anywhere; }\n#chmi-classic-portal .chmi-portal-link[aria-current] { color: #006789; text-decoration: underline; }\n#chmi-classic-portal .is-unavailable { color: #a62323; text-decoration: line-through; cursor: help; }\n#chmi-classic-portal .chmi-portal-extra { display: flex; flex-wrap: wrap; gap: 4px 18px; padding: 4px 10px; border-top: 1px solid #dce5e8; }\n#chmi-classic-portal.chmi-portal-expanded { position: fixed; inset: 0; z-index: 2147483600; height: 100dvh; min-height: 0; border-radius: 0; }\n#chmi-classic-portal.chmi-portal-expanded > :not(.chmi-portal-main), #chmi-classic-portal.chmi-portal-expanded .chmi-portal-tabs, #chmi-classic-portal.chmi-portal-expanded .chmi-portal-directory, #chmi-classic-portal.chmi-portal-expanded .chmi-portal-extra { display: none; }\n#chmi-classic-portal.chmi-portal-expanded .chmi-portal-main { margin: 0; border: 0; }\n@media (min-width: 1100px) and (min-height: 850px) {\n  #chmi-classic-portal .chmi-portal-link { font-size: 11px; }\n}\n@media (max-width: 760px) {\n  #chmi-classic-portal { height: auto; min-height: calc(100dvh - 12px); }\n  #chmi-classic-portal .chmi-portal-main { margin: 0 3px 3px; }\n  #chmi-classic-portal .chmi-portal-workspace { flex: none; height: max(420px, 68dvh); }\n  #chmi-classic-portal .chmi-portal-app-toolbar { flex-wrap: wrap; gap: 4px 8px; }\n  #chmi-classic-portal .chmi-portal-status { order: 3; flex-basis: 100%; }\n  #chmi-classic-portal .chmi-portal-app-toolbar button { margin-left: auto; }\n  #chmi-classic-portal .chmi-portal-directory { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }\n  #chmi-classic-portal .chmi-portal-link { padding: 4px 0; }\n  #chmi-classic-portal.chmi-portal-expanded .chmi-portal-workspace { height: 100%; flex: 1; }\n}\n\n/* The live application owns this frame; the parent owns all portal chrome. */\nhtml.chmi-classic-embedded,\nhtml.chmi-classic-embedded body {\n  margin: 0 !important;\n  padding: 0 !important;\n  min-width: 0 !important;\n  min-height: 0 !important;\n  background: #fff !important;\n}\nhtml.chmi-classic-embedded #chmi-radar-classic-brand,\nhtml.chmi-classic-embedded #chmi-satellite-classic-brand,\nhtml.chmi-classic-embedded #chmi-hub-classic-brand,\nhtml.chmi-classic-embedded #chmi-aladin-classic-brand,\nhtml.chmi-classic-embedded #chmi-catalog-classic-brand {\n  display: none !important;\n}\nhtml.chmi-classic-embedded #div_container_menu {\n  box-sizing: border-box !important;\n}\nhtml.chmi-classic-embedded #div_container_menu > * {\n  box-sizing: border-box !important;\n  min-width: 0 !important;\n  max-width: 100% !important;\n}\nhtml.chmi-classic-embedded.chmi-radar-classic #wrapper,\nhtml.chmi-classic-embedded.chmi-satellite-classic-live #wrapper {\n  width: 100% !important;\n  max-width: none !important;\n  height: 100dvh !important;\n  min-height: 0 !important;\n  margin: 0 !important;\n}\nhtml.chmi-classic-embedded .mainWrapper {\n  border: 0 !important;\n  border-radius: 0 !important;\n  box-shadow: none !important;\n  padding: 4px !important;\n}\nhtml.chmi-classic-embedded #chmi-radar-classic-toolbar {\n  max-width: calc(100% - 70px);\n}\nhtml.chmi-classic-embedded #chmi-radar-classic-toolbar .chmi-radar-classic-options {\n  flex-wrap: wrap;\n}\nhtml.chmi-classic-embedded.chmi-satellite-classic-portal main,\nhtml.chmi-classic-embedded.chmi-hub-classic main {\n  width: 100% !important;\n  max-width: none !important;\n  margin: 0 !important;\n  padding: 0 4px !important;\n  border: 0 !important;\n  box-shadow: none !important;\n}\n@media (min-width: 761px) {\n  html.chmi-classic-embedded.chmi-radar-classic,\n  html.chmi-classic-embedded.chmi-radar-classic body,\n  html.chmi-classic-embedded.chmi-satellite-classic-live,\n  html.chmi-classic-embedded.chmi-satellite-classic-live body {\n    height: 100% !important;\n    overflow: hidden !important;\n  }\n}\n\n\n#chmi-classic-userscript-restore {\n  position: fixed;\n  right: 12px;\n  bottom: 12px;\n  z-index: 2147483647;\n  padding: 7px 12px;\n  border: 1px solid #1677a8;\n  border-radius: 2px;\n  background: #eaf7fc;\n  color: #07567e;\n  font: 600 13px Arial, sans-serif;\n  cursor: pointer;\n  box-shadow: 0 2px 8px rgb(0 0 0 / 25%);\n}");
   renderRestoreButton();
 })();
 
 (() => {
   "use strict";
+  if (globalThis.__chmiClassicApps) return;
 
-  if (window.top !== window || window.__chmiClassicNavigationLoaded) {
+  // Only explicit reconstructed adapters may become clickable in the portal.
+  // An existing modern URL alone is not proof of an old-look application.
+  const apps = {
+    radar: { title: "Aktuální radarová data", url: "https://produkty.chmi.cz/radar/", family: "radar", section: "weather" },
+    meteosat: { title: "Snímky z družic MSG / Meteosat", url: "https://produkty.chmi.cz/druzice/?time_range=24", family: "satellite", section: "weather" },
+    aladin: { title: "ALADIN – mapy", url: "https://produkty.chmi.cz/aladin/", family: "aladin", section: "weather" },
+    polar: { title: "Snímky z polárních družic", url: "https://www.chmi.cz/namerena-data/polarni-druzice/true-color", family: "polar", section: "weather" },
+    geo: { title: "Geostacionární družice", url: "https://www.chmi.cz/namerena-data/geostacionarni-druzice/true-color", family: "geo", section: "weather" },
+    mushrooms: { title: "Pravděpodobnost růstu hub", url: "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub", family: "mushrooms", section: "weather" }
+  };
+  const pending = (label, reason = "Původní zobrazení této aplikace zatím není obnoveno. Samotný odkaz na nový web nepovažujeme za rekonstrukci.") => ({ label, reason });
+  const columns = [
+    ["Předpověď pro ČR", "Předpovědi pro kraje", "Týdenní předpověď", "Měsíční výhled", "Synoptická předpověď", "Bio předpověď", "Počasí pro létání", "Sněhové zpravodajství", "Předpovědi pro hory"].map(label => pending(label)),
+    [{ label: "Aladin – animace", app: "aladin" }, { label: "Aladin – mapy", app: "aladin" }, ...["Aladin – meteogramy", "Přehled počasí v ČR", "Synoptická situace", "Ozonové zpravodajství", "Družicová měření ozonu", "Pylový semafor", "Aktivita klíšťat"].map(label => pending(label))],
+    [{ label: "Aktuální radarová data", app: "radar" }, { label: "Snímky z družic MSG", app: "meteosat" }, { label: "Snímky z družic NOAA", app: "polar" }, ...["Detekce blesků", "Radarové odhady srážek", "Aktuální mapy", "Grafy automat. stanic", "Sondážní měření", "Počasí a kůrovec"].map(label => pending(label))],
+    [...["Webové kamery", "Meteo zprávy – Infomet", "Měření z Klementina", "Mapa zatížení sněhem", "Nalezli jste radiosondu?", "Vertikální profily větru", "Monitoring sucha", "Meteorologické stanice"].map(label => pending(label))]
+  ];
+  const supplementary = [{ label: "Geostacionární družice", app: "geo" }, { label: "Pravděpodobnost růstu hub", app: "mushrooms" }];
+  const normalPath = path => path.replace(/\/+$/, "") || "/";
+  const registry = {
+    apps, columns, supplementary,
+    get(id) { return Object.hasOwn(apps, id) ? apps[id] : null; },
+    isHomepage(url) {
+      return ["www.chmi.cz", "chmi.cz"].includes(url.hostname) && ["/", "/uvod"].includes(normalPath(url.pathname));
+    },
+    matches(id, url) {
+      const app = this.get(id);
+      if (!app) return false;
+      const target = new URL(app.url);
+      return url.origin === target.origin && normalPath(url.pathname) === normalPath(target.pathname);
+    },
+    frameURL(id, session) {
+      const app = this.get(id);
+      if (!app) return null;
+      const url = new URL(app.url);
+      url.searchParams.set("chmi_classic_embed", id);
+      url.searchParams.set("chmi_classic_session", session);
+      return url.href;
+    },
+    frameName(id, session) {
+      return this.get(id) && /^[a-zA-Z0-9-]{8,80}$/.test(session ?? "") ?
+        `chmi-classic:${id}:${session}` : "";
+    },
+    embeddedContext(url, name) {
+      // Meteosat rewrites its query before document-idle. The frame name stays
+      // bound to this browsing context and is independent of native URL state.
+      const named = /^chmi-classic:([a-z-]+):([a-zA-Z0-9-]{8,80})$/.exec(name ?? "");
+      const id = named?.[1] ?? url.searchParams.get("chmi_classic_embed");
+      const session = named?.[2] ?? url.searchParams.get("chmi_classic_session");
+      return this.matches(id, url) && /^[a-zA-Z0-9-]{8,80}$/.test(session ?? "") ? { id, session } : null;
+    },
+    shouldOpenInPanel(event) {
+      return !event.defaultPrevented && event.button === 0 &&
+        !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+    },
+    route(hash) {
+      const id = /^#classic=([a-z-]+)$/.exec(hash)?.[1];
+      return this.get(id) ? id : "radar";
+    },
+    accepts(event, frame, id, session) {
+      const app = this.get(id);
+      return Boolean(app && frame && event.source === frame.contentWindow &&
+        event.origin === new URL(app.url).origin && event.data?.type === "chmi-classic-status" &&
+        event.data.session === session && event.data.app === id &&
+        ["ready", "loading"].includes(event.data.state));
+    }
+  };
+  globalThis.__chmiClassicApps = Object.freeze(registry);
+})();
+
+
+(() => {
+  "use strict";
+  const registry = globalThis.__chmiClassicApps;
+  if (!registry || window.top === window || window.__chmiClassicEmbedded) return;
+  const url = new URL(location.href);
+  const context = registry.embeddedContext(url, window.name);
+  if (!context) return;
+  const { id, session } = context;
+  let parentURL;
+  try { parentURL = new URL(document.referrer); } catch { return; }
+  if (parentURL.protocol !== "https:" || !registry.isHomepage(parentURL) ||
+      !registry.matches(id, url) || !/^[a-zA-Z0-9-]{8,80}$/.test(session ?? "")) return;
+
+  window.__chmiClassicEmbedded = true;
+  const storage = globalThis.chrome?.storage?.sync ?? globalThis.__chmiClassicStorage;
+  const start = result => {
+    if (result.chmiRadarClassicEnabled === false) return;
+    document.documentElement.classList.add("chmi-classic-embedded");
+    // Readiness is deliberately based on a laid-out adapter AND real media,
+    // never merely on the iframe load event or a classic header.
+    function report() {
+      const visible = node => node && node.getBoundingClientRect().width > 0 && node.getBoundingClientRect().height > 0 && getComputedStyle(node).visibility !== "hidden";
+      const app = registry.get(id);
+      const adapter = app.family === "radar" ? document.getElementById("chmi-radar-classic-toolbar") :
+        app.family === "satellite" ? document.getElementById("chmi-satellite-classic-selector") :
+        app.family === "aladin" ? document.querySelector("[data-chmi-aladin-native='verified'] #chmi-aladin-classic-controls") :
+        document.getElementById(app.family === "mushrooms" ? "chmi-hub-classic-brand" : "chmi-satellite-classic-portal-products");
+      const media = [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img")]
+        .some(node => visible(node) && (node.tagName === "CANVAS" ? node.width > 0 && node.height > 0 : node.complete && node.naturalWidth > 32));
+      window.parent.postMessage({ type: "chmi-classic-status", app: id, session, state: adapter && media ? "ready" : "loading" }, parentURL.origin);
+    }
+    report();
+    const timer = setInterval(report, 1500);
+    window.addEventListener("pagehide", () => clearInterval(timer), { once: true });
+  };
+  if (storage) storage.get({ chmiRadarClassicEnabled: true }, start);
+  else start({ chmiRadarClassicEnabled: true });
+})();
+
+
+(() => {
+  "use strict";
+  const registry = globalThis.__chmiClassicApps;
+  if (!registry || window.top !== window || window.__chmiClassicPortalLoaded || !registry.isHomepage(new URL(location.href))) return;
+  window.__chmiClassicPortalLoaded = true;
+  // Reserve the homepage before asynchronous extension storage lookup.
+  window.__chmiClassicPortalCandidate = true;
+  const storage = globalThis.chrome?.storage?.sync ?? globalThis.__chmiClassicStorage;
+  const KEY = "chmiRadarClassicEnabled";
+
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null) node.textContent = text;
+    return node;
+  }
+  function link(text, url, className) {
+    const node = el("a", className, text);
+    node.href = url;
+    return node;
+  }
+  function button(text, action, className = "chmi-portal-button") {
+    const node = el("button", className, text);
+    node.type = "button";
+    node.addEventListener("click", action);
+    return node;
+  }
+  function external(text, href) {
+    const node = link(text, href);
+    node.target = "_blank";
+    node.rel = "noopener noreferrer";
+    node.title = "Současná informační stránka ČHMÚ (nová karta)";
+    return node;
+  }
+
+  function build() {
+    if (document.getElementById("chmi-classic-portal")) return;
+    let current = null;
+    let frame = null;
+    let session = null;
+    let timeout = null;
+    let selectedSection = "weather";
+    document.documentElement.classList.add("chmi-classic-portal-active");
+    const root = el("div");
+    root.id = "chmi-classic-portal";
+    const utilities = el("div", "chmi-portal-utilities");
+    utilities.title = "ČHMÚ Classic · neoficiální uživatelská úprava";
+    const newLook = button("Nový vzhled", () => {
+      storage?.set({ [KEY]: false });
+      document.documentElement.classList.remove("chmi-classic-portal-active");
+      root.remove();
+      clearTimeout(timeout);
+      window.removeEventListener("message", onMessage);
+      window.removeEventListener("hashchange", onHash);
+      // Restore the original DOM, not a destructive replacement or timed reload.
+      const restore = button("Klasický vzhled", () => {
+        storage?.set({ [KEY]: true });
+        restore.remove();
+        build();
+      });
+      restore.id = "chmi-portal-restore";
+      document.body.append(restore);
+      window.dispatchEvent(new Event("resize"));
+    });
+    const warnings = external("! VÝSTRAHY", "https://vystrahy-cr.chmi.cz/");
+    warnings.className = "chmi-portal-warning-link";
+    warnings.title = "Ověřit aktuální výstrahy na oficiálním webu ČHMÚ (nová karta)";
+    utilities.append(warnings, newLook);
+    const primary = el("nav", "chmi-portal-primary");
+    primary.setAttribute("aria-label", "Hlavní nabídka");
+    for (const [text, href] of [["PŘEDPOVĚDI", "https://www.chmi.cz/predpoved-pocasi"], ["AKTUÁLNÍ SITUACE", "https://www.chmi.cz/namerena-data"], ["HISTORICKÁ DATA", "https://www.chmi.cz/namerena-data/historicka-data"], ["INFORMACE A SLUŽBY", "https://www.chmi.cz/o-chmu/produkty-a-sluzby"], ["O NÁS", "https://www.chmi.cz/o-chmu"], ["KONTAKTY", "https://www.chmi.cz/o-chmu/kontakty"]]) primary.append(external(text, href));
+    // Never infer warning status from an archive screenshot or failed request.
+    const main = el("main", "chmi-portal-main");
+    const tabs = el("div", "chmi-portal-tabs");
+    tabs.setAttribute("role", "tablist");
+    tabs.setAttribute("aria-label", "Produkty ČHMÚ");
+    for (const [key, title] of [["weather", "☼ POČASÍ"], ["water", "≋ VODA"], ["air", "☘ OVZDUŠÍ"]]) {
+      const tab = button(title, () => selectSection(key), "chmi-portal-tab");
+      tab.dataset.section = key;
+      tab.id = `chmi-portal-tab-${key}`;
+      tab.setAttribute("role", "tab");
+      tab.setAttribute("aria-controls", "chmi-portal-workspace");
+      tabs.append(tab);
+    }
+    tabs.addEventListener("keydown", event => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      event.preventDefault();
+      const list = [...tabs.querySelectorAll("button")];
+      const index = list.indexOf(document.activeElement);
+      const next = event.key === "Home" ? 0 : event.key === "End" ? 2 : (index + (event.key === "ArrowRight" ? 1 : 2)) % 3;
+      list[next].focus();
+      selectSection(list[next].dataset.section);
+    });
+    const workspace = el("section", "chmi-portal-workspace");
+    workspace.id = "chmi-portal-workspace";
+    workspace.setAttribute("role", "tabpanel");
+    const toolbar = el("div", "chmi-portal-app-toolbar");
+    const title = el("h1", "chmi-portal-app-title");
+    const status = el("span", "chmi-portal-status");
+    status.setAttribute("role", "status");
+    const expand = button("Zvětšit panel", () => {
+      const expanded = root.classList.toggle("chmi-portal-expanded");
+      expand.textContent = expanded ? "Zpět na portál" : "Zvětšit panel";
+      expand.setAttribute("aria-pressed", String(expanded));
+    });
+    expand.setAttribute("aria-pressed", "false");
+    const standalone = external("Otevřít samostatně ↗", registry.get("radar").url);
+    standalone.className = "chmi-portal-button chmi-portal-standalone";
+    standalone.title = "Otevřít tuto aplikaci v nové záložce v klasickém vzhledu";
+    toolbar.append(title, status, standalone, expand);
+    const stage = el("div", "chmi-portal-stage");
+    stage.id = "chmi-portal-stage";
+    const notice = el("div", "chmi-portal-notice");
+    const noticeText = el("p");
+    notice.append(noticeText, button("Zkusit znovu", () => openApp(current ?? "radar", true)));
+    notice.hidden = true;
+    stage.append(notice);
+    workspace.append(toolbar, stage);
+    const directory = el("nav", "chmi-portal-directory");
+    directory.setAttribute("aria-label", "Původní rozcestník aplikací");
+    function item(entry) {
+      if (!entry.app || !registry.get(entry.app)) {
+        const span = el("span", "chmi-portal-link is-unavailable", `>> ${entry.label}`);
+        span.title = entry.reason;
+        span.tabIndex = 0;
+        span.setAttribute("aria-disabled", "true");
+        span.setAttribute("aria-label", `${entry.label}. ${entry.reason}`);
+        return span;
+      }
+      const anchor = link(`>> ${entry.label}`, registry.get(entry.app).url, "chmi-portal-link");
+      anchor.dataset.app = entry.app;
+      anchor.title = "Kliknutí: centrální panel. Ctrl/⌘+klik nebo prostřední tlačítko: nová záložka.";
+      anchor.addEventListener("click", event => {
+        if (!registry.shouldOpenInPanel(event)) return;
+        event.preventDefault();
+        const hash = `#classic=${entry.app}`;
+        if (location.hash === hash) {
+          if (selectedSection !== "weather") selectSection("weather");
+          else openApp(entry.app);
+        } else location.hash = hash;
+      });
+      return anchor;
+    }
+    for (const column of registry.columns) {
+      const group = el("div", "chmi-portal-link-column");
+      group.append(...column.map(item));
+      directory.append(group);
+    }
+    const extra = el("nav", "chmi-portal-extra");
+    extra.setAttribute("aria-label", "Další obnovené aplikace");
+    extra.append(...registry.supplementary.map(item));
+    const topbar = el("header", "chmi-portal-topbar");
+    topbar.append(tabs, primary, utilities);
+    main.append(workspace, directory, extra);
+    root.append(topbar, main);
+    document.body.append(root);
+
+    function setStatus(state) {
+      stage.dataset.state = state;
+      status.textContent = state === "ready" ? "Oficiální živá aplikace ČHMÚ" : "Načítám aplikaci a její data…";
+      workspace.setAttribute("aria-busy", String(state !== "ready"));
+      if (state === "ready") { clearTimeout(timeout); notice.hidden = true; }
+    }
+    function selectSection(key) {
+      selectedSection = key;
+      for (const tab of tabs.querySelectorAll("button")) {
+        const active = tab.dataset.section === key;
+        tab.setAttribute("aria-selected", String(active));
+        tab.tabIndex = active ? 0 : -1;
+      }
+      workspace.setAttribute("aria-labelledby", `chmi-portal-tab-${key}`);
+      directory.hidden = extra.hidden = key !== "weather";
+      standalone.hidden = key !== "weather";
+      if (key === "weather") { openApp(registry.route(location.hash)); return; }
+      clearTimeout(timeout);
+      frame?.remove();
+      frame = null;
+      current = null;
+      title.textContent = key === "water" ? "VODA" : "OVZDUŠÍ";
+      status.textContent = "Rekonstrukce zatím není dokončena";
+      workspace.setAttribute("aria-busy", "false");
+      noticeText.textContent = "Původní mapový panel a jeho ovládání připravujeme podle archivních podkladů. Historické hodnoty zde nevydáváme za aktuální měření.";
+      notice.querySelector("button").hidden = true;
+      notice.hidden = false;
+    }
+    function openApp(id, force = false) {
+      const app = registry.get(id);
+      if (!app || (current === id && frame && !force)) return;
+      clearTimeout(timeout);
+      frame?.remove();
+      current = id;
+      session = crypto.randomUUID();
+      title.textContent = app.title;
+      standalone.href = app.url;
+      notice.hidden = true;
+      notice.querySelector("button").hidden = false;
+      for (const anchor of root.querySelectorAll("[data-app]")) {
+        if (anchor.dataset.app === id) anchor.setAttribute("aria-current", "true");
+        else anchor.removeAttribute("aria-current");
+      }
+      frame = el("iframe", "chmi-portal-app-frame");
+      frame.name = registry.frameName(id, session);
+      frame.title = `${app.title} – klasické rozhraní`;
+      frame.referrerPolicy = "strict-origin";
+      frame.src = registry.frameURL(id, session);
+      setStatus("loading");
+      stage.append(frame);
+      timeout = setTimeout(() => {
+        status.textContent = "Načtení aplikace zatím nebylo potvrzeno";
+        noticeText.textContent = "ČHMÚ může odpovídat pomalu nebo chybí oprávnění userscriptu uvnitř rámce. Panel neoznačujeme za funkční, dokud se nepotvrdí jeho rozhraní a mapové podklady.";
+        notice.hidden = false;
+        workspace.setAttribute("aria-busy", "false");
+      }, 25000);
+    }
+    const onMessage = event => {
+      if (root.isConnected && registry.accepts(event, frame, current, session)) setStatus(event.data.state);
+    };
+    const onHash = () => {
+      if (!root.isConnected) return;
+      if (selectedSection !== "weather") selectSection("weather");
+      else openApp(registry.route(location.hash));
+    };
+    window.addEventListener("message", onMessage);
+    window.addEventListener("hashchange", onHash);
+    root.addEventListener("keydown", event => {
+      if (event.key === "Escape" && root.classList.contains("chmi-portal-expanded")) expand.click();
+    });
+    selectSection("weather");
+  }
+  function initialize(result) {
+    if (result[KEY] === false) { window.__chmiClassicPortalCandidate = false; return; }
+    if (document.body) build();
+    else document.addEventListener("DOMContentLoaded", build, { once: true });
+  }
+  if (storage) storage.get({ [KEY]: true }, initialize);
+  else initialize({ [KEY]: true });
+})();
+
+
+(() => {
+  "use strict";
+
+  if (window.top !== window || window.__chmiClassicPortalCandidate || window.__chmiClassicNavigationLoaded) {
     return;
   }
 
@@ -279,7 +634,7 @@
 (() => {
   "use strict";
 
-  if (window.top !== window) {
+  if ((window.top !== window && !window.__chmiClassicEmbedded) || window.__chmiClassicPortalCandidate) {
     return;
   }
 
@@ -1412,7 +1767,7 @@
 (() => {
   "use strict";
 
-  if (window.top !== window || window.__chmiSatelliteClassicLoaded) {
+  if ((window.top !== window && !window.__chmiClassicEmbedded) || window.__chmiSatelliteClassicLoaded) {
     return;
   }
 
@@ -1487,6 +1842,53 @@
   let resizeDispatchScheduled = false;
   let layoutResizeObserver = null;
   let observedLayoutElement = null;
+  const compactSections = [];
+  const movedInfo = [];
+
+  function compactLiveControls() {
+    const sidebar = document.querySelector("#settingsMenu .offcanvas-body");
+    if (!sidebar) return;
+    for (const section of sidebar.querySelectorAll(".settings-section")) {
+      if (section.classList.contains("chmi-satellite-classic-native-choice") ||
+          section.querySelector("#time-range-group, .chmi-classic-disclosure")) continue;
+      const header = section.querySelector(".section-header");
+      if (!header) continue;
+      const details = document.createElement("details");
+      details.className = "chmi-classic-disclosure";
+      const summary = document.createElement("summary");
+      const nodes = [...section.childNodes];
+      summary.append(header);
+      details.append(summary, ...nodes.filter(node => node !== header));
+      section.append(details);
+      compactSections.push({ section, nodes, details });
+    }
+    if (!document.getElementById("chmi-satellite-classic-info")) {
+      const nodes = [...document.querySelectorAll(".map-wrapper > .product-legend-box, .map-wrapper > #satInfo")];
+      if (!nodes.length) return;
+      const details = document.createElement("details");
+      details.id = "chmi-satellite-classic-info";
+      details.className = "chmi-classic-disclosure";
+      const summary = document.createElement("summary");
+      summary.textContent = "Legenda a informace ke snímku";
+      details.append(summary);
+      for (const node of nodes) {
+        const placeholder = document.createComment("chmi-classic-info-position");
+        node.before(placeholder);
+        movedInfo.push({ node, placeholder });
+        details.append(node);
+      }
+      sidebar.append(details);
+    }
+  }
+
+  function restoreLiveControls() {
+    for (const { section, nodes, details } of compactSections.splice(0)) {
+      section.append(...nodes);
+      details.remove();
+    }
+    for (const { node, placeholder } of movedInfo.splice(0)) placeholder.replaceWith(node);
+    document.getElementById("chmi-satellite-classic-info")?.remove();
+  }
 
   function savePreference(enabled) {
     if (storage) {
@@ -1920,6 +2322,7 @@
     const brandChanged = createBrand("Aktuální data z družic MSG/MTG ČHMÚ");
     const selectorChanged = ensureProductSelector();
     const playerChanged = ensurePlayer();
+    compactLiveControls();
 
     renderProductMatrix();
     syncPlayer();
@@ -1948,6 +2351,7 @@
   }
 
   function removeClassicMode() {
+    restoreLiveControls();
     [BRAND_ID, SELECTOR_ID, PLAYER_ID, PORTAL_PRODUCTS_ID].forEach((id) => {
       document.getElementById(id)?.remove();
     });
@@ -2041,7 +2445,554 @@
 (() => {
   "use strict";
 
-  if (window.top !== window || window.__chmiClassicCatalogLoaded) {
+  const STORAGE_KEY = "chmiRadarClassicEnabled";
+  const ROOT_CLASS = "chmi-aladin-classic";
+  const EMBEDDED_CLASS = "chmi-aladin-classic-embedded";
+  const BRAND_ID = "chmi-aladin-classic-brand";
+  const CONTROLS_ID = "chmi-aladin-classic-controls";
+  const TIME_SELECT_ID = "chmi-aladin-classic-time";
+  const RUN_SELECT_ID = "chmi-aladin-classic-run";
+  const PRODUCT_IDS = ["T", "C", "R3", "W"];
+  const PRODUCT_LABELS = {
+    T: "Teplota",
+    C: "Oblačnost",
+    R3: "Srážky 3 h",
+    W: "Vítr"
+  };
+
+  function clampIndex(index, count) {
+    if (count <= 0) {
+      return 0;
+    }
+    return Math.min(Math.max(0, index), count - 1);
+  }
+
+  function steppedIndex(index, count, direction) {
+    return clampIndex(index + Math.sign(direction), count);
+  }
+
+  function wheelDirection(deltaY, deltaX) {
+    const delta = Math.abs(deltaY) >= Math.abs(deltaX) ? deltaY : deltaX;
+    if (Math.abs(delta) < 8) {
+      return 0;
+    }
+    return Math.sign(delta);
+  }
+
+  function productOrder(parameter) {
+    const index = PRODUCT_IDS.indexOf(parameter);
+    return index < 0 ? PRODUCT_IDS.length + 1 : index + 1;
+  }
+
+  function shouldRun({ hostname, pathname, framed, embedded }) {
+    return (
+      hostname === "produkty.chmi.cz" &&
+      pathname.startsWith("/aladin/") &&
+      (!framed || embedded === true)
+    );
+  }
+
+  if (globalThis.__chmiAladinClassicTestHooks) {
+    Object.assign(globalThis.__chmiAladinClassicTestHooks, {
+      PRODUCT_IDS: [...PRODUCT_IDS],
+      clampIndex,
+      productOrder,
+      shouldRun,
+      steppedIndex,
+      wheelDirection
+    });
+  }
+
+  const framed = window.top !== window;
+  if (
+    !shouldRun({
+      hostname: location.hostname,
+      pathname: location.pathname,
+      framed,
+      embedded: window.__chmiClassicEmbedded
+    }) ||
+    window.__chmiAladinClassicLoaded
+  ) {
+    return;
+  }
+
+  window.__chmiAladinClassicLoaded = true;
+
+  const storage = globalThis.__chmiClassicStorage ?? globalThis.chrome?.storage?.sync;
+  let classicEnabled = false;
+  let presetApplied = false;
+  let activeTimeIndex = 0;
+  let refreshScheduled = false;
+  let resizeScheduled = false;
+  let wheelLocked = false;
+  let observedGrid = null;
+  let gridObserver = null;
+  let layoutResizeObserver = null;
+
+  function dispatchNativeChange(element) {
+    if (!element) {
+      return;
+    }
+    element.dispatchEvent(new Event("input", { bubbles: true }));
+    element.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  function readPreference(callback) {
+    if (!storage?.get) {
+      callback(true);
+      return;
+    }
+
+    let completed = false;
+    const finish = (result) => {
+      if (completed) {
+        return;
+      }
+      completed = true;
+      callback(result?.[STORAGE_KEY] !== false);
+    };
+
+    try {
+      const pending = storage.get({ [STORAGE_KEY]: true }, finish);
+      if (pending?.then) {
+        pending.then(finish, () => finish({ [STORAGE_KEY]: true }));
+      }
+    } catch {
+      finish({ [STORAGE_KEY]: true });
+    }
+  }
+
+  function savePreference(enabled) {
+    try {
+      storage?.set?.({ [STORAGE_KEY]: Boolean(enabled) });
+    } catch {
+      // A read-only portal storage adapter must not break the native viewer.
+    }
+    setClassicMode(enabled);
+  }
+
+  function nativeElements() {
+    return {
+      main: document.querySelector(".mainWrapper"),
+      grid: document.getElementById("modelGrid"),
+      modelWrapper: document.getElementById("modelGrid")?.closest(".model-wrapper"),
+      run: document.getElementById("dateToLoadSelector"),
+      display: document.getElementById("displaySelector"),
+      checkAll: document.getElementById("check-all"),
+      products: PRODUCT_IDS.map((id) => document.getElementById(id))
+    };
+  }
+
+  function hasVerifiedNativeControls(elements) {
+    return (
+      elements.main &&
+      elements.grid &&
+      elements.modelWrapper &&
+      elements.run &&
+      elements.display &&
+      elements.products.every((control) => control?.classList.contains("item-check"))
+    );
+  }
+
+  function applyFourMapPreset(elements) {
+    if (presetApplied || !hasVerifiedNativeControls(elements)) {
+      return false;
+    }
+
+    const nativeProducts = [...document.querySelectorAll("input.item-check")];
+    if (!PRODUCT_IDS.every((id) => nativeProducts.some((control) => control.id === id))) {
+      return false;
+    }
+
+    let changedProduct = null;
+    for (const control of nativeProducts) {
+      const checked = PRODUCT_IDS.includes(control.id);
+      if (control.checked !== checked) {
+        control.checked = checked;
+        changedProduct ||= control;
+      }
+    }
+
+    if (elements.checkAll) {
+      elements.checkAll.checked = false;
+    }
+
+    const changedDisplay = elements.display.value !== "vertical";
+    if (changedDisplay) {
+      elements.display.value = "vertical";
+    }
+
+    presetApplied = true;
+    if (changedProduct) {
+      dispatchNativeChange(changedProduct);
+    } else if (changedDisplay) {
+      dispatchNativeChange(elements.display);
+    }
+    return Boolean(changedProduct || changedDisplay);
+  }
+
+  function createBrand(elements) {
+    let brand = document.getElementById(BRAND_ID);
+    if (brand) {
+      return brand;
+    }
+
+    brand = document.createElement("header");
+    brand.id = BRAND_ID;
+    brand.innerHTML = `
+      <div>
+        <strong>ALADIN – klasické mapy</strong>
+        <span>živá data ČHMÚ</span>
+      </div>
+      <button type="button" title="Dočasně zobrazit současné rozhraní">Nový vzhled</button>
+    `;
+    brand.querySelector("button").addEventListener("click", () => savePreference(false));
+    elements.main.insertBefore(brand, elements.main.firstChild);
+    return brand;
+  }
+
+  function createControls(elements) {
+    let controls = document.getElementById(CONTROLS_ID);
+    if (controls) {
+      return controls;
+    }
+
+    controls = document.createElement("section");
+    controls.id = CONTROLS_ID;
+    controls.setAttribute("aria-label", "Klasické ovládání předpovědních map ALADIN");
+    controls.innerHTML = `
+      <div class="chmi-aladin-classic-products" aria-label="Zobrazené veličiny">
+        ${PRODUCT_IDS.map((id) => `<span data-param="${id}">${PRODUCT_LABELS[id]}</span>`).join("")}
+      </div>
+      <div class="chmi-aladin-classic-run-control">
+        <label for="${RUN_SELECT_ID}">Běh modelu:</label>
+        <select id="${RUN_SELECT_ID}"></select>
+      </div>
+      <div class="chmi-aladin-classic-time-control">
+        <span>Termín (krok 3 h):</span>
+        <div role="group" aria-label="Posun předpovědního termínu">
+          <button type="button" data-action="first" title="První termín">|&lt;</button>
+          <button type="button" data-action="previous" title="Předchozí termín">&lt;</button>
+          <select id="${TIME_SELECT_ID}" aria-label="Předpovědní termín"></select>
+          <button type="button" data-action="next" title="Následující termín">&gt;</button>
+          <button type="button" data-action="last" title="Poslední termín">&gt;|</button>
+        </div>
+        <small>Kolečkem nad mapami posunete čas o 3 hodiny.</small>
+      </div>
+      <p class="chmi-aladin-classic-status" role="status" aria-live="polite"></p>
+    `;
+
+    controls.querySelector(`#${RUN_SELECT_ID}`).addEventListener("change", (event) => {
+      const nativeRun = document.getElementById("dateToLoadSelector");
+      if (!nativeRun || nativeRun.value === event.target.value) {
+        return;
+      }
+      activeTimeIndex = 0;
+      nativeRun.value = event.target.value;
+      dispatchNativeChange(nativeRun);
+      setStatus("Načítám zvolený běh z ČHMÚ…");
+    });
+
+    controls.querySelector(`#${TIME_SELECT_ID}`).addEventListener("change", (event) => {
+      setActiveTime(Number.parseInt(event.target.value, 10));
+    });
+
+    controls.addEventListener("click", (event) => {
+      const action = event.target.closest("button[data-action]")?.dataset.action;
+      const count = timeRows().length;
+      if (!action || count === 0) {
+        return;
+      }
+      const target = {
+        first: 0,
+        previous: steppedIndex(activeTimeIndex, count, -1),
+        next: steppedIndex(activeTimeIndex, count, 1),
+        last: count - 1
+      }[action];
+      setActiveTime(target);
+    });
+
+    elements.modelWrapper.insertAdjacentElement("beforebegin", controls);
+    return controls;
+  }
+
+  function setStatus(message) {
+    const status = document.querySelector(`#${CONTROLS_ID} .chmi-aladin-classic-status`);
+    if (status && status.textContent !== message) {
+      status.textContent = message;
+    }
+  }
+
+  function syncRunControl(elements) {
+    const mirror = document.getElementById(RUN_SELECT_ID);
+    if (!mirror || !elements.run) {
+      return;
+    }
+
+    const signature = [...elements.run.options]
+      .map((option) => `${option.value}:${option.textContent.trim()}`)
+      .join("|");
+    if (mirror.dataset.signature !== signature) {
+      mirror.replaceChildren(...[...elements.run.options].map((option) => option.cloneNode(true)));
+      mirror.dataset.signature = signature;
+    }
+    mirror.value = elements.run.value;
+  }
+
+  function rowLabel(row, index) {
+    const label = row.querySelector(".mapImgTimeLabel")?.textContent.replace(/\s+/g, " ").trim();
+    if (label) {
+      return label;
+    }
+    const title = row.querySelector("a[data-title]")?.dataset.title || "";
+    const separator = title.lastIndexOf(" - ");
+    return separator >= 0 ? title.slice(separator + 3).trim() : `Termín ${index + 1}`;
+  }
+
+  function timeRows() {
+    const grid = document.getElementById("modelGrid");
+    if (!grid) {
+      return [];
+    }
+    return [...grid.children].filter(
+      (row) => row.classList.contains("time-row") && row.querySelector(".map-cell:not(.map-header)")
+    );
+  }
+
+  function markGridRows(elements) {
+    const allRows = [...elements.grid.children].filter((row) => row.classList.contains("time-row"));
+    const header = allRows.find((row) => row.querySelector(".map-header"));
+    header?.classList.add("chmi-aladin-classic-header-row");
+
+    const rows = timeRows();
+    rows.forEach((row, index) => {
+      row.classList.add("chmi-aladin-classic-time-row");
+      row.dataset.chmiTimeIndex = String(index);
+      row.querySelectorAll(".map-cell[data-param]").forEach((cell) => {
+        cell.style.setProperty("--chmi-aladin-product-order", String(productOrder(cell.dataset.param)));
+      });
+    });
+    return rows;
+  }
+
+  function syncTimeControl(rows) {
+    const select = document.getElementById(TIME_SELECT_ID);
+    if (!select) {
+      return;
+    }
+
+    const labels = rows.map(rowLabel);
+    const signature = labels.join("|");
+    if (select.dataset.signature !== signature) {
+      select.replaceChildren(
+        ...labels.map((label, index) => {
+          const option = document.createElement("option");
+          option.value = String(index);
+          option.textContent = label;
+          return option;
+        })
+      );
+      select.dataset.signature = signature;
+    }
+
+    activeTimeIndex = clampIndex(activeTimeIndex, rows.length);
+    select.value = String(activeTimeIndex);
+    select.disabled = rows.length === 0;
+  }
+
+  function setActiveTime(index) {
+    const rows = timeRows();
+    activeTimeIndex = clampIndex(Number.isFinite(index) ? index : 0, rows.length);
+    rows.forEach((row, rowIndex) => {
+      const active = rowIndex === activeTimeIndex;
+      row.classList.toggle("is-active", active);
+      row.hidden = !active;
+      row.setAttribute("aria-hidden", String(!active));
+    });
+
+    const select = document.getElementById(TIME_SELECT_ID);
+    if (select) {
+      select.value = String(activeTimeIndex);
+    }
+
+    const label = rows[activeTimeIndex] ? rowLabel(rows[activeTimeIndex], activeTimeIndex) : "—";
+    setStatus(rows.length > 0 ? `${label} · ${rows.length} termínů po 3 hodinách` : "Čekám na mapy ČHMÚ…");
+
+    document.querySelectorAll(`#${CONTROLS_ID} button[data-action]`).forEach((button) => {
+      const action = button.dataset.action;
+      button.disabled =
+        rows.length === 0 ||
+        ((action === "first" || action === "previous") && activeTimeIndex === 0) ||
+        ((action === "next" || action === "last") && activeTimeIndex === rows.length - 1);
+    });
+  }
+
+  function onMapWheel(event) {
+    if (!classicEnabled || event.ctrlKey || event.metaKey || event.altKey) {
+      return;
+    }
+    const direction = wheelDirection(event.deltaY, event.deltaX);
+    const rows = timeRows();
+    if (!direction || rows.length < 2) {
+      return;
+    }
+
+    event.preventDefault();
+    if (wheelLocked) {
+      return;
+    }
+    wheelLocked = true;
+    setActiveTime(steppedIndex(activeTimeIndex, rows.length, direction));
+    window.setTimeout(() => {
+      wheelLocked = false;
+    }, 180);
+  }
+
+  function observeGrid(elements) {
+    if (observedGrid === elements.grid) {
+      return;
+    }
+    gridObserver?.disconnect();
+    observedGrid?.removeEventListener("wheel", onMapWheel);
+
+    observedGrid = elements.grid;
+    observedGrid.addEventListener("wheel", onMapWheel, { passive: false });
+    gridObserver = new MutationObserver(scheduleRefresh);
+    gridObserver.observe(observedGrid, { childList: true });
+  }
+
+  function updateGeometry() {
+    if (!classicEnabled) {
+      return;
+    }
+    const modelWrapper = document.getElementById("modelGrid")?.closest(".model-wrapper");
+    if (!modelWrapper) {
+      return;
+    }
+    const top = Math.max(0, modelWrapper.getBoundingClientRect().top);
+    const available = Math.max(260, Math.floor(window.innerHeight - top - 12));
+    document.documentElement.style.setProperty("--chmi-aladin-available-height", `${available}px`);
+  }
+
+  function scheduleGeometry() {
+    if (resizeScheduled) {
+      return;
+    }
+    resizeScheduled = true;
+    requestAnimationFrame(() => {
+      resizeScheduled = false;
+      updateGeometry();
+    });
+  }
+
+  function observeLayout(elements) {
+    if (!globalThis.ResizeObserver || layoutResizeObserver) {
+      return;
+    }
+    layoutResizeObserver = new ResizeObserver(scheduleGeometry);
+    layoutResizeObserver.observe(elements.main);
+  }
+
+  function refresh() {
+    if (!classicEnabled) {
+      return;
+    }
+
+    const elements = nativeElements();
+    if (!hasVerifiedNativeControls(elements)) {
+      document.documentElement.dataset.chmiAladinNative = "waiting";
+      return;
+    }
+
+    document.documentElement.dataset.chmiAladinNative = "verified";
+    createBrand(elements);
+    createControls(elements);
+    observeGrid(elements);
+    observeLayout(elements);
+    syncRunControl(elements);
+
+    const requestedReload = applyFourMapPreset(elements);
+    if (!requestedReload) {
+      const rows = markGridRows(elements);
+      syncTimeControl(rows);
+      setActiveTime(activeTimeIndex);
+    }
+    scheduleGeometry();
+  }
+
+  function scheduleRefresh() {
+    if (!classicEnabled || refreshScheduled) {
+      return;
+    }
+    refreshScheduled = true;
+    requestAnimationFrame(() => {
+      refreshScheduled = false;
+      refresh();
+    });
+  }
+
+  function removeClassicMode() {
+    document.getElementById(BRAND_ID)?.remove();
+    document.getElementById(CONTROLS_ID)?.remove();
+    document.querySelectorAll(".chmi-aladin-classic-header-row").forEach((row) => {
+      row.classList.remove("chmi-aladin-classic-header-row");
+    });
+    document.querySelectorAll(".chmi-aladin-classic-time-row").forEach((row) => {
+      row.classList.remove("chmi-aladin-classic-time-row", "is-active");
+      row.removeAttribute("hidden");
+      row.removeAttribute("aria-hidden");
+      row.removeAttribute("data-chmi-time-index");
+      row.querySelectorAll(".map-cell[data-param]").forEach((cell) => {
+        cell.style.removeProperty("--chmi-aladin-product-order");
+      });
+    });
+    observedGrid?.removeEventListener("wheel", onMapWheel);
+    gridObserver?.disconnect();
+    layoutResizeObserver?.disconnect();
+    observedGrid = null;
+    gridObserver = null;
+    layoutResizeObserver = null;
+    document.documentElement.style.removeProperty("--chmi-aladin-available-height");
+    document.documentElement.classList.remove(ROOT_CLASS, EMBEDDED_CLASS);
+    delete document.documentElement.dataset.chmiAladinNative;
+    window.dispatchEvent(new Event("resize"));
+  }
+
+  function setClassicMode(enabled) {
+    classicEnabled = Boolean(enabled);
+    if (!classicEnabled) {
+      removeClassicMode();
+      return;
+    }
+
+    document.documentElement.classList.add(ROOT_CLASS);
+    document.documentElement.classList.toggle(EMBEDDED_CLASS, framed);
+    refresh();
+  }
+
+  const rootObserver = new MutationObserver(scheduleRefresh);
+  rootObserver.observe(document.documentElement, { childList: true, subtree: true });
+  window.addEventListener("resize", scheduleGeometry, { passive: true });
+  document.addEventListener("change", (event) => {
+    if (event.target?.id === "dateToLoadSelector") {
+      activeTimeIndex = 0;
+    }
+    scheduleRefresh();
+  });
+
+  globalThis.chrome?.storage?.onChanged?.addListener((changes, areaName) => {
+    if (areaName === "sync" && changes[STORAGE_KEY]) {
+      setClassicMode(changes[STORAGE_KEY].newValue);
+    }
+  });
+
+  readPreference(setClassicMode);
+})();
+
+(() => {
+  "use strict";
+
+  if (window.top !== window || window.__chmiClassicPortalCandidate || window.__chmiAladinClassicLoaded || window.__chmiClassicCatalogLoaded) {
     return;
   }
   window.__chmiClassicCatalogLoaded = true;

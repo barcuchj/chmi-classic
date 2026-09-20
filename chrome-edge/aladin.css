@@ -1,0 +1,379 @@
+html.chmi-aladin-classic,
+html.chmi-aladin-classic body {
+  min-height: 100%;
+  background: #8bc6da !important;
+  color: #111 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 14px !important;
+}
+
+html.chmi-aladin-classic #wrapper {
+  width: 100% !important;
+  min-height: 100vh !important;
+}
+
+html.chmi-aladin-classic #chmu-header,
+html.chmi-aladin-classic #wrapper > [aria-label*="Nach"],
+html.chmi-aladin-classic #wrapper > nav,
+html.chmi-aladin-classic #footer,
+html.chmi-aladin-classic #footerBottom,
+html.chmi-aladin-classic .material-scrolltop,
+html.chmi-aladin-classic .mainWrapper > .container-fluid > h1,
+html.chmi-aladin-classic #settingsWrapper,
+html.chmi-aladin-classic .scroll-controls {
+  display: none !important;
+}
+
+html.chmi-aladin-classic .mainWrapper {
+  box-sizing: border-box;
+  width: min(1540px, calc(100% - 16px)) !important;
+  max-width: none !important;
+  margin: 8px auto !important;
+  padding: 0 8px 8px !important;
+  background: #fff !important;
+  border: 1px solid #9bafb7;
+  border-radius: 10px;
+  box-shadow: 0 4px 9px rgb(40 83 101 / 22%);
+}
+
+html.chmi-aladin-classic-embedded,
+html.chmi-aladin-classic-embedded body,
+html.chmi-aladin-classic-embedded #wrapper {
+  min-height: 100% !important;
+  background: #fff !important;
+}
+
+html.chmi-aladin-classic-embedded .mainWrapper {
+  width: 100% !important;
+  margin: 0 !important;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html.chmi-aladin-classic #chmi-aladin-classic-brand {
+  box-sizing: border-box;
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  width: calc(100% + 16px);
+  min-height: 42px;
+  margin: 0 -8px;
+  padding: 10px 12px 8px;
+  color: #176b95;
+  background: #fff;
+  border-bottom: 1px solid #9bafb7;
+  border-radius: 10px 10px 0 0;
+}
+
+html.chmi-aladin-classic #chmi-aladin-classic-brand > div {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+
+html.chmi-aladin-classic #chmi-aladin-classic-brand strong {
+  font-size: 17px;
+}
+
+html.chmi-aladin-classic #chmi-aladin-classic-brand span {
+  color: #666;
+  font-size: 12px;
+}
+
+html.chmi-aladin-classic #chmi-aladin-classic-brand button {
+  margin-left: auto;
+  padding: 3px 9px;
+  color: #176b95;
+  background: #f7fcfe;
+  border: 1px solid #8fc2d8;
+  border-radius: 2px;
+  font: 12px/1.4 Arial, Helvetica, sans-serif;
+  cursor: pointer;
+}
+
+html.chmi-aladin-classic #chmi-aladin-classic-brand button:hover {
+  background: #dff1f8;
+}
+
+html.chmi-aladin-classic #chmi-aladin-classic-controls {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(270px, 1fr) minmax(230px, 0.7fr) minmax(430px, 1.3fr);
+  align-items: center;
+  gap: 8px 14px;
+  margin: 8px 0;
+  padding: 8px 10px;
+  color: #111;
+  background: #edf7fb;
+  border: 1px solid #9bafb7;
+  border-radius: 3px;
+  font: 13px/1.3 Arial, Helvetica, sans-serif;
+}
+
+html.chmi-aladin-classic .chmi-aladin-classic-products {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+}
+
+html.chmi-aladin-classic .chmi-aladin-classic-products span {
+  padding: 4px 5px;
+  color: #fff;
+  background: #176b95;
+  border: 1px solid #0b587c;
+  text-align: center;
+  white-space: nowrap;
+}
+
+html.chmi-aladin-classic .chmi-aladin-classic-run-control,
+html.chmi-aladin-classic .chmi-aladin-classic-time-control,
+html.chmi-aladin-classic .chmi-aladin-classic-time-control > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+html.chmi-aladin-classic .chmi-aladin-classic-run-control label,
+html.chmi-aladin-classic .chmi-aladin-classic-time-control > span {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+html.chmi-aladin-classic #chmi-aladin-classic-controls select,
+html.chmi-aladin-classic #chmi-aladin-classic-controls button {
+  box-sizing: border-box;
+  min-height: 27px;
+  padding: 3px 7px;
+  color: #111;
+  background: #fff;
+  border: 1px solid #888;
+  border-radius: 2px;
+  font: 12px/1.3 Arial, Helvetica, sans-serif;
+}
+
+html.chmi-aladin-classic #chmi-aladin-classic-controls button {
+  min-width: 30px;
+  color: #0645ad;
+  background: #f5f5f5;
+  cursor: pointer;
+}
+
+html.chmi-aladin-classic #chmi-aladin-classic-controls button:hover:not(:disabled) {
+  color: #fff;
+  background: #176b95;
+}
+
+html.chmi-aladin-classic #chmi-aladin-classic-controls button:disabled {
+  color: #999;
+  cursor: default;
+}
+
+html.chmi-aladin-classic #chmi-aladin-classic-run {
+  width: min(100%, 190px);
+}
+
+html.chmi-aladin-classic #chmi-aladin-classic-time {
+  min-width: 160px;
+  max-width: 230px;
+}
+
+html.chmi-aladin-classic .chmi-aladin-classic-time-control small {
+  display: block;
+  padding: 5px 8px;
+  color: #153e65;
+  background: #e5f2ff;
+  border-left: 3px solid #2473a8;
+  border-radius: 2px;
+  font: 600 12px/1.35 Arial, sans-serif;
+  white-space: normal;
+}
+
+html.chmi-aladin-classic .chmi-aladin-classic-status {
+  grid-column: 1 / -1;
+  min-height: 16px;
+  margin: -2px 0 0;
+  color: #555;
+  font-size: 11px;
+}
+
+html.chmi-aladin-classic .model-wrapper {
+  position: relative;
+  min-height: min(280px, var(--chmi-aladin-available-height, 70vh));
+  overflow: hidden !important;
+  background: #dce8ed;
+  border: 1px solid #8a9ca4;
+}
+
+html.chmi-aladin-classic #loadingDiv {
+  z-index: 5;
+  background: rgb(255 255 255 / 88%) !important;
+}
+
+html.chmi-aladin-classic #modelGrid {
+  box-sizing: border-box;
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  max-height: var(--chmi-aladin-available-height, 70vh);
+  padding: 0 !important;
+  overflow: hidden !important;
+  scroll-behavior: auto !important;
+  touch-action: pan-x;
+}
+
+html.chmi-aladin-classic #modelGrid > .time-row {
+  display: none !important;
+}
+
+html.chmi-aladin-classic #modelGrid > .chmi-aladin-classic-header-row,
+html.chmi-aladin-classic #modelGrid > .chmi-aladin-classic-time-row.is-active {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: 2px;
+  width: 100% !important;
+}
+
+html.chmi-aladin-classic #modelGrid > .chmi-aladin-classic-header-row {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+html.chmi-aladin-classic #modelGrid .map-cell {
+  box-sizing: border-box;
+  order: var(--chmi-aladin-product-order, 9);
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+html.chmi-aladin-classic #modelGrid .map-header {
+  min-height: 31px;
+  padding: 6px 4px !important;
+  color: #fff !important;
+  background: #2e3a87 !important;
+  border: 0 !important;
+  font: 12px/1.25 Arial, Helvetica, sans-serif !important;
+  text-align: center;
+}
+
+html.chmi-aladin-classic #modelGrid .map-cell[data-param="T"] {
+  --chmi-aladin-product-order: 1;
+}
+
+html.chmi-aladin-classic #modelGrid .map-cell[data-param="C"] {
+  --chmi-aladin-product-order: 2;
+}
+
+html.chmi-aladin-classic #modelGrid .map-cell[data-param="R3"] {
+  --chmi-aladin-product-order: 3;
+}
+
+html.chmi-aladin-classic #modelGrid .map-cell[data-param="W"] {
+  --chmi-aladin-product-order: 4;
+}
+
+html.chmi-aladin-classic #modelGrid .map-bg-wrapper,
+html.chmi-aladin-classic #modelGrid a[data-lightbox] {
+  display: block;
+  width: 100% !important;
+}
+
+html.chmi-aladin-classic #modelGrid .mapImg {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: calc(var(--chmi-aladin-available-height, 70vh) - 35px);
+  margin: 0 !important;
+  object-fit: contain;
+  object-position: top center;
+}
+
+html.chmi-aladin-classic #modelGrid .mapImgTimeLabel {
+  z-index: 1;
+  max-width: calc(100% - 6px);
+  padding: 2px 4px !important;
+  overflow: hidden;
+  font: bold 11px/1.2 Arial, Helvetica, sans-serif !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 1050px) {
+  html.chmi-aladin-classic #chmi-aladin-classic-controls {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  html.chmi-aladin-classic .chmi-aladin-classic-products {
+    grid-column: 1 / -1;
+  }
+
+  html.chmi-aladin-classic .chmi-aladin-classic-time-control {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 760px) {
+  html.chmi-aladin-classic .mainWrapper {
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius: 0;
+  }
+
+  html.chmi-aladin-classic #chmi-aladin-classic-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  html.chmi-aladin-classic .chmi-aladin-classic-products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html.chmi-aladin-classic .chmi-aladin-classic-run-control,
+  html.chmi-aladin-classic .chmi-aladin-classic-time-control {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  html.chmi-aladin-classic .chmi-aladin-classic-time-control small {
+    width: 100%;
+  }
+
+  html.chmi-aladin-classic #modelGrid > .chmi-aladin-classic-header-row,
+  html.chmi-aladin-classic #modelGrid > .chmi-aladin-classic-time-row.is-active {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html.chmi-aladin-classic #modelGrid .mapImg {
+    max-height: none;
+  }
+}
+
+@media (max-width: 440px) {
+  html.chmi-aladin-classic #chmi-aladin-classic-brand {
+    align-items: center;
+  }
+
+  html.chmi-aladin-classic #chmi-aladin-classic-brand > div {
+    display: block;
+  }
+
+  html.chmi-aladin-classic #chmi-aladin-classic-brand span {
+    display: block;
+  }
+
+  html.chmi-aladin-classic .chmi-aladin-classic-time-control > div {
+    width: 100%;
+  }
+
+  html.chmi-aladin-classic #chmi-aladin-classic-time {
+    flex: 1;
+    min-width: 0;
+  }
+}

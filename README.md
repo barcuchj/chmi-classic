@@ -1,5 +1,52 @@
 # ČHMÚ Classic – meteorologické výstupy
 
+## Beta 0.7.0-beta.1 – aplikace na jednom místě
+
+**Testovací beta, nikoli dokončená obnova všech aplikací.** Nyní vyvíjíme především userscript
+pro Tampermonkey. Nový portál zatím není zabalený v rozšířeních Chrome/Edge/Safari.
+Userscript v `main` obsahuje tuto betu. Kdo chce vyzkoušet nové rozhraní,
+otevře [instalační odkaz](https://raw.githubusercontent.com/barcuchj/chmi-classic/main/tampermonkey/chmi-classic.user.js)
+a v Tampermonkey potvrdí aktualizaci. Nemějte současně aktivní starý userscript
+i rozšíření ČHMÚ Classic, aby se jejich úpravy nepřekrývaly.
+
+Na úvodní stránce ČHMÚ zůstává jen úzká nabídka **Počasí · Voda · Ovzduší**
+a hlavní plocha pro vybranou aplikaci. Rozcestník pod mapou funguje takto:
+
+- **Běžné kliknutí** zobrazí aplikaci uprostřed portálu.
+- **Ctrl/⌘+klik nebo prostřední tlačítko** otevře samostatnou záložku na aktuální
+  adrese ČHMÚ. S aktivním userscriptem se i tam použije klasický vzhled.
+- **Zvětšit panel** dočasně schová okolní nabídky a rozcestník. **Zpět na portál**
+  nebo klávesa Escape je vrátí bez nového načítání aplikace.
+- **Otevřít samostatně** otevře právě vybranou aplikaci v nové záložce.
+- Červený přeškrtnutý název není odkaz. Najetím myší zjistíte, proč daná
+  aplikace ještě není obnovená.
+
+Radar má stupnici ukotvenou uvnitř mapy. U Meteosatu se připravuje kompaktní
+postranní ovládání s rozbalovacími podrobnostmi; mapa se při práci s ovladači
+nemá ztrácet mimo okno. ALADIN přidává čtyři mapy a výraznější nápovědu
+k posouvání času kolečkem myši.
+
+**Co ještě není hotové:** úvodní mapa počasí s předpovědí, obsah záložek Voda
+a Ovzduší a řada původních aplikací. Probíhá kontrola menších oken, samostatných
+záložek a skutečné instalace do Tampermonkey. Vývojová kontrola ve vestavěném
+prohlížeči používá dočasné vložení kódu; není náhradou instalačního testu.
+Podrobnosti a zbývající práce jsou v [TODO.md](TODO.md).
+
+### Jak beta vypadá
+
+**Radar v portálu:** úzká horní nabídka, mapa a původní rozcestník pod ní.
+
+![Radar v centrálním panelu ČHMÚ Classic](docs/screenshots/portal-radar.png)
+
+**Meteosat po kliknutí na Zvětšit panel:** mapa má celou pracovní plochu,
+podrobnější nastavení se rozbaluje vpravo. Tlačítko Zpět na portál vrátí nabídky.
+
+![Meteosat ve zvětšeném panelu](docs/screenshots/meteosat-expanded.png)
+
+Jde o skutečné snímky vývojové bety z 20. 9. 2026, nikoli grafické návrhy.
+Zobrazené počasí je stav při pořízení snímků, ne aktuální předpověď.
+[Zdroje snímků a rozsah ověření](docs/screenshots/README.md).
+
 ČHMÚ Classic je rozšíření a Tampermonkey userscript pro Chrome, Edge a Safari.
 Na současných stránkách ČHMÚ vrací kompaktní vzhled inspirovaný původním webem,
 zachovává živé komponenty a datové backendy ČHMÚ a od verze **0.6.0** rozšiřuje

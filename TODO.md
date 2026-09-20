@@ -1,5 +1,30 @@
 # ToDo
 
+## Portál 0.7 – rozpracováno (20. 9. 2026)
+
+- [x] Userscript sestavuje portál s centrálním rámcem a explicitním registrem
+  současných aplikací; původní DOM zůstává dostupný přepnutím na nový vzhled.
+- [x] Odstraněny vysoké hlavičky/bannery; Počasí/Voda/Ovzduší jsou v úzké
+  společné liště. Zvětšení panelu ponechává živý rámec načtený.
+- [x] Adresy v rozcestníku jsou skutečné současné URL; pouze běžné kliknutí
+  zachytává portál. Přidán odkaz Otevřít samostatně.
+- [x] Regresní test pro přepis URL v Meteosatu: označení rámce a relace
+  zůstává ve frame.name, příjem zpráv ověřuje zdroj, origin a relaci.
+- [ ] Dokončit živé kontroly kompaktního MSG, ALADINu a hintu kolečka,
+  polárních/geo družic a hub v panelu i samostatně, na menších oknech.
+- [ ] Ověřit automatické spuštění ve všech rámcích ze skutečně instalovaného
+  Tampermonkey. Dosavadní IAB kontroly jsou dočasná vývojová injekce kódu.
+- [x] Doplněny dva skutečné screenshoty do uživatelského README (radar v portálu,
+  zvětšený Meteosat); původní anotované podklady ve screens/ se nezveřejňují.
+- [ ] Obnovit výchozí mapu ČR s živou předpovědí, nikoli archivními teplotami.
+- [ ] Rekonstruovat Vodu/Ovzduší a postupně všechny položky původního rozcestníku
+  podle archivních HTML/JS a ověřených živých zdrojů; pouhý moderní odkaz není hotovo.
+- [ ] Prozkoumat uložené referenční HTML/JS/CSS v .build/archive-reference-20260920;
+  nepřebírat neověřenou licenci ani staré závislosti do distribuovaného kódu.
+- [ ] Po ověření userscriptu teprve synchronizovat a testovat rozšíření.
+- [ ] Před vydáním ověřit výchozí zastavení radaru na nejnovějším měření,
+  nikoli na posledním extrapolovaném předpovědním snímku.
+
 ## Rozpracováno / vyžaduje ruční živý browser test
 
 - [ ] Ověřit verzi 0.6.0 v Chrome/Edge proti živému DOM ALADINu a potvrdit, že
