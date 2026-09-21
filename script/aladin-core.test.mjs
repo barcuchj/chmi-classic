@@ -63,6 +63,19 @@ test("3-hour stepping and wheel direction stay bounded", () => {
   assert.equal(wheelDirection(2, 1), 0);
 });
 
+test("map layout maximizes complete maps without cropping at wide and tall sizes", () => {
+  const { mapLayout } = loadHooks();
+  for (const [width, height] of [[2000, 1050], [1400, 450], [700, 650], [360, 400]]) {
+    const layout = mapLayout(width, height);
+    assert.ok(layout.width > 0);
+    assert.ok(layout.columns * layout.width + (layout.columns - 1) * 2 <= width + 0.01);
+    assert.ok((4 / layout.columns) * (layout.width * 442 / 700 + 22) +
+      (4 / layout.columns - 1) * 2 <= height + 0.01);
+  }
+  assert.equal(mapLayout(2000, 1050).columns, 2);
+  assert.equal(mapLayout(1400, 250).columns, 4);
+});
+
 test("module targets verified native handlers instead of constructing data URLs", () => {
   assert.match(source, /dateToLoadSelector/);
   assert.match(source, /displaySelector/);

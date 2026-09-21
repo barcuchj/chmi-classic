@@ -40,6 +40,18 @@
     return index < 0 ? PRODUCT_IDS.length + 1 : index + 1;
   }
 
+  // Keep each complete native image at its original aspect ratio. Choose the
+  // arrangement that gives each of the four maps the most usable space.
+  function mapLayout(width, height, ratio = 442 / 700) {
+    return [4, 2].map(columns => {
+      const rows = 4 / columns;
+      return { columns, width: Math.max(1, Math.min(
+        (width - (columns - 1) * 2) / columns,
+        (height - rows * 22 - (rows - 1) * 2) / rows / ratio
+      )) };
+    }).sort((a, b) => b.width - a.width)[0];
+  }
+
   function shouldRun({ hostname, pathname, framed, embedded }) {
     return (
       hostname === "produkty.chmi.cz" &&
@@ -53,6 +65,7 @@
       PRODUCT_IDS: [...PRODUCT_IDS],
       clampIndex,
       productOrder,
+      mapLayout,
       shouldRun,
       steppedIndex,
       wheelDirection
@@ -326,6 +339,18 @@
       row.dataset.chmiTimeIndex = String(index);
       row.querySelectorAll(".map-cell[data-param]").forEach((cell) => {
         cell.style.setProperty("--chmi-aladin-product-order", String(productOrder(cell.dataset.param)));
+        if (!cell.querySelector(".chmi-aladin-cell-title")) {
+          const title = document.createElement("div");
+          title.className = "chmi-aladin-cell-title";
+          title.textContent = PRODUCT_LABELS[cell.dataset.param] || cell.dataset.param;
+          cell.prepend(title);
+        }
+        if (!cell.querySelector(".mapImg, .chmi-aladin-empty")) {
+          const empty = document.createElement("div");
+          empty.className = "chmi-aladin-empty";
+          empty.textContent = "ČHMÚ pro tento termín neposkytuje snímek. Zvolte jiný termín.";
+          cell.append(empty);
+        }
       });
     });
     return rows;
@@ -381,6 +406,7 @@
         ((action === "first" || action === "previous") && activeTimeIndex === 0) ||
         ((action === "next" || action === "last") && activeTimeIndex === rows.length - 1);
     });
+    scheduleGeometry();
   }
 
   function onMapWheel(event) {
@@ -426,8 +452,15 @@
       return;
     }
     const top = Math.max(0, modelWrapper.getBoundingClientRect().top);
-    const available = Math.max(260, Math.floor(window.innerHeight - top - 12));
+    const available = Math.max(180, Math.floor(window.innerHeight - top - 24));
     document.documentElement.style.setProperty("--chmi-aladin-available-height", `${available}px`);
+    const grid = document.getElementById("modelGrid");
+    const header = grid.querySelector(".chmi-aladin-classic-header-row");
+    const image = grid.querySelector(".mapImg");
+    const ratio = image?.naturalWidth ? image.naturalHeight / image.naturalWidth : 442 / 700;
+    const layout = mapLayout(modelWrapper.clientWidth, available - (header?.offsetHeight || 32) - 4, ratio);
+    grid.style.setProperty("--chmi-aladin-columns", String(layout.columns));
+    grid.style.setProperty("--chmi-aladin-map-width", `${Math.floor(layout.width)}px`);
   }
 
   function scheduleGeometry() {
@@ -490,6 +523,10 @@
   function removeClassicMode() {
     document.getElementById(BRAND_ID)?.remove();
     document.getElementById(CONTROLS_ID)?.remove();
+    document.querySelectorAll(".chmi-aladin-cell-title, .chmi-aladin-empty").forEach(node => node.remove());
+    const grid = document.getElementById("modelGrid");
+    grid?.style.removeProperty("--chmi-aladin-columns");
+    grid?.style.removeProperty("--chmi-aladin-map-width");
     document.querySelectorAll(".chmi-aladin-classic-header-row").forEach((row) => {
       row.classList.remove("chmi-aladin-classic-header-row");
     });
