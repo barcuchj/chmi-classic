@@ -25,6 +25,10 @@
 		D89763E7304AC50600FC44A5 /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = D89763E1304AC50600FC44A5 /* content.js */; };
 		A10000000000000000000001 /* satellite.js in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* satellite.js */; };
 		A10000000000000000000002 /* satellite.css in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000004 /* satellite.css */; };
+		A10000000000000000000005 /* catalog.js in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000009 /* catalog.js */; };
+		A10000000000000000000006 /* catalog.css in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000A /* catalog.css */; };
+		A10000000000000000000007 /* legacy.js in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000B /* legacy.js */; };
+		A10000000000000000000008 /* legacy.css in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000C /* legacy.css */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +77,10 @@
 		D89763E1304AC50600FC44A5 /* content.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = content.js; path = Resources/content.js; sourceTree = "<group>"; };
 		A10000000000000000000003 /* satellite.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = satellite.js; path = Resources/satellite.js; sourceTree = "<group>"; };
 		A10000000000000000000004 /* satellite.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = satellite.css; path = Resources/satellite.css; sourceTree = "<group>"; };
+		A10000000000000000000009 /* catalog.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = catalog.js; path = Resources/catalog.js; sourceTree = "<group>"; };
+		A1000000000000000000000A /* catalog.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = catalog.css; path = Resources/catalog.css; sourceTree = "<group>"; };
+		A1000000000000000000000B /* legacy.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = legacy.js; path = Resources/legacy.js; sourceTree = "<group>"; };
+		A1000000000000000000000C /* legacy.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = legacy.css; path = Resources/legacy.css; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +164,10 @@
 				D89763E1304AC50600FC44A5 /* content.js */,
 				A10000000000000000000003 /* satellite.js */,
 				A10000000000000000000004 /* satellite.css */,
+				A10000000000000000000009 /* catalog.js */,
+				A1000000000000000000000A /* catalog.css */,
+				A1000000000000000000000B /* legacy.js */,
+				A1000000000000000000000C /* legacy.css */,
 			);
 			name = Resources;
 			path = "CHMURadarClassicSafari Extension";
@@ -268,6 +280,10 @@
 				D89763E2304AC50600FC44A5 /* popup.js in Resources */,
 				A10000000000000000000001 /* satellite.js in Resources */,
 				A10000000000000000000002 /* satellite.css in Resources */,
+				A10000000000000000000005 /* catalog.js in Resources */,
+				A10000000000000000000006 /* catalog.css in Resources */,
+				A10000000000000000000007 /* legacy.js in Resources */,
+				A10000000000000000000008 /* legacy.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

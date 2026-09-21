@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  if (window.top !== window) {
+  if ((window.top !== window && !window.__chmiClassicEmbedded) || window.__chmiClassicPortalCandidate) {
     return;
   }
 

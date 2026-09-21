@@ -1,0 +1,454 @@
+/* Jednotný katalog a kompaktní old-look rám dalších meteorologických výstupů ČHMÚ. */
+
+.chmi-classic-catalog-button,
+#chmi-aladin-four-map-preset,
+#chmi-catalog-classic-brand > button {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  padding: 3px 8px !important;
+  color: #176b95 !important;
+  background: #f7fcfe !important;
+  border: 1px solid #8fc2d8 !important;
+  border-radius: 2px !important;
+  font: 12px/1.35 Arial, Helvetica, sans-serif !important;
+  cursor: pointer;
+}
+
+.chmi-classic-catalog-button:hover,
+#chmi-aladin-four-map-preset:hover,
+#chmi-catalog-classic-brand > button:hover {
+  color: #fff !important;
+  background: #4ea8d3 !important;
+  border-color: #2588ba !important;
+}
+
+.chmi-classic-catalog-button:focus-visible,
+#chmi-aladin-four-map-preset:focus-visible,
+#chmi-catalog-classic-brand button:focus-visible,
+#chmi-classic-catalog-dialog a:focus-visible,
+#chmi-classic-catalog-dialog button:focus-visible {
+  outline: 3px solid #f5a623 !important;
+  outline-offset: 2px;
+}
+
+html.chmi-catalog-open,
+html.chmi-catalog-open body {
+  overflow: hidden !important;
+}
+
+#chmi-classic-catalog-overlay[hidden] {
+  display: none !important;
+}
+
+#chmi-classic-catalog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483600;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: 14px;
+  background: rgb(15 50 65 / 56%);
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+#chmi-classic-catalog-dialog {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: min(1180px, 100%);
+  max-height: calc(100vh - 28px);
+  overflow: hidden;
+  color: #222;
+  background: #fff;
+  border: 1px solid #6b8c9b;
+  border-radius: 7px;
+  box-shadow: 0 8px 28px rgb(0 0 0 / 38%);
+}
+
+#chmi-classic-catalog-dialog > header {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 11px;
+  color: #176b95;
+  background: #e8f6fb;
+  border-bottom: 1px solid #9cc5d5;
+}
+
+#chmi-classic-catalog-dialog h2 {
+  flex: 1 1 auto;
+  margin: 0 !important;
+  color: #176b95 !important;
+  font: 700 17px/1.25 Arial, Helvetica, sans-serif !important;
+}
+
+#chmi-classic-catalog-dialog .chmi-catalog-close {
+  flex: 0 0 auto;
+  padding: 4px 9px;
+  color: #176b95;
+  background: #fff;
+  border: 1px solid #8fb9ca;
+  border-radius: 2px;
+  font: 12px/1.35 Arial, Helvetica, sans-serif;
+  cursor: pointer;
+}
+
+.chmi-catalog-intro {
+  flex: 0 0 auto;
+  margin: 0 !important;
+  padding: 7px 11px !important;
+  color: #555 !important;
+  background: #fbfbfb;
+  border-bottom: 1px solid #ddd;
+  font: 12px/1.4 Arial, Helvetica, sans-serif !important;
+}
+
+.chmi-catalog-quick {
+  flex: 0 0 auto;
+  padding: 6px 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.chmi-catalog-quick .chmi-classic-navigation {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  width: 100%;
+  margin: 0;
+  white-space: normal;
+}
+
+.chmi-catalog-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  min-height: 0;
+  padding: 9px;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.chmi-catalog-group {
+  min-width: 0;
+  border: 1px solid #b7cbd4;
+  background: #fafcfd;
+}
+
+.chmi-catalog-group > h3 {
+  margin: 0 !important;
+  padding: 6px 8px !important;
+  color: #176b95 !important;
+  background: #eaf5f9;
+  border-bottom: 1px solid #b7cbd4;
+  font: 700 14px/1.3 Arial, Helvetica, sans-serif !important;
+}
+
+.chmi-catalog-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: #dfe7ea;
+}
+
+.chmi-catalog-item {
+  min-width: 0;
+  padding: 6px 7px;
+  background: #fff;
+}
+
+.chmi-catalog-item-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.chmi-catalog-item a,
+.chmi-catalog-item-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #0645ad !important;
+  font: 700 12.5px/1.3 Arial, Helvetica, sans-serif !important;
+  text-decoration: underline !important;
+  overflow-wrap: anywhere;
+}
+
+.chmi-catalog-item-label {
+  color: #333 !important;
+  text-decoration: none !important;
+}
+
+.chmi-catalog-item.is-unavailable {
+  background: #fff8f8;
+}
+
+.chmi-catalog-item.is-unavailable .chmi-catalog-item-label {
+  color: #b4232d !important;
+  cursor: help;
+  text-decoration: line-through !important;
+  text-decoration-color: #b4232d !important;
+  text-decoration-thickness: 1.5px;
+}
+
+.chmi-catalog-item.is-unavailable .chmi-catalog-item-label:focus-visible {
+  outline: 2px solid #b4232d;
+  outline-offset: 2px;
+}
+
+.chmi-catalog-item a[aria-current="page"] {
+  color: #8b1b1b !important;
+}
+
+.chmi-catalog-item p {
+  margin: 3px 0 0 !important;
+  color: #555 !important;
+  font: 11px/1.35 Arial, Helvetica, sans-serif !important;
+}
+
+.chmi-catalog-status {
+  flex: 0 0 auto;
+  padding: 1px 4px;
+  border: 1px solid #8cad99;
+  border-radius: 2px;
+  color: #28623a;
+  background: #edf8f0;
+  font: 700 9.5px/1.35 Arial, Helvetica, sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+
+.chmi-catalog-status.is-archive {
+  color: #765100;
+  background: #fff8df;
+  border-color: #c8aa5b;
+}
+
+.chmi-catalog-status.is-legacy {
+  color: #07567e;
+  background: #eaf7fc;
+  border-color: #70a8c0;
+}
+
+.chmi-catalog-status.is-direct {
+  color: #4c3b00;
+  background: #f5f1d5;
+  border-color: #aea45a;
+}
+
+.chmi-catalog-status.is-unavailable {
+  color: #a01825;
+  background: #fff0f1;
+  border-color: #d18a91;
+}
+
+.chmi-catalog-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin-top: 4px;
+}
+
+.chmi-catalog-item-actions a {
+  flex: 0 1 auto;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+}
+
+/* Old-look rám pro další živé výstupy. Nezasahuje do datového backendu ani logiky formulářů. */
+html.chmi-catalog-shell,
+html.chmi-catalog-shell body {
+  box-sizing: border-box;
+  min-width: 0 !important;
+  min-height: 100%;
+  margin: 0 !important;
+  overflow-x: hidden !important;
+  color: #111 !important;
+  background: #8bc6da !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 14px !important;
+}
+
+html.chmi-catalog-shell body *,
+html.chmi-catalog-shell body *::before,
+html.chmi-catalog-shell body *::after {
+  box-sizing: border-box;
+}
+
+html.chmi-catalog-shell header#chmu-header,
+html.chmi-catalog-shell nav[aria-label*="Nach"],
+html.chmi-catalog-shell .menu-bookmarks,
+html.chmi-catalog-shell .lfr-layout-structure-item-chmi---spacer,
+html.chmi-catalog-shell footer,
+html.chmi-catalog-shell #footer,
+html.chmi-catalog-shell #footerBottom,
+html.chmi-catalog-shell .material-scrolltop {
+  display: none !important;
+}
+
+html.chmi-catalog-shell main {
+  box-sizing: border-box;
+  width: calc(100% - 12px) !important;
+  max-width: none !important;
+  min-height: min(var(--chmi-catalog-available-height, 640px), calc(100vh - 12px));
+  margin: 6px auto 12px !important;
+  padding: 0 8px 10px !important;
+  overflow: visible !important;
+  background: #fff !important;
+  border: 1px solid #9bafb7;
+  border-radius: 7px;
+  box-shadow: 0 3px 8px rgb(40 83 101 / 22%);
+}
+
+html.chmi-catalog-shell #chmi-catalog-classic-brand {
+  position: relative;
+  z-index: 1000;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 5px 7px;
+  width: calc(100% + 16px);
+  min-width: 0;
+  min-height: 38px;
+  margin: -1px -8px 7px;
+  padding: 6px 8px;
+  color: #176b95;
+  background: #fff;
+  border: 1px solid #9bafb7;
+  border-top: 0;
+  border-radius: 7px 7px 0 0;
+  box-shadow: 0 2px 6px rgb(40 83 101 / 18%);
+}
+
+html.chmi-catalog-shell #chmi-catalog-classic-brand > strong {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-size: 15px;
+}
+
+html.chmi-catalog-shell #chmi-catalog-classic-brand > span {
+  flex: 0 0 auto;
+  color: #777;
+  font-size: 11px;
+}
+
+html.chmi-catalog-shell #chmi-catalog-classic-brand .chmi-classic-navigation {
+  flex: 1 1 430px;
+  flex-wrap: wrap !important;
+  margin: 0 2px;
+  white-space: normal;
+}
+
+html.chmi-catalog-shell #chmi-catalog-classic-brand .chmi-catalog-new-look {
+  margin-left: auto;
+}
+
+html.chmi-catalog-shell main > h1:first-of-type {
+  margin-top: 4px !important;
+  margin-bottom: 8px !important;
+  color: #176b95 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 20px !important;
+}
+
+html.chmi-catalog-shell main h2,
+html.chmi-catalog-shell main h3,
+html.chmi-catalog-shell main h4 {
+  color: #176b95 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+html.chmi-catalog-shell main img,
+html.chmi-catalog-shell main iframe,
+html.chmi-catalog-shell main svg,
+html.chmi-catalog-shell main video {
+  max-width: 100% !important;
+}
+
+html.chmi-catalog-shell main table {
+  max-width: 100% !important;
+}
+
+html.chmi-catalog-shell main input,
+html.chmi-catalog-shell main select,
+html.chmi-catalog-shell main textarea,
+html.chmi-catalog-shell main button {
+  max-width: 100%;
+}
+
+html.chmi-catalog-shell [id*="map" i],
+html.chmi-catalog-shell [class*="map" i] {
+  min-width: 0;
+}
+
+/* ALADIN: roztažení pracovního prostoru bez nahrazování map nebo časových ovladačů. */
+html.chmi-catalog-aladin .mainWrapper,
+html.chmi-catalog-aladin .main-wrapper,
+html.chmi-catalog-aladin main > .container,
+html.chmi-catalog-aladin main > .container-fluid {
+  width: 100% !important;
+  max-width: none !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  padding-right: 4px !important;
+  padding-left: 4px !important;
+}
+
+html.chmi-catalog-aladin main img {
+  height: auto !important;
+  object-fit: contain;
+}
+
+html.chmi-catalog-aladin main form,
+html.chmi-catalog-aladin main fieldset {
+  min-width: 0 !important;
+}
+
+@media (max-width: 900px) {
+  .chmi-catalog-groups {
+    grid-template-columns: 1fr;
+  }
+
+  .chmi-catalog-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html.chmi-catalog-shell #chmi-catalog-classic-brand .chmi-classic-navigation {
+    flex-basis: 100%;
+    order: 3;
+  }
+}
+
+@media (max-width: 620px) {
+  #chmi-classic-catalog-overlay {
+    padding: 4px;
+  }
+
+  #chmi-classic-catalog-dialog {
+    max-height: calc(100vh - 8px);
+  }
+
+  .chmi-catalog-list {
+    grid-template-columns: 1fr;
+  }
+
+  html.chmi-catalog-shell main {
+    width: 100% !important;
+    margin-top: 0 !important;
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+
+  html.chmi-catalog-shell #chmi-catalog-classic-brand {
+    border-radius: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #chmi-classic-catalog-overlay *,
+  html.chmi-catalog-shell * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

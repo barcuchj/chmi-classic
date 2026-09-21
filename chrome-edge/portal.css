@@ -1,0 +1,58 @@
+/* Familiar intranet shell; no archive data or destructive DOM replacement. */
+html.chmi-classic-portal-active { background: #8bc6da !important; }
+html.chmi-classic-portal-active body { margin: 0 !important; padding: 6px !important; min-width: 0 !important; background: linear-gradient(#8bc6da,#d7eaf0) !important; }
+html.chmi-classic-portal-active body > :not(#chmi-classic-portal):not(script):not(style) { display: none !important; }
+#chmi-classic-portal, #chmi-classic-portal * { box-sizing: border-box; }
+#chmi-classic-portal {
+  --ink: #123477; --edge: #afbbc6;
+  display: flex; flex-direction: column; width: 100%; max-width: none;
+  height: calc(100dvh - 12px); min-height: 480px; margin: 0; padding: 0;
+  color: var(--ink); background: #fff; border: 1px solid #7294a2; border-radius: 6px;
+  overflow: hidden; box-shadow: 0 2px 5px #31566a55; font: 12px/1.3 Arial, Helvetica, sans-serif;
+}
+#chmi-classic-portal [hidden] { display: none !important; }
+#chmi-classic-portal a { color: var(--ink); text-decoration: none; }
+#chmi-classic-portal a:hover { text-decoration: underline; }
+#chmi-classic-portal :focus-visible { outline: 2px solid #d57900; outline-offset: 2px; }
+#chmi-classic-portal button { cursor: pointer; font-family: Arial, Helvetica, sans-serif; }
+#chmi-classic-portal .chmi-portal-topbar { display: flex; flex-direction: row; align-items: center; flex-wrap: wrap; flex: 0 0 auto; min-height: 32px; gap: 3px 8px; padding: 3px 6px; background: linear-gradient(#fff,#dce1e7); border-bottom: 1px solid var(--edge); }
+#chmi-classic-portal .chmi-portal-utilities { display: flex; flex-direction: row; gap: 10px; align-items: center; margin-left: auto; }
+#chmi-classic-portal a.chmi-portal-warning-link { color: #a82020; font-size: 10px; font-weight: bold; white-space: nowrap; }
+#chmi-classic-portal .chmi-portal-button, #chmi-portal-restore { border: 1px solid #8eb4c4; border-radius: 2px; padding: 4px 9px; background: linear-gradient(#fff,#e6f3f7); color: #17577a; font: 12px/1.2 Arial, sans-serif; }
+#chmi-portal-restore { position: fixed; right: 12px; bottom: 12px; z-index: 2147483647; cursor: pointer; }
+#chmi-classic-portal .chmi-portal-primary { display: flex; flex-direction: row; flex-wrap: wrap; flex: 1 1 auto; border: 0; background: transparent; }
+#chmi-classic-portal .chmi-portal-primary a { flex: 1 1 auto; padding: 6px 8px; border-right: 1px solid #c3c5cd; text-align: center; color: #222; font-size: 10px; font-weight: 700; }
+#chmi-classic-portal .chmi-portal-main { display: flex; flex: 1; flex-direction: column; min-height: 0; width: auto; max-width: none; margin: 3px 4px 4px; padding: 0; border: 1px solid var(--edge); background: #fff; }
+#chmi-classic-portal .chmi-portal-tabs { display: flex; flex-direction: row; justify-content: flex-start; flex: 0 0 auto; align-items: center; border: 0; }
+#chmi-classic-portal .chmi-portal-tab { min-width: 80px; height: 25px; margin: 0; padding: 3px 9px; border: 1px solid #b7c1c8; border-radius: 3px; background: linear-gradient(#fff,#dfe4e5); color: var(--ink); font-size: 11px; font-weight: 700; text-align: left; }
+#chmi-classic-portal .chmi-portal-tab[aria-selected="true"] { color: #fff; background: linear-gradient(#77d0e5,#237ba1 75%,#a5d7e6); }
+#chmi-classic-portal .chmi-portal-workspace { display: flex; flex: 1; flex-direction: column; min-height: 280px; }
+#chmi-classic-portal .chmi-portal-app-toolbar { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 12px; flex: 0 0 auto; min-height: 29px; padding: 3px 6px; background: #edf4f0; border-bottom: 1px solid #c0c8c2; }
+#chmi-classic-portal .chmi-portal-app-title { margin: 0; padding: 0; color: var(--ink); font: bold 12px/1.3 Verdana, sans-serif; }
+#chmi-classic-portal .chmi-portal-status { margin-left: auto; color: #56676a; font-size: 10px; }
+#chmi-classic-portal .chmi-portal-stage { position: relative; display: flex; flex: 1; min-height: 0; background: #fff; }
+#chmi-classic-portal .chmi-portal-app-frame { display: block; width: 100%; height: 100%; min-height: 0; border: 0; }
+#chmi-classic-portal .chmi-portal-notice { position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 2; padding: 10px; border: 1px solid #b5a978; background: #fffbea; color: #594d20; font-size: 12px; }
+#chmi-classic-portal .chmi-portal-notice p { margin: 0 0 6px; font: inherit; }
+#chmi-classic-portal .chmi-portal-directory { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 0 10px; flex: 0 0 auto; padding: 6px 10px; border-top: 1px solid var(--edge); background: #f8fbfd; }
+#chmi-classic-portal .chmi-portal-link { display: block; padding: 1px 0; font: bold 10px/1.3 Verdana, Arial, sans-serif; overflow-wrap: anywhere; }
+#chmi-classic-portal .chmi-portal-link[aria-current] { color: #006789; text-decoration: underline; }
+#chmi-classic-portal .is-unavailable { color: #a62323; text-decoration: line-through; cursor: help; }
+#chmi-classic-portal .chmi-portal-extra { display: flex; flex-wrap: wrap; gap: 4px 18px; padding: 4px 10px; border-top: 1px solid #dce5e8; }
+#chmi-classic-portal.chmi-portal-expanded { position: fixed; inset: 0; z-index: 2147483600; height: 100dvh; min-height: 0; border-radius: 0; }
+#chmi-classic-portal.chmi-portal-expanded > :not(.chmi-portal-main), #chmi-classic-portal.chmi-portal-expanded .chmi-portal-tabs, #chmi-classic-portal.chmi-portal-expanded .chmi-portal-directory, #chmi-classic-portal.chmi-portal-expanded .chmi-portal-extra { display: none; }
+#chmi-classic-portal.chmi-portal-expanded .chmi-portal-main { margin: 0; border: 0; }
+@media (min-width: 1100px) and (min-height: 850px) {
+  #chmi-classic-portal .chmi-portal-link { font-size: 11px; }
+}
+@media (max-width: 760px) {
+  #chmi-classic-portal { height: auto; min-height: calc(100dvh - 12px); }
+  #chmi-classic-portal .chmi-portal-main { margin: 0 3px 3px; }
+  #chmi-classic-portal .chmi-portal-workspace { flex: none; height: max(420px, 68dvh); }
+  #chmi-classic-portal .chmi-portal-app-toolbar { flex-wrap: wrap; gap: 4px 8px; }
+  #chmi-classic-portal .chmi-portal-status { order: 3; flex-basis: 100%; }
+  #chmi-classic-portal .chmi-portal-app-toolbar button { margin-left: auto; }
+  #chmi-classic-portal .chmi-portal-directory { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+  #chmi-classic-portal .chmi-portal-link { padding: 4px 0; }
+  #chmi-classic-portal.chmi-portal-expanded .chmi-portal-workspace { height: 100%; flex: 1; }
+}

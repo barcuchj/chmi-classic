@@ -1,107 +1,99 @@
 # Jak nainstalovat ČHMÚ Classic
 
-ČHMÚ Classic vrací na současné stránky radaru, družicových snímků a vybraných
-map ČHMÚ kompaktní klasický vzhled. Data stále přicházejí přímo z ČHMÚ.
+ČHMÚ Classic vrací současným stránkám ČHMÚ známý klasický vzhled. Počasí a
+snímky dál pocházejí z ČHMÚ; nejde o přehrávání starého počasí z archivu.
 
-## Kterou možnost zvolit?
+## Chci vyzkoušet nejnovější podobu portálu
 
-Pro běžné používání doporučujeme **Tampermonkey**. Funguje v Chrome, Edge,
-Firefoxu a dalších prohlížečích, kde je Tampermonkey dostupný, a instalace trvá
-jen několik kliknutí.
+**Aktuální userscript je 0.7.0-beta.1 — testovací verze.** Má centrální panel
+pro aplikace, rozcestník a tlačítko **Zvětšit panel**. Celý původní intranet
+ještě obnovený není. Záložky Voda a Ovzduší a červeně přeškrtnuté položky
+čekají na dokončení. [Podívejte se na dvě ukázky vzhledu](README.md#jak-beta-vypadá).
 
-Pokud nechcete Tampermonkey, můžete v Chrome nebo Edge načíst rozšíření ručně.
-Tato varianta vyžaduje zapnutý **Režim pro vývojáře**, ale nevyžaduje účet ani
-publikaci v katalogu rozšíření.
-
-Safari na macOS má samostatnou variantu, která se spouští jako lokální Xcode
-aplikace. Pro běžného uživatele je jednodušší použít Tampermonkey nebo Chrome/
-Edge.
-
-## Doporučená instalace: Tampermonkey
-
-Tato varianta funguje v Chrome, Edge, Firefoxu a dalších prohlížečích, pro které
-je dostupný správce userscriptů Tampermonkey.
+Nejjednodušší cesta je přes **Tampermonkey**, správce malých úprav webových
+stránek. Pro tuto betu nepotřebujete Xcode ani účet vývojáře.
 
 1. Nainstalujte [Tampermonkey pro svůj prohlížeč](https://www.tampermonkey.net/).
 2. Otevřete [instalaci ČHMÚ Classic](https://raw.githubusercontent.com/barcuchj/chmi-classic/main/tampermonkey/chmi-classic.user.js).
-3. Tampermonkey zobrazí instalační stránku. Klikněte na **Install / Nainstalovat**.
-4. Vraťte se na stránku ČHMÚ a případně ji jednou obnovte.
-5. Otevřete například [radar](https://produkty.chmi.cz/radar/), [radar na úvodní stránce ČHMÚ](https://www.chmi.cz/#chmi-classic-home-radar), [družicové snímky za 24 hodin](https://produkty.chmi.cz/druzice/?time_range=24) nebo [pravděpodobnost růstu hub](https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub).
+3. V nabídnutém okně Tampermonkey zvolte **Install / Nainstalovat**, případně
+   **Update / Aktualizovat**, pokud už skript máte.
+4. Máte-li zároveň staré rozšíření ČHMÚ Classic, vypněte je. Aktivní má být
+   pouze jedna varianta, jinak se jejich úpravy mohou překrývat.
+5. Otevřete [úvodní stránku ČHMÚ](https://www.chmi.cz/) a jednou ji obnovte.
 
-Poznáte to podle bílého pracovního rámu, titulku **ČHMÚ Radar** nebo společné
-lišty **Radar / Radar ČHMÚ / Meteosat / Polární / Geo / Houby**.
+Beta zatím prošla vývojovým ověřením ve vestavěném prohlížeči. Úplné ověření
+instalace v Tampermonkey a chování ve všech prohlížečích ještě není dokončené.
 
-Tlačítko **Nový vzhled** klasický režim na aktuální stránce vypne. Zpět jej
-zapnete plovoucím tlačítkem **Klasický vzhled** nebo z nabídky Tampermonkey.
+## Jak se nový portál používá
 
-## Chrome a Edge bez Tampermonkey
+- **Klikněte na modrý odkaz pod mapou.** Aplikace se otevře v centrálním panelu.
+- **Zvětšit panel** schová okolní nabídky a ponechá aplikaci více místa.
+  Tlačítko **Zpět na portál** nebo Escape nabídky vrátí.
+- **Otevřít samostatně** otevře aplikaci v nové záložce. Totéž můžete udělat
+  prostředním tlačítkem myši nebo Ctrl+klik (na Macu ⌘+klik) na odkazu.
+  S aktivním userscriptem má i samostatná podporovaná aplikace klasický vzhled.
+- **Červený přeškrtnutý text není odkaz.** Po najetí myší se dozvíte, proč
+  aplikace zatím není dostupná. Nic není potřeba opravovat ve vašem počítači.
+- **Nový vzhled** vrátí původní současný web. Klasický vzhled znovu zapnete
+  tlačítkem **Klasický vzhled** nebo v nabídce Tampermonkey.
 
-1. Stáhněte [balíček pro Chrome a Edge](https://github.com/barcuchj/chmi-classic/releases/latest/download/chmi-classic-chrome-edge-0.4.1.zip).
+Přímo můžete otevřít také [radar](https://produkty.chmi.cz/radar/),
+[Meteosat za 24 hodin](https://produkty.chmi.cz/druzice/?time_range=24),
+[ALADIN](https://produkty.chmi.cz/aladin/),
+[polární družice](https://www.chmi.cz/namerena-data/polarni-druzice/true-color),
+[geostacionární družice](https://www.chmi.cz/namerena-data/geostacionarni-druzice/true-color)
+nebo [mapu růstu hub](https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub).
+Rozložení všech těchto aplikací se ještě průběžně dolaďuje.
+
+## Jak získám aktualizaci
+
+Znovu otevřete [stejný instalační odkaz](https://raw.githubusercontent.com/barcuchj/chmi-classic/main/tampermonkey/chmi-classic.user.js),
+potvrďte aktualizaci v Tampermonkey a obnovte otevřené stránky ČHMÚ. Není
+potřeba instalovat druhou kopii skriptu. Odkaz sleduje aktuální verzi v `main`,
+tedy nyní betu, nikoli poslední stabilní vydání.
+
+## Raději starší vydané rozšíření bez Tampermonkey
+
+Poslední samostatně vydané balíčky jsou **0.4.1**. **Neobsahují nový portál
+z bety 0.7.0.** Jsou určeny pro starší samostatné úpravy radaru, družic a map.
+
+### Chrome a Edge
+
+1. Stáhněte [rozšíření 0.4.1 pro Chrome a Edge](https://github.com/barcuchj/chmi-classic/releases/download/v0.4.1/chmi-classic-chrome-edge-0.4.1.zip).
 2. ZIP rozbalte do složky, kterou později nepřesunete ani nesmažete.
 3. Otevřete `chrome://extensions` nebo `edge://extensions`.
-4. Zapněte **Režim pro vývojáře**.
-5. Klikněte na **Načíst rozbalené**.
-6. Vyberte rozbalenou složku, ve které přímo vidíte soubor `manifest.json`.
+4. Zapněte **Režim pro vývojáře** a zvolte **Načíst rozbalené**.
+5. Vyberte složku, ve které přímo vidíte soubor `manifest.json`.
 
-Pokud prohlížeč hlásí, že manifest nenalezl, vybrali jste o úroveň vyšší
-složku. Otevřete rozbalený ZIP a vyberte složku s `manifest.json`.
+Pokud prohlížeč manifest nenajde, vybrali jste nejspíš o úroveň vyšší složku.
+Klasický režim zapnete nebo vypnete přes ikonu rozšíření. Před použitím této
+varianty vypněte userscript ČHMÚ Classic v Tampermonkey.
 
-Klasický režim lze zapnout a vypnout přes ikonu rozšíření. Po nové verzi je
-potřeba stáhnout nový ZIP, rozbalit jej do nové složky a v `chrome://extensions`
-nebo `edge://extensions` načíst novou složku. Starou složku můžete ponechat,
-dokud se přesvědčíte, že nová verze funguje.
+### Safari na macOS
 
-## Safari na macOS
+Starší Safari varianta je zdrojový projekt pro Xcode, nikoli instalátor na
+jedno kliknutí. Pokud Xcode nepoužíváte, začněte userscriptem výše.
 
-Bez účtu Apple Developer nelze nabídnout běžně podepsanou instalaci jedním
-kliknutím. GitHub proto obsahuje zdrojový Xcode projekt pro lokální použití:
-
-1. Stáhněte [Safari zdrojový balíček](https://github.com/barcuchj/chmi-classic/releases/latest/download/chmi-classic-safari-source-0.4.1.zip) a rozbalte jej.
-2. Otevřete `safari/CHMURadarClassicSafari/CHMURadarClassicSafari.xcodeproj` v Xcode.
+1. Stáhněte [Safari zdrojový balíček 0.4.1](https://github.com/barcuchj/chmi-classic/releases/download/v0.4.1/chmi-classic-safari-source-0.4.1.zip) a rozbalte jej.
+2. V Xcode otevřete `safari/CHMURadarClassicSafari/CHMURadarClassicSafari.xcodeproj`.
 3. Vyberte schéma `CHMURadarClassicSafari` a spusťte aplikaci na svém Macu.
-4. V Safari otevřete **Nastavení → Rozšíření** a povolte ČHMÚ Classic.
-5. V oprávněních rozšíření povolte přístup k `produkty.chmi.cz` a `www.chmi.cz`.
-6. Pokud Safari lokální nepodepsané rozšíření odmítne, zapněte v nabídce
-   **Vývojář** volbu **Povolit nepodepsaná rozšíření**. Safari může toto povolení
-   po ukončení vyžadovat znovu.
+4. V Safari v **Nastavení → Rozšíření** povolte ČHMÚ Classic a přístup
+   k `produkty.chmi.cz` a `www.chmi.cz`.
 
-## Podporované stránky
+Lokálně podepsaná vývojová varianta může vyžadovat povolení nepodepsaných
+rozšíření v nastavení Safari pro vývojáře, a to znovu po ukončení Safari.
+Nový Safari balíček s beta portálem zatím nevydáváme.
 
-- [Radar a srážky](https://produkty.chmi.cz/radar/)
-- [Radar na úvodní stránce ČHMÚ](https://www.chmi.cz/#chmi-classic-home-radar)
-- [Animovaný prohlížeč Meteosat – 24 hodin](https://produkty.chmi.cz/druzice/?time_range=24)
-- [Polární družice](https://www.chmi.cz/namerena-data/polarni-druzice/true-color)
-- [Geostacionární družice](https://www.chmi.cz/namerena-data/geostacionarni-druzice/true-color)
-- [Pravděpodobnost růstu hub](https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub)
+## Když se něco nezobrazí
 
-V klasickém headeru je na všech podporovaných stránkách stejná kompaktní navigace:
-**Radar / Radar ČHMÚ / Meteosat / Polární / Geo / Houby**. Odkaz aktuální aplikace
-ponechává její současnou URL, takže se při kliknutí na aktivní položku neztratí query
-parametry nebo právě zvolený družicový produkt.
+- U družic zvolte **24 h**. V kratším období nemusí být žádný snímek.
+- Obnovte stránku a zkontrolujte, že je ČHMÚ Classic v Tampermonkey zapnutý.
+- Ověřte oprávnění správce skriptů pro aktuální web. Řiďte se případnou výzvou
+  Tampermonkey k povolení spouštění userscriptů v prohlížeči.
+- Vypněte druhou kopii skriptu nebo staré rozšíření ČHMÚ Classic.
+- Pokud se problém opakuje, [nahlaste chybu](https://github.com/barcuchj/chmi-classic/issues).
+  Přiložte adresu stránky, prohlížeč, verzi skriptu a snímek obrazovky bez
+  osobních údajů. Pomůže i informace, zda šlo o centrální panel, nebo samostatnou záložku.
 
-Na úvodní stránce ČHMÚ rozšíření neobaluje celý portál. Detekuje pouze sekci
-**Srážky podle radaru**, přidá jí klasický rám a ponechá uvnitř originální radar,
-časovou osu, vrstvy a jejich event handlery.
-
-Na stránce pravděpodobnosti růstu hub se mění pouze okolní rám a rozložení.
-Původní mapa, vrstvy, legenda, ovládací prvky, navigace a data ČHMÚ zůstávají
-součástí originální živé mapové komponenty.
-
-## Když se nic nezobrazí
-
-- U družic nejprve zvolte časový rozsah **24 h**; v kratším intervalu nemusí být
-  žádný snímek.
-- Obnovte stránku.
-- V Chrome/Edge otevřete stránku rozšíření a ověřte, že je ČHMÚ Classic zapnutý.
-- V Tampermonkey otevřete **Installed userscripts** a ověřte, že je ČHMÚ Classic
-  zapnutý.
-- V Safari zkontrolujte oprávnění rozšíření zvlášť pro `www.chmi.cz`.
-- Pokud se zobrazuje nový vzhled, klikněte na ikonu rozšíření a povolte přístup
-  pro aktuální web.
-- Pokud ČHMÚ změní strukturu stránky, založte [Issue](https://github.com/barcuchj/chmi-classic/issues)
-  a přiložte adresu stránky a snímek obrazovky.
-
-## Družicové snímky
-
-U animovaného prohlížeče družic nejprve zvolte **24 h**. Při kratším intervalu
-nemusí server vrátit žádné snímky a ovládací prvky pak mohou vypadat prázdně.
+Výpadek zdroje ČHMÚ ani chybějící historická data skript neobchází.
+Seznam rozpracovaných částí najdete v [TODO.md](TODO.md).

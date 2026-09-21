@@ -1,0 +1,62 @@
+/* The live application owns this frame; the parent owns all portal chrome. */
+html.chmi-classic-embedded,
+html.chmi-classic-embedded body {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  background: #fff !important;
+}
+html.chmi-classic-embedded #chmi-radar-classic-brand,
+html.chmi-classic-embedded #chmi-satellite-classic-brand,
+html.chmi-classic-embedded #chmi-hub-classic-brand,
+html.chmi-classic-embedded #chmi-aladin-classic-brand,
+html.chmi-classic-embedded #chmi-catalog-classic-brand {
+  display: none !important;
+}
+html.chmi-classic-embedded #div_container_menu {
+  box-sizing: border-box !important;
+}
+html.chmi-classic-embedded #div_container_menu > * {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+html.chmi-classic-embedded.chmi-radar-classic #wrapper,
+html.chmi-classic-embedded.chmi-satellite-classic-live #wrapper {
+  width: 100% !important;
+  max-width: none !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+}
+html.chmi-classic-embedded .mainWrapper {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 4px !important;
+}
+html.chmi-classic-embedded #chmi-radar-classic-toolbar {
+  max-width: calc(100% - 70px);
+}
+html.chmi-classic-embedded #chmi-radar-classic-toolbar .chmi-radar-classic-options {
+  flex-wrap: wrap;
+}
+html.chmi-classic-embedded.chmi-satellite-classic-portal main,
+html.chmi-classic-embedded.chmi-hub-classic main {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 4px !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+@media (min-width: 761px) {
+  html.chmi-classic-embedded.chmi-radar-classic,
+  html.chmi-classic-embedded.chmi-radar-classic body,
+  html.chmi-classic-embedded.chmi-satellite-classic-live,
+  html.chmi-classic-embedded.chmi-satellite-classic-live body {
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+}

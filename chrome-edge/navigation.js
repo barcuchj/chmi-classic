@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  if (window.top !== window || window.__chmiClassicNavigationLoaded) {
+  if (window.top !== window || window.__chmiClassicPortalCandidate || window.__chmiClassicNavigationLoaded) {
     return;
   }
 
@@ -83,6 +83,18 @@
       label: "Pravděpodobnost růstu hub",
       shortLabel: "Houby",
       href: "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub"
+    },
+    {
+      key: "water",
+      label: "Voda – aktuální stavy a povodňová mapa",
+      shortLabel: "Voda",
+      href: "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa"
+    },
+    {
+      key: "air",
+      label: "Ovzduší – aktuální mapy kvality ovzduší",
+      shortLabel: "Ovzduší",
+      href: "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr"
     }
   ];
 

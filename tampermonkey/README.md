@@ -1,15 +1,31 @@
 # Tampermonkey varianta
 
-Soubor `chmi-classic.user.js` je samostatná varianta pro Tampermonkey. Vzniká ze
-stejných JavaScriptových a CSS zdrojů jako rozšíření pro Chrome, Edge a Safari.
-Podporuje produktový radar, radarovou sekci na úvodní stránce `www.chmi.cz/`,
-družicové stránky a od verze 0.4.0 také stránku
-`www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub`. Všechny podporované old-look
-headery obsahují stejnou navigaci z `chrome-edge/navigation.js` a `navigation.css`.
-Od verze 0.4.1 se společné zdroje starají také o dynamické přizpůsobení map a panelů dostupnému oknu.
+**Aktuálně 0.7.0-beta.1:** userscript navíc obsahuje portál s centrálním panelem,
+zvětšením aplikace a rozcestníkem. Jde o testovací, dosud neúplnou rekonstrukci.
+Tato nová část ještě není zabalená v rozšířeních. Pro instalaci a aktualizaci
+použijte [návod pro běžné uživatele](../INSTALL.md); zbývající práce je v [TODO](../TODO.md).
 
-Neupravujte generovaný `.user.js` ručně. Po změně souborů v `chrome-edge/`
-spusťte z kořene projektu:
+Soubor `chmi-classic.user.js` je generovaná samostatná varianta ČHMÚ Classic.
+Používá stejné zdroje z `chrome-edge/` jako Chrome/Edge a Safari.
+
+Od verze 0.6.0 podporuje:
+
+- specializovaný old-look radar, homepage radar, Meteosat, Polární, Geo a Houby,
+- ALADIN s volitelným presetem `4 mapy`,
+- jednotný katalog meteogramů, webkamer, naměřených dat, synoptiky, letectví,
+  historických výstupů, Open Data a archivních prohlížečů,
+- lehký old-look rám pro allowlistované živé stránky `www.chmi.cz`,
+  `produkty.chmi.cz/aladin/` a HPPS na `hydro.chmi.cz`,
+- vlastní responzivní legacy adaptaci doložených starých aplikací na
+  `intranet.chmi.cz` / `portal.chmi.cz` včetně navigace na současnou náhradu
+  a Web Archive; historický kód ani obrazová data se do userscriptu nekopírují.
+- položky katalogu bez rekonstruované aplikace jako červený přeškrtnutý text
+  bez odkazu s vysvětlením v informační bublině.
+
+Userscript má široký `@match` pro `www.chmi.cz/*`, ale `catalog.js` mimo
+explicitní allowlist podporovaných cest nic nestyluje.
+
+Generovaný `.user.js` neupravujte ručně. Po změně zdrojů spusťte:
 
 ```sh
 node script/build_userscript.mjs
