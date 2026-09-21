@@ -1,6 +1,6 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## Beta 0.7.0-beta.1 – aplikace na jednom místě
+## Beta 0.7.0-beta.2 – aplikace na jednom místě
 
 **Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
 
@@ -27,6 +27,10 @@ Radar má stupnici ukotvenou uvnitř mapy. U Meteosatu se připravuje kompaktní
 postranní ovládání s rozbalovacími podrobnostmi; mapa se při práci s ovladači
 nemá ztrácet mimo okno. ALADIN přidává čtyři mapy a výraznější nápovědu
 k posouvání času kolečkem myši.
+
+Od bety 2 se čtyři mapy ALADINu skládají do jednoho nebo dvou řádků podle
+velikosti okna. Pokud ČHMÚ pro zvolený termín snímek neposkytuje (například
+srážky na začátku běhu), místo prázdného pole uvidíte vysvětlení.
 
 **Co ještě není hotové:** úvodní mapa počasí s předpovědí, obsah záložek Voda
 a Ovzduší a řada původních aplikací. Probíhá kontrola menších oken, samostatných

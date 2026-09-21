@@ -29,7 +29,7 @@ const [radarCss, satelliteCss, navigationCss, catalogCss, legacyCss, navigationJ
 const metadata = `// ==UserScript==
 // @name         ČHMÚ Classic – meteorologické výstupy
 // @namespace    https://github.com/
-// @version      0.7.0-beta.1
+// @version      0.7.0-beta.2
 // @description  Vrací klasický vzhled, historické adaptace a jednotný katalog živých i archivních meteorologických výstupů ČHMÚ.
 // @author       ČHMÚ Classic contributors
 // @homepageURL  https://github.com/barcuchj/chmi-classic

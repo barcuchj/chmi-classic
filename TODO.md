@@ -1,5 +1,26 @@
 # ToDo
 
+## Skutečný stav rekonstrukce
+
+**Odkaz v katalogu není obnovená aplikace.** Starší záznamy o verzích 0.5/0.6
+popisují především katalog odkazů a obecné úpravy rámu stránky, nikoli hotový
+návrat původního ovládání. Za dokončenou rekonstrukci se považuje až živá
+aplikace ve starém rozhraní s ověřeným ovládáním a rozložením.
+
+| Část | Stav |
+| --- | --- |
+| Radar, MSG/Meteosat, polární a geostacionární družice, houby, ALADIN | Zapojené do centrálního panelu; implementace existuje, úplné ověření a dílčí opravy ještě probíhají. |
+| Webové kamery | **Neobnovené. Odkaz v původním rozcestníku je záměrně neaktivní.** Existuje pouze položka ve starším katalogu současných/archivních URL. |
+| Meteogramy, další měření a stanice, synoptika, letectví, historické výstupy | Dohledané katalogové odkazy nejsou dokončenými aplikacemi intranetu; rekonstrukce zbývá. |
+| Open Data a archivy | Referenční zdroje, nikoli rekonstruované aplikace. |
+| Úvodní předpovědní mapa, Voda a Ovzduší | Nedokončeno. |
+
+- [ ] Rekonstruovat webkamery: přehled ČR, výběr kamery, živý snímek a
+  dostupné grafy měření; ověřit v centrálním panelu i samostatně. Teprve potom
+  aktivovat položku v původním rozcestníku.
+- [ ] Rekonstruovat meteogramy s výběrem lokality a další skupiny aplikací
+  uvedené výše; nepovažovat nalezenou URL nebo obecný rám stránky za splnění.
+
 ## Portál 0.7 – rozpracováno (20. 9. 2026)
 
 - [x] Userscript sestavuje portál s centrálním rámcem a explicitním registrem
@@ -20,8 +41,11 @@
   balíčky 0.4.1 jsou výslovně oddělené od nového portálu.
 - [x] Vývojově ověřen radar a zvětšený Meteosat při 1440 × 900 bez scrollu
   celého dokumentu; stupnice radaru zůstala uvnitř mapy. Nejde o instalační test.
-- [ ] ALADIN: ověřit úplné mapové pozadí a stav prvního termínu, kde při živém
-  testu chyběla třetí mapa (srážky R3); odstranit nevyužitou plochu pod mapami.
+- [x] ALADIN: první R3 snímek chybí už v oficiálním DOM; beta 2 zobrazuje
+  vysvětlení. Další termín načte všechny čtyři původní snímky včetně jejich
+  podkladů. Dynamické rozložení ověřeno při 1440 × 900 a 390 × 844 bez scrollu.
+- [ ] Ověřit nové adaptivní rozložení ALADINu také v centrálním panelu
+  a při změně běhu modelu ze skutečně instalovaného userscriptu.
 - [ ] Obnovit výchozí mapu ČR s živou předpovědí, nikoli archivními teplotami.
 - [ ] Rekonstruovat Vodu/Ovzduší a postupně všechny položky původního rozcestníku
   podle archivních HTML/JS a ověřených živých zdrojů; pouhý moderní odkaz není hotovo.
@@ -68,7 +92,7 @@
 - [ ] Doplňovat nové položky katalogu pouze po ověření současné oficiální URL
   nebo jednoznačného archivního snímku.
 
-## Dokončeno
+## Historické implementační kroky (ne seznam hotových aplikací)
 
 - [x] Doplněny ověřené HTML snapshoty ALADIN animace, ALADIN map a meteogramů;
   zdokumentovány datové cesty `mdirs.txt`, `nameid`, mapové PNG a hash lokality.
@@ -81,8 +105,9 @@
 - [x] Verze 0.6.0: rozšířený katalog s rozlišením `Legacy` / `Přímý` / `Archiv` / `Nedostupné` a odkazy na současné náhrady.
 - [x] Verze 0.5.0: jednotný katalog živých a archivních meteorologických výstupů.
 - [x] Verze 0.5.0: ALADIN old-look rám a volitelný preset čtyř klasických map.
-- [x] Verze 0.5.0: meteogramy, webkamery, naměřená data, synoptika, letectví,
-  historické výstupy, Open Data a archivy v jedné navigaci.
+- [x] Verze 0.5.0: přidány katalogové položky/URL pro meteogramy, webkamery,
+  naměřená data, synoptiku, letectví, historické výstupy, Open Data a archivy.
+  **Pouze katalog odkazů — rekonstrukce těchto aplikací není dokončená.**
 - [x] Verze 0.5.0: zalamování společné navigace bez povinného horizontálního scrollu.
 - [x] Verze 0.5.0: synchronizace nových společných zdrojů do Safari,
   Tampermonkey a release skriptů.

@@ -1,5 +1,16 @@
 # Přehled změn
 
+## 0.7.0-beta.2 – 2026-09-21 (userscript)
+
+- ALADIN využívá plnou šířku okna a automaticky volí čtyři mapy vedle sebe
+  nebo dvě nad dvěma podle prostoru; snímky zachovávají poměr stran.
+- Chybějící snímek má vysvětlení namísto prázdné buňky. Živě potvrzeno,
+  že první termín běhu ČHMÚ nemá srážkový snímek, následující jej má.
+- Odstraněna prázdná horní plocha na úzkém displeji; popisky času
+  nepřekrývají názvy map. Nativní přepínání běhu a legendy zůstávají zachované.
+- Vývojově ověřeno při 1440 × 900 a 390 × 844 bez scrollu dokumentu;
+  test skutečně instalovaného Tampermonkey zůstává nedokončený.
+
 ## 0.7.0-beta.1 – 2026-09-21 (userscript)
 
 - Kompaktní portál na úvodní stránce ČHMÚ s centrálním panelem živých aplikací.
