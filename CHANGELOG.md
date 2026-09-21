@@ -1,5 +1,18 @@
 # Přehled změn
 
+## 0.7.0-beta.1 – 2026-09-21 (userscript)
+
+- Kompaktní portál na úvodní stránce ČHMÚ s centrálním panelem živých aplikací.
+- Úzká společná navigace, zvětšení panelu bez opětovného načítání a možnost
+  otevřít podporovanou aplikaci samostatně v klasickém vzhledu.
+- Radarová stupnice ukotvená uvnitř mapy, kompaktnější nastavení Meteosatu
+  a výraznější nápověda k posouvání času u ALADINu.
+- Opraveno rozpoznání vloženého Meteosatu po přepsání jeho adresy nativní aplikací.
+- Dva skutečné screenshoty a srozumitelný návod k instalaci a aktualizaci bety.
+- Jde o nedokončenou rekonstrukci; Voda/Ovzduší, úvodní mapa předpovědi,
+  další aplikace a úplné instalační/responzivní ověření zůstávají v TODO.
+- Nové balíčky rozšíření ani samostatný GitHub Release se touto změnou nevydávají.
+
 ## Unreleased – archivní HTML ALADINu a meteogramů
 
 - Ověřeny konkrétní Wayback snapshoty HTML pro ALADIN animaci (`20260210160917`),
@@ -54,6 +67,7 @@
 - Pravděpodobnost růstu hub používá plnou šířku okna a dynamickou výšku mapy, takže odpadá nevyužitá plocha kolem aplikace a ovladače zůstávají uvnitř mapového prostoru.
 - Přidány `ResizeObserver`/resize notifikace, aby původní živé komponenty ČHMÚ po změně rozměrů přepočítaly interní mapu místo pouhého vizuálního ořezu.
 - Distribuční verze zvýšena na 0.4.1.
+- Zjednodušen instalační návod pro běžné uživatele včetně přímých odkazů na Tampermonkey, Chrome/Edge balíček a Safari balíček.
 
 ## 0.4.0 – 2026-09-11
 

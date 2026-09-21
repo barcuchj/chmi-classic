@@ -16,6 +16,12 @@
   Tampermonkey. Dosavadní IAB kontroly jsou dočasná vývojová injekce kódu.
 - [x] Doplněny dva skutečné screenshoty do uživatelského README (radar v portálu,
   zvětšený Meteosat); původní anotované podklady ve screens/ se nezveřejňují.
+- [x] Aktualizován běžný instalační návod pro betu 0.7.0-beta.1; starší vydané
+  balíčky 0.4.1 jsou výslovně oddělené od nového portálu.
+- [x] Vývojově ověřen radar a zvětšený Meteosat při 1440 × 900 bez scrollu
+  celého dokumentu; stupnice radaru zůstala uvnitř mapy. Nejde o instalační test.
+- [ ] ALADIN: ověřit úplné mapové pozadí a stav prvního termínu, kde při živém
+  testu chyběla třetí mapa (srážky R3); odstranit nevyužitou plochu pod mapami.
 - [ ] Obnovit výchozí mapu ČR s živou předpovědí, nikoli archivními teplotami.
 - [ ] Rekonstruovat Vodu/Ovzduší a postupně všechny položky původního rozcestníku
   podle archivních HTML/JS a ověřených živých zdrojů; pouhý moderní odkaz není hotovo.

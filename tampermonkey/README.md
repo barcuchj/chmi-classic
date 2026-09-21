@@ -1,5 +1,10 @@
 # Tampermonkey varianta
 
+**Aktuálně 0.7.0-beta.1:** userscript navíc obsahuje portál s centrálním panelem,
+zvětšením aplikace a rozcestníkem. Jde o testovací, dosud neúplnou rekonstrukci.
+Tato nová část ještě není zabalená v rozšířeních. Pro instalaci a aktualizaci
+použijte [návod pro běžné uživatele](../INSTALL.md); zbývající práce je v [TODO](../TODO.md).
+
 Soubor `chmi-classic.user.js` je generovaná samostatná varianta ČHMÚ Classic.
 Používá stejné zdroje z `chrome-edge/` jako Chrome/Edge a Safari.
 

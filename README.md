@@ -2,6 +2,8 @@
 
 ## Beta 0.7.0-beta.1 – aplikace na jednom místě
 
+**Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
+
 **Testovací beta, nikoli dokončená obnova všech aplikací.** Nyní vyvíjíme především userscript
 pro Tampermonkey. Nový portál zatím není zabalený v rozšířeních Chrome/Edge/Safari.
 Userscript v `main` obsahuje tuto betu. Kdo chce vyzkoušet nové rozhraní,
