@@ -1,5 +1,18 @@
 # Přehled změn
 
+## 0.7.0-beta.3 – 2026-09-22 (userscript a Chrome/Edge beta)
+
+- Aktivován odkaz Webové kamery v původním rozcestníku; přehled mapy, filtr,
+  seznam, detail snímku a časová osa používají živé komponenty ČHMÚ.
+- Přidáno kompaktní responzivní uspořádání mapy a seznamu a detailu se snímkem;
+  nativní hlavička a patička ve vloženém panelu nezabírají místo.
+- Chrome/Edge balíček nyní obsahuje portál a stejné adaptéry jako userscript.
+  Spuštění v iframe je omezené na podporované adresy; ostatní stránky ČHMÚ
+  nedostávají oprávnění pro vložené rámce.
+- Syntaxe, registr tras, manifest a 19 automatických testů prošly; obsah ZIPu
+  prošel kontrolou. Živé vykreslení nové bety a instalace Chrome/Edge zůstávají
+  k ověření, nejde o stabilní vydání.
+
 ## 0.7.0-beta.2 – 2026-09-21 (userscript)
 
 - ALADIN využívá plnou šířku okna a automaticky volí čtyři mapy vedle sebe

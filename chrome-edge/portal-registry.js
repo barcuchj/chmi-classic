@@ -8,6 +8,7 @@
     radar: { title: "Aktuální radarová data", url: "https://produkty.chmi.cz/radar/", family: "radar", section: "weather" },
     meteosat: { title: "Snímky z družic MSG / Meteosat", url: "https://produkty.chmi.cz/druzice/?time_range=24", family: "satellite", section: "weather" },
     aladin: { title: "ALADIN – mapy", url: "https://produkty.chmi.cz/aladin/", family: "aladin", section: "weather" },
+    webcams: { title: "Webové kamery", url: "https://www.chmi.cz/namerena-data/webkamery", family: "webcams", section: "weather" },
     polar: { title: "Snímky z polárních družic", url: "https://www.chmi.cz/namerena-data/polarni-druzice/true-color", family: "polar", section: "weather" },
     geo: { title: "Geostacionární družice", url: "https://www.chmi.cz/namerena-data/geostacionarni-druzice/true-color", family: "geo", section: "weather" },
     mushrooms: { title: "Pravděpodobnost růstu hub", url: "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub", family: "mushrooms", section: "weather" }
@@ -17,7 +18,7 @@
     ["Předpověď pro ČR", "Předpovědi pro kraje", "Týdenní předpověď", "Měsíční výhled", "Synoptická předpověď", "Bio předpověď", "Počasí pro létání", "Sněhové zpravodajství", "Předpovědi pro hory"].map(label => pending(label)),
     [{ label: "Aladin – animace", app: "aladin" }, { label: "Aladin – mapy", app: "aladin" }, ...["Aladin – meteogramy", "Přehled počasí v ČR", "Synoptická situace", "Ozonové zpravodajství", "Družicová měření ozonu", "Pylový semafor", "Aktivita klíšťat"].map(label => pending(label))],
     [{ label: "Aktuální radarová data", app: "radar" }, { label: "Snímky z družic MSG", app: "meteosat" }, { label: "Snímky z družic NOAA", app: "polar" }, ...["Detekce blesků", "Radarové odhady srážek", "Aktuální mapy", "Grafy automat. stanic", "Sondážní měření", "Počasí a kůrovec"].map(label => pending(label))],
-    [...["Webové kamery", "Meteo zprávy – Infomet", "Měření z Klementina", "Mapa zatížení sněhem", "Nalezli jste radiosondu?", "Vertikální profily větru", "Monitoring sucha", "Meteorologické stanice"].map(label => pending(label))]
+    [{ label: "Webové kamery", app: "webcams" }, ...["Meteo zprávy – Infomet", "Měření z Klementina", "Mapa zatížení sněhem", "Nalezli jste radiosondu?", "Vertikální profily větru", "Monitoring sucha", "Meteorologické stanice"].map(label => pending(label))]
   ];
   const supplementary = [{ label: "Geostacionární družice", app: "geo" }, { label: "Pravděpodobnost růstu hub", app: "mushrooms" }];
   const normalPath = path => path.replace(/\/+$/, "") || "/";
@@ -31,6 +32,7 @@
       const app = this.get(id);
       if (!app) return false;
       const target = new URL(app.url);
+      if (id === "webcams" && url.origin === target.origin && /^\/namerena-data\/webkamera\/[a-z0-9_-]+\/?$/.test(url.pathname)) return true;
       return url.origin === target.origin && normalPath(url.pathname) === normalPath(target.pathname);
     },
     frameURL(id, session) {

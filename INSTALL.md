@@ -5,7 +5,7 @@ snímky dál pocházejí z ČHMÚ; nejde o přehrávání starého počasí z ar
 
 ## Chci vyzkoušet nejnovější podobu portálu
 
-**Aktuální userscript je 0.7.0-beta.2 — testovací verze.** Má centrální panel
+**Aktuální userscript je 0.7.0-beta.3 — testovací verze.** Má centrální panel
 pro aplikace, rozcestník a tlačítko **Zvětšit panel**. Celý původní intranet
 ještě obnovený není. Záložky Voda a Ovzduší a červeně přeškrtnuté položky
 čekají na dokončení. [Podívejte se na dvě ukázky vzhledu](README.md#jak-beta-vypadá).
@@ -41,7 +41,8 @@ Přímo můžete otevřít také [radar](https://produkty.chmi.cz/radar/),
 [Meteosat za 24 hodin](https://produkty.chmi.cz/druzice/?time_range=24),
 [ALADIN](https://produkty.chmi.cz/aladin/),
 [polární družice](https://www.chmi.cz/namerena-data/polarni-druzice/true-color),
-[geostacionární družice](https://www.chmi.cz/namerena-data/geostacionarni-druzice/true-color)
+[geostacionární družice](https://www.chmi.cz/namerena-data/geostacionarni-druzice/true-color),
+[webkamery](https://www.chmi.cz/namerena-data/webkamery)
 nebo [mapu růstu hub](https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub).
 Rozložení všech těchto aplikací se ještě průběžně dolaďuje.
 
@@ -52,9 +53,27 @@ potvrďte aktualizaci v Tampermonkey a obnovte otevřené stránky ČHMÚ. Není
 potřeba instalovat druhou kopii skriptu. Odkaz sleduje aktuální verzi v `main`,
 tedy nyní betu, nikoli poslední stabilní vydání.
 
-## Raději starší vydané rozšíření bez Tampermonkey
+## Chrome a Edge – testovací beta bez Tampermonkey
 
-Poslední samostatně vydané balíčky jsou **0.4.1**. **Neobsahují nový portál
+Nový [Chrome/Edge balíček 0.7.0-beta.3](https://github.com/barcuchj/chmi-classic/releases/download/v0.7.0-beta.3/chmi-classic-chrome-edge-0.7.0-beta.3.zip)
+obsahuje i centrální portál a webkamery. Je určen k testování: obsah ZIPu,
+syntaxe a automatické testy prošly, ale skutečná instalace a rozložení v prohlížeči
+ještě nebyly potvrzené.
+
+1. Stáhněte ZIP a rozbalte jej do složky, kterou později nepřesunete ani nesmažete.
+2. Otevřete `chrome://extensions` nebo `edge://extensions`.
+3. Zapněte **Režim pro vývojáře** a zvolte **Načíst rozbalené**.
+4. Vyberte rozbalenou složku, v níž přímo vidíte `manifest.json`.
+5. Máte-li Tampermonkey variantu ČHMÚ Classic, vypněte ji pro web ČHMÚ.
+
+Odkaz na webkamery v rozcestníku otevírá oficiální mapu se seznamem kamer;
+po výběru kamery má zůstat snímek a časová osa na stejné stránce v klasickém
+rámu. Pokud narazíte na oříznuté ovladače nebo zbytečný posuvník, pošlete
+[hlášení s obrázkem](https://github.com/barcuchj/chmi-classic/issues) a velikostí okna.
+
+## Starší vydané rozšíření bez nového portálu
+
+Starší samostatně vydané balíčky jsou **0.4.1**. **Neobsahují nový portál
 z bety 0.7.0.** Jsou určeny pro starší samostatné úpravy radaru, družic a map.
 
 ### Chrome a Edge

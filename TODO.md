@@ -10,18 +10,18 @@ aplikace ve starém rozhraní s ověřeným ovládáním a rozložením.
 | Část | Stav |
 | --- | --- |
 | Radar, MSG/Meteosat, polární a geostacionární družice, houby, ALADIN | Zapojené do centrálního panelu; implementace existuje, úplné ověření a dílčí opravy ještě probíhají. |
-| Webové kamery | **Neobnovené. Odkaz v původním rozcestníku je záměrně neaktivní.** Existuje pouze položka ve starším katalogu současných/archivních URL. |
+| Webové kamery | Beta 3: odkaz aktivní; adaptér používá nativní mapu, filtry, seznam, živý snímek a časovou osu. Nové rozložení a instalaci ještě nutno vizuálně ověřit. Grafy měření nejsou u ověřeného detailu Brno dostupné. |
 | Meteogramy, další měření a stanice, synoptika, letectví, historické výstupy | Dohledané katalogové odkazy nejsou dokončenými aplikacemi intranetu; rekonstrukce zbývá. |
 | Open Data a archivy | Referenční zdroje, nikoli rekonstruované aplikace. |
 | Úvodní předpovědní mapa, Voda a Ovzduší | Nedokončeno. |
 
-- [ ] Rekonstruovat webkamery: přehled ČR, výběr kamery, živý snímek a
-  dostupné grafy měření; ověřit v centrálním panelu i samostatně. Teprve potom
-  aktivovat položku v původním rozcestníku.
+- [ ] Ověřit webkamery v nainstalovaném userscriptu a Chrome/Edge rozšíření:
+  přehled ČR, filtr, výběr, detail se snímkem a časovou osou, rozložení v panelu
+  i samostatně a šířky desktop/mobil. Teprve potom označit rekonstrukci hotovou.
 - [ ] Rekonstruovat meteogramy s výběrem lokality a další skupiny aplikací
   uvedené výše; nepovažovat nalezenou URL nebo obecný rám stránky za splnění.
 
-## Portál 0.7 – rozpracováno (20. 9. 2026)
+## Portál 0.7 – rozpracováno (22. 9. 2026)
 
 - [x] Userscript sestavuje portál s centrálním rámcem a explicitním registrem
   současných aplikací; původní DOM zůstává dostupný přepnutím na nový vzhled.
@@ -51,7 +51,10 @@ aplikace ve starém rozhraní s ověřeným ovládáním a rozložením.
   podle archivních HTML/JS a ověřených živých zdrojů; pouhý moderní odkaz není hotovo.
 - [ ] Prozkoumat uložené referenční HTML/JS/CSS v .build/archive-reference-20260920;
   nepřebírat neověřenou licenci ani staré závislosti do distribuovaného kódu.
-- [ ] Po ověření userscriptu teprve synchronizovat a testovat rozšíření.
+- [x] Chrome/Edge zdroje a manifest synchronizovány pro podporované aplikace;
+  beta ZIP vytvořen bez Safari balíčku a zkontrolován.
+- [ ] Vizuálně a instalačně ověřit nové Chrome/Edge rozšíření; Safari zůstává
+  nesynchronizované pro portál 0.7 a potřebuje samostatný build/test.
 - [ ] Před vydáním ověřit výchozí zastavení radaru na nejnovějším měření,
   nikoli na posledním extrapolovaném předpovědním snímku.
 
