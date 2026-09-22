@@ -47,6 +47,14 @@ test("Meteosat native URL normalization cannot lose the embedded context", () =>
   assert.equal(registry.embeddedContext(normalized, "chmi-classic:constructor:test-session"), null);
   assert.equal(registry.embeddedContext(normalized, "chmi-classic:meteosat:short"), null);
 });
+test("webcam overview and detail stay in one allowlisted portal app", () => {
+  const name = registry.frameName("webcams", "test-session");
+  assert.equal(registry.matches("webcams", new URL("https://www.chmi.cz/namerena-data/webkamery")), true);
+  assert.equal(registry.embeddedContext(new URL("https://www.chmi.cz/namerena-data/webkamera/brno-brno"), name)?.id, "webcams");
+  for (const url of ["https://www.chmi.cz/namerena-data/webkamera/", "https://www.chmi.cz/namerena-data/webkamera/brno-brno/extra", "https://evil.test/namerena-data/webkamera/brno-brno"]) {
+    assert.equal(registry.embeddedContext(new URL(url), name), null);
+  }
+});
 test("readiness messages require exact origin, frame, app and session", () => {
   const source = {};
   const frame = { contentWindow: source };

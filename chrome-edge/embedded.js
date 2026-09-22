@@ -8,7 +8,8 @@
   const { id, session } = context;
   let parentURL;
   try { parentURL = new URL(document.referrer); } catch { return; }
-  if (parentURL.protocol !== "https:" || !registry.isHomepage(parentURL) ||
+  const webcamNativeNavigation = id === "webcams" && registry.matches(id, parentURL);
+  if (parentURL.protocol !== "https:" || !(registry.isHomepage(parentURL) || webcamNativeNavigation) ||
       !registry.matches(id, url) || !/^[a-zA-Z0-9-]{8,80}$/.test(session ?? "")) return;
 
   window.__chmiClassicEmbedded = true;
@@ -24,8 +25,9 @@
       const adapter = app.family === "radar" ? document.getElementById("chmi-radar-classic-toolbar") :
         app.family === "satellite" ? document.getElementById("chmi-satellite-classic-selector") :
         app.family === "aladin" ? document.querySelector("[data-chmi-aladin-native='verified'] #chmi-aladin-classic-controls") :
+        app.family === "webcams" ? document.querySelector("html.chmi-webcams-classic [data-chmi-webcams-native='verified']") :
         document.getElementById(app.family === "mushrooms" ? "chmi-hub-classic-brand" : "chmi-satellite-classic-portal-products");
-      const media = [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img")]
+      const media = [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img, .playabledata-content-container .chmi-playableimage-img")]
         .some(node => visible(node) && (node.tagName === "CANVAS" ? node.width > 0 && node.height > 0 : node.complete && node.naturalWidth > 32));
       window.parent.postMessage({ type: "chmi-classic-status", app: id, session, state: adapter && media ? "ready" : "loading" }, parentURL.origin);
     }

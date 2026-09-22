@@ -1,11 +1,12 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## Beta 0.7.0-beta.2 – aplikace na jednom místě
+## Beta 0.7.0-beta.3 – aplikace na jednom místě
 
 **Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
 
-**Testovací beta, nikoli dokončená obnova všech aplikací.** Nyní vyvíjíme především userscript
-pro Tampermonkey. Nový portál zatím není zabalený v rozšířeních Chrome/Edge/Safari.
+**Testovací beta, nikoli dokončená obnova všech aplikací.** Nový portál je v
+userscriptu pro Tampermonkey a nově také ve [zdrojovém balíčku Chrome/Edge](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.3).
+Safari balíček s novým portálem dosud vydaný není.
 Userscript v `main` obsahuje tuto betu. Kdo chce vyzkoušet nové rozhraní,
 otevře [instalační odkaz](https://raw.githubusercontent.com/barcuchj/chmi-classic/main/tampermonkey/chmi-classic.user.js)
 a v Tampermonkey potvrdí aktualizaci. Nemějte současně aktivní starý userscript
@@ -31,6 +32,12 @@ k posouvání času kolečkem myši.
 Od bety 2 se čtyři mapy ALADINu skládají do jednoho nebo dvou řádků podle
 velikosti okna. Pokud ČHMÚ pro zvolený termín snímek neposkytuje (například
 srážky na začátku běhu), místo prázdného pole uvidíte vysvětlení.
+
+Webkamery mají nově v rozcestníku aktivní odkaz na živou mapu ČHMÚ; výběr
+kamer, snímek a časová osa používají původní komponenty zdrojové stránky.
+Rozložení je připravené pro centrální panel i samostatnou záložku, ale
+výsledné vykreslení této bety ještě nebylo ověřeno z nainstalovaného balíčku.
+Grafy měření se nesimulují tam, kde je zdrojová stránka nenabízí.
 
 **Co ještě není hotové:** úvodní mapa počasí s předpovědí, obsah záložek Voda
 a Ovzduší a řada původních aplikací. Probíhá kontrola menších oken, samostatných
@@ -213,7 +220,9 @@ plovoucím tlačítkem **Klasický vzhled**.
 4. Vyberte složku `chrome-edge`.
 5. Přes ikonu rozšíření lze otevřít katalog i hlavní aplikace.
 
-Běžný distribuční ZIP vytváří `./script/package_release.sh`.
+Aktuální beta ZIP pro Chrome/Edge vytváří `./script/package_release.sh --chrome-only`.
+Spouštění ve vložených rámcích je omezené na konkrétní adresy podporovaných
+aplikací; obecný katalog na ostatních stránkách ČHMÚ se spouští jen nahoře.
 
 ## Safari na macOS
 
@@ -238,7 +247,7 @@ Apple signing/notarization workflow.
 Rozšíření ukládá pouze synchronizovanou volbu, zda je klasické rozhraní
 zapnuté. Nemá telemetrii a neposílá uživatelská data.
 
-Host permissions ve verzi 0.6.0:
+Host permissions ve starším rozšíření a aktuální betě:
 
 - `https://produkty.chmi.cz/radar/*`
 - `https://produkty.chmi.cz/druzice/*`
@@ -287,8 +296,11 @@ Safari sync/build na macOS:
 Release balíčky:
 
 ```sh
-./script/package_release.sh
+./script/package_release.sh --chrome-only
 ```
+
+Safari zdrojový balíček 0.7 beta zatím nevydáváme; jeho synchronizace a build
+čekají na samostatné ověření.
 
 Podklady a původ odkazů jsou popsány v [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) a detailní archivní inventura v [ARCHIVE_RESEARCH.md](ARCHIVE_RESEARCH.md).
 Přehled změn je v [CHANGELOG.md](CHANGELOG.md).

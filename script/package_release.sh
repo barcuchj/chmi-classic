@@ -2,6 +2,38 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CHROMIUM_FILES=(manifest.json portal-registry.js embedded.js portal.js portal.css embedded.css
+  aladin.js aladin.css webcams.js webcams.css navigation.js navigation.css
+  catalog.js catalog.css legacy.js legacy.css content.js classic.css
+  satellite.js satellite.css popup.html popup.css popup.js)
+
+if [[ "${1:-}" == "--chrome-only" ]]; then
+  VERSION="0.7.0-beta.3"
+  DIST_ROOT="$PROJECT_ROOT/dist"
+  CHROMIUM_STAGE="$DIST_ROOT/chmi-classic-chrome-edge-$VERSION"
+  node "$PROJECT_ROOT/script/build_userscript.mjs"
+  rm -rf "$CHROMIUM_STAGE"
+  rm -f "$DIST_ROOT/chmi-classic-chrome-edge-$VERSION.zip"
+  mkdir -p "$CHROMIUM_STAGE"
+  for file in "${CHROMIUM_FILES[@]}"; do
+    cp "$PROJECT_ROOT/chrome-edge/$file" "$CHROMIUM_STAGE/$file"
+  done
+  (
+    cd "$CHROMIUM_STAGE"
+    zip -q -r "$DIST_ROOT/chmi-classic-chrome-edge-$VERSION.zip" .
+  )
+  echo "$DIST_ROOT/chmi-classic-chrome-edge-$VERSION.zip"
+  exit 0
+fi
+
+if [[ "${1:-}" != "" ]]; then
+  echo "usage: $0 [--chrome-only]" >&2
+  exit 2
+fi
+if [[ "$(node -p "require('$PROJECT_ROOT/chrome-edge/manifest.json').version")" != "0.6.0" ]]; then
+  echo "Safari source package is not synchronized with the current Chromium beta; use --chrome-only." >&2
+  exit 2
+fi
 VERSION="0.6.0"
 DIST_ROOT="$PROJECT_ROOT/dist"
 CHROMIUM_STAGE="$DIST_ROOT/chmi-classic-chrome-edge-$VERSION"

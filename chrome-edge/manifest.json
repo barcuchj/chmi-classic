@@ -1,7 +1,8 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.6.0",
+  "version": "0.7.0.3",
+  "version_name": "0.7.0-beta.3",
   "description": "Vrací kompaktní klasické rozhraní živým i historickým meteorologickým výstupům ČHMÚ, přidává jednotný katalog a doložené adaptace starých aplikací.",
   "permissions": [
     "storage"
@@ -24,51 +25,54 @@
   "content_scripts": [
     {
       "matches": [
+        "https://www.chmi.cz/",
+        "https://www.chmi.cz/uvod"
+      ],
+      "css": [
+        "classic.css", "navigation.css", "catalog.css", "portal.css"
+      ],
+      "js": [
+        "portal-registry.js", "portal.js", "navigation.js", "content.js", "catalog.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
         "https://produkty.chmi.cz/radar/*",
-        "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub*",
-        "https://www.chmi.cz/"
-      ],
-      "css": [
-        "classic.css",
-        "navigation.css",
-        "catalog.css"
-      ],
-      "js": [
-        "navigation.js",
-        "content.js",
-        "catalog.js"
-      ],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": [
         "https://produkty.chmi.cz/druzice/*",
+        "https://produkty.chmi.cz/aladin/*",
+        "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub*",
         "https://www.chmi.cz/namerena-data/polarni-druzice/*",
-        "https://www.chmi.cz/namerena-data/geostacionarni-druzice/*"
+        "https://www.chmi.cz/namerena-data/geostacionarni-druzice/*",
+        "https://www.chmi.cz/namerena-data/webkamery",
+        "https://www.chmi.cz/namerena-data/webkamery/",
+        "https://www.chmi.cz/namerena-data/webkamera/*"
       ],
       "css": [
-        "satellite.css",
-        "navigation.css",
-        "catalog.css"
+        "classic.css", "satellite.css", "navigation.css", "catalog.css",
+        "aladin.css", "embedded.css", "webcams.css"
       ],
       "js": [
-        "navigation.js",
-        "satellite.js",
-        "catalog.js"
+        "portal-registry.js", "embedded.js", "navigation.js", "content.js",
+        "satellite.js", "aladin.js", "catalog.js", "webcams.js"
       ],
-      "run_at": "document_idle"
+      "run_at": "document_idle",
+      "all_frames": true
     },
     {
       "matches": [
-        "https://produkty.chmi.cz/aladin/*",
         "https://www.chmi.cz/*",
         "https://hydro.chmi.cz/*"
       ],
       "exclude_matches": [
         "https://www.chmi.cz/",
+        "https://www.chmi.cz/uvod",
         "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub*",
         "https://www.chmi.cz/namerena-data/polarni-druzice/*",
-        "https://www.chmi.cz/namerena-data/geostacionarni-druzice/*"
+        "https://www.chmi.cz/namerena-data/geostacionarni-druzice/*",
+        "https://www.chmi.cz/namerena-data/webkamery",
+        "https://www.chmi.cz/namerena-data/webkamery/",
+        "https://www.chmi.cz/namerena-data/webkamera/*"
       ],
       "css": [
         "navigation.css",

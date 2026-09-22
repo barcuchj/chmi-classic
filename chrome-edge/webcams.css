@@ -1,0 +1,203 @@
+/* Preserve the official live map, filters, camera cards and image timeline. */
+html.chmi-webcams-classic #chmi-catalog-classic-brand {
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  height: auto !important;
+  min-height: 38px !important;
+}
+html.chmi-webcams-classic #chmi-catalog-classic-brand .chmi-classic-navigation {
+  flex: 1 1 auto !important;
+  flex-direction: row !important;
+  height: auto !important;
+}
+html.chmi-webcams-classic #chmi-catalog-classic-brand .chmi-catalog-new-look {
+  flex: 0 0 auto !important;
+}
+
+html.chmi-webcams-overview main {
+  height: calc(100dvh - 12px) !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+html.chmi-webcams-overview .chmi-webcams-workspace {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) clamp(290px, 25vw, 390px);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 5px 8px;
+  height: calc(100% - 47px);
+  min-height: 0;
+}
+html.chmi-webcams-overview .chmi-webcams-workspace > .lfr-layout-structure-item-chmi---spacer,
+html.chmi-webcams-overview .chmi-webcams-workspace > .lfr-layout-structure-item-chmi---menu-z-lo-ky {
+  display: none !important;
+}
+html.chmi-webcams-overview .chmi-webcams-workspace > .lfr-layout-structure-item-header {
+  grid-column: 1 / -1;
+  min-height: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html.chmi-webcams-overview .chmi-webcams-workspace h1 {
+  margin: 2px 0 4px !important;
+  color: #174b79 !important;
+  font: bold 18px Arial, sans-serif !important;
+}
+html.chmi-webcams-overview .chmi-webcams-map-block,
+html.chmi-webcams-overview .chmi-webcams-list-block {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid #8caec0;
+  background: #fff;
+}
+html.chmi-webcams-overview .chmi-webcams-map-block { grid-column: 1; grid-row: 2; }
+html.chmi-webcams-overview .chmi-webcams-list-block { grid-column: 2; grid-row: 2; }
+html.chmi-webcams-overview .chmi-webcams-map-block > div,
+html.chmi-webcams-overview .chmi-webcams-map-block .portlet-boundary,
+html.chmi-webcams-overview .chmi-webcams-map-block .portlet,
+html.chmi-webcams-overview .chmi-webcams-map-block .portlet-content,
+html.chmi-webcams-overview .chmi-webcams-map-block .portlet-content-container,
+html.chmi-webcams-overview .chmi-webcams-map-block .portlet-body,
+html.chmi-webcams-overview .chmi-webcams-map-block .d-flex,
+html.chmi-webcams-overview #chmu-map-container,
+html.chmi-webcams-overview #chmu-map-container .chmu-map-component,
+html.chmi-webcams-overview #chmu-map-container .chmu-map-query-container,
+html.chmi-webcams-overview #chmu-map-container .chmu--map--container,
+html.chmi-webcams-overview .chmi-webcams-list-block > div,
+html.chmi-webcams-overview .chmi-webcams-list-block .portlet-boundary,
+html.chmi-webcams-overview .chmi-webcams-list-block .portlet,
+html.chmi-webcams-overview .chmi-webcams-list-block .portlet-content,
+html.chmi-webcams-overview .chmi-webcams-list-block .portlet-content-container,
+html.chmi-webcams-overview .chmi-webcams-list-block .portlet-body {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+html.chmi-webcams-overview [id^="chmi-signpost-container-"] {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 5px;
+}
+html.chmi-webcams-overview [id^="chmi-signpost-container-"] > .signpost_results {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-content: start;
+  gap: 3px !important;
+}
+html.chmi-webcams-overview [id^="chmi-signpost-container-"] > .signpost_results a {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 66px;
+  height: auto !important;
+  padding: 3px !important;
+  color: #174b79 !important;
+  background: #f5fbff;
+  border: 1px solid #c4dae4;
+  font: bold 12px Arial, sans-serif !important;
+}
+html.chmi-webcams-overview [id^="chmi-signpost-container-"] > .signpost_results a img {
+  flex: 0 0 88px;
+  width: 88px !important;
+  height: 60px !important;
+  object-fit: cover;
+}
+html.chmi-webcams-overview [id^="chmi-signpost-container-"] > .chmi-pagination {
+  flex: 0 0 auto;
+  margin: 2px 0 0 !important;
+  padding: 0 !important;
+}
+html.chmi-webcams-overview .chmi-webcams-workspace > .lfr-layout-structure-item-text {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  min-height: 0;
+  font-size: 11px;
+}
+
+html.chmi-webcams-detail header#chmu-header,
+html.chmi-webcams-detail nav[aria-label*="Nach"],
+html.chmi-webcams-detail .menu-bookmarks,
+html.chmi-webcams-detail footer,
+html.chmi-webcams-detail #footer,
+html.chmi-webcams-detail #footerBottom { display: none !important; }
+html.chmi-webcams-detail main {
+  width: calc(100% - 12px) !important;
+  max-width: none !important;
+  height: calc(100dvh - 12px) !important;
+  min-height: 0 !important;
+  margin: 6px auto !important;
+  padding: 4px !important;
+  overflow: hidden !important;
+  background: #fff;
+  border: 1px solid #9bafb7;
+  box-shadow: 0 2px 6px rgb(40 83 101 / 18%);
+}
+html.chmi-webcams-detail main h1 { margin: 2px 0 5px !important; font: bold 18px Arial, sans-serif !important; color: #174b79 !important; }
+html.chmi-webcams-detail .chmi-webcams-detail-workspace {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) clamp(290px, 25vw, 390px);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 5px 8px;
+  height: calc(100% - 50px);
+  min-height: 0;
+}
+html.chmi-webcams-detail .chmi-webcams-detail-workspace > .lfr-layout-structure-item-header { grid-column: 1 / -1; margin: 0 !important; padding: 0 !important; }
+html.chmi-webcams-detail .chmi-webcams-detail-workspace > .lfr-layout-structure-item-chmi---spacer,
+html.chmi-webcams-detail .chmi-webcams-detail-workspace > .lfr-layout-structure-item-text { display: none !important; }
+html.chmi-webcams-detail .chmi-webcams-player-block { grid-column: 1; grid-row: 2; }
+html.chmi-webcams-detail .chmi-webcams-list-block { grid-column: 2; grid-row: 2; }
+html.chmi-webcams-detail .chmi-webcams-detail-workspace > .lfr-layout-structure-item-chmi---cta { grid-column: 1 / -1; grid-row: 3; margin: 0 !important; padding: 0 !important; }
+html.chmi-webcams-detail .chmi-webcams-player-block,
+html.chmi-webcams-detail .chmi-webcams-list-block { min-width: 0 !important; min-height: 0 !important; height: 100% !important; overflow: hidden !important; border: 1px solid #8caec0; }
+html.chmi-webcams-detail .chmi-webcams-player-block > div,
+html.chmi-webcams-detail .chmi-webcams-player-block .portlet-boundary,
+html.chmi-webcams-detail .chmi-webcams-player-block .portlet,
+html.chmi-webcams-detail .chmi-webcams-player-block .portlet-content,
+html.chmi-webcams-detail .chmi-webcams-player-block .portlet-content-container,
+html.chmi-webcams-detail .chmi-webcams-player-block .portlet-body,
+html.chmi-webcams-detail .chmi-webcams-list-block > div,
+html.chmi-webcams-detail .chmi-webcams-list-block .portlet-boundary,
+html.chmi-webcams-detail .chmi-webcams-list-block .portlet,
+html.chmi-webcams-detail .chmi-webcams-list-block .portlet-content,
+html.chmi-webcams-detail .chmi-webcams-list-block .portlet-content-container,
+html.chmi-webcams-detail .chmi-webcams-list-block .portlet-body { height: 100% !important; min-height: 0 !important; }
+html.chmi-webcams-detail #chmi-playabledata { display: flex !important; flex-direction: column !important; width: 100% !important; height: 100% !important; min-height: 0 !important; }
+html.chmi-webcams-detail #chmi-playabledata .chmi-timeline { flex: 0 0 auto; }
+html.chmi-webcams-detail #chmi-playabledata > div:last-child { flex: 1 1 auto; min-height: 0; }
+html.chmi-webcams-detail .playabledata-content-container { width: 100% !important; height: 100% !important; min-height: 0 !important; overflow: hidden; background: #edf6fa; }
+html.chmi-webcams-detail .playabledata-content-container .chmi-playableimage-img { width: 100% !important; height: 100% !important; max-height: 100% !important; object-fit: contain !important; }
+html.chmi-webcams-detail [id^="chmi-signpost-container-"] { display: flex !important; flex-direction: column !important; height: 100% !important; min-height: 0 !important; padding: 5px; }
+html.chmi-webcams-detail [id^="chmi-signpost-container-"] > .signpost_results { flex: 1 1 auto; min-height: 0; overflow-y: auto; grid-template-columns: minmax(0, 1fr) !important; align-content: start; gap: 3px !important; }
+html.chmi-webcams-detail [id^="chmi-signpost-container-"] > .signpost_results a { display: flex !important; flex-direction: row !important; align-items: center; gap: 6px; width: 100%; min-height: 66px; height: auto !important; padding: 3px !important; color: #174b79 !important; background: #f5fbff; border: 1px solid #c4dae4; font: bold 12px Arial, sans-serif !important; }
+html.chmi-webcams-detail [id^="chmi-signpost-container-"] > .signpost_results a img { flex: 0 0 88px; width: 88px !important; height: 60px !important; object-fit: cover; }
+html.chmi-webcams-detail [id^="chmi-signpost-container-"] > .chmi-pagination { flex: 0 0 auto; margin: 2px 0 0 !important; padding: 0 !important; }
+html.chmi-classic-embedded.chmi-webcams-overview main { width: 100% !important; height: 100dvh !important; margin: 0 !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+html.chmi-classic-embedded.chmi-webcams-overview .chmi-webcams-workspace { height: 100%; }
+html.chmi-classic-embedded.chmi-webcams-detail main { width: 100% !important; height: 100dvh !important; margin: 0 !important; border: 0 !important; box-shadow: none !important; }
+html.chmi-classic-embedded.chmi-webcams-detail .chmi-webcams-detail-workspace { height: 100%; }
+html.chmi-classic-embedded.chmi-webcams-classic header#chmu-header,
+html.chmi-classic-embedded.chmi-webcams-classic nav[aria-label*="Nach"],
+html.chmi-classic-embedded.chmi-webcams-classic .menu-bookmarks,
+html.chmi-classic-embedded.chmi-webcams-classic footer,
+html.chmi-classic-embedded.chmi-webcams-classic #footer,
+html.chmi-classic-embedded.chmi-webcams-classic #footerBottom { display: none !important; }
+html.chmi-classic-embedded.chmi-webcams-detail #chmi-legacy-target-bar { display: none !important; }
+
+@media (max-width: 850px) {
+  html.chmi-webcams-overview main { height: auto !important; overflow: visible !important; }
+  html.chmi-webcams-overview .chmi-webcams-workspace { display: flex !important; flex-direction: column; height: auto !important; }
+  html.chmi-webcams-overview .chmi-webcams-map-block { height: 52dvh !important; min-height: 300px !important; }
+  html.chmi-webcams-overview .chmi-webcams-list-block { height: 35dvh !important; min-height: 280px !important; }
+  html.chmi-webcams-overview .chmi-webcams-workspace > .lfr-layout-structure-item-text { max-height: none; order: 4; }
+  html.chmi-webcams-detail main { height: auto !important; overflow: visible !important; }
+  html.chmi-webcams-detail .chmi-webcams-detail-workspace { display: flex !important; flex-direction: column; height: auto !important; }
+  html.chmi-webcams-detail .chmi-webcams-player-block { height: 58dvh !important; min-height: 330px !important; }
+  html.chmi-webcams-detail .chmi-webcams-list-block { height: 30dvh !important; min-height: 260px !important; }
+}
