@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.7.0.3",
-  "version_name": "0.7.0-beta.3",
-  "description": "Vrací kompaktní klasické rozhraní živým i historickým meteorologickým výstupům ČHMÚ, přidává jednotný katalog a doložené adaptace starých aplikací.",
+  "version": "0.7.0.4",
+  "version_name": "0.7.0-beta.4",
+  "description": "Vrací klasické rozhraní meteorologickým výstupům ČHMÚ, přidává jednotný katalog a adaptace starých aplikací.",
   "permissions": [
     "storage"
   ],

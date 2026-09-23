@@ -7,6 +7,11 @@ import test from "node:test";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const manifest = JSON.parse(readFileSync(join(root, "chrome-edge/manifest.json"), "utf8"));
 
+test("Chrome Web Store manifest description fits the published limit", () => {
+  assert.ok(manifest.description.length <= 132);
+  assert.ok(Buffer.byteLength(manifest.description, "utf8") <= 132);
+});
+
 test("only allowlisted live applications run in child frames", () => {
   const framed = manifest.content_scripts.filter(rule => rule.all_frames);
   assert.equal(framed.length, 1);

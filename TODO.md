@@ -55,6 +55,9 @@ aplikace ve starém rozhraní s ověřeným ovládáním a rozložením.
   beta ZIP vytvořen bez Safari balíčku a zkontrolován.
 - [ ] Vizuálně a instalačně ověřit nové Chrome/Edge rozšíření; Safari zůstává
   nesynchronizované pro portál 0.7 a potřebuje samostatný build/test.
+- [ ] Před označením Chrome portálu za ověřený zkontrolovat skutečně nainstalovanou
+  verzi rozšíření a oprávnění pro `www.chmi.cz`; starší instalace zobrazila
+  klasický radar a katalog, ale ne portál ani beta.3 adaptér webkamer.
 - [ ] Před vydáním ověřit výchozí zastavení radaru na nejnovějším měření,
   nikoli na posledním extrapolovaném předpovědním snímku.
 
