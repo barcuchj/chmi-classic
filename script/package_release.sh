@@ -8,9 +8,10 @@ CHROMIUM_FILES=(manifest.json portal-registry.js embedded.js portal.js portal.cs
   satellite.js satellite.css popup.html popup.css popup.js)
 
 if [[ "${1:-}" == "--chrome-only" ]]; then
-  VERSION="0.7.0-beta.3"
+  VERSION="0.7.0-beta.4"
   DIST_ROOT="$PROJECT_ROOT/dist"
   CHROMIUM_STAGE="$DIST_ROOT/chmi-classic-chrome-edge-$VERSION"
+  node --test "$PROJECT_ROOT/script/manifest.test.mjs"
   node "$PROJECT_ROOT/script/build_userscript.mjs"
   rm -rf "$CHROMIUM_STAGE"
   rm -f "$DIST_ROOT/chmi-classic-chrome-edge-$VERSION.zip"

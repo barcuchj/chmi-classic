@@ -60,6 +60,17 @@ obsahuje i centrální portál a webkamery. Je určen k testování: obsah ZIPu,
 syntaxe a automatické testy prošly, ale skutečná instalace a rozložení v prohlížeči
 ještě nebyly potvrzené.
 
+Pozor: samotné **nahrání ZIPu do Chrome Web Store neaktualizuje rozšíření,
+které již máte nainstalované**. Nová verze se uživatelům dostane až po schválení
+a publikování aktualizace; rozbalenou vývojovou verzi je potřeba znovu načíst
+v seznamu rozšíření a poté obnovit stránky ČHMÚ. Verzi novějšího balíčku
+uvidíte po kliknutí na ikonu ČHMÚ Classic. Pokud na úvodní stránce chybí
+centrální portál a na webkamerách zůstává jen starý katalog, běží pravděpodobně
+starší balíček. Zkontrolujte jeho verzi a přístup k `www.chmi.cz`.
+
+[Zásady ochrany soukromí](PRIVACY.md) popisují pouze místní uložení nastavení
+v prohlížeči; rozšíření neshromažďuje osobní údaje.
+
 1. Stáhněte ZIP a rozbalte jej do složky, kterou později nepřesunete ani nesmažete.
 2. Otevřete `chrome://extensions` nebo `edge://extensions`.
 3. Zapněte **Režim pro vývojáře** a zvolte **Načíst rozbalené**.
