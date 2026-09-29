@@ -5,7 +5,7 @@ snímky dál pocházejí z ČHMÚ; nejde o přehrávání starého počasí z ar
 
 ## Chci vyzkoušet nejnovější podobu portálu
 
-**Lokálně připravený userscript je 0.7.0-beta.10 — testovací verze.** Má centrální panel
+**Lokálně připravený userscript je 0.7.0-beta.11 — testovací verze.** Má centrální panel
 pro aplikace, rozcestník a tlačítko **Zvětšit panel**. Celý původní intranet
 ještě obnovený není. Úvodní předpověď ČR má nově třídenní panel; Voda a Ovzduší mají
 živé adaptéry. Červeně přeškrtnuté položky čekají na rekonstrukci.
@@ -13,7 +13,8 @@ Na úzkém vysokém okně předpověď využívá místo pod mapou pro seznam m�
 kliknutím na jeho nadpis jej můžete sbalit.
 Na samostatném meteogramu zůstává živé vyhledávání míst ČHMÚ; testovací beta
 navíc nabízí čtyři poslední navštívená místa. Odkaz na meteogram z původního
-rozcestníku je nyní aktivní a otevírá výchozí živý meteogram Prahy. Vzhled
+rozcestníku je nyní aktivní a otevírá výchozí živý meteogram Prahy. Položka
+**Radarové odhady srážek** otevírá současný oficiální přehled pro 1/3/6/24 hodin. Vzhled
 instalované bety je ještě potřeba ověřit.
 Tato lokální beta dosud nebyla zveřejněna na GitHubu: instalační odkaz níže
 proto nemusí nabízet její nové funkce. [Podívejte se na dvě ukázky vzhledu](README.md#jak-beta-vypadá).
@@ -56,6 +57,8 @@ Přímo můžete otevřít také [radar](https://produkty.chmi.cz/radar/),
 [geostacionární družice](https://www.chmi.cz/namerena-data/geostacionarni-druzice/true-color),
 [webkamery](https://www.chmi.cz/namerena-data/webkamery)
 nebo [mapu růstu hub](https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub).
+Přímý odkaz na [radarové odhady srážek](https://hydro.chmi.cz/hppsoldv/main_rain.php)
+otevírá jinou aplikaci než běžný radar.
 Rozložení všech těchto aplikací se ještě průběžně dolaďuje.
 
 ## Jak získám aktualizaci
@@ -69,9 +72,10 @@ stále nabízet starší verzi.
 ## Chrome a Edge – testovací beta bez Tampermonkey
 
 Poslední veřejný [Chrome/Edge balíček 0.7.0-beta.3](https://github.com/barcuchj/chmi-classic/releases/download/v0.7.0-beta.3/chmi-classic-chrome-edge-0.7.0-beta.3.zip)
-obsahuje centrální portál a webkamery. Místní beta 10 navíc sdílí s userscriptem
-adaptéry pro předpověď, meteogram, vodu a ovzduší i v centrálním panelu.
-Balíček beta 10 zatím není veřejně vydaný ani instalačně a vizuálně ověřený;
+obsahuje centrální portál a webkamery. Místní beta 11 navíc sdílí s userscriptem
+adaptéry pro předpověď, meteogram, vodu, ovzduší a radarové odhady srážek
+i v centrálním panelu. Balíček beta 11 zatím není veřejně vydaný ani instalačně
+a vizuálně ověřený;
 odkaz na betu 3 proto nemůže ukázat všechny nové funkce.
 
 1. Stáhněte ZIP a rozbalte jej do složky, kterou později nepřesunete ani nesmažete.

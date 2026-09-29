@@ -261,10 +261,14 @@ aplikace ve starém rozhraní s ověřeným ovládáním a rozložením.
   průhlednosti. Samostatný CELDN produkt a sdílitelný preset ale ověřeny
   nejsou, takže položka v rozcestníku zůstává neaktivní. Zvlášť ověřit
   polohu/kříž, snímky a rozložení bez scrollu.
-- [ ] Radarové odhady srážek: živý `#select_prod` 29. 9. potvrzuje
-  oficiální produkty `sum_merge_1h`, `sum_merge_3h`, `sum_merge_6h`
-  a `sum_merge_24h`. Ověřit a zapojit původní přepínání/rozložení nad
-  živým produktem; samotný obecný radarový odkaz není obnovením položky.
+- [ ] Radarové odhady srážek: původní odkaz na homepage vede na dodnes živý
+  HPPS viewer `https://hydro.chmi.cz/hppsoldv/main_rain.php` s nativními
+  intervaly 1/3/6/24 h, variantami i časovou řadou. Adaptér, přesné Chrome
+  iframe pravidlo a regresní testy jsou připravené; vývojově ověřeno při
+  1280 × 720 bez celostránkového scrollu a s fungujícím nativním výběrem
+  času. Živá stránka se také načetla v testovacím iframe na chmi.cz.
+  Zbývá instalační/iframe test hotového userscriptu a Chrome rozšíření,
+  zejména v úzkém okně; teprve pak označit hotovo.
 - [ ] Meteogram beta 10: vizuálně a instalačně ověřit skutečný graf, vyhledání
   jiné lokality, poslední místa a rozložení v panelu i samostatné záložce.
   Další skupiny aplikací uvedené výše rekonstruovat samostatně; samotná URL

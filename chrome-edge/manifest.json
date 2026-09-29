@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.7.0.10",
-  "version_name": "0.7.0-beta.10",
+  "version": "0.7.0.11",
+  "version_name": "0.7.0-beta.11",
   "description": "Vrací klasický vzhled živým meteorologickým aplikacím ČHMÚ a přidává přehledný rozcestník.",
   "permissions": [
     "storage"
@@ -96,6 +96,19 @@
     },
     {
       "matches": [
+        "https://hydro.chmi.cz/hppsoldv/main_rain.php"
+      ],
+      "css": [
+        "embedded.css", "rainfall.css"
+      ],
+      "js": [
+        "portal-registry.js", "embedded.js", "rainfall.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
         "https://www.chmi.cz/*",
         "https://hydro.chmi.cz/*"
       ],
@@ -118,7 +131,8 @@
         "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa",
         "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa/",
         "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr",
-        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr/"
+        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr/",
+        "https://hydro.chmi.cz/hppsoldv/main_rain.php"
       ],
       "css": [
         "navigation.css",

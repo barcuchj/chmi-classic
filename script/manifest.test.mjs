@@ -18,7 +18,7 @@ test("Chrome Web Store metadata stays valid and names the local beta", () => {
 
 test("only explicit live application routes run in child frames", () => {
   const framed = manifest.content_scripts.filter(rule => rule.all_frames);
-  assert.equal(framed.length, 3);
+  assert.equal(framed.length, 4);
   assert.deepEqual(framed[0].matches, [
     "https://produkty.chmi.cz/radar/*",
     "https://produkty.chmi.cz/druzice/*",
@@ -43,6 +43,7 @@ test("only explicit live application routes run in child frames", () => {
     "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr",
     "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr/"
   ]);
+  assert.deepEqual(framed[3].matches, ["https://hydro.chmi.cz/hppsoldv/main_rain.php"]);
   for (const rule of framed) {
     assert.ok(rule.js.indexOf("portal-registry.js") < rule.js.indexOf("embedded.js"));
     assert.ok(rule.css.includes("embedded.css"));
@@ -64,6 +65,7 @@ test("meteogram and forecast adapters work standalone and in the classic panel",
   const generic = manifest.content_scripts.find(item => item.matches.includes("https://www.chmi.cz/*"));
   assert.ok(generic.exclude_matches.includes("https://www.chmi.cz/meteogram/*"));
   for (const route of manifest.content_scripts[3].matches) assert.ok(generic.exclude_matches.includes(route));
+  assert.ok(generic.exclude_matches.includes("https://hydro.chmi.cz/hppsoldv/main_rain.php"));
 });
 
 test("every active portal app has the same adapter assets in Chrome and userscript", () => {
@@ -73,6 +75,7 @@ test("every active portal app has the same adapter assets in Chrome and userscri
   const assets = {
     forecast: ["forecast.js", "forecast.css"],
     radar: ["content.js", "classic.css"],
+    rainfall: ["rainfall.js", "rainfall.css"],
     meteosat: ["satellite.js", "satellite.css"],
     aladin: ["aladin.js", "aladin.css"],
     meteogram: ["meteogram.js", "meteogram.css"],

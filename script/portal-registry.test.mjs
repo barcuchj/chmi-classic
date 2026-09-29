@@ -34,6 +34,8 @@ test("userscript builder includes the forecast adapter and its CSS", () => {
   assert.match(source, /forecast\.css/);
   assert.match(source, /\$\{forecastJs/);
   assert.match(source, /\$\{forecastCss/);
+  assert.match(source, /\$\{rainfallJs/);
+  assert.match(source, /\$\{rainfallCss/);
 });
 test("embedded URLs preserve application settings and bind a session", () => {
   const url = new URL(registry.frameURL("meteosat", "test-session"));
@@ -83,6 +85,13 @@ test("meteogram panel accepts only official place routes, including native navig
   for (const url of ["https://evil.test/meteogram/355-praha", "https://www.chmi.cz/meteogram/", "https://www.chmi.cz/meteogram/355-praha/extra", "https://www.chmi.cz/meteogram/javascript:bad"]) {
     assert.equal(registry.embeddedContext(new URL(url), name), null);
   }
+});
+test("rainfall native query links stay on the exact old-viewer page", () => {
+  const name = registry.frameName("rainfall", "test-session");
+  for (const query of ["?id=1&t=r", "?id=6&t=s", "?chmi_classic_embed=rainfall&chmi_classic_session=test-session"]) {
+    assert.equal(registry.embeddedContext(new URL(`https://hydro.chmi.cz/hppsoldv/main_rain.php${query}`), name)?.id, "rainfall");
+  }
+  assert.equal(registry.embeddedContext(new URL("https://hydro.chmi.cz/hppsoldv/hpps_act_rain.php"), name), null);
 });
 test("readiness messages require exact origin, frame, app and session", () => {
   const source = {};

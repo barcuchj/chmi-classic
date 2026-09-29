@@ -1,5 +1,16 @@
 # Přehled změn
 
+## 0.7.0-beta.11 – 2026-09-29 (místní testovací sestavení)
+
+- Původní položka Radarové odhady srážek otevírá stále živou oficiální
+  aplikaci HPPS. Kompaktní starý obal zachovává její původní snímky,
+  časovou řadu a volbu intervalů 1/3/6/24 hodin.
+- Tampermonkey a Chrome/Edge používají stejný adaptér. Chrome pravidlo pro
+  centrální iframe je omezené na přesnou adresu této aplikace.
+- Vývojově ověřeno samostatné zobrazení při 1280 × 720 a 390 × 844 bez
+  posuvníku celé stránky; živý zdroj se načetl i do testovacího iframe.
+  Instalované balíčky a vzhled v portálovém iframe čekají na QA.
+
 ## 0.7.0-beta.3 – 2026-09-22 (userscript a Chrome/Edge beta)
 
 - Aktivován odkaz Webové kamery v původním rozcestníku; přehled mapy, filtr,

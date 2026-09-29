@@ -1,18 +1,20 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## Lokální beta 0.7.0-beta.10 – aplikace na jednom místě
+## Lokální beta 0.7.0-beta.11 – aplikace na jednom místě
 
 **Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
 
-**Testovací beta, nikoli dokončená obnova všech aplikací.** Lokální beta 10
+**Testovací beta, nikoli dokončená obnova všech aplikací.** Lokální beta 11
 navazuje na živé záložky Voda a Ovzduší a doplňuje úvodní předpověď počasí
-o třídenní panel podle původního intranetu.
+o třídenní panel podle původního intranetu. Původní položka **Radarové odhady
+srážek** nyní vede na stále živý přehled ČHMÚ s intervaly 1/3/6/24 hodin;
+adaptér zachovává jeho skutečné snímky a časovou řadu.
 Na úzkém vysokém okně se pod mapou automaticky otevře živý seznam měst,
 který využije jinak prázdné místo. Mapa si zachová správný poměr stran.
 Seznam můžete sbalit; vaše volba zůstane zachovaná při změně velikosti okna.
 Ze společných zdrojů se nyní sestavuje také Chrome/Edge doplněk. Poslední
 veřejný [zdrojový balíček Chrome/Edge](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.3)
-zůstává beta 3; beta 10 je zatím místní a její instalace v Chromu ani Safari
+zůstává beta 3; beta 11 je zatím místní a její instalace v Chromu ani Safari
 nebyla vizuálně potvrzena. Safari balíček ani veřejné vydání zatím nejsou připraveny.
 Po zveřejnění odpovídajícího userscriptu v `main` se tato beta instaluje stejným
 odkazem jako dříve. Kdo chce vyzkoušet nové rozhraní,
@@ -86,6 +88,9 @@ původních aplikací. Vodu a Ovzduší je po instalaci ještě nutné vizuáln�
 instalační test. Podrobnosti a zbývající práce jsou v [TODO.md](TODO.md).
 
 ### Jak beta vypadá
+
+Následující snímky zachycují starší vývojový stav, nikoli vizuální ověření
+instalované bety 11.
 
 **Radar v portálu:** úzká horní nabídka, mapa a původní rozcestník pod ní.
 

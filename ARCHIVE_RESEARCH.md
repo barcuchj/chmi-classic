@@ -200,9 +200,22 @@ Ve stejné živé aplikaci má nativní `#select_prod` čtyři odhady srážek:
 Přepnutí na 1 hodinu v běžící aplikaci skutečně změnilo popis na „1h suma
 srážek z kombinace radarového odhadu a pozemních srážkoměrů“. Hodnoty byly
 odečteny z viditelně používané nabídky, nikoli odhadnuty z názvu URL.
-Samostatný hluboký odkaz s tímto produktem ani podoba starého odhadového
-vieweru dosud nebyly ověřeny; položka rozcestníku se proto nemá aktivovat
-jen přeposláním na obecný radar.
+Samostatný hluboký odkaz s tímto produktem v pokročilém radaru není potřeba:
+archivní [homepage z 25. 8. 2026](https://web.archive.org/web/20260825190437/https://intranet.chmi.cz/)
+vede pod názvem „Radarové odhady srážek“ na jinou aplikaci,
+`http://hydro.chmi.cz/hppsoldv/main_rain.php`. Její
+[archivní snapshot z 12. 5. 2026](https://web.archive.org/web/20260512184400/https://hydro.chmi.cz/hppsoldv/main_rain.php)
+a [živá HTTPS verze](https://hydro.chmi.cz/hppsoldv/main_rain.php) byly
+29. 9. 2026 otevřeny ve vestavěném prohlížeči. Původní rozhraní HPPS stále
+nabízí intervaly 1/3/6/24 hodin, dvě datové varianty, časový seznam a PNG
+mapu ČR. Nejde tedy o obecný `produkty.chmi.cz/radar/`.
+
+Na živé stránce fungoval nativní výběr `#imenu_1` a zobrazil obraz 728 × 528;
+nejnovější `#mapa_0` byl v daném okamžiku nedostupný. Uživatelský adaptér smí
+použít pouze nativní ovladač k výběru prvního skutečně načteného snímku a
+rozložit původní obsah podle okna. ČHMÚ/Hydrosoft uvádí na stránce licenci
+CC BY-NC-ND 3.0 CZ; archivní JS, CSS ani PNG se proto nekopírují do MIT
+repozitáře. Stav jednotlivých časových snímků se může měnit.
 
 Luna dohledala konkrétní [snapshot `data_jsceldnview.html` z 10. 2. 2026](https://web.archive.org/web/20260210150817/https://intranet.chmi.cz/files/portal/docs/meteo/blesk/data_jsceldnview.html).
 Po výpadku jejího připojení k builtin browseru bylo uložení dokončeno v hlavní
