@@ -1,13 +1,21 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## Beta 0.7.0-beta.3 – aplikace na jednom místě
+## Lokální beta 0.7.0-beta.10 – aplikace na jednom místě
 
 **Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
 
-**Testovací beta, nikoli dokončená obnova všech aplikací.** Nový portál je v
-userscriptu pro Tampermonkey a nově také ve [zdrojovém balíčku Chrome/Edge](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.3).
-Safari balíček s novým portálem dosud vydaný není.
-Userscript v `main` obsahuje tuto betu. Kdo chce vyzkoušet nové rozhraní,
+**Testovací beta, nikoli dokončená obnova všech aplikací.** Lokální beta 10
+navazuje na živé záložky Voda a Ovzduší a doplňuje úvodní předpověď počasí
+o třídenní panel podle původního intranetu.
+Na úzkém vysokém okně se pod mapou automaticky otevře živý seznam měst,
+který využije jinak prázdné místo. Mapa si zachová správný poměr stran.
+Seznam můžete sbalit; vaše volba zůstane zachovaná při změně velikosti okna.
+Ze společných zdrojů se nyní sestavuje také Chrome/Edge doplněk. Poslední
+veřejný [zdrojový balíček Chrome/Edge](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.3)
+zůstává beta 3; beta 10 je zatím místní a její instalace v Chromu ani Safari
+nebyla vizuálně potvrzena. Safari balíček ani veřejné vydání zatím nejsou připraveny.
+Po zveřejnění odpovídajícího userscriptu v `main` se tato beta instaluje stejným
+odkazem jako dříve. Kdo chce vyzkoušet nové rozhraní,
 otevře [instalační odkaz](https://raw.githubusercontent.com/barcuchj/chmi-classic/main/tampermonkey/chmi-classic.user.js)
 a v Tampermonkey potvrdí aktualizaci. Nemějte současně aktivní starý userscript
 i rozšíření ČHMÚ Classic, aby se jejich úpravy nepřekrývaly.
@@ -39,11 +47,43 @@ Rozložení je připravené pro centrální panel i samostatnou záložku, ale
 výsledné vykreslení této bety ještě nebylo ověřeno z nainstalovaného balíčku.
 Grafy měření se nesimulují tam, kde je zdrojová stránka nenabízí.
 
-**Co ještě není hotové:** úvodní mapa počasí s předpovědí, obsah záložek Voda
-a Ovzduší a řada původních aplikací. Probíhá kontrola menších oken, samostatných
-záložek a skutečné instalace do Tampermonkey. Vývojová kontrola ve vestavěném
-prohlížeči používá dočasné vložení kódu; není náhradou instalačního testu.
-Podrobnosti a zbývající práce jsou v [TODO.md](TODO.md).
+Kompaktní meteogram zachovává nativní graf,
+vyhledávání místa a hodinové tabulky; zapne se teprve po načtení skutečného
+grafu. Nově si místně v prohlížeči pamatuje čtyři poslední otevřená místa,
+podobně jako starý prohlížeč. Používá pouze ověřené odkazy na meteogramy ČHMÚ.
+Odkaz **Aladin – meteogramy** v původním rozcestníku otevře ověřenou živou
+stránku pro Prahu; jiné místo lze zvolit původním vyhledáváním ČHMÚ.
+Rozložení v nainstalovaném doplňku ještě čeká na vizuální ověření.
+
+Záložky **Voda** a **Ovzduší** v betě 8 otevírají současné oficiální živé
+aplikace ČHMÚ v centrálním panelu. Voda používá aktuální vodní stavy a povodňovou
+mapu, Ovzduší aktuální mapy kvality ovzduší. Userscript ponechává jejich
+`#chmu-map-container` a nativní ovládání zdrojové stránky a přidává pouze
+kompaktní old-portal obal a přepočet dostupné výšky. V okolí mapy skryje
+rozsáhlé textové části současné stránky, které způsobovaly rolování; dostupné
+zůstanou přes tlačítko **Nový vzhled**. Odkaz **Tabulka dat** otevírá oficiální
+tabulku v nové záložce. Přímé otevření obou map používá stejný adaptovaný obal.
+Původní archivní panely `hydro_map.html` a `air.html` nejsou zachyceny, proto
+nejde o jejich přesnou vizuální kopii. Vykreslení bety 8 v nainstalovaném
+Tampermonkey je dosud nutné potvrdit; prohlížeč zablokoval vývojové otevření
+lokálního userscriptu.
+
+Při otevření úvodní stránky je výchozí aplikací **Předpověď pro ČR**.
+Mapa zachovává živé teploty a ikony ČHMÚ; vpravo vidíte tři dny s ikonami
+a rozsahy teplot pro ráno/odpoledne. Kliknutím zvolíte období. Když ČHMÚ
+období neposkytuje, buňka říká **Není údaj** a není odkazem. V úzkém okně
+se panel přesune pod mapu. Samostatná stránka používá stejné rozložení.
+Přístupný seznam měst rozbalíte pod mapou. Nejde o archivní předpověď ani
+o přesnou kopii historické reliéfní mapy. Dnešek, zítřek a pozítří byly
+vývojově ověřeny ve vestavěném prohlížeči. Rozložení při 1280 × 720 a
+390 × 844 nemá scroll dokumentu; na výšku zůstává prostor kolem mapy,
+aby se geografické zobrazení nedeformovalo. Ověření instalace a centrálního
+rámce ještě zbývá.
+
+**Co ještě není hotové:** historicky věrný reliéfní podklad úvodní mapy a řada
+původních aplikací. Vodu a Ovzduší je po instalaci ještě nutné vizuálně potvrdit proti
+živému DOM v běžném browseru; samotná implementace neznamená dokončený
+instalační test. Podrobnosti a zbývající práce jsou v [TODO.md](TODO.md).
 
 ### Jak beta vypadá
 
@@ -138,21 +178,25 @@ rozhodnutí je v [ARCHIVE_RESEARCH.md](ARCHIVE_RESEARCH.md). Kde nebyl bezpečn�
 ověřen konkrétní viewer, položka je v katalogu označena jako `Nedostupné`;
 ČHMÚ Classic v takovém případě nevytváří falešné ovládání ani data.
 
-## ALADIN – čtyři klasické mapy
+## ALADIN – klasické mapy v aktuálním userscriptu
 
-Na `https://produkty.chmi.cz/aladin/` přidává old-look header tlačítko
-**4 mapy**. Tlačítko pouze pracuje s původními formulářovými prvky stránky
-ČHMÚ a pokusí se zvolit:
+Na `https://produkty.chmi.cz/aladin/` se při otevření klasického vzhledu
+automaticky zobrazí čtyři známé mapy:
 
 1. Teplota ve 2 m
 2. Oblačnost
 3. Srážky za 3 h
 4. Vítr v 10 m
 
-Pokud stránka nabízí volbu rozložení se čtyřmi sloupci, nastaví ji také.
-Volba se neprovádí automaticky při načtení stránky, takže se uživateli
-nepřepisuje jeho vlastní aktuální výběr. Časové ovládání a samotné mapy
-zůstávají nativními prvky ČHMÚ.
+V nabídce **Veličiny** můžete přidat například vlhkost, nízkou/střední/vysokou
+oblačnost, ventilační index nebo srážky za 24 hodin. Rozložení se přizpůsobí
+počtu map a velikosti okna. Výběr ovládá skutečné prvky ČHMÚ; userscript
+nevyrábí vlastní předpověď ani náhradní snímky.
+
+**Běh modelu** mění výpočet předpovědi. **Termín** posunete tlačítky nebo
+kolečkem nad mapami po třech hodinách. Pokud ČHMÚ některý snímek neposkytuje,
+pole zobrazí „Snímek chybí“; podrobnosti se ukážou po najetí myší.
+Tlačítko **Nový vzhled** vrátí původní současné rozhraní ČHMÚ.
 
 ## Další old-look stránky
 
@@ -268,9 +312,8 @@ serveru ani neobcházejí přístupová omezení.
 
 - Struktura současného webu ČHMÚ se může změnit. Pak může být nutné aktualizovat
   selektory nebo allowlist cest.
-- Preset **4 mapy** u ALADINu hledá skutečné popisky nativních ovládacích prvků.
-  Pokud ČHMÚ jejich názvy nebo DOM změní, preset nic nevymýšlí a může vybrat jen
-  část položek.
+- Klasický ALADIN používá ověřené nativní ovladače. Pokud ČHMÚ změní jejich
+  identifikátory nebo strukturu stránky, může být nutná aktualizace userscriptu.
 - Rozšíření neobchází přístupová omezení, cookies, autentizaci ani vypnutý
   `intranet.chmi.cz`.
 - Internet Archive může mít jednotlivé historické soubory zachyceny neúplně.

@@ -28,6 +28,12 @@
     if (pathname === "/namerena-data/pravdepodobnost-rustu-hub") {
       return "hub";
     }
+    if (pathname === "/voda/aktualni-stav-rek-povodnova-mapa") {
+      return "water";
+    }
+    if (pathname === "/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr") {
+      return "air";
+    }
     return null;
   })();
 
@@ -44,7 +50,9 @@
     meteosat: "#chmi-satellite-classic-brand",
     polar: "#chmi-satellite-classic-brand",
     geo: "#chmi-satellite-classic-brand",
-    hub: "#chmi-hub-classic-brand"
+    hub: "#chmi-hub-classic-brand",
+    water: "#chmi-hydro-air-classic-brand",
+    air: "#chmi-hydro-air-classic-brand"
   };
 
   const pages = [

@@ -13,9 +13,27 @@ test("only the current homepage gets the portal shell", () => {
   assert.equal(registry.isHomepage(new URL("https://chmi.cz.evil.test/")), false);
 });
 test("hash routes cannot inject arbitrary frame URLs", () => {
+  assert.equal(registry.route(""), "forecast");
   assert.equal(registry.route("#classic=meteosat"), "meteosat");
   for (const bad of ["#classic=https://evil.test/", "#classic=__proto__", "#classic=constructor", "#classic=%72adar"]) assert.equal(registry.route(bad), "radar");
   assert.equal(registry.frameURL("constructor", "abcdefgh"), null);
+});
+test("forecast days remain explicit same-origin panel routes", () => {
+  assert.equal(registry.columns[0][0].app, "forecast");
+  const name = registry.frameName("forecast", "test-session");
+  for (const day of ["dnes", "zitra", "pozitri"]) {
+    assert.equal(registry.embeddedContext(new URL(`https://www.chmi.cz/predpoved-pocasi/${day}?obdobi=dnes-rano`), name)?.id, "forecast");
+  }
+  for (const url of ["https://evil.test/predpoved-pocasi/dnes", "https://www.chmi.cz/predpoved-pocasi/tyden", "https://www.chmi.cz/predpoved-pocasi/praha/dnes"]) {
+    assert.equal(registry.embeddedContext(new URL(url), name), null);
+  }
+});
+test("userscript builder includes the forecast adapter and its CSS", () => {
+  const source = readFileSync(new URL("./build_userscript.mjs", import.meta.url), "utf8");
+  assert.match(source, /forecast\.js/);
+  assert.match(source, /forecast\.css/);
+  assert.match(source, /\$\{forecastJs/);
+  assert.match(source, /\$\{forecastCss/);
 });
 test("embedded URLs preserve application settings and bind a session", () => {
   const url = new URL(registry.frameURL("meteosat", "test-session"));
@@ -52,6 +70,17 @@ test("webcam overview and detail stay in one allowlisted portal app", () => {
   assert.equal(registry.matches("webcams", new URL("https://www.chmi.cz/namerena-data/webkamery")), true);
   assert.equal(registry.embeddedContext(new URL("https://www.chmi.cz/namerena-data/webkamera/brno-brno"), name)?.id, "webcams");
   for (const url of ["https://www.chmi.cz/namerena-data/webkamera/", "https://www.chmi.cz/namerena-data/webkamera/brno-brno/extra", "https://evil.test/namerena-data/webkamera/brno-brno"]) {
+    assert.equal(registry.embeddedContext(new URL(url), name), null);
+  }
+});
+test("meteogram panel accepts only official place routes, including native navigation", () => {
+  assert.equal(registry.columns[1][2].app, "meteogram");
+  assert.equal(registry.get("meteogram").url, "https://www.chmi.cz/meteogram/355-praha");
+  const name = registry.frameName("meteogram", "test-session");
+  for (const path of ["/meteogram/355-praha", "/meteogram/387-prostejov/"]) {
+    assert.equal(registry.embeddedContext(new URL(`https://www.chmi.cz${path}`), name)?.id, "meteogram");
+  }
+  for (const url of ["https://evil.test/meteogram/355-praha", "https://www.chmi.cz/meteogram/", "https://www.chmi.cz/meteogram/355-praha/extra", "https://www.chmi.cz/meteogram/javascript:bad"]) {
     assert.equal(registry.embeddedContext(new URL(url), name), null);
   }
 });

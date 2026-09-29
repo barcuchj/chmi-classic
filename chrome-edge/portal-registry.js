@@ -5,18 +5,22 @@
   // Only explicit reconstructed adapters may become clickable in the portal.
   // An existing modern URL alone is not proof of an old-look application.
   const apps = {
+    forecast: { title: "Počasí v České republice – předpověď", url: "https://www.chmi.cz/predpoved-pocasi/dnes", family: "forecast", section: "weather" },
     radar: { title: "Aktuální radarová data", url: "https://produkty.chmi.cz/radar/", family: "radar", section: "weather" },
     meteosat: { title: "Snímky z družic MSG / Meteosat", url: "https://produkty.chmi.cz/druzice/?time_range=24", family: "satellite", section: "weather" },
     aladin: { title: "ALADIN – mapy", url: "https://produkty.chmi.cz/aladin/", family: "aladin", section: "weather" },
+    meteogram: { title: "ALADIN – meteogramy", url: "https://www.chmi.cz/meteogram/355-praha", family: "meteogram", section: "weather" },
     webcams: { title: "Webové kamery", url: "https://www.chmi.cz/namerena-data/webkamery", family: "webcams", section: "weather" },
     polar: { title: "Snímky z polárních družic", url: "https://www.chmi.cz/namerena-data/polarni-druzice/true-color", family: "polar", section: "weather" },
     geo: { title: "Geostacionární družice", url: "https://www.chmi.cz/namerena-data/geostacionarni-druzice/true-color", family: "geo", section: "weather" },
-    mushrooms: { title: "Pravděpodobnost růstu hub", url: "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub", family: "mushrooms", section: "weather" }
+    mushrooms: { title: "Pravděpodobnost růstu hub", url: "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub", family: "mushrooms", section: "weather" },
+    water: { title: "VODA – aktuální vodní stavy a povodňová mapa", url: "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa", family: "water", section: "water" },
+    air: { title: "OVZDUŠÍ – aktuální mapy kvality ovzduší", url: "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr", family: "air", section: "air" }
   };
   const pending = (label, reason = "Původní zobrazení této aplikace zatím není obnoveno. Samotný odkaz na nový web nepovažujeme za rekonstrukci.") => ({ label, reason });
   const columns = [
-    ["Předpověď pro ČR", "Předpovědi pro kraje", "Týdenní předpověď", "Měsíční výhled", "Synoptická předpověď", "Bio předpověď", "Počasí pro létání", "Sněhové zpravodajství", "Předpovědi pro hory"].map(label => pending(label)),
-    [{ label: "Aladin – animace", app: "aladin" }, { label: "Aladin – mapy", app: "aladin" }, ...["Aladin – meteogramy", "Přehled počasí v ČR", "Synoptická situace", "Ozonové zpravodajství", "Družicová měření ozonu", "Pylový semafor", "Aktivita klíšťat"].map(label => pending(label))],
+    [{ label: "Předpověď pro ČR", app: "forecast" }, ...["Předpovědi pro kraje", "Týdenní předpověď", "Měsíční výhled", "Synoptická předpověď", "Bio předpověď", "Počasí pro létání", "Sněhové zpravodajství", "Předpovědi pro hory"].map(label => pending(label))],
+    [{ label: "Aladin – animace", app: "aladin" }, { label: "Aladin – mapy", app: "aladin" }, { label: "Aladin – meteogramy", app: "meteogram" }, ...["Přehled počasí v ČR", "Synoptická situace", "Ozonové zpravodajství", "Družicová měření ozonu", "Pylový semafor", "Aktivita klíšťat"].map(label => pending(label))],
     [{ label: "Aktuální radarová data", app: "radar" }, { label: "Snímky z družic MSG", app: "meteosat" }, { label: "Snímky z družic NOAA", app: "polar" }, ...["Detekce blesků", "Radarové odhady srážek", "Aktuální mapy", "Grafy automat. stanic", "Sondážní měření", "Počasí a kůrovec"].map(label => pending(label))],
     [{ label: "Webové kamery", app: "webcams" }, ...["Meteo zprávy – Infomet", "Měření z Klementina", "Mapa zatížení sněhem", "Nalezli jste radiosondu?", "Vertikální profily větru", "Monitoring sucha", "Meteorologické stanice"].map(label => pending(label))]
   ];
@@ -32,6 +36,8 @@
       const app = this.get(id);
       if (!app) return false;
       const target = new URL(app.url);
+      if (id === "forecast" && url.origin === target.origin) return /^\/predpoved-pocasi\/(dnes|zitra|pozitri)\/?$/.test(url.pathname);
+      if (id === "meteogram" && url.origin === target.origin) return /^\/meteogram\/\d+-[a-z0-9-]+\/?$/.test(url.pathname);
       if (id === "webcams" && url.origin === target.origin && /^\/namerena-data\/webkamera\/[a-z0-9_-]+\/?$/.test(url.pathname)) return true;
       return url.origin === target.origin && normalPath(url.pathname) === normalPath(target.pathname);
     },
@@ -60,6 +66,7 @@
         !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
     },
     route(hash) {
+      if (!hash) return "forecast";
       const id = /^#classic=([a-z-]+)$/.exec(hash)?.[1];
       return this.get(id) ? id : "radar";
     },

@@ -8,8 +8,8 @@
   const { id, session } = context;
   let parentURL;
   try { parentURL = new URL(document.referrer); } catch { return; }
-  const webcamNativeNavigation = id === "webcams" && registry.matches(id, parentURL);
-  if (parentURL.protocol !== "https:" || !(registry.isHomepage(parentURL) || webcamNativeNavigation) ||
+  const nativeNavigation = ["webcams", "forecast", "meteogram"].includes(id) && registry.matches(id, parentURL);
+  if (parentURL.protocol !== "https:" || !(registry.isHomepage(parentURL) || nativeNavigation) ||
       !registry.matches(id, url) || !/^[a-zA-Z0-9-]{8,80}$/.test(session ?? "")) return;
 
   window.__chmiClassicEmbedded = true;
@@ -26,8 +26,21 @@
         app.family === "satellite" ? document.getElementById("chmi-satellite-classic-selector") :
         app.family === "aladin" ? document.querySelector("[data-chmi-aladin-native='verified'] #chmi-aladin-classic-controls") :
         app.family === "webcams" ? document.querySelector("html.chmi-webcams-classic [data-chmi-webcams-native='verified']") :
+        app.family === "meteogram" ? document.querySelector("html.chmi-meteogram-classic .chmi-meteogram-workspace") :
+        app.family === "forecast" ? document.querySelector("#chmi-forecast-workspace[data-state='ready']") :
+        ["water", "air"].includes(app.family) ? document.getElementById("chmi-hydro-air-classic-brand") :
         document.getElementById(app.family === "mushrooms" ? "chmi-hub-classic-brand" : "chmi-satellite-classic-portal-products");
-      const media = [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img, .playabledata-content-container .chmi-playableimage-img")]
+      const nativeMap = document.getElementById("chmu-map-container");
+      const mapMedia = nativeMap && visible(nativeMap) && Boolean(nativeMap.querySelector(
+        "canvas, img[src], .leaflet-tile-loaded, .maplibregl-canvas, .ol-layer canvas, svg path"
+      ));
+      const forecastMedia = app.family === "forecast" && visible(document.getElementById("weather-map")) &&
+        document.querySelectorAll("#weather-map path").length > 0 &&
+        document.querySelectorAll("#weather-map-details a.weather-info").length > 0;
+      const meteogramCanvas = document.querySelector(".chmi-meteogram-workspace canvas[id*='ChmiGraph']");
+      const meteogramMedia = app.family === "meteogram" && visible(meteogramCanvas) &&
+        meteogramCanvas.width > 300 && meteogramCanvas.height > 150;
+      const media = forecastMedia || meteogramMedia || mapMedia || [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img, .playabledata-content-container .chmi-playableimage-img")]
         .some(node => visible(node) && (node.tagName === "CANVAS" ? node.width > 0 && node.height > 0 : node.complete && node.naturalWidth > 32));
       window.parent.postMessage({ type: "chmi-classic-status", app: id, session, state: adapter && media ? "ready" : "loading" }, parentURL.origin);
     }

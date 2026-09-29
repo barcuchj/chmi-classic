@@ -1,0 +1,201 @@
+/* Restyle the official, live ČHMÚ forecast map without replacing its geometry or data. */
+html.chmi-forecast-classic main h1 {
+  color: #174b79;
+  font: 700 clamp(1.45rem, 2.4vw, 2rem)/1.2 Arial, sans-serif;
+}
+
+html.chmi-forecast-classic .lfr-layout-structure-item-chmiimagemapcomponent {
+  min-width: 0;
+  padding: 6px;
+  border: 1px solid #8caec0;
+  background: #edf6fa;
+}
+
+html.chmi-forecast-classic .image-map {
+  min-width: 0;
+  max-width: 100%;
+}
+
+html.chmi-forecast-classic #weather-switcher {
+  border: 1px solid #8caec0;
+  box-shadow: 0 1px 4px #174b7926;
+}
+
+html.chmi-forecast-classic #weather-switcher .weather-switcher__select {
+  color: #174b79;
+  font: 700 0.82rem/1.3 Arial, sans-serif;
+}
+
+html.chmi-forecast-classic #weather-switcher .weather-switcher__select:has(input:checked) {
+  background-color: #ffdb72;
+}
+
+html.chmi-forecast-classic .chmi-forecast-accessible {
+  margin-top: 6px;
+  padding: 8px 12px;
+  border: 1px solid #8caec0;
+  background: #fff;
+  color: #173b5a;
+  font: 0.9rem/1.4 Arial, sans-serif;
+}
+
+html.chmi-forecast-classic .chmi-forecast-accessible summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+html.chmi-forecast-classic .chmi-forecast-periods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+html.chmi-forecast-classic .chmi-forecast-periods button {
+  padding: 6px 9px;
+  border: 1px solid #8caec0;
+  border-radius: 3px;
+  background: #f5fbff;
+  color: #174b79;
+  cursor: pointer;
+  font: inherit;
+}
+
+html.chmi-forecast-classic .chmi-forecast-periods button[aria-pressed="true"] {
+  border-color: #a27610;
+  background: #ffdb72;
+}
+
+html.chmi-forecast-classic .chmi-forecast-accessible :focus-visible {
+  outline: 3px solid #175d9c;
+  outline-offset: 2px;
+}
+
+html.chmi-forecast-classic .chmi-forecast-selected-period {
+  margin: 10px 0 4px;
+  font-weight: 700;
+}
+
+html.chmi-forecast-classic .chmi-forecast-cities {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  gap: 4px 18px;
+  margin: 0;
+  padding-left: 22px;
+}
+
+html.chmi-forecast-classic .chmi-forecast-cities a { color: #174b79; }
+
+@media (max-width: 700px) {
+  html.chmi-forecast-classic .lfr-layout-structure-item-chmiimagemapcomponent { padding: 3px; }
+  html.chmi-forecast-classic .chmi-forecast-accessible { padding: 8px; }
+}
+
+/* Native live geometry/data in the familiar compact intranet workspace. */
+html.chmi-forecast-classic,
+html.chmi-forecast-classic body {
+  width: 100%; height: 100%; min-width: 0; margin: 0 !important;
+  padding: 0 !important; overflow: hidden !important; background: #89c5d4;
+}
+html.chmi-forecast-classic body > :not(#chmi-forecast-workspace) { display: none !important; }
+html.chmi-forecast-classic #chmi-forecast-workspace {
+  box-sizing: border-box; position: fixed; inset: 5px; min-width: 0; min-height: 0;
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
+  border: 1px solid #8aa9b8; background: #f2f6e7;
+  color: #123c69; font: 12px/1.35 Verdana, Arial, sans-serif;
+}
+.chmi-forecast-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 5px 8px; border-bottom: 1px solid #a9bdc5; background: #f4fafc; }
+.chmi-forecast-header strong { font-size: 13px; }
+#chmi-forecast-workspace button { padding: 3px 7px; border: 1px solid #8aa9b8; border-radius: 2px; background: #eff7fb; color: #123c69; font: inherit; cursor: pointer; }
+.chmi-forecast-body { display: grid; grid-template-columns: minmax(0, 1fr) clamp(155px, 19vw, 220px); min-height: 0; min-width: 0; }
+.chmi-forecast-sidebar { min-height: 0; min-width: 0; overflow: auto; padding: 8px; border-left: 1px solid #a9bdc5; background: #e7eedc; }
+.chmi-forecast-sidebar > strong { display: block; text-align: center; }
+.chmi-forecast-days { display: grid; gap: 4px; margin: 8px 0; }
+.chmi-forecast-days a { padding: 5px; color: #143c75; text-decoration: none; border: 1px solid #afc1bd; background: #f8fbf0; }
+.chmi-forecast-days a[aria-current] { background: #cfe4ed; font-weight: bold; }
+.chmi-forecast-current { font-size: 11px; margin: 8px 0 0; }
+.chmi-forecast-day-grid { display: grid; margin: 6px 0; }
+.chmi-forecast-day { min-width: 0; padding: 6px 0; border-bottom: 1px solid #b8c6b0; }
+.chmi-forecast-day h3 { margin: 0 0 4px; color: #123c69; font: 700 12px/1.3 Verdana, Arial, sans-serif; text-align: center; }
+.chmi-forecast-day-cells { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+.chmi-forecast-day-cell { box-sizing: border-box; min-width: 0; display: grid; justify-items: center; align-content: start; gap: 3px; padding: 3px 1px; color: #122e54; text-decoration: none; font: 10px/1.2 Verdana, Arial, sans-serif; border: 1px solid transparent; }
+.chmi-forecast-day-cell img { width: 38px; height: 38px; object-fit: contain; }
+.chmi-forecast-day-cell strong { font-size: 11px; overflow-wrap: anywhere; }
+.chmi-forecast-day-cell small { max-width: 100%; font-size: 10px; color: #566657; overflow-wrap: anywhere; }
+a.chmi-forecast-day-cell:hover, a.chmi-forecast-day-cell[aria-current] { border-color: #8ea8b4; background: #d7e6e9; }
+html.chmi-forecast-classic .image-map { min-height: 0 !important; min-width: 0 !important; height: 100% !important; width: 100% !important; margin: 0 !important; position: relative; background: #edf2dc; }
+html.chmi-forecast-classic .lfr-layout-structure-item-chmiimagemapcomponent { min-height: 0; height: 100%; padding: 0; border: 0; }
+html.chmi-forecast-classic .lfr-layout-structure-item-chmiimagemapcomponent > div,
+html.chmi-forecast-classic .lfr-layout-structure-item-chmiimagemapcomponent .portlet-boundary,
+html.chmi-forecast-classic .lfr-layout-structure-item-chmiimagemapcomponent .portlet,
+html.chmi-forecast-classic .lfr-layout-structure-item-chmiimagemapcomponent .portlet-content,
+html.chmi-forecast-classic .lfr-layout-structure-item-chmiimagemapcomponent .portlet-content-container,
+html.chmi-forecast-classic .lfr-layout-structure-item-chmiimagemapcomponent .portlet-body { min-height: 0; height: 100%; padding: 0; margin: 0; }
+html.chmi-forecast-classic .chmi-image-map__background { display: none !important; }
+html.chmi-forecast-classic #weather-mapContainer { height: 100% !important; width: 100% !important; min-height: 0 !important; padding: 10px !important; overflow: hidden; box-sizing: border-box; }
+html.chmi-forecast-classic #weather-map { width: 100% !important; height: 100% !important; max-height: 100%; overflow: visible; }
+html.chmi-forecast-classic #weather-map path { fill: #d9df9d; stroke: #537596; stroke-width: 2px; }
+html.chmi-forecast-classic #weather-map path:hover { fill: #ebde99; }
+html.chmi-forecast-classic .weather-info { background: #ffffffcf; box-shadow: none; font-family: Arial, sans-serif; }
+html.chmi-forecast-classic .weather-info__displayValue { font-family: Arial, sans-serif; font-weight: bold; color: #15253b; }
+html.chmi-forecast-classic .weather-info__county { background: transparent; color: #143c75; }
+html.chmi-forecast-classic .image-map__poi { display: none !important; }
+html.chmi-forecast-classic #weather-switcher { display: none !important; }
+.chmi-forecast-sidebar .chmi-forecast-periods { display: grid; }
+.chmi-forecast-sidebar .chmi-forecast-periods button { text-align: left; }
+html.chmi-forecast-classic #weather-switcher label { box-sizing: border-box; padding: 6px 4px; gap: 4px; font: inherit; border-top: 1px solid #afc1bd; }
+html.chmi-forecast-classic #weather-switcher span { font: inherit; white-space: normal !important; }
+html.chmi-forecast-classic #weather-switcher img { width: 32px !important; height: 32px !important; flex-shrink: 0; }
+html.chmi-forecast-classic #weather-switcher label.selected { background: #d2e6ec !important; }
+#chmi-forecast-workspace[data-state="loading"] .weather-info__displayValue { opacity: .4; }
+html.chmi-forecast-classic .chmi-forecast-accessible { position: relative; margin: 0; padding: 4px 8px; border: 0; border-top: 1px solid #a9bdc5; background: #f4fafc; font: inherit; }
+.chmi-forecast-accessible[open] { max-height: 28vh; overflow: auto; }
+html.chmi-forecast-classic .chmi-forecast-periods { gap: 4px; margin-top: 6px; }
+#chmi-forecast-workspace .chmi-forecast-periods button[aria-pressed="true"] { background: #d2e6ec; }
+html.chmi-forecast-classic .chmi-forecast-selected-period { margin: 5px 0; }
+html.chmi-forecast-classic .chmi-forecast-cities { grid-template-columns: repeat(auto-fit, minmax(min(100%, 165px), 1fr)); gap: 3px 16px; margin: 0; padding-left: 18px; }
+#chmi-forecast-workspace :focus-visible { outline: 2px solid #17609b; outline-offset: 2px; }
+html.chmi-classic-embedded #chmi-forecast-workspace { inset: 0; border: 0; grid-template-rows: minmax(0, 1fr) auto; }
+html.chmi-classic-embedded .chmi-forecast-header { display: none; }
+@media (max-width: 700px) {
+  .chmi-forecast-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+  .chmi-forecast-sidebar { border-left: 0; border-top: 1px solid #a9bdc5; padding: 4px; }
+  .chmi-forecast-sidebar > strong, .chmi-forecast-current { display: none; }
+  .chmi-forecast-days { grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 0 4px; gap: 3px; }
+  .chmi-forecast-days a { padding: 3px; font-size: 10px; overflow-wrap: anywhere; }
+  .chmi-forecast-day-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; margin: 0; }
+  .chmi-forecast-day { padding: 3px 0; border-bottom: 0; }
+  .chmi-forecast-day h3 { font-size: 10px; }
+  .chmi-forecast-day-cell { font-size: 9px; }
+  .chmi-forecast-day-cell img { width: 26px; height: 26px; }
+  .chmi-forecast-day-cell strong { font-size: 9px; }
+  html.chmi-forecast-classic #weather-switcher { display: flex; }
+  html.chmi-forecast-classic #weather-switcher label { flex: 1; min-width: 0; font-size: 10px; }
+  html.chmi-forecast-classic #weather-switcher img { width: 24px !important; height: 24px !important; }
+}
+
+/* Keep geography undistorted; use otherwise empty portrait space for live data.
+   Closing the list restores the large map area as an explicit user choice. */
+html.chmi-forecast-classic #chmi-forecast-workspace[data-portrait="true"]:has(.chmi-forecast-accessible[open]) {
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+html.chmi-classic-embedded #chmi-forecast-workspace[data-portrait="true"]:has(.chmi-forecast-accessible[open]) {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+#chmi-forecast-workspace[data-portrait="true"]:has(.chmi-forecast-accessible[open]) .chmi-forecast-body {
+  grid-template-rows: auto auto;
+}
+html.chmi-forecast-classic #chmi-forecast-workspace[data-portrait="true"]:has(.chmi-forecast-accessible[open]) .lfr-layout-structure-item-chmiimagemapcomponent {
+  height: auto;
+  aspect-ratio: var(--chmi-forecast-map-ratio);
+}
+html.chmi-forecast-classic #chmi-forecast-workspace[data-portrait="true"] .chmi-forecast-accessible[open] {
+  box-sizing: border-box;
+  min-height: 0;
+  max-height: none;
+  overflow: auto;
+}
+#chmi-forecast-workspace[data-portrait="true"] .chmi-forecast-accessible .chmi-forecast-periods {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}

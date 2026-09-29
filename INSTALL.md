@@ -5,10 +5,18 @@ snímky dál pocházejí z ČHMÚ; nejde o přehrávání starého počasí z ar
 
 ## Chci vyzkoušet nejnovější podobu portálu
 
-**Aktuální userscript je 0.7.0-beta.3 — testovací verze.** Má centrální panel
+**Lokálně připravený userscript je 0.7.0-beta.10 — testovací verze.** Má centrální panel
 pro aplikace, rozcestník a tlačítko **Zvětšit panel**. Celý původní intranet
-ještě obnovený není. Záložky Voda a Ovzduší a červeně přeškrtnuté položky
-čekají na dokončení. [Podívejte se na dvě ukázky vzhledu](README.md#jak-beta-vypadá).
+ještě obnovený není. Úvodní předpověď ČR má nově třídenní panel; Voda a Ovzduší mají
+živé adaptéry. Červeně přeškrtnuté položky čekají na rekonstrukci.
+Na úzkém vysokém okně předpověď využívá místo pod mapou pro seznam měst;
+kliknutím na jeho nadpis jej můžete sbalit.
+Na samostatném meteogramu zůstává živé vyhledávání míst ČHMÚ; testovací beta
+navíc nabízí čtyři poslední navštívená místa. Odkaz na meteogram z původního
+rozcestníku je nyní aktivní a otevírá výchozí živý meteogram Prahy. Vzhled
+instalované bety je ještě potřeba ověřit.
+Tato lokální beta dosud nebyla zveřejněna na GitHubu: instalační odkaz níže
+proto nemusí nabízet její nové funkce. [Podívejte se na dvě ukázky vzhledu](README.md#jak-beta-vypadá).
 
 Nejjednodušší cesta je přes **Tampermonkey**, správce malých úprav webových
 stránek. Pro tuto betu nepotřebujete Xcode ani účet vývojáře.
@@ -27,6 +35,10 @@ instalace v Tampermonkey a chování ve všech prohlížečích ještě není do
 ## Jak se nový portál používá
 
 - **Klikněte na modrý odkaz pod mapou.** Aplikace se otevře v centrálním panelu.
+- **Předpověď pro ČR** otevře živou mapu. Vpravo jsou tři dny s ikonami
+  a teplotami pro ráno/odpoledne; kliknutím zvolíte období. Na úzkém displeji
+  najdete panel pod mapou. **Není údaj** znamená, že ČHMÚ období právě
+  nenabízí. Přístupný seznam měst rozbalíte pod mapou.
 - **Zvětšit panel** schová okolní nabídky a ponechá aplikaci více místa.
   Tlačítko **Zpět na portál** nebo Escape nabídky vrátí.
 - **Otevřít samostatně** otevře aplikaci v nové záložce. Totéž můžete udělat
@@ -51,14 +63,16 @@ Rozložení všech těchto aplikací se ještě průběžně dolaďuje.
 Znovu otevřete [stejný instalační odkaz](https://raw.githubusercontent.com/barcuchj/chmi-classic/main/tampermonkey/chmi-classic.user.js),
 potvrďte aktualizaci v Tampermonkey a obnovte otevřené stránky ČHMÚ. Není
 potřeba instalovat druhou kopii skriptu. Odkaz sleduje aktuální verzi v `main`,
-tedy nyní betu, nikoli poslední stabilní vydání.
+nikoli místní pracovní soubor. Než bude tato beta sloučena do `main`, může odkaz
+stále nabízet starší verzi.
 
 ## Chrome a Edge – testovací beta bez Tampermonkey
 
-Nový [Chrome/Edge balíček 0.7.0-beta.3](https://github.com/barcuchj/chmi-classic/releases/download/v0.7.0-beta.3/chmi-classic-chrome-edge-0.7.0-beta.3.zip)
-obsahuje i centrální portál a webkamery. Je určen k testování: obsah ZIPu,
-syntaxe a automatické testy prošly, ale skutečná instalace a rozložení v prohlížeči
-ještě nebyly potvrzené.
+Poslední veřejný [Chrome/Edge balíček 0.7.0-beta.3](https://github.com/barcuchj/chmi-classic/releases/download/v0.7.0-beta.3/chmi-classic-chrome-edge-0.7.0-beta.3.zip)
+obsahuje centrální portál a webkamery. Místní beta 10 navíc sdílí s userscriptem
+adaptéry pro předpověď, meteogram, vodu a ovzduší i v centrálním panelu.
+Balíček beta 10 zatím není veřejně vydaný ani instalačně a vizuálně ověřený;
+odkaz na betu 3 proto nemůže ukázat všechny nové funkce.
 
 1. Stáhněte ZIP a rozbalte jej do složky, kterou později nepřesunete ani nesmažete.
 2. Otevřete `chrome://extensions` nebo `edge://extensions`.

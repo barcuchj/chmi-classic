@@ -1,0 +1,228 @@
+/* The historic selector sits above the live ČHMÚ graph and hourly tables. */
+html.chmi-meteogram-classic,
+html.chmi-meteogram-classic body { height: 100% !important; overflow: hidden !important; }
+html.chmi-meteogram-classic header#chmu-header,
+html.chmi-meteogram-classic .lfr-layout-structure-item-chmi---breadcrumbs,
+html.chmi-meteogram-classic nav[aria-label*="Nach"],
+html.chmi-meteogram-classic footer,
+html.chmi-meteogram-classic #footer,
+html.chmi-meteogram-classic #footerBottom { display: none !important; }
+html.chmi-meteogram-classic main {
+  width: 100% !important;
+  max-width: none !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 32%);
+  grid-template-rows: auto auto minmax(0, 1fr) minmax(150px, 35dvh);
+  gap: 5px 8px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 5px;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace > .lfr-layout-structure-item-header {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-height: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace > .lfr-layout-structure-item-header::before {
+  display: block;
+  margin-bottom: 4px;
+  padding: 5px 8px;
+  color: #fff;
+  background: #176ea2;
+  content: "Aladin – Meteogramy";
+  font: bold 14px Arial, sans-serif;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace h1,
+html.chmi-meteogram-classic .chmi-meteogram-workspace h2 {
+  margin: 0 0 2px !important;
+  color: #174b79 !important;
+  font: bold 16px Arial, sans-serif !important;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace h2 { font-size: 11px !important; }
+html.chmi-meteogram-classic .chmi-meteogram-recent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px 5px;
+  margin-top: 3px;
+  color: #174b79;
+  font: 11px Arial, sans-serif;
+}
+html.chmi-meteogram-classic .chmi-meteogram-recent a {
+  display: inline-block;
+  padding: 2px 6px;
+  border: 1px solid #8fb9ca;
+  color: #174b79;
+  background: #f4faff;
+  text-decoration: none;
+}
+html.chmi-meteogram-classic .chmi-meteogram-recent a[aria-current="page"] {
+  color: #fff;
+  background: #176ea2;
+}
+html.chmi-meteogram-classic .chmi-meteogram-recent a:hover,
+html.chmi-meteogram-classic .chmi-meteogram-recent a:focus-visible {
+  outline: 2px solid #176ea2;
+  outline-offset: 1px;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace > .lfr-layout-structure-item-chmi---spacer,
+html.chmi-meteogram-classic .chmi-meteogram-workspace > .lfr-layout-structure-item-chmialertscomponent,
+html.chmi-meteogram-classic .chmi-meteogram-workspace > .lfr-layout-structure-item-chmidynamiccta {
+  display: none !important;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace > .lfr-layout-structure-item-chmi---menu-z-lo-ky {
+  grid-column: 1;
+  grid-row: 2;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace .menu-bookmarks {
+  display: block !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace .menu-bookmarks ul {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 3px;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace .menu-bookmarks .journal-content-article { display: contents !important; }
+html.chmi-meteogram-classic .chmi-meteogram-workspace .menu-bookmarks li {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 28px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 1px solid #8fb9ca;
+  background: #f4faff;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace .menu-bookmarks li a:not(.full-cover-link) {
+  position: static !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 5px 8px !important;
+  color: #174b79 !important;
+  font: bold 12px Arial, sans-serif !important;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace .menu-bookmarks li a.full-cover-link,
+html.chmi-meteogram-classic .chmi-meteogram-workspace .menu-bookmarks li img,
+html.chmi-meteogram-classic .chmi-meteogram-workspace .menu-bookmarks li small,
+html.chmi-meteogram-classic .chmi-meteogram-workspace .menu-bookmarks li big,
+html.chmi-meteogram-classic .chmi-meteogram-workspace .menu-bookmarks-arrow-left,
+html.chmi-meteogram-classic .chmi-meteogram-workspace .menu-bookmarks-arrow-right { display: none !important; }
+html.chmi-meteogram-classic .chmi-meteogram-workspace .menu-bookmarks li p { margin: 0 !important; }
+html.chmi-meteogram-classic .chmi-meteogram-workspace > .lfr-layout-structure-item-chmi---background-block {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  min-height: 0;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace .chmu-bg-block { padding: 0 !important; background: none !important; }
+html.chmi-meteogram-classic .chmi-meteogram-workspace .chmu-bg-block > img,
+html.chmi-meteogram-classic .chmi-meteogram-workspace .chmu-bg-block .lfr-layout-structure-item-text { display: none !important; }
+html.chmi-meteogram-classic .chmi-meteogram-workspace .poi-search_container,
+html.chmi-meteogram-classic .chmi-meteogram-workspace .chmi-search-container,
+html.chmi-meteogram-classic .chmi-meteogram-workspace input.chmi-search {
+  width: 100% !important;
+  max-width: none !important;
+  height: 29px !important;
+  min-height: 29px !important;
+  margin: 0 !important;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace > .lfr-layout-structure-item-chmigraph {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  min-width: 0;
+  min-height: 0;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 4px !important;
+  overflow: hidden !important;
+  border: 1px solid #8caec0;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace > .lfr-layout-structure-item-chmigraph > div,
+html.chmi-meteogram-classic .chmi-meteogram-workspace .lfr-layout-structure-item-chmigraph .portlet-boundary,
+html.chmi-meteogram-classic .chmi-meteogram-workspace .lfr-layout-structure-item-chmigraph .portlet,
+html.chmi-meteogram-classic .chmi-meteogram-workspace .lfr-layout-structure-item-chmigraph .portlet-content,
+html.chmi-meteogram-classic .chmi-meteogram-workspace .lfr-layout-structure-item-chmigraph .portlet-content-container,
+html.chmi-meteogram-classic .chmi-meteogram-workspace .lfr-layout-structure-item-chmigraph .portlet-body,
+html.chmi-meteogram-classic .chmi-meteogram-workspace .lfr-layout-structure-item-chmigraph .overflow-auto,
+html.chmi-meteogram-classic .chmi-meteogram-workspace [id*="ChmiGraph"][id$="-chart-container"] {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace .lfr-layout-structure-item-chmigraph .overflow-auto,
+html.chmi-meteogram-classic .chmi-meteogram-workspace [id*="ChmiGraph"][id$="-chart-container"] {
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+html.chmi-meteogram-classic .chmi-meteogram-workspace .lfr-layout-structure-item-chmigraph canvas[id*="ChmiGraph"] {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+html.chmi-meteogram-classic .chmi-meteogram-tables {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid #8caec0;
+  background: #fff;
+}
+html.chmi-meteogram-classic .chmi-meteogram-tables-title {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  padding: 4px 7px;
+  color: #174b79;
+  background: #edf6fa;
+  border-bottom: 1px solid #8caec0;
+  font: bold 11px Arial, sans-serif;
+}
+html.chmi-meteogram-classic .chmi-meteogram-tables > .lfr-layout-structure-item-chmidynamictable {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html.chmi-classic-embedded.chmi-meteogram-classic main {
+  width: 100% !important;
+  height: 100dvh !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+html.chmi-classic-embedded.chmi-meteogram-classic .chmi-meteogram-workspace { height: 100%; }
+@media (max-width: 760px) {
+  html.chmi-meteogram-classic .chmi-meteogram-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto minmax(110px, 18dvh) minmax(135px, 1fr);
+  }
+  html.chmi-meteogram-classic .chmi-meteogram-workspace > .lfr-layout-structure-item-chmi---menu-z-lo-ky { grid-column: 1; grid-row: 2; }
+  html.chmi-meteogram-classic .chmi-meteogram-workspace > .lfr-layout-structure-item-chmi---background-block { grid-column: 1; grid-row: 3; }
+  html.chmi-meteogram-classic .chmi-meteogram-workspace > .lfr-layout-structure-item-chmigraph { grid-column: 1; grid-row: 4; }
+  html.chmi-meteogram-classic .chmi-meteogram-tables { grid-column: 1; grid-row: 5; }
+}
