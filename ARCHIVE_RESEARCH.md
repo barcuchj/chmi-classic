@@ -382,6 +382,19 @@ Implementace proto v této etapě přidává do katalogu přesné vstupní cesty
 
 ## Další doložené historické aplikace a výstupy
 
+**Klementinum (ověřeno 29. 9. 2026):** archivovaný seznam
+`weather-links-20260825-browser-extracted.html` dokládá položku „Měření z
+Klementina“ a její historický cíl. Obsah cílové stránky ani její ovladače
+zatím nejsou doložené replay HTML; samotný odkaz není rekonstrukce.
+[Současná stránka stanice Praha–Klementinum](https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum)
+nabízí počasí, teplotu, srážky, vítr, SYNOP a historická data. Upozorňuje,
+že operativní měření mají zpoždění a mohou se po verifikaci změnit.
+[Historická stanice Klementinum](https://www.chmi.cz/namerena-data/historicka-data/klementinum)
+odděleně popisuje dlouhou měřicí řadu a odkazuje na Open Data pod indikativy
+`0-203-0-11514` a `0-203-0-11515`. Případný adaptér musí držet živá
+operativní měření a historické řady odděleně; bez dalšího archivního podkladu
+by jeho starý vzhled byl vlastní adaptací, nikoli věrnou kopií.
+
 `Wayback timestamp` je `neověřen`, pokud dostupné rozhraní neposkytlo bezpečně
 otevřitelný konkrétní snapshot. To neznamená, že ve Wayback Machine není; projekt
 v takovém případě nabízí pouze Wayback index původní URL.
@@ -417,8 +430,8 @@ v takovém případě nabízí pouze Wayback index původní URL.
 | Sondáž Praha-Libuš | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/sondazni-mereni/sondazni-mereni-praha-libus` | neověřen | historická stránka observatoře | současná radiosondážní měření | legacy portálový rám |
 | Výškové analýzy Evropa | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/evropa/vyskove-analyzy` | neověřen | konkrétní stará stránka dohledána | současná synoptika / letecké výškové produkty | legacy portálový rám; bez náhradní falešné mapy |
 | Přechody front přes Prahu | `https://intranet.chmi.cz/historicka-data/pocasi/prechody-front-pres-prahu` | neověřen | konkrétní historická stránka | současná stránka stejného tématu | legacy portálový rám |
-| Klementinum | `https://intranet.chmi.cz/historicka-data/pocasi/praha-klementinum` | neověřen | starý portál uvádí základní data, stahování a rekordy | současné Klementinum + Open Data | legacy portálový rám |
-| Klementinum – statická data | `https://intranet.chmi.cz/files/portal/docs/meteo/ok/klementinum/klemzaklinfo_cs.html` | neověřen | statická tabulka základních dat/průměrů/rekordů | současné Klementinum | legacy shell |
+| Klementinum | `https://intranet.chmi.cz/historicka-data/pocasi/praha-klementinum` | neověřen | archivní rozcestník dokládá odkaz, nikoli obsah nebo ovladače cílové stránky | [současná stanice](https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum) + [historie](https://www.chmi.cz/namerena-data/historicka-data/klementinum) | teprve kandidát na adaptér nad živými daty |
+| Klementinum – statická data | `https://intranet.chmi.cz/files/portal/docs/meteo/ok/klementinum/klemzaklinfo_cs.html` | neověřen | odkaz na tabulku nalezen, replay obsahu nepotvrzen | současné Klementinum | pouze referenční odkaz |
 | Historické mapy stanic | `https://intranet.chmi.cz/historicka-data/pocasi/mapy-stanic` | neověřen | konkrétní historická stránka | současná historická data | legacy portálový rám |
 | Měsíční přehledy pozorování | `https://intranet.chmi.cz/historicka-data/pocasi/mesicni-data/mesicni-prehledy-pozorovani` | neověřen | tabulkové měsíční teploty, srážky a další charakteristiky | současná historická data/Open Data | legacy portálový rám |
 | Letecký ALADIN – oblačnost/srážky/RH | `https://intranet.chmi.cz/files/portal/docs/meteo/olm/p_oblbln.html` | neověřen | WMO bulletin ALADIN pro letiště | současné letecké produkty | legacy shell |

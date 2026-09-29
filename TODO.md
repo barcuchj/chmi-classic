@@ -227,6 +227,10 @@ aplikace ve starém rozhraní s ověřeným ovládáním a rozložením.
   ověřit nově vytvořené živé adaptéry v instalovaném userscriptu. Beta 8
   používá doložené aktuální mapy a skrývá okolní dlouhé články; živý DOM
   obou map byl ověřen 28. 9., ale vizuální QA této bety čeká na instalaci.
+- [ ] Měření z Klementina: původní rozcestník dokládá položku, ale ne obsah
+  její cílové stránky. Současná oficiální stránka stanice a historická data
+  umožňují živou adaptaci; před aktivací odkazu navrhnout a ověřit starý
+  vzhled, oddělit operativní měření od historických řad a zkontrolovat licenci.
 - [ ] Ověřit webkamery v nainstalovaném userscriptu a Chrome/Edge rozšíření:
   přehled ČR, filtr, výběr, detail se snímkem a časovou osou, rozložení v panelu
   i samostatně a šířky desktop/mobil. Teprve potom označit rekonstrukci hotovou.
