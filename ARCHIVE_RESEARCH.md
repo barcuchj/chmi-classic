@@ -185,6 +185,25 @@ userscriptu** a nedokazuje dokončenou rekonstrukci starých ovladačů.
 
 ## Stažený viewer blesků (26. 9. 2026)
 
+Živý podklad ověřen 29. 9. 2026: oficiální stránka
+`https://www.chmi.cz/namerena-data/radar-nowcast/srazky-a-blesky` má
+interaktivní vrstvu **Radar a Blesky**; její zapnutí změnilo v adrese parametr
+`l` přidáním `blesky`. Pokročilý
+`https://produkty.chmi.cz/radar/` nabízí produkt **radar MAX Z(mask) + blesky**
+a samostatné průhlednosti radarové a bleskové vrstvy. Jde o živé překrytí
+radaru a blesků, ne o důkaz samostatného historického CELDN prohlížeče.
+Ovladač pro uložení nastavení jako záložku nebyl použit; trvalá sdílitelná
+adresa samotných blesků zatím není ověřená.
+
+Ve stejné živé aplikaci má nativní `#select_prod` čtyři odhady srážek:
+`sum_merge_1h`, `sum_merge_3h`, `sum_merge_6h` a `sum_merge_24h`.
+Přepnutí na 1 hodinu v běžící aplikaci skutečně změnilo popis na „1h suma
+srážek z kombinace radarového odhadu a pozemních srážkoměrů“. Hodnoty byly
+odečteny z viditelně používané nabídky, nikoli odhadnuty z názvu URL.
+Samostatný hluboký odkaz s tímto produktem ani podoba starého odhadového
+vieweru dosud nebyly ověřeny; položka rozcestníku se proto nemá aktivovat
+jen přeposláním na obecný radar.
+
 Luna dohledala konkrétní [snapshot `data_jsceldnview.html` z 10. 2. 2026](https://web.archive.org/web/20260210150817/https://intranet.chmi.cz/files/portal/docs/meteo/blesk/data_jsceldnview.html).
 Po výpadku jejího připojení k builtin browseru bylo uložení dokončeno v hlavní
 relaci, bez opakování vyhledávání. HTML mělo HTTP 200 a obsahuje původní

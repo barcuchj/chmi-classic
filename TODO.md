@@ -252,7 +252,15 @@ aplikace ve starém rozhraní s ověřeným ovládáním a rozložením.
   iframe jsou 404; meteorologické snímky nejsou součástí reference.
 - [ ] Blesky: podle uloženého vieweru ověřit a obnovit staré ovladače nad
   současnými oficiálními daty; adresářový PNG backend archivu nepředpokládat
-  u dnešní aplikace. Zvlášť ověřit polohu/kříž, snímky a rozložení bez scrollu.
+  u dnešní aplikace. Živě ověřená stránka ČHMÚ 29. 9. nabízí vrstvu
+  Radar a Blesky; pokročilý radar má výchozí MAX Z(mask) + blesky a dvě
+  průhlednosti. Samostatný CELDN produkt a sdílitelný preset ale ověřeny
+  nejsou, takže položka v rozcestníku zůstává neaktivní. Zvlášť ověřit
+  polohu/kříž, snímky a rozložení bez scrollu.
+- [ ] Radarové odhady srážek: živý `#select_prod` 29. 9. potvrzuje
+  oficiální produkty `sum_merge_1h`, `sum_merge_3h`, `sum_merge_6h`
+  a `sum_merge_24h`. Ověřit a zapojit původní přepínání/rozložení nad
+  živým produktem; samotný obecný radarový odkaz není obnovením položky.
 - [ ] Meteogram beta 10: vizuálně a instalačně ověřit skutečný graf, vyhledání
   jiné lokality, poslední místa a rozložení v panelu i samostatné záložce.
   Další skupiny aplikací uvedené výše rekonstruovat samostatně; samotná URL
