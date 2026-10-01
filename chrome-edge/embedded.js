@@ -47,6 +47,7 @@
         app.family === "klementinum" ? document.querySelector("html.chmi-klementinum-classic #main-content [data-chmi-klementinum-native='verified']") :
         app.family === "stations" ? document.querySelector("html.chmi-stations-classic #chmi-stations-workspace #chmu-map-container") :
         app.family === "ticks" ? document.querySelector("html.chmi-ticks-classic #chmi-ticks-workspace #chmu-map-container") :
+        app.family === "bio" ? document.querySelector("html.chmi-bio-classic #chmi-bio-workspace #chmu-map-container") :
         app.family === "rainfall" ? document.getElementById("chmi-rainfall-brand") :
         ["water", "air"].includes(app.family) ? document.getElementById("chmi-hydro-air-classic-brand") :
         document.getElementById(app.family === "mushrooms" ? "chmi-hub-classic-brand" : "chmi-satellite-classic-portal-products");

@@ -46,6 +46,8 @@ test("userscript builder includes the forecast adapter and its CSS", () => {
   assert.match(source, /\$\{stationsCss/);
   assert.match(source, /\$\{ticksJs/);
   assert.match(source, /\$\{ticksCss/);
+  assert.match(source, /\$\{bioJs/);
+  assert.match(source, /\$\{bioCss/);
 });
 test("embedded URLs preserve application settings and bind a session", () => {
   const url = new URL(registry.frameURL("meteosat", "test-session"));
@@ -150,6 +152,18 @@ test("tick activity directory uses only the official live three-day map", () => 
     "https://info.chmi.cz/bio/mapy.php?type=kliste",
     "https://evil.test/predpoved-pocasi/rizika/aktivita-klistat"
   ]) assert.equal(registry.embeddedContext(new URL(url), registry.frameName("ticks", "test-session")), null);
+});
+test("bio forecast directory opens the official live two-day map", () => {
+  assert.equal(registry.columns[0][5].app, "bio");
+  const app = registry.get("bio");
+  assert.equal(app.url, "https://www.chmi.cz/predpoved-pocasi/bio-predpoved");
+  const framed = new URL(registry.frameURL("bio", "test-session"));
+  assert.equal(registry.embeddedContext(framed, registry.frameName("bio", "test-session"))?.id, "bio");
+  for (const url of [
+    "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat",
+    "https://info.chmi.cz/biometeo/index.php",
+    "https://evil.test/predpoved-pocasi/bio-predpoved"
+  ]) assert.equal(registry.embeddedContext(new URL(url), registry.frameName("bio", "test-session")), null);
 });
 test("lightning opens the official radar in a distinct old-look mode", () => {
   assert.equal(registry.columns[2][3].app, "lightning");

@@ -1,13 +1,12 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## Lokální beta 0.7.0-beta.19 – aplikace na jednom místě
+## Lokální beta 0.7.0-beta.20 – aplikace na jednom místě
 
 **Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
 
-**Testovací beta, nikoli dokončená obnova všech aplikací.** Lokální beta 19
-opravuje Chrome rozšíření na adresách s parametry, zarovnání krajských ikon
-a návrat z aplikace v panelu na klasický úvod. Oproti beta 18 ještě vyžaduje
-instalační vizuální ověření.
+**Testovací beta, nikoli dokončená obnova všech aplikací.** Lokální beta 20
+navazuje na opravy bety 19 a zapojuje položku Bio předpověď do rozcestníku.
+Její nové rozložení ještě vyžaduje instalační vizuální ověření.
 
 Beta 18
 navazuje na živé záložky Voda a Ovzduší a doplňuje úvodní předpověď počasí
@@ -35,12 +34,16 @@ mapě celé dostupné. Instalovaný vzhled a ovládání ještě vyžadují kont
 rámu. Podle archivní předlohy jsou dny nad mapou; historické snímky ani
 dlouhý článek nejsou součástí pracovní plochy. Nativní časová osa, vrstvy
 a mapa zůstávají živé. Také tento adaptér čeká na instalační vizuální test.
+**Bio předpověď** otevírá dnešní oficiální dvoudenní mapu v kompaktním
+klasickém rámu. Nativní časová osa zůstává nad mapou; podrobné živé tabulky
+pro dnešek a zítřek jsou v tlačítku **Oblastní přehled**. Archiv dokládá
+původní odkaz, nikoli obsah původního prohlížeče, proto nejde o přesnou kopii.
 Na úzkém vysokém okně se pod mapou automaticky otevře živý seznam měst,
 který využije jinak prázdné místo. Mapa si zachová správný poměr stran.
 Seznam můžete sbalit; vaše volba zůstane zachovaná při změně velikosti okna.
 Ze společných zdrojů se nyní sestavuje také Chrome/Edge doplněk. Poslední
 veřejný [zdrojový balíček Chrome/Edge](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.3)
-zůstává beta 3; beta 19 je zatím místní a její instalace v Chromu ani Safari
+zůstává beta 3; beta 20 je zatím místní a její instalace v Chromu ani Safari
 nebyla vizuálně potvrzena. Safari balíček ani veřejné vydání zatím nejsou připraveny.
 Po zveřejnění odpovídajícího userscriptu v `main` se tato beta instaluje stejným
 odkazem jako dříve. Kdo chce vyzkoušet nové rozhraní,

@@ -41,7 +41,7 @@ test("Chrome Web Store metadata stays valid and names the local beta", () => {
 
 test("only explicit live application routes run in child frames", () => {
   const framed = manifest.content_scripts.filter(rule => rule.all_frames);
-  assert.equal(framed.length, 9);
+  assert.equal(framed.length, 10);
   assert.deepEqual(framed[0].matches, [
     "https://produkty.chmi.cz/radar/*",
     "https://produkty.chmi.cz/druzice/*",
@@ -76,6 +76,9 @@ test("only explicit live application routes run in child frames", () => {
   assert.deepEqual(framed[8].matches, [
     "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*"
   ]);
+  assert.deepEqual(framed[9].matches, [
+    "https://www.chmi.cz/predpoved-pocasi/bio-predpoved*"
+  ]);
   for (const rule of framed) {
     assert.ok(rule.js.indexOf("portal-registry.js") < rule.js.indexOf("embedded.js"));
     assert.ok(rule.css.includes("embedded.css"));
@@ -103,6 +106,7 @@ test("meteogram and forecast adapters work standalone and in the classic panel",
   for (const route of manifest.content_scripts[7].matches) assert.ok(generic.exclude_matches.includes(route));
   for (const route of manifest.content_scripts[8].matches) assert.ok(generic.exclude_matches.includes(route));
   for (const route of manifest.content_scripts[9].matches) assert.ok(generic.exclude_matches.includes(route));
+  for (const route of manifest.content_scripts[10].matches) assert.ok(generic.exclude_matches.includes(route));
 });
 
 test("every active portal app has the same adapter assets in Chrome and userscript", () => {
@@ -119,6 +123,7 @@ test("every active portal app has the same adapter assets in Chrome and userscri
     klementinum: ["klementinum.js", "klementinum.css"],
     stations: ["stations.js", "stations.css"],
     ticks: ["ticks.js", "ticks.css"],
+    bio: ["bio.js", "bio.css"],
     meteosat: ["satellite.js", "satellite.css"],
     aladin: ["aladin.js", "aladin.css"],
     "aladin-animation": ["aladin.js", "aladin.css"],

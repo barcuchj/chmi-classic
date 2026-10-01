@@ -2,6 +2,10 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [ ] Bio předpověď: beta 20 zapojuje živou dvoudenní mapu a obě nativní
+  tabulky do kompaktního klasického rámu. Po instalaci ověřit časovou osu,
+  přepínání tabulek, zobrazení v centrálním panelu i samostatně a overflow
+  při širokém i úzkém okně. Archivní obsah starého prohlížeče nebyl získán.
 - [ ] Nainstalovat beta 19 do běžného Chromu a vizuálně ověřit úvod s URL
   parametry, webkamery s polohou v URL, krajské ikony při změně šířky okna
   a návrat odkazem Úvod z aplikace v centrálním panelu. Automatické testy

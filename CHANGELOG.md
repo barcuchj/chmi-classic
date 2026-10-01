@@ -1,5 +1,14 @@
 # Přehled změn
 
+## 0.7.0-beta.20 – 2026-10-01 (místní testovací sestavení)
+
+- Původní odkaz **Bio předpověď** vede na současnou živou biometeorologickou
+  mapu ČHMÚ. Kompaktní klasický rám zachovává dvoudenní časovou osu a
+  podrobné nativní tabulky otevírá v panelu „Oblastní přehled“.
+- Archiv dokládá starou adresu `info.chmi.cz/biometeo/index.php`, nikoli
+  zachovaný obsah prohlížeče; tato adaptace tedy není jeho doslovnou kopií.
+  Instalované vykreslení ještě čeká na vizuální kontrolu.
+
 ## 0.7.0-beta.19 – 2026-10-01 (místní testovací sestavení)
 
 - Opraveno spouštění Chrome adaptéru na úvodu, webkamerách a dalších živých

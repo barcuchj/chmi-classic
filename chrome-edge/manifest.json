@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.7.0.19",
-  "version_name": "0.7.0-beta.19",
+  "version": "0.7.0.20",
+  "version_name": "0.7.0-beta.20",
   "description": "Vrací klasický vzhled živým meteorologickým aplikacím ČHMÚ a přidává přehledný rozcestník.",
   "permissions": [
     "storage"
@@ -169,6 +169,19 @@
     },
     {
       "matches": [
+        "https://www.chmi.cz/predpoved-pocasi/bio-predpoved*"
+      ],
+      "css": [
+        "embedded.css", "navigation.css", "bio.css"
+      ],
+      "js": [
+        "portal-registry.js", "embedded.js", "navigation.js", "bio.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
         "https://www.chmi.cz/*",
         "https://hydro.chmi.cz/*"
       ],
@@ -192,7 +205,8 @@
         "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa*",
         "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum*",
         "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke*",
-        "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*"
+        "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*",
+        "https://www.chmi.cz/predpoved-pocasi/bio-predpoved*"
       ],
       "css": [
         "navigation.css",

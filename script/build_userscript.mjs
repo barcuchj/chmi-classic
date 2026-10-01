@@ -18,6 +18,9 @@ const [stationsJs, stationsCss] = await Promise.all(
 const [ticksJs, ticksCss] = await Promise.all(
   ["ticks.js", "ticks.css"].map(name => readFile(join(sourceRoot, name), "utf8"))
 );
+const [bioJs, bioCss] = await Promise.all(
+  ["bio.js", "bio.css"].map(name => readFile(join(sourceRoot, name), "utf8"))
+);
 
 const [radarCss, satelliteCss, navigationCss, catalogCss, legacyCss, navigationJs, radarJs, satelliteJs, catalogJs, legacyJs] = await Promise.all([
   readFile(join(sourceRoot, "classic.css"), "utf8"),
@@ -35,7 +38,7 @@ const [radarCss, satelliteCss, navigationCss, catalogCss, legacyCss, navigationJ
 const metadata = `// ==UserScript==
 // @name         ČHMÚ Classic – meteorologické výstupy
 // @namespace    https://github.com/
-// @version      0.7.0-beta.19
+// @version      0.7.0-beta.20
 // @description  Vrací klasický vzhled, historické adaptace a jednotný katalog živých i archivních meteorologických výstupů ČHMÚ.
 // @author       ČHMÚ Classic contributors
 // @homepageURL  https://github.com/barcuchj/chmi-classic
@@ -95,6 +98,7 @@ const bridge = `
       "/namerena-data/webkamera/",
       "/predpoved-pocasi/synopticka-situace",
       "/predpoved-pocasi/rizika/aktivita-klistat",
+      "/predpoved-pocasi/bio-predpoved",
       "/predpoved-pocasi/synopticke-situace-v-minulosti",
       "/predpoved-pocasi/pocasi-evropa",
       "/predpoved-pocasi/prechody-front-pres-prahu",
@@ -147,7 +151,7 @@ const bridge = `
     location.reload();
   });
 
-  GM_addStyle(${JSON.stringify(`${radarCss}\n${satelliteCss}\n${navigationCss}\n${catalogCss}\n${legacyCss}\n${aladinCss}\n${portalCss}\n${embeddedCss}\n${webcamsCss}\n${meteogramCss}\n${forecastCss}\n${rainfallCss}\n${synopticCss}\n${sondeCss}\n${klementinumCss}\n${stationsCss}\n${ticksCss}\n
+  GM_addStyle(${JSON.stringify(`${radarCss}\n${satelliteCss}\n${navigationCss}\n${catalogCss}\n${legacyCss}\n${aladinCss}\n${portalCss}\n${embeddedCss}\n${webcamsCss}\n${meteogramCss}\n${forecastCss}\n${rainfallCss}\n${synopticCss}\n${sondeCss}\n${klementinumCss}\n${stationsCss}\n${ticksCss}\n${bioCss}\n
 #chmi-classic-userscript-restore {
   position: fixed;
   right: 12px;
@@ -165,7 +169,7 @@ const bridge = `
   renderRestoreButton();
 })();`;
 
-const output = `${metadata}\n\n${bridge}\n\n${portalRegistryJs}\n\n${embeddedJs}\n\n${portalJs}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n\n${webcamsJs.trimEnd()}\n\n${meteogramJs.trimEnd()}\n\n${forecastJs.trimEnd()}\n\n${rainfallJs.trimEnd()}\n\n${synopticJs.trimEnd()}\n\n${sondeJs.trimEnd()}\n\n${klementinumJs.trimEnd()}\n\n${stationsJs.trimEnd()}\n\n${ticksJs.trimEnd()}\n\n${catalogJs.trimEnd()}\n\n${legacyJs.trimEnd()}\n`;
+const output = `${metadata}\n\n${bridge}\n\n${portalRegistryJs}\n\n${embeddedJs}\n\n${portalJs}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n\n${webcamsJs.trimEnd()}\n\n${meteogramJs.trimEnd()}\n\n${forecastJs.trimEnd()}\n\n${rainfallJs.trimEnd()}\n\n${synopticJs.trimEnd()}\n\n${sondeJs.trimEnd()}\n\n${klementinumJs.trimEnd()}\n\n${stationsJs.trimEnd()}\n\n${ticksJs.trimEnd()}\n\n${bioJs.trimEnd()}\n\n${catalogJs.trimEnd()}\n\n${legacyJs.trimEnd()}\n`;
 
 await mkdir(dirname(outputPath), { recursive: true });
 await writeFile(outputPath, output, "utf8");
