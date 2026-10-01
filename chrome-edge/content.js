@@ -41,6 +41,8 @@
   const APP_SECTION_CLASS = "chmi-radar-classic-app-section";
   const APP_ROW_CLASS = "chmi-radar-classic-app-row";
   const WEB_MAPS_CLASS = "chmi-radar-classic-web-maps";
+  const LIGHTNING_CLASS = "chmi-radar-classic-lightning-only";
+  const lightningMode = new URLSearchParams(location.search).get("chmi_classic_lightning") === "1";
 
   const classicLabels = {
     radio_display1: "Dle okna",
@@ -53,6 +55,7 @@
   let updateScheduled = false;
   let defaultDisplayApplied = false;
   let defaultPlaybackApplied = false;
+  let lightningPresetApplied = false;
   let layoutResizeObserver = null;
   let observedLayoutElement = null;
 
@@ -250,14 +253,27 @@
     return null;
   }
 
+  function latestLightningFrame(select, range) {
+    const selected = [...(select?.selectedOptions ?? [])];
+    // The native list is newest-first, while its playback slider is oldest-first.
+    const newestAvailable = selected.findIndex((option) => option.value.includes("/input_data/blesk/"));
+    if (newestAvailable < 0) return null;
+    const index = selected.length - 1 - newestAvailable;
+    const min = Number(range.min);
+    const max = Number(range.max);
+    return Number.isInteger(min) && Number.isInteger(max) && index >= min && index <= max ? String(index) : null;
+  }
+
   function stopOnLatestFrame() {
     const range = findAnimationRange();
     if (!range) {
       return false;
     }
 
-    if (range.max !== "" && range.value !== range.max) {
-      range.value = range.max;
+    const target = lightningMode ? latestLightningFrame(document.getElementById("select_img_list"), range) : range.max;
+    if (target === null) return false;
+    if (target !== "" && range.value !== target) {
+      range.value = target;
       range.dispatchEvent(new Event("input", { bubbles: true }));
       range.dispatchEvent(new Event("change", { bubbles: true }));
     }
@@ -279,6 +295,33 @@
     return true;
   }
 
+  function applyLightningPreset() {
+    if (!lightningMode || lightningPresetApplied) return false;
+    const product = document.getElementById("select_prod");
+    const radarOpacity = document.getElementById("input_opa_slider_data1");
+    const lightningOpacity = document.getElementById("input_opa_slider_data2");
+    if (!product || !radarOpacity || !lightningOpacity) return false;
+
+    if (product.value !== "maxz_mask-li") {
+      product.value = "maxz_mask-li";
+      product.dispatchEvent(new Event("change", { bubbles: true }));
+      defaultPlaybackApplied = false;
+      setTimeout(scheduleRefresh, 250);
+      return false;
+    }
+    if (!defaultDisplayApplied || !defaultPlaybackApplied) return false;
+
+    for (const [control, value] of [[radarOpacity, "0"], [lightningOpacity, "1"]]) {
+      if (control.value === value) continue;
+      control.value = value;
+      control.dispatchEvent(new Event("input", { bubbles: true }));
+      control.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    lightningPresetApplied = true;
+    document.documentElement.classList.add(LIGHTNING_CLASS);
+    return true;
+  }
+
   function applyInitialRadarState() {
     if (!defaultDisplayApplied) {
       const webMaps = document.getElementById("radio_display4");
@@ -292,6 +335,7 @@
         setTimeout(() => {
           if (classicEnabled && !defaultPlaybackApplied) {
             defaultPlaybackApplied = stopOnLatestFrame();
+            applyLightningPreset();
           }
         }, 250);
         return;
@@ -318,8 +362,8 @@
     const brand = document.createElement("div");
     brand.id = BRAND_ID;
     brand.innerHTML = `
-      <strong>ČHMÚ Radar</strong>
-      <span>klasické rozhraní</span>
+      <strong>${lightningMode ? "ČHMÚ · Detekce blesků" : "ČHMÚ Radar"}</strong>
+      <span>${lightningMode ? "klasické rozhraní · živá vrstva za 10 min" : "klasické rozhraní"}</span>
       <button type="button" title="Dočasně zobrazit původní vzhled stránky">Nový vzhled</button>
     `;
 
@@ -407,8 +451,9 @@
     const brandChanged = ensureBrand();
     const toolbarChanged = ensureDisplayToolbar();
     applyInitialRadarState();
+    const lightningChanged = applyLightningPreset();
 
-    if (!hadRootClass || sectionsChanged || layoutChanged || brandChanged || toolbarChanged) {
+    if (!hadRootClass || sectionsChanged || layoutChanged || brandChanged || toolbarChanged || lightningChanged) {
       notifyLayoutChanged();
     }
   }
@@ -428,6 +473,8 @@
     document.getElementById("div_container_data")?.style.removeProperty("--chmi-radar-toolbar-left");
     document.documentElement.classList.remove(ROOT_CLASS);
     document.documentElement.classList.remove(WEB_MAPS_CLASS);
+    document.documentElement.classList.remove(LIGHTNING_CLASS);
+    lightningPresetApplied = false;
     notifyLayoutChanged();
   }
 
@@ -458,6 +505,20 @@
   document.addEventListener("change", (event) => {
     if (event.target instanceof HTMLInputElement && event.target.name === "radio_display") {
       syncDisplayToolbar();
+    }
+  });
+
+  document.addEventListener("input", (event) => {
+    if (!lightningMode || !["input_opa_slider_data1", "input_opa_slider_data2"].includes(event.target?.id)) return;
+    document.documentElement.classList.toggle(LIGHTNING_CLASS,
+      document.getElementById("select_prod")?.value === "maxz_mask-li" &&
+      Number(document.getElementById("input_opa_slider_data1")?.value) === 0);
+  });
+  document.addEventListener("change", (event) => {
+    if (lightningMode && event.target?.id === "select_prod") {
+      document.documentElement.classList.toggle(LIGHTNING_CLASS,
+        event.target.value === "maxz_mask-li" &&
+        Number(document.getElementById("input_opa_slider_data1")?.value) === 0);
     }
   });
 

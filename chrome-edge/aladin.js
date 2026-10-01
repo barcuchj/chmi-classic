@@ -8,12 +8,25 @@
   const CONTROLS_ID = "chmi-aladin-classic-controls";
   const TIME_SELECT_ID = "chmi-aladin-classic-time";
   const RUN_SELECT_ID = "chmi-aladin-classic-run";
+  const PRODUCT_CHIPS_ID = "chmi-aladin-classic-product-chips";
+  const PRODUCT_OPTIONS_ID = "chmi-aladin-classic-product-options";
   const PRODUCT_IDS = ["T", "C", "R3", "W"];
+  const productPreset = animation => animation ? ["T"] : [...PRODUCT_IDS];
+  const nextAnimationIndex = (index, count) => count > 0 ? (index + 1) % count : 0;
+  const animationDelay = speed => ({ slow: 1800, normal: 900, fast: 450 })[speed] ?? 900;
+  const NATIVE_PRODUCT_IDS = ["T", "R3", "W", "C", "Cl", "Cm", "Ch", "H", "V", "Txn", "R24"];
   const PRODUCT_LABELS = {
     T: "Teplota",
     C: "Oblačnost",
     R3: "Srážky 3 h",
-    W: "Vítr"
+    W: "Vítr",
+    Cl: "Nízká oblačnost",
+    Cm: "Střední oblačnost",
+    Ch: "Vysoká oblačnost",
+    H: "Vlhkost",
+    V: "Ventilační index",
+    Txn: "Teplota min/max",
+    R24: "Srážky 24 h"
   };
 
   function clampIndex(index, count) {
@@ -40,16 +53,52 @@
     return index < 0 ? PRODUCT_IDS.length + 1 : index + 1;
   }
 
-  // Keep each complete native image at its original aspect ratio. Choose the
-  // arrangement that gives each of the four maps the most usable space.
-  function mapLayout(width, height, ratio = 442 / 700) {
-    return [4, 2].map(columns => {
-      const rows = 4 / columns;
+  function selectedProductIds(controls) {
+    return controls.filter(control =>
+      NATIVE_PRODUCT_IDS.includes(control?.id) &&
+      control.classList?.contains("item-check") &&
+      control.checked
+    ).map(control => control.id).sort((a, b) => productOrder(a) - productOrder(b));
+  }
+
+  function pickerLayout(anchorLeft, anchorBottom, viewportWidth, viewportHeight) {
+    const width = Math.min(440, Math.max(0, viewportWidth - 16));
+    const top = Math.max(8, Math.min(anchorBottom + 3, viewportHeight - 88));
+    return {
+      width,
+      left: Math.max(8, Math.min(anchorLeft, viewportWidth - width - 8)),
+      top,
+      maxHeight: Math.max(0, Math.min(340, viewportHeight - top - 8))
+    };
+  }
+
+  function updateNativeProduct(controls, id, checked) {
+    if (!NATIVE_PRODUCT_IDS.includes(id)) {
+      return null;
+    }
+    const control = controls.find(item => item?.id === id && item.classList?.contains("item-check"));
+    if (!control || control.checked === checked) {
+      return null;
+    }
+    control.checked = checked;
+    return control;
+  }
+
+  // Keep every complete native image at its original aspect ratio. The
+  // four-map preset keeps its familiar two/four-column layouts; optional
+  // variables use the arrangement with the largest complete maps.
+  function mapLayout(width, height, ratio = 442 / 700, count = 4) {
+    const maps = Math.max(1, Math.trunc(count) || 1);
+    const columnsToTry = maps === 4 ? [4, 2] : Array.from(
+      { length: Math.min(maps, 6) }, (_, index) => index + 1
+    );
+    return columnsToTry.map(columns => {
+      const rows = Math.ceil(maps / columns);
       return { columns, width: Math.max(1, Math.min(
         (width - (columns - 1) * 2) / columns,
         (height - rows * 22 - (rows - 1) * 2) / rows / ratio
       )) };
-    }).sort((a, b) => b.width - a.width)[0];
+    }).sort((a, b) => b.width - a.width || a.columns - b.columns)[0];
   }
 
   function shouldRun({ hostname, pathname, framed, embedded }) {
@@ -63,11 +112,17 @@
   if (globalThis.__chmiAladinClassicTestHooks) {
     Object.assign(globalThis.__chmiAladinClassicTestHooks, {
       PRODUCT_IDS: [...PRODUCT_IDS],
+      productPreset,
+      nextAnimationIndex,
+      animationDelay,
       clampIndex,
       productOrder,
       mapLayout,
+      pickerLayout,
+      selectedProductIds,
       shouldRun,
       steppedIndex,
+      updateNativeProduct,
       wheelDirection
     });
   }
@@ -86,6 +141,7 @@
   }
 
   window.__chmiAladinClassicLoaded = true;
+  const animationMode = new URL(location.href).searchParams.get("chmi_classic_animation") === "1";
 
   const storage = globalThis.__chmiClassicStorage ?? globalThis.chrome?.storage?.sync;
   let classicEnabled = false;
@@ -97,6 +153,7 @@
   let observedGrid = null;
   let gridObserver = null;
   let layoutResizeObserver = null;
+  let animationTimer = null;
 
   function dispatchNativeChange(element) {
     if (!element) {
@@ -163,19 +220,20 @@
     );
   }
 
-  function applyFourMapPreset(elements) {
+  function applyProductPreset(elements) {
     if (presetApplied || !hasVerifiedNativeControls(elements)) {
       return false;
     }
 
     const nativeProducts = [...document.querySelectorAll("input.item-check")];
-    if (!PRODUCT_IDS.every((id) => nativeProducts.some((control) => control.id === id))) {
+    const preset = productPreset(animationMode);
+    if (!preset.every((id) => nativeProducts.some((control) => control.id === id))) {
       return false;
     }
 
     let changedProduct = null;
     for (const control of nativeProducts) {
-      const checked = PRODUCT_IDS.includes(control.id);
+      const checked = preset.includes(control.id);
       if (control.checked !== checked) {
         control.checked = checked;
         changedProduct ||= control;
@@ -210,7 +268,7 @@
     brand.id = BRAND_ID;
     brand.innerHTML = `
       <div>
-        <strong>ALADIN – klasické mapy</strong>
+        <strong>${animationMode ? "ALADIN – animace předpovědi" : "ALADIN – klasické mapy"}</strong>
         <span>živá data ČHMÚ</span>
       </div>
       <button type="button" title="Dočasně zobrazit současné rozhraní">Nový vzhled</button>
@@ -231,7 +289,11 @@
     controls.setAttribute("aria-label", "Klasické ovládání předpovědních map ALADIN");
     controls.innerHTML = `
       <div class="chmi-aladin-classic-products" aria-label="Zobrazené veličiny">
-        ${PRODUCT_IDS.map((id) => `<span data-param="${id}">${PRODUCT_LABELS[id]}</span>`).join("")}
+        <div id="${PRODUCT_CHIPS_ID}"></div>
+        <details class="chmi-aladin-classic-product-picker">
+          <summary>Veličiny (${animationMode ? 1 : 4})</summary>
+          <div id="${PRODUCT_OPTIONS_ID}" role="group" aria-label="Veličiny ALADINu"></div>
+        </details>
       </div>
       <div class="chmi-aladin-classic-run-control">
         <label for="${RUN_SELECT_ID}">Běh modelu:</label>
@@ -246,6 +308,13 @@
           <button type="button" data-action="next" title="Následující termín">&gt;</button>
           <button type="button" data-action="last" title="Poslední termín">&gt;|</button>
         </div>
+        ${animationMode ? `<div class="chmi-aladin-classic-playback" role="group" aria-label="Animace předpovědi">
+          <button type="button" data-action="play" aria-pressed="false">▶ Přehrát</button>
+          <label for="chmi-aladin-classic-speed">Rychlost:</label>
+          <select id="chmi-aladin-classic-speed" aria-label="Rychlost animace">
+            <option value="slow">Pomalu</option><option value="normal" selected>Běžně</option><option value="fast">Rychle</option>
+          </select>
+        </div>` : ""}
         <small>Kolečkem nad mapami posunete čas o 3 hodiny.</small>
       </div>
       <p class="chmi-aladin-classic-status" role="status" aria-live="polite"></p>
@@ -257,6 +326,7 @@
         return;
       }
       activeTimeIndex = 0;
+      stopAnimation();
       nativeRun.value = event.target.value;
       dispatchNativeChange(nativeRun);
       setStatus("Načítám zvolený běh z ČHMÚ…");
@@ -266,8 +336,35 @@
       setActiveTime(Number.parseInt(event.target.value, 10));
     });
 
+    controls.querySelector("#chmi-aladin-classic-speed")?.addEventListener("change", event => {
+      const wasPlaying = Boolean(animationTimer);
+      stopAnimation();
+      if (wasPlaying) startAnimation(event.target.value);
+    });
+
+    controls.querySelector(`#${PRODUCT_OPTIONS_ID}`).addEventListener("change", (event) => {
+      const mirror = event.target.closest("input[data-param]");
+      if (!mirror) {
+        return;
+      }
+      const native = updateNativeProduct(
+        [...document.querySelectorAll("input.item-check")], mirror.dataset.param, mirror.checked
+      );
+      if (native) {
+        dispatchNativeChange(native);
+        setStatus("Načítám zvolené veličiny z ČHMÚ…");
+      }
+      scheduleRefresh();
+    });
+    controls.querySelector("details").addEventListener("toggle", scheduleGeometry);
+
     controls.addEventListener("click", (event) => {
       const action = event.target.closest("button[data-action]")?.dataset.action;
+      if (action === "play") {
+        if (animationTimer) stopAnimation();
+        else startAnimation(controls.querySelector("#chmi-aladin-classic-speed")?.value);
+        return;
+      }
       const count = timeRows().length;
       if (!action || count === 0) {
         return;
@@ -292,6 +389,36 @@
     }
   }
 
+  function syncAnimationButton() {
+    const button = document.querySelector(`#${CONTROLS_ID} button[data-action="play"]`);
+    if (!button) return;
+    button.textContent = animationTimer ? "❚❚ Pauza" : "▶ Přehrát";
+    button.setAttribute("aria-pressed", String(Boolean(animationTimer)));
+    button.disabled = timeRows().length < 2;
+  }
+
+  function stopAnimation() {
+    if (animationTimer !== null) {
+      window.clearInterval(animationTimer);
+      animationTimer = null;
+    }
+    syncAnimationButton();
+  }
+
+  function startAnimation(speed = "normal") {
+    if (!animationMode || !classicEnabled || document.hidden || timeRows().length < 2) return;
+    stopAnimation();
+    animationTimer = window.setInterval(() => {
+      const rows = timeRows();
+      if (!classicEnabled || document.hidden || rows.length < 2) {
+        stopAnimation();
+        return;
+      }
+      setActiveTime(nextAnimationIndex(activeTimeIndex, rows.length));
+    }, animationDelay(speed));
+    syncAnimationButton();
+  }
+
   function syncRunControl(elements) {
     const mirror = document.getElementById(RUN_SELECT_ID);
     if (!mirror || !elements.run) {
@@ -306,6 +433,66 @@
       mirror.dataset.signature = signature;
     }
     mirror.value = elements.run.value;
+  }
+
+  function syncProductControls() {
+    const options = document.getElementById(PRODUCT_OPTIONS_ID);
+    const chips = document.getElementById(PRODUCT_CHIPS_ID);
+    if (!options || !chips) {
+      return;
+    }
+
+    const controls = [...document.querySelectorAll("input.item-check")]
+      .filter(control => NATIVE_PRODUCT_IDS.includes(control.id));
+    const nativeLabels = [...document.querySelectorAll("label[for]")];
+    const labelFor = id => nativeLabels.find(label => label.htmlFor === id)?.textContent.trim()
+      || PRODUCT_LABELS[id] || id;
+    const signature = controls.map(control => `${control.id}:${labelFor(control.id)}`).join("|");
+    if (options.dataset.signature !== signature) {
+      options.replaceChildren(...controls.map(control => {
+        const label = document.createElement("label");
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.dataset.param = control.id;
+        const caption = document.createElement("span");
+        caption.textContent = labelFor(control.id);
+        label.append(input, caption);
+        return label;
+      }));
+      options.dataset.signature = signature;
+    }
+
+    const byId = new Map(controls.map(control => [control.id, control]));
+    options.querySelectorAll("input[data-param]").forEach(input => {
+      const checked = Boolean(byId.get(input.dataset.param)?.checked);
+      if (input.checked !== checked) {
+        input.checked = checked;
+      }
+    });
+
+    const selected = selectedProductIds(controls);
+    const selectedSignature = selected.join("|");
+    if (chips.dataset.signature !== selectedSignature) {
+      const visibleChips = selected.slice(0, 4).map(id => {
+        const chip = document.createElement("span");
+        chip.dataset.param = id;
+        chip.textContent = PRODUCT_LABELS[id] || labelFor(id);
+        return chip;
+      });
+      if (selected.length > 4) {
+        const extra = document.createElement("span");
+        extra.textContent = `+${selected.length - 4}`;
+        extra.title = selected.slice(4).map(id => PRODUCT_LABELS[id] || labelFor(id)).join(", ");
+        visibleChips.push(extra);
+      }
+      chips.replaceChildren(...visibleChips);
+      chips.dataset.signature = selectedSignature;
+    }
+    const summary = options.closest("details")?.querySelector("summary");
+    const summaryText = `Veličiny (${selected.length})`;
+    if (summary && summary.textContent !== summaryText) {
+      summary.textContent = summaryText;
+    }
   }
 
   function rowLabel(row, index) {
@@ -348,7 +535,9 @@
         if (!cell.querySelector(".mapImg, .chmi-aladin-empty")) {
           const empty = document.createElement("div");
           empty.className = "chmi-aladin-empty";
-          empty.textContent = "ČHMÚ pro tento termín neposkytuje snímek. Zvolte jiný termín.";
+          empty.textContent = "Snímek chybí";
+          empty.title = "ČHMÚ pro tento termín neposkytuje snímek. Zvolte jiný termín.";
+          empty.setAttribute("aria-label", empty.title);
           cell.append(empty);
         }
       });
@@ -401,11 +590,14 @@
 
     document.querySelectorAll(`#${CONTROLS_ID} button[data-action]`).forEach((button) => {
       const action = button.dataset.action;
+      if (action === "play") return;
       button.disabled =
         rows.length === 0 ||
         ((action === "first" || action === "previous") && activeTimeIndex === 0) ||
         ((action === "next" || action === "last") && activeTimeIndex === rows.length - 1);
     });
+    if (rows.length < 2 && animationTimer) stopAnimation();
+    else syncAnimationButton();
     scheduleGeometry();
   }
 
@@ -443,10 +635,24 @@
     gridObserver.observe(observedGrid, { childList: true });
   }
 
+  function positionProductPicker() {
+    const options = document.getElementById(PRODUCT_OPTIONS_ID);
+    const picker = options?.closest("details");
+    if (!picker?.open) {
+      return;
+    }
+    const anchor = picker.querySelector("summary").getBoundingClientRect();
+    const layout = pickerLayout(anchor.left, anchor.bottom, window.innerWidth, window.innerHeight);
+    for (const property of ["width", "left", "top", "maxHeight"]) {
+      options.style[property] = `${layout[property]}px`;
+    }
+  }
+
   function updateGeometry() {
     if (!classicEnabled) {
       return;
     }
+    positionProductPicker();
     const modelWrapper = document.getElementById("modelGrid")?.closest(".model-wrapper");
     if (!modelWrapper) {
       return;
@@ -455,12 +661,14 @@
     const available = Math.max(180, Math.floor(window.innerHeight - top - 24));
     document.documentElement.style.setProperty("--chmi-aladin-available-height", `${available}px`);
     const grid = document.getElementById("modelGrid");
-    const header = grid.querySelector(".chmi-aladin-classic-header-row");
-    const image = grid.querySelector(".mapImg");
+    const activeRow = timeRows()[activeTimeIndex];
+    const count = activeRow?.querySelectorAll(".map-cell[data-param]").length || 0;
+    const image = activeRow?.querySelector(".mapImg") || grid.querySelector(".mapImg");
     const ratio = image?.naturalWidth ? image.naturalHeight / image.naturalWidth : 442 / 700;
-    const layout = mapLayout(modelWrapper.clientWidth, available - (header?.offsetHeight || 32) - 4, ratio);
+    const layout = mapLayout(modelWrapper.clientWidth, available - 4, ratio, count);
     grid.style.setProperty("--chmi-aladin-columns", String(layout.columns));
     grid.style.setProperty("--chmi-aladin-map-width", `${Math.floor(layout.width)}px`);
+    grid.style.setProperty("--chmi-aladin-map-ratio", String(ratio));
   }
 
   function scheduleGeometry() {
@@ -500,7 +708,9 @@
     observeLayout(elements);
     syncRunControl(elements);
 
-    const requestedReload = applyFourMapPreset(elements);
+    const requestedReload = applyProductPreset(elements);
+    if (requestedReload) stopAnimation();
+    syncProductControls();
     if (!requestedReload) {
       const rows = markGridRows(elements);
       syncTimeControl(rows);
@@ -521,12 +731,14 @@
   }
 
   function removeClassicMode() {
+    stopAnimation();
     document.getElementById(BRAND_ID)?.remove();
     document.getElementById(CONTROLS_ID)?.remove();
     document.querySelectorAll(".chmi-aladin-cell-title, .chmi-aladin-empty").forEach(node => node.remove());
     const grid = document.getElementById("modelGrid");
     grid?.style.removeProperty("--chmi-aladin-columns");
     grid?.style.removeProperty("--chmi-aladin-map-width");
+    grid?.style.removeProperty("--chmi-aladin-map-ratio");
     document.querySelectorAll(".chmi-aladin-classic-header-row").forEach((row) => {
       row.classList.remove("chmi-aladin-classic-header-row");
     });
@@ -566,6 +778,8 @@
   const rootObserver = new MutationObserver(scheduleRefresh);
   rootObserver.observe(document.documentElement, { childList: true, subtree: true });
   window.addEventListener("resize", scheduleGeometry, { passive: true });
+  document.addEventListener("visibilitychange", () => { if (document.hidden) stopAnimation(); });
+  window.addEventListener("pagehide", stopAnimation, { once: true });
   document.addEventListener("change", (event) => {
     if (event.target?.id === "dateToLoadSelector") {
       activeTimeIndex = 0;

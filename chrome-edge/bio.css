@@ -1,0 +1,204 @@
+/* Compact intranet-style frame around the official live biometeorology map. */
+html.chmi-bio-classic,
+html.chmi-bio-classic body {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background: #89bed0;
+}
+html.chmi-bio-classic body > :not(#chmi-bio-workspace) { display: none !important; }
+html.chmi-bio-classic #chmi-bio-workspace {
+  position: fixed;
+  inset: 3px;
+  z-index: 1000;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #829dae;
+  background: #fff;
+  color: #17346c;
+  font: 12px/1.3 Verdana, Arial, sans-serif;
+}
+html.chmi-bio-classic #chmi-bio-classic-brand {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 3px 10px;
+  min-width: 0;
+  padding: 5px 9px;
+  border-bottom: 2px solid #698ab2;
+  background: #273a83;
+  color: #fff;
+}
+html.chmi-bio-classic #chmi-bio-classic-brand h1 {
+  margin: 0 !important;
+  color: #fff !important;
+  font: bold 15px/1.3 Verdana, Arial, sans-serif !important;
+}
+html.chmi-bio-classic #chmi-bio-classic-brand span {
+  color: #e2edff;
+  margin-right: auto;
+}
+html.chmi-bio-classic #chmi-bio-classic-brand button,
+html.chmi-bio-classic #chmi-bio-day-tabs button {
+  padding: 3px 8px;
+  border: 1px solid #9ab9d9;
+  border-radius: 0;
+  background: #fff;
+  color: #17346c;
+  cursor: pointer;
+  font: bold 11px Verdana, Arial, sans-serif;
+}
+html.chmi-bio-classic #chmi-bio-classic-brand button:focus-visible,
+html.chmi-bio-classic #chmi-bio-day-tabs button:focus-visible {
+  outline: 2px solid #24a5d0;
+  outline-offset: 2px;
+}
+html.chmi-bio-classic #chmi-bio-content {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+html.chmi-bio-classic #chmi-bio-content > .portlet-boundary_ChmiMapComponent_ {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+html.chmi-bio-classic #chmi-bio-content .portlet-boundary_ChmiMapComponent_,
+html.chmi-bio-classic #chmi-bio-content .portlet,
+html.chmi-bio-classic #chmi-bio-content .portlet-content,
+html.chmi-bio-classic #chmi-bio-content .portlet-content-container,
+html.chmi-bio-classic #chmi-bio-content .portlet-body,
+html.chmi-bio-classic #chmi-bio-content > .portlet-boundary_ChmiMapComponent_ .portlet-body > div,
+html.chmi-bio-classic #chmi-bio-content #chmu-map-container,
+html.chmi-bio-classic #chmi-bio-content .chmu-map-component,
+html.chmi-bio-classic #chmi-bio-content .chmu-map-query-container {
+  box-sizing: border-box;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html.chmi-bio-classic #chmi-bio-content .portlet-header { display: none !important; }
+html.chmi-bio-classic #chmi-bio-content .chmu-map-query-container {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden;
+}
+html.chmi-bio-classic #chmi-bio-content .chmu--map--timeline {
+  box-sizing: border-box;
+  flex: 0 0 58px !important;
+  height: 58px !important;
+  min-height: 58px !important;
+  padding: 4px 7px !important;
+  border-bottom: 1px solid #a1b4d1;
+  background: #ecf3fa;
+  color: #17346c;
+}
+html.chmi-bio-classic #chmi-bio-content .chmu--map--timeline .timeline--control {
+  flex: 0 0 30px !important;
+  width: 30px !important;
+  margin-right: 6px !important;
+}
+html.chmi-bio-classic #chmi-bio-content .chmu--map--timeline .timeline--control button {
+  width: 28px !important;
+  height: 28px !important;
+}
+html.chmi-bio-classic #chmi-bio-content .chmu--map--container {
+  box-sizing: border-box;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: hidden;
+}
+html.chmi-bio-classic #chmi-bio-content .ol-viewport {
+  width: 100% !important;
+  height: 100% !important;
+}
+html.chmi-bio-classic #chmi-bio-content .ol-menu {
+  box-sizing: border-box;
+  top: 8px !important;
+  right: 8px !important;
+  left: auto !important;
+  width: min(215px, 44vw) !important;
+  height: auto !important;
+  max-height: calc(100% - 16px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  border: 1px solid #a1b4d1;
+  border-radius: 0;
+  background: rgb(255 255 255 / 96%);
+  scrollbar-width: thin;
+}
+html.chmi-bio-classic #chmi-bio-details {
+  box-sizing: border-box;
+  flex: 0 0 clamp(290px, 32vw, 450px);
+  min-width: 0;
+  overflow-y: auto;
+  border-left: 1px solid #a1b4d1;
+  background: #f6f9fc;
+  scrollbar-width: thin;
+}
+html.chmi-bio-classic #chmi-bio-details[hidden],
+html.chmi-bio-classic #chmi-bio-details .portlet-boundary[hidden] { display: none !important; }
+html.chmi-bio-classic #chmi-bio-day-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  border-bottom: 1px solid #a1b4d1;
+  background: #eaf1f8;
+}
+html.chmi-bio-classic #chmi-bio-day-tabs button[aria-pressed="true"] {
+  background: #273a83;
+  color: #fff;
+}
+html.chmi-bio-classic #chmi-bio-details .portlet-boundary,
+html.chmi-bio-classic #chmi-bio-details .portlet,
+html.chmi-bio-classic #chmi-bio-details .portlet-content,
+html.chmi-bio-classic #chmi-bio-details .portlet-content-container,
+html.chmi-bio-classic #chmi-bio-details .portlet-body {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html.chmi-bio-classic #chmi-bio-details .dynamic-table__wrapper { overflow-x: auto; }
+html.chmi-bio-classic #chmi-bio-details table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #17346c;
+  font: 11px/1.35 Verdana, Arial, sans-serif;
+}
+html.chmi-bio-classic #chmi-bio-details th,
+html.chmi-bio-classic #chmi-bio-details td {
+  padding: 5px;
+  border: 1px solid #c3d1df;
+  vertical-align: top;
+}
+@media (max-width: 700px) {
+  html.chmi-bio-classic #chmi-bio-classic-brand { padding: 3px 5px; gap: 3px; }
+  html.chmi-bio-classic #chmi-bio-classic-brand h1 { font-size: 12px !important; margin-right: auto !important; }
+  html.chmi-bio-classic #chmi-bio-classic-brand span { display: none; }
+  html.chmi-bio-classic #chmi-bio-details:not([hidden]) {
+    position: absolute;
+    z-index: 3;
+    inset: 0 0 0 auto;
+    width: min(92vw, 390px);
+    box-shadow: -3px 0 10px rgb(0 0 0 / 20%);
+  }
+  html.chmi-bio-classic #chmi-bio-content .ol-menu { width: min(155px, 45vw) !important; }
+}

@@ -170,18 +170,12 @@
       }
       workspace.setAttribute("aria-labelledby", `chmi-portal-tab-${key}`);
       directory.hidden = extra.hidden = key !== "weather";
-      standalone.hidden = key !== "weather";
+      standalone.hidden = false;
       if (key === "weather") { openApp(registry.route(location.hash)); return; }
-      clearTimeout(timeout);
-      frame?.remove();
-      frame = null;
-      current = null;
-      title.textContent = key === "water" ? "VODA" : "OVZDUŠÍ";
-      status.textContent = "Rekonstrukce zatím není dokončena";
-      workspace.setAttribute("aria-busy", "false");
-      noticeText.textContent = "Původní mapový panel a jeho ovládání připravujeme podle archivních podkladů. Historické hodnoty zde nevydáváme za aktuální měření.";
-      notice.querySelector("button").hidden = true;
-      notice.hidden = false;
+      if (key === "water" || key === "air") {
+        openApp(key);
+        return;
+      }
     }
     function openApp(id, force = false) {
       const app = registry.get(id);
@@ -213,7 +207,13 @@
       }, 25000);
     }
     const onMessage = event => {
-      if (root.isConnected && registry.accepts(event, frame, current, session)) setStatus(event.data.state);
+      if (!root.isConnected) return;
+      if (registry.acceptsNavigation(event, frame, current, session)) {
+        if (location.hash !== "#classic=forecast") location.hash = "#classic=forecast";
+        else selectSection("weather");
+        return;
+      }
+      if (registry.accepts(event, frame, current, session)) setStatus(event.data.state);
     };
     const onHash = () => {
       if (!root.isConnected) return;
@@ -234,4 +234,147 @@
   }
   if (storage) storage.get({ [KEY]: true }, initialize);
   else initialize({ [KEY]: true });
+})();
+
+(() => {
+  "use strict";
+  if (window.__chmiHydroAirClassicLoaded || window.__chmiClassicPortalCandidate) return;
+
+  const path = location.pathname.replace(/\/+$/, "") || "/";
+  const kind = ["www.chmi.cz", "chmi.cz"].includes(location.hostname) &&
+    path === "/voda/aktualni-stav-rek-povodnova-mapa" ? "water" :
+    ["www.chmi.cz", "chmi.cz"].includes(location.hostname) &&
+    path === "/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr" ? "air" : null;
+  if (!kind) return;
+  window.__chmiHydroAirClassicLoaded = true;
+
+  const STORAGE_KEY = "chmiRadarClassicEnabled";
+  const ROOT_CLASS = "chmi-hydro-air-classic";
+  const BRAND_ID = "chmi-hydro-air-classic-brand";
+  const MAP_CLASS = "chmi-hydro-air-map-host";
+  const storage = globalThis.chrome?.storage?.sync ?? globalThis.__chmiClassicStorage;
+  const title = kind === "water" ? "ČHMÚ – VODA" : "ČHMÚ – OVZDUŠÍ";
+  const tableURL = kind === "water" ?
+    "https://www.chmi.cz/voda/tabulka-hydrologie" :
+    "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/tabulka-kvality-ovzdusi";
+  let enabled = true;
+  let refreshScheduled = false;
+  let geometryScheduled = false;
+  let resizeDispatchScheduled = false;
+  let observedMap = null;
+  let resizeObserver = null;
+
+  function savePreference(value) {
+    storage?.set({ [STORAGE_KEY]: value });
+    setMode(value);
+  }
+
+  function ensureBrand() {
+    if (document.getElementById(BRAND_ID)) return false;
+    const main = document.querySelector("main");
+    if (!main) return false;
+    const brand = document.createElement("div");
+    brand.id = BRAND_ID;
+    brand.dataset.kind = kind;
+    brand.innerHTML = `<strong>${title}</strong><nav aria-label="Původní záložky portálu"><a href="https://www.chmi.cz/">POČASÍ</a><a href="https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa">VODA</a><a href="https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr">OVZDUŠÍ</a></nav><span>živá data ČHMÚ</span><a class="chmi-hydro-air-table" target="_blank" rel="noopener noreferrer">Tabulka dat ↗</a><button type="button" title="Dočasně zobrazit současný vzhled stránky">Nový vzhled</button>`;
+    brand.querySelector(".chmi-hydro-air-table").href = tableURL;
+    brand.querySelector(`nav a:nth-child(${kind === "water" ? 2 : 3})`).setAttribute("aria-current", "page");
+    brand.querySelector("button").addEventListener("click", () => savePreference(false));
+    main.insertBefore(brand, main.firstChild);
+    return true;
+  }
+
+  function findMap() {
+    return document.getElementById("chmu-map-container");
+  }
+
+  function markMap() {
+    const map = findMap();
+    if (!map) return false;
+    const content = map.closest(".lfr-layout-structure-item-chmimapcomponent")?.parentElement;
+    if (!content) return false;
+    const changed = !map.classList.contains(MAP_CLASS) || !content.classList.contains("chmi-hydro-air-content");
+    content.classList.add("chmi-hydro-air-content");
+    map.classList.add(MAP_CLASS);
+    return changed;
+  }
+
+  function dispatchResize() {
+    if (resizeDispatchScheduled) return;
+    resizeDispatchScheduled = true;
+    requestAnimationFrame(() => {
+      resizeDispatchScheduled = false;
+      window.dispatchEvent(new Event("resize"));
+    });
+  }
+
+  function updateGeometry() {
+    if (!enabled) return;
+    const map = findMap();
+    if (!map) return;
+    const rect = map.getBoundingClientRect();
+    const available = Math.floor(window.innerHeight - Math.max(0, rect.top) - 6);
+    document.documentElement.style.setProperty("--chmi-hydro-air-fit-height", `${Math.max(0, available)}px`);
+    if (globalThis.ResizeObserver && observedMap !== map) {
+      resizeObserver?.disconnect();
+      resizeObserver = new ResizeObserver(() => scheduleGeometry(false));
+      resizeObserver.observe(map);
+      observedMap = map;
+    }
+  }
+
+  function scheduleGeometry(notify = true) {
+    if (!enabled || geometryScheduled) return;
+    geometryScheduled = true;
+    requestAnimationFrame(() => {
+      geometryScheduled = false;
+      updateGeometry();
+      if (notify) dispatchResize();
+    });
+  }
+
+  function applyMode() {
+    // A late or failed native map must not leave an otherwise useful page blank.
+    if (!findMap()?.closest(".lfr-layout-structure-item-chmimapcomponent")) return;
+    const first = !document.documentElement.classList.contains(ROOT_CLASS);
+    document.documentElement.classList.add(ROOT_CLASS);
+    const brandChanged = ensureBrand();
+    const changed = markMap() || brandChanged;
+    updateGeometry();
+    if (first || changed) dispatchResize();
+  }
+
+  function removeMode() {
+    document.getElementById(BRAND_ID)?.remove();
+    document.querySelectorAll(`.${MAP_CLASS}`).forEach(node => node.classList.remove(MAP_CLASS));
+    document.querySelectorAll(".chmi-hydro-air-content").forEach(node => node.classList.remove("chmi-hydro-air-content"));
+    resizeObserver?.disconnect();
+    resizeObserver = null;
+    observedMap = null;
+    document.documentElement.style.removeProperty("--chmi-hydro-air-fit-height");
+    document.documentElement.classList.remove(ROOT_CLASS);
+    dispatchResize();
+  }
+
+  function setMode(value) {
+    enabled = Boolean(value);
+    if (enabled) applyMode();
+    else removeMode();
+  }
+
+  function scheduleRefresh() {
+    if (!enabled || refreshScheduled) return;
+    refreshScheduled = true;
+    requestAnimationFrame(() => {
+      refreshScheduled = false;
+      applyMode();
+    });
+  }
+
+  window.addEventListener("resize", () => { if (enabled) requestAnimationFrame(updateGeometry); });
+  window.addEventListener("scroll", () => scheduleGeometry(false), { passive: true });
+  new MutationObserver(scheduleRefresh).observe(document.documentElement, { childList: true, subtree: true });
+
+  if (storage) storage.get({ [STORAGE_KEY]: true }, result => setMode(result[STORAGE_KEY]));
+  else setMode(true);
 })();

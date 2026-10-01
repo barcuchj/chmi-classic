@@ -2,7 +2,8 @@
 #chmi-radar-classic-brand,
 #chmi-home-radar-classic-brand,
 #chmi-satellite-classic-brand,
-#chmi-hub-classic-brand {
+#chmi-hub-classic-brand,
+#chmi-synoptic-classic-brand {
   flex-wrap: wrap !important;
   row-gap: 5px !important;
 }

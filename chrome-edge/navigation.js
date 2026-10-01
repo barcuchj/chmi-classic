@@ -28,6 +28,27 @@
     if (pathname === "/namerena-data/pravdepodobnost-rustu-hub") {
       return "hub";
     }
+    if (pathname === "/voda/aktualni-stav-rek-povodnova-mapa") {
+      return "water";
+    }
+    if (pathname === "/predpoved-pocasi/synopticka-situace") {
+      return "synoptic";
+    }
+    if (pathname === "/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa") {
+      return "sonde";
+    }
+    if (pathname === "/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum") {
+      return "klementinum";
+    }
+    if (pathname === "/namerena-data/umisteni-mericich-stanic/meteorologicke") {
+      return "stations";
+    }
+    if (pathname === "/predpoved-pocasi/rizika/aktivita-klistat") {
+      return "ticks";
+    }
+    if (pathname === "/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr") {
+      return "air";
+    }
     return null;
   })();
 
@@ -44,7 +65,14 @@
     meteosat: "#chmi-satellite-classic-brand",
     polar: "#chmi-satellite-classic-brand",
     geo: "#chmi-satellite-classic-brand",
-    hub: "#chmi-hub-classic-brand"
+    hub: "#chmi-hub-classic-brand",
+    water: "#chmi-hydro-air-classic-brand",
+    air: "#chmi-hydro-air-classic-brand",
+    synoptic: "#chmi-synoptic-classic-brand",
+    sonde: "#chmi-sonde-classic-brand",
+    klementinum: "#chmi-klementinum-brand",
+    stations: "#chmi-stations-classic-brand",
+    ticks: "#chmi-ticks-classic-brand"
   };
 
   const pages = [
@@ -95,6 +123,36 @@
       label: "Ovzduší – aktuální mapy kvality ovzduší",
       shortLabel: "Ovzduší",
       href: "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr"
+    },
+    {
+      key: "synoptic",
+      label: "Synoptická situace – živé mapy",
+      shortLabel: "Synoptika",
+      href: "https://www.chmi.cz/predpoved-pocasi/synopticka-situace"
+    },
+    {
+      key: "sonde",
+      label: "Sondážní měření – Praha-Libuš",
+      shortLabel: "Sondáže",
+      href: "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa"
+    },
+    {
+      key: "klementinum",
+      label: "Měření z Klementina",
+      shortLabel: "Klementinum",
+      href: "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum"
+    },
+    {
+      key: "stations",
+      label: "Meteorologické stanice ČHMÚ",
+      shortLabel: "Stanice",
+      href: "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke"
+    },
+    {
+      key: "ticks",
+      label: "Předpověď aktivity klíšťat",
+      shortLabel: "Klíšťata",
+      href: "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat"
     }
   ];
 

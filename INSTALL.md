@@ -5,10 +5,38 @@ snímky dál pocházejí z ČHMÚ; nejde o přehrávání starého počasí z ar
 
 ## Chci vyzkoušet nejnovější podobu portálu
 
-**Aktuální userscript je 0.7.0-beta.3 — testovací verze.** Má centrální panel
+**Aktuální userscript je 0.7.0-beta.21 — testovací verze.** Má centrální panel
 pro aplikace, rozcestník a tlačítko **Zvětšit panel**. Celý původní intranet
-ještě obnovený není. Záložky Voda a Ovzduší a červeně přeškrtnuté položky
-čekají na dokončení. [Podívejte se na dvě ukázky vzhledu](README.md#jak-beta-vypadá).
+ještě obnovený není. Úvodní předpověď ČR má nově třídenní panel; Voda a Ovzduší mají
+živé adaptéry. Červeně přeškrtnuté položky čekají na rekonstrukci.
+Na úzkém vysokém okně předpověď využívá místo pod mapou pro seznam měst;
+kliknutím na jeho nadpis jej můžete sbalit.
+Na samostatném meteogramu zůstává živé vyhledávání míst ČHMÚ; testovací beta
+navíc nabízí čtyři poslední navštívená místa. Odkaz na meteogram z původního
+rozcestníku je nyní aktivní a otevírá výchozí živý meteogram Prahy. Položka
+**Radarové odhady srážek** otevírá současný oficiální přehled pro 1/3/6/24 hodin. Vzhled
+instalované bety je ještě potřeba ověřit.
+**Detekce blesků** otevře jiný režim živého radaru ČHMÚ se samotnou
+bleskovou vrstvou; nejde zatím o úplnou rekonstrukci starého prohlížeče blesků.
+**Aladin – animace** zobrazí jednu živou předpovědní mapu s přehráváním
+po třech hodinách a volbou rychlosti; **Aladin – mapy** zachová čtyři mapy.
+**Synoptická situace** ukazuje živou časovou řadu map. **Sondážní měření**
+vedou na naměřené grafy Praha-Libuš; ovládání snímků zůstává součástí ČHMÚ.
+**Měření z Klementina** otevírá živé staniční tabulky a záložky v kompaktním
+klasickém obalu. Původní obsah této stránky se v archivu nedochoval.
+**Meteorologické stanice** otevírají živou mapu ČHMÚ v klasickém rámu; můžete
+na ní přepínat základní vrstvy měření. Původní jemnější výběr typů stanic
+zatím současná mapa nenabízí. Instalovaný vzhled této nové adaptace ještě
+není ověřený.
+**Aktivita klíšťat** používá současnou živou mapu a její tři denní kroky.
+Klasický rám ponechává mapu na obrazovce; staré archivní obrázky neukazuje.
+Také zde zbývá kontrola po instalaci.
+**Bio předpověď** má živou mapu se dvěma dny a rozbalovací oblastní přehled.
+Její nový klasický obal zatím čeká na vizuální kontrolu po instalaci.
+**Týdenní předpověď** zpřístupní živý text ČHMÚ po jednotlivých dnech a
+jejich živý graf v samostatné záložce uvnitř panelu. Dlouhý text se posouvá
+uvnitř aplikace, ne celou stránkou. Její instalovaný vzhled ještě čeká na
+vizuální kontrolu. [Podívejte se na dvě ukázky staršího vzhledu](README.md#jak-beta-vypadá).
 
 Nejjednodušší cesta je přes **Tampermonkey**, správce malých úprav webových
 stránek. Pro tuto betu nepotřebujete Xcode ani účet vývojáře.
@@ -27,6 +55,10 @@ instalace v Tampermonkey a chování ve všech prohlížečích ještě není do
 ## Jak se nový portál používá
 
 - **Klikněte na modrý odkaz pod mapou.** Aplikace se otevře v centrálním panelu.
+- **Předpověď pro ČR** otevře živou mapu. Vpravo jsou tři dny s ikonami
+  a teplotami pro ráno/odpoledne; kliknutím zvolíte období. Na úzkém displeji
+  najdete panel pod mapou. **Není údaj** znamená, že ČHMÚ období právě
+  nenabízí. Přístupný seznam měst rozbalíte pod mapou.
 - **Zvětšit panel** schová okolní nabídky a ponechá aplikaci více místa.
   Tlačítko **Zpět na portál** nebo Escape nabídky vrátí.
 - **Otevřít samostatně** otevře aplikaci v nové záložce. Totéž můžete udělat
@@ -44,6 +76,8 @@ Přímo můžete otevřít také [radar](https://produkty.chmi.cz/radar/),
 [geostacionární družice](https://www.chmi.cz/namerena-data/geostacionarni-druzice/true-color),
 [webkamery](https://www.chmi.cz/namerena-data/webkamery)
 nebo [mapu růstu hub](https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub).
+Přímý odkaz na [radarové odhady srážek](https://hydro.chmi.cz/hppsoldv/main_rain.php)
+otevírá jinou aplikaci než běžný radar.
 Rozložení všech těchto aplikací se ještě průběžně dolaďuje.
 
 ## Jak získám aktualizaci
@@ -51,14 +85,19 @@ Rozložení všech těchto aplikací se ještě průběžně dolaďuje.
 Znovu otevřete [stejný instalační odkaz](https://raw.githubusercontent.com/barcuchj/chmi-classic/main/tampermonkey/chmi-classic.user.js),
 potvrďte aktualizaci v Tampermonkey a obnovte otevřené stránky ČHMÚ. Není
 potřeba instalovat druhou kopii skriptu. Odkaz sleduje aktuální verzi v `main`,
-tedy nyní betu, nikoli poslední stabilní vydání.
+nikoli místní pracovní soubor. Než bude tato beta sloučena do `main`, může odkaz
+stále nabízet starší verzi.
 
 ## Chrome a Edge – testovací beta bez Tampermonkey
 
-Nový [Chrome/Edge balíček 0.7.0-beta.3](https://github.com/barcuchj/chmi-classic/releases/download/v0.7.0-beta.3/chmi-classic-chrome-edge-0.7.0-beta.3.zip)
-obsahuje i centrální portál a webkamery. Je určen k testování: obsah ZIPu,
-syntaxe a automatické testy prošly, ale skutečná instalace a rozložení v prohlížeči
-ještě nebyly potvrzené.
+Poslední veřejný [Chrome/Edge balíček 0.7.0-beta.3](https://github.com/barcuchj/chmi-classic/releases/download/v0.7.0-beta.3/chmi-classic-chrome-edge-0.7.0-beta.3.zip)
+obsahuje centrální portál a webkamery. Místní beta 18 navíc sdílí s userscriptem
+adaptéry pro předpověď, meteogram, vodu, ovzduší a radarové odhady srážek
+i v centrálním panelu, stejně jako animaci ALADINu, synoptickou situaci a
+sondážní měření, Klementinum, meteorologické stanice a aktivitu klíšťat.
+Balíček beta 18 zatím není veřejně vydaný ani instalačně
+a vizuálně ověřený;
+odkaz na betu 3 proto nemůže ukázat všechny nové funkce.
 
 1. Stáhněte ZIP a rozbalte jej do složky, kterou později nepřesunete ani nesmažete.
 2. Otevřete `chrome://extensions` nebo `edge://extensions`.

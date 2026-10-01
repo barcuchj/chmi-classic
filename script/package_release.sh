@@ -3,26 +3,35 @@ set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CHROMIUM_FILES=(manifest.json portal-registry.js embedded.js portal.js portal.css embedded.css
-  aladin.js aladin.css webcams.js webcams.css navigation.js navigation.css
+  aladin.js aladin.css webcams.js webcams.css meteogram.js meteogram.css forecast.js forecast.css rainfall.js rainfall.css synoptic.js synoptic.css sonde.js sonde.css klementinum.js klementinum.css stations.js stations.css ticks.js ticks.css bio.js bio.css week.js week.css navigation.js navigation.css
   catalog.js catalog.css legacy.js legacy.css content.js classic.css
   satellite.js satellite.css popup.html popup.css popup.js)
 
 if [[ "${1:-}" == "--chrome-only" ]]; then
-  VERSION="0.7.0-beta.3"
+  VERSION="$(node -p "require('$PROJECT_ROOT/chrome-edge/manifest.json').version_name")"
+  if [[ ! "$VERSION" =~ ^0\.7\.0-beta\.[0-9]+$ ]]; then
+    echo "Unsupported Chrome beta version: $VERSION" >&2
+    exit 2
+  fi
   DIST_ROOT="$PROJECT_ROOT/dist"
-  CHROMIUM_STAGE="$DIST_ROOT/chmi-classic-chrome-edge-$VERSION"
-  node "$PROJECT_ROOT/script/build_userscript.mjs"
-  rm -rf "$CHROMIUM_STAGE"
-  rm -f "$DIST_ROOT/chmi-classic-chrome-edge-$VERSION.zip"
-  mkdir -p "$CHROMIUM_STAGE"
+  ARCHIVE="$DIST_ROOT/chmi-classic-chrome-edge-$VERSION.zip"
+  mkdir -p "$DIST_ROOT"
+  if [[ -e "$ARCHIVE" ]]; then
+    echo "Refusing to overwrite existing Chrome package: $ARCHIVE" >&2
+    exit 2
+  fi
+  CHROMIUM_STAGE="$(mktemp -d "$DIST_ROOT/.chrome-stage.XXXXXXXX")"
+  trap 'rm -r -- "$CHROMIUM_STAGE"' EXIT
+  mkdir -p "$CHROMIUM_STAGE/package"
   for file in "${CHROMIUM_FILES[@]}"; do
-    cp "$PROJECT_ROOT/chrome-edge/$file" "$CHROMIUM_STAGE/$file"
+    cp "$PROJECT_ROOT/chrome-edge/$file" "$CHROMIUM_STAGE/package/$file"
   done
   (
-    cd "$CHROMIUM_STAGE"
-    zip -q -r "$DIST_ROOT/chmi-classic-chrome-edge-$VERSION.zip" .
+    cd "$CHROMIUM_STAGE/package"
+    zip -q -r "$CHROMIUM_STAGE/package.zip" . -x '*.DS_Store'
   )
-  echo "$DIST_ROOT/chmi-classic-chrome-edge-$VERSION.zip"
+  mv "$CHROMIUM_STAGE/package.zip" "$ARCHIVE"
+  echo "$ARCHIVE"
   exit 0
 fi
 

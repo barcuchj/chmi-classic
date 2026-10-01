@@ -1,5 +1,118 @@
 # Přehled změn
 
+## 0.7.0-beta.21 – 2026-10-01 (testovací sestavení)
+
+- Původní odkaz **Týdenní předpověď** vede na živý oficiální text a graf.
+  Denní tlačítka, přepínání Text/Graf a kompaktní starý rám ponechávají
+  předpověď ve středním panelu bez rolování celé stránky.
+- Dostupný archiv zachoval název a odkaz, ne dynamické tělo předpovědi;
+  nejde proto o doslovnou kopii. Vzhled po instalaci dosud není ověřený.
+
+## 0.7.0-beta.20 – 2026-10-01 (místní testovací sestavení)
+
+- Původní odkaz **Bio předpověď** vede na současnou živou biometeorologickou
+  mapu ČHMÚ. Kompaktní klasický rám zachovává dvoudenní časovou osu a
+  podrobné nativní tabulky otevírá v panelu „Oblastní přehled“.
+- Archiv dokládá starou adresu `info.chmi.cz/biometeo/index.php`, nikoli
+  zachovaný obsah prohlížeče; tato adaptace tedy není jeho doslovnou kopií.
+  Instalované vykreslení ještě čeká na vizuální kontrolu.
+
+## 0.7.0-beta.19 – 2026-10-01 (místní testovací sestavení)
+
+- Opraveno spouštění Chrome adaptéru na úvodu, webkamerách a dalších živých
+  stránkách ČHMÚ, které mají v adrese parametry. Dříve se tam uplatnil pouze
+  obecný rám, takže se zobrazoval nový web nebo velká prázdná hlavička.
+- Krajské ikony úvodní předpovědi se umisťují podle vykreslených hranic krajů
+  i při změně velikosti okna; samostatné městské karty zůstávají nedotčené.
+- Odkaz Úvod uvnitř aplikace v centrálním panelu vrací na klasický rozcestník,
+  zatímco otevření aplikace v samostatné záložce používá běžnou navigaci.
+- Regresní testy pokrývají URL s parametry, umístění krajských ikon a
+  směrování návratu. Instalovanou beta 19 je nutné vizuálně ověřit zvlášť.
+
+## 0.7.0-beta.18 – 2026-10-01 (místní testovací sestavení)
+
+- Původní odkaz **Aktivita klíšťat** nyní vede na současnou oficiální
+  třídenní mapu. Nový klasický rám zachovává nativní mapu, vrstvy a časovou
+  osu, zmenšuje okolní prostor a omezuje posuv celé stránky.
+- Archivní externí viewer z prosince 2023 dokládá tři denní náhledy a velkou
+  mapu, ale původní adresa v srpnu 2026 přesměrovává na nový web. Staré
+  obrazové soubory nejsou v balíčku. Instalované vykreslení ještě čeká na QA.
+
+## 0.7.0-beta.17 – 2026-10-01 (místní testovací sestavení)
+
+- Původní položka **Meteorologické stanice** je napojena na současnou
+  oficiální mapu ČHMÚ. Klasický rám vyplňuje dostupnou plochu, přitom
+  ponechává živou mapu, bodové detaily a nativní filtry měření.
+- Archivní mapa dokládá jemnější typy stanic a veličin, které dnešní mapa
+  nenabízí ve stejném členění; adaptér je proto částečná obnova, ne kopie.
+  Userscript i Chrome/Edge sdílejí zdroj. Instalační a vizuální kontrola
+  adaptace v samostatném okně i centrálním panelu zbývá.
+
+## 0.7.0-beta.16 – 2026-10-01 (místní testovací sestavení)
+
+- Položka **Měření z Klementina** otevírá současnou oficiální stránku stanice
+  ve zhuštěném intranetovém obalu. Zachovává nativní záložky, živou tabulku
+  a historická data; úprava se zapne až po načtení měření. Userscript a
+  Chrome/Edge používají stejný adaptér i v centrálním panelu.
+- Historický obsah cílové stránky Wayback neuchoval, takže jde o vlastní
+  old-look adaptaci živých dat, nikoli přesnou kopii starého Klementina.
+  Vizuální a instalační kontrola nové bety ještě zbývá.
+
+## 0.7.0-beta.15 – 2026-10-01 (místní testovací sestavení)
+
+- Původní položka **Sondážní měření** je napojena na měřená data
+  Praha-Libuš, nikoli na podobně pojmenovanou předpovědní pseudosondáž.
+  Kompaktní intranetové rozložení má ponechat oba živé nativní přehrávače,
+  typy grafů i tabulku ČHMÚ. Stejný zdroj používá userscript a Chrome/Edge.
+- Archivně prověřeny **Aktuální mapy** (prázdná kategorie) a **Grafy
+  automatických stanic** (sedm poboček). Tyto položky zůstávají neaktivní,
+  dokud pro ně nevznikne věrná funkční adaptace nad aktuálními daty.
+- Vizuální a instalační ověření nového sondážního adaptéru v Tampermonkey,
+  Chrome a centrálním panelu ještě zbývá; nejde o veřejné vydání.
+
+## 0.7.0-beta.14 – 2026-09-30 (místní testovací sestavení)
+
+- Původní položka **Synoptická situace** otevírá živou tříkrokovou mapu ČHMÚ
+  v kompaktním intranetovém rozložení. Ponechává její nativní časový posuvník,
+  přehrávání a skutečné snímky; rozložení je navržené pro dostupnou plochu
+  bez scrollu celé stránky. Userscript i Chrome/Edge používají stejný adaptér.
+- **Synoptická předpověď** zůstává odlišnou neobnovenou položkou: archivní
+  třímapový výstup 36/60/84 hodin nelze zaměňovat za současnou dvoudenní
+  časovou osu situace. Vizuální kontrola instalovaného adaptéru a iframe
+  ještě zbývá.
+
+## 0.7.0-beta.13 – 2026-09-30 (místní testovací sestavení)
+
+- Původní položky **Aladin – animace** a **Aladin – mapy** již neotevírají
+  totožný režim. Animace má vlastní adresu na stejné oficiální aplikaci ČHMÚ,
+  výchozí jednu mapu a přehrávání skutečných tříhodinových termínů s volbou
+  rychlosti; mapa zůstává živou součástí ČHMÚ.
+- Přehrávání se zastaví při skrytí stránky, změně běhu modelu a vypnutí
+  klasického vzhledu. Historické ovladače polohy a velikosti ani skutečný
+  instalační test zatím nejsou dokončené.
+
+## 0.7.0-beta.12 – 2026-09-30 (místní testovací sestavení)
+
+- Položka **Detekce blesků** otevírá živou bleskovou vrstvu oficiálního radaru
+  v samostatném klasickém režimu. Nativní průhlednosti vypnou radarový obraz,
+  zesílí blesky a zastaví časovou osu na nejnovějším snímku s bleskovými daty.
+- Režim funguje v centrálním panelu i na samostatné adrese a používá stejné
+  zdroje pro userscript i Chrome/Edge. Není to obnova samostatného historického
+  prohlížeče CELDN; jeho další ovladače a instalační QA zbývají.
+- Ověřeny nativní ovladače a živý bleskový snímek ve vestavěném prohlížeči;
+  samotná nová adaptace ještě čeká na instalační a vizuální kontrolu.
+
+## 0.7.0-beta.11 – 2026-09-29 (místní testovací sestavení)
+
+- Původní položka Radarové odhady srážek otevírá stále živou oficiální
+  aplikaci HPPS. Kompaktní starý obal zachovává její původní snímky,
+  časovou řadu a volbu intervalů 1/3/6/24 hodin.
+- Tampermonkey a Chrome/Edge používají stejný adaptér. Chrome pravidlo pro
+  centrální iframe je omezené na přesnou adresu této aplikace.
+- Vývojově ověřeno samostatné zobrazení při 1280 × 720 a 390 × 844 bez
+  posuvníku celé stránky; živý zdroj se načetl i do testovacího iframe.
+  Instalované balíčky a vzhled v portálovém iframe čekají na QA.
+
 ## 0.7.0-beta.3 – 2026-09-22 (userscript a Chrome/Edge beta)
 
 - Aktivován odkaz Webové kamery v původním rozcestníku; přehled mapy, filtr,

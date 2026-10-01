@@ -1,0 +1,240 @@
+/* Two official ČHMÚ replay portlets and the official product menu stay live. */
+html.chmi-sonde-classic,
+html.chmi-sonde-classic body {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background: #88bacb;
+}
+html.chmi-sonde-classic body > :not(#chmi-sonde-workspace) { display: none !important; }
+html.chmi-sonde-classic #chmi-sonde-workspace {
+  position: fixed;
+  inset: 4px;
+  z-index: 1000;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 5px;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 5px;
+  border: 1px solid #779eaf;
+  background: #edf3f4;
+  color: #183f62;
+  font: 12px/1.35 Verdana, Arial, sans-serif;
+}
+html.chmi-sonde-classic #chmi-sonde-classic-brand {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  min-width: 0;
+  padding: 5px 8px;
+  border: 1px solid #83a9ba;
+  background: #dcebf0;
+}
+html.chmi-sonde-classic #chmi-sonde-classic-brand h1 {
+  margin: 0 !important;
+  color: #17456b !important;
+  font: bold 15px/1.3 Verdana, Arial, sans-serif !important;
+}
+html.chmi-sonde-classic #chmi-sonde-classic-brand span { color: #536b75; }
+html.chmi-sonde-classic #chmi-sonde-classic-brand button {
+  margin-left: auto;
+  padding: 3px 8px;
+  border: 1px solid #83a9ba;
+  background: #fff;
+  color: #17456b;
+  cursor: pointer;
+  font: inherit;
+}
+html.chmi-sonde-classic #chmi-sonde-classic-brand button:focus-visible {
+  outline: 2px solid #124d79;
+  outline-offset: 2px;
+}
+
+/* Keep the map component as the menu's event-owning ancestor. */
+html.chmi-sonde-classic .chmi-sonde-products,
+html.chmi-sonde-classic .chmi-sonde-products #chmu-map-container,
+html.chmi-sonde-classic .chmi-sonde-products .chmu-map-component,
+html.chmi-sonde-classic .chmi-sonde-products .chmu-map-query-container,
+html.chmi-sonde-classic .chmi-sonde-products .chmu--map--container {
+  box-sizing: border-box;
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+html.chmi-sonde-classic .chmi-sonde-products .chmu--map--container > .chmi-loader,
+html.chmi-sonde-classic .chmi-sonde-products .chmu--map--container > .ol-viewport,
+html.chmi-sonde-classic .chmi-sonde-products .ol-menu-button,
+html.chmi-sonde-classic .chmi-sonde-products .menu-item--icon--1st { display: none !important; }
+html.chmi-sonde-classic .chmi-sonde-products .ol-menu,
+html.chmi-sonde-classic .chmi-sonde-products .ol-menu .inner-wrapper {
+  position: static !important;
+  box-sizing: border-box;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  transform: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+html.chmi-sonde-classic .chmi-sonde-products .menu--ul {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  list-style: none;
+}
+html.chmi-sonde-classic .chmi-sonde-products .menu--item {
+  display: block !important;
+  flex: 0 1 auto;
+  min-width: 0;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 1px solid #88a8b8;
+  background: #f9fcfd;
+}
+html.chmi-sonde-classic .chmi-sonde-products .menu--item.__selected {
+  border-color: #326f92;
+  background: #2a7197;
+}
+html.chmi-sonde-classic .chmi-sonde-products .menu-item-header {
+  display: block !important;
+  width: auto !important;
+  min-height: 27px;
+  padding: 5px 8px !important;
+  color: #17456b !important;
+  text-decoration: none !important;
+  font: bold 11px/1.35 Verdana, Arial, sans-serif !important;
+}
+html.chmi-sonde-classic .chmi-sonde-products .menu--item.__selected .menu-item-header { color: #fff !important; }
+html.chmi-sonde-classic .chmi-sonde-products .menu-item-header:focus-visible {
+  outline: 2px solid #124d79;
+  outline-offset: 2px;
+}
+html.chmi-sonde-classic .chmi-sonde-products .menu--item--text { display: block !important; }
+
+html.chmi-sonde-classic .chmi-sonde-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+html.chmi-sonde-classic .chmi-sonde-card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid #91adba;
+  background: #fff;
+}
+html.chmi-sonde-classic .chmi-sonde-card > h2 {
+  flex: 0 0 auto;
+  margin: 0 !important;
+  padding: 5px 8px;
+  color: #17456b !important;
+  background: #dcebf0;
+  border-bottom: 1px solid #a7bfca;
+  font: bold 12px/1.35 Verdana, Arial, sans-serif !important;
+}
+html.chmi-sonde-classic .chmi-sonde-card > .portlet-boundary,
+html.chmi-sonde-classic .chmi-sonde-card .portlet,
+html.chmi-sonde-classic .chmi-sonde-card .portlet-content,
+html.chmi-sonde-classic .chmi-sonde-card .portlet-content-container,
+html.chmi-sonde-classic .chmi-sonde-card .portlet-body {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html.chmi-sonde-classic .chmi-sonde-card .portlet-header { display: none !important; }
+html.chmi-sonde-classic .chmi-sonde-card #chmi-playabledata {
+  box-sizing: border-box;
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0;
+  min-height: 0;
+}
+html.chmi-sonde-classic .chmi-sonde-card #chmi-timeline {
+  box-sizing: border-box;
+  width: 100% !important;
+  min-width: 0;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 4px !important;
+  border-bottom: 1px solid #a7bfca;
+  background: #eef4f5;
+}
+html.chmi-sonde-classic .chmi-sonde-card .chmi-timeline--wrapper {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+}
+html.chmi-sonde-classic .chmi-sonde-card .chmi-timeline--control { flex: 0 0 auto; }
+html.chmi-sonde-classic .chmi-sonde-card #chmi-playableimage-container {
+  box-sizing: border-box;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  text-align: center;
+  background: #fff;
+}
+html.chmi-sonde-classic .chmi-sonde-card .playabledata-content-container {
+  box-sizing: border-box;
+  height: 100% !important;
+  min-height: 0;
+}
+html.chmi-sonde-classic .chmi-sonde-card img.chmi-playableimage-img {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+@media (max-width: 800px) {
+  html.chmi-sonde-classic .chmi-sonde-cards {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+  }
+  html.chmi-sonde-classic .chmi-sonde-products .menu--item { flex: 1 1 30%; }
+}
+@media (max-height: 500px) {
+  html.chmi-sonde-classic .chmi-sonde-cards { overflow: auto; }
+  html.chmi-sonde-classic .chmi-sonde-card { min-height: 190px; }
+}
