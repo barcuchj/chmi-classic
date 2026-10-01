@@ -136,6 +136,9 @@ html.chmi-forecast-classic #weather-mapContainer { height: 100% !important; widt
 html.chmi-forecast-classic #weather-map { width: 100% !important; height: 100% !important; max-height: 100%; overflow: visible; }
 html.chmi-forecast-classic #weather-map path { fill: #d9df9d; stroke: #537596; stroke-width: 2px; }
 html.chmi-forecast-classic #weather-map path:hover { fill: #ebde99; }
+html.chmi-forecast-classic #weather-map-details .weather-info-container.chmi-forecast-region-centered {
+  transform: translate(-50%, -50%);
+}
 html.chmi-forecast-classic .weather-info { background: #ffffffcf; box-shadow: none; font-family: Arial, sans-serif; }
 html.chmi-forecast-classic .weather-info__displayValue { font-family: Arial, sans-serif; font-weight: bold; color: #15253b; }
 html.chmi-forecast-classic .weather-info__county { background: transparent; color: #143c75; }

@@ -5,7 +5,7 @@ snímky dál pocházejí z ČHMÚ; nejde o přehrávání starého počasí z ar
 
 ## Chci vyzkoušet nejnovější podobu portálu
 
-**Lokálně připravený userscript je 0.7.0-beta.11 — testovací verze.** Má centrální panel
+**Lokálně připravený userscript je 0.7.0-beta.19 — testovací verze.** Má centrální panel
 pro aplikace, rozcestník a tlačítko **Zvětšit panel**. Celý původní intranet
 ještě obnovený není. Úvodní předpověď ČR má nově třídenní panel; Voda a Ovzduší mají
 živé adaptéry. Červeně přeškrtnuté položky čekají na rekonstrukci.
@@ -16,6 +16,21 @@ navíc nabízí čtyři poslední navštívená místa. Odkaz na meteogram z pů
 rozcestníku je nyní aktivní a otevírá výchozí živý meteogram Prahy. Položka
 **Radarové odhady srážek** otevírá současný oficiální přehled pro 1/3/6/24 hodin. Vzhled
 instalované bety je ještě potřeba ověřit.
+**Detekce blesků** otevře jiný režim živého radaru ČHMÚ se samotnou
+bleskovou vrstvou; nejde zatím o úplnou rekonstrukci starého prohlížeče blesků.
+**Aladin – animace** zobrazí jednu živou předpovědní mapu s přehráváním
+po třech hodinách a volbou rychlosti; **Aladin – mapy** zachová čtyři mapy.
+**Synoptická situace** ukazuje živou časovou řadu map. **Sondážní měření**
+vedou na naměřené grafy Praha-Libuš; ovládání snímků zůstává součástí ČHMÚ.
+**Měření z Klementina** otevírá živé staniční tabulky a záložky v kompaktním
+klasickém obalu. Původní obsah této stránky se v archivu nedochoval.
+**Meteorologické stanice** otevírají živou mapu ČHMÚ v klasickém rámu; můžete
+na ní přepínat základní vrstvy měření. Původní jemnější výběr typů stanic
+zatím současná mapa nenabízí. Instalovaný vzhled této nové adaptace ještě
+není ověřený.
+**Aktivita klíšťat** používá současnou živou mapu a její tři denní kroky.
+Klasický rám ponechává mapu na obrazovce; staré archivní obrázky neukazuje.
+Také zde zbývá kontrola po instalaci.
 Tato lokální beta dosud nebyla zveřejněna na GitHubu: instalační odkaz níže
 proto nemusí nabízet její nové funkce. [Podívejte se na dvě ukázky vzhledu](README.md#jak-beta-vypadá).
 
@@ -72,9 +87,11 @@ stále nabízet starší verzi.
 ## Chrome a Edge – testovací beta bez Tampermonkey
 
 Poslední veřejný [Chrome/Edge balíček 0.7.0-beta.3](https://github.com/barcuchj/chmi-classic/releases/download/v0.7.0-beta.3/chmi-classic-chrome-edge-0.7.0-beta.3.zip)
-obsahuje centrální portál a webkamery. Místní beta 11 navíc sdílí s userscriptem
+obsahuje centrální portál a webkamery. Místní beta 18 navíc sdílí s userscriptem
 adaptéry pro předpověď, meteogram, vodu, ovzduší a radarové odhady srážek
-i v centrálním panelu. Balíček beta 11 zatím není veřejně vydaný ani instalačně
+i v centrálním panelu, stejně jako animaci ALADINu, synoptickou situaci a
+sondážní měření, Klementinum, meteorologické stanice a aktivitu klíšťat.
+Balíček beta 18 zatím není veřejně vydaný ani instalačně
 a vizuálně ověřený;
 odkaz na betu 3 proto nemůže ukázat všechny nové funkce.
 

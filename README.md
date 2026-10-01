@@ -1,20 +1,46 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## Lokální beta 0.7.0-beta.11 – aplikace na jednom místě
+## Lokální beta 0.7.0-beta.19 – aplikace na jednom místě
 
 **Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
 
-**Testovací beta, nikoli dokončená obnova všech aplikací.** Lokální beta 11
+**Testovací beta, nikoli dokončená obnova všech aplikací.** Lokální beta 19
+opravuje Chrome rozšíření na adresách s parametry, zarovnání krajských ikon
+a návrat z aplikace v panelu na klasický úvod. Oproti beta 18 ještě vyžaduje
+instalační vizuální ověření.
+
+Beta 18
 navazuje na živé záložky Voda a Ovzduší a doplňuje úvodní předpověď počasí
 o třídenní panel podle původního intranetu. Původní položka **Radarové odhady
 srážek** nyní vede na stále živý přehled ČHMÚ s intervaly 1/3/6/24 hodin;
 adaptér zachovává jeho skutečné snímky a časovou řadu.
+Položka **Detekce blesků** nyní používá živou bleskovou vrstvu oficiálního
+radaru: bez radarového překryvu a na posledním měřeném snímku s blesky.
+Není to ještě plná obnova původního samostatného prohlížeče blesků.
+**Aladin – animace** teď otevírá vlastní klasický režim oficiálního ALADINu:
+jedna mapa, přehrání živých tříhodinových termínů a volba rychlosti. Vedlejší
+odkaz **Aladin – mapy** nadále otevírá přehled čtyř map. Animace ještě nemá
+všechny historické ovladače a čeká na instalační a vizuální kontrolu.
+**Synoptická situace** používá živou časovou řadu map ČHMÚ. **Sondážní měření**
+odkazují na skutečně naměřené grafy Praha-Libuš, nikoli na předpovědní
+pseudosondáž. Obě adaptace potřebují kontrolu po instalaci.
+**Měření z Klementina** nyní otevírá živou stránku stanice s klasicky
+zhuštěnými záložkami a tabulkou. Původní obsah této stránky se v archivu
+nedochoval, proto nejde o její doslovnou kopii.
+**Meteorologické stanice** nyní otevírají živou oficiální mapu v kompaktním
+klasickém rámu. Nativní filtry Vše, Teplota, Srážky, Sníh, Vítr a Synop
+zůstávají funkční; historické členění stanic z intranetu není na současné
+mapě celé dostupné. Instalovaný vzhled a ovládání ještě vyžadují kontrolu.
+**Aktivita klíšťat** otevírá dnešní třídenní mapu ČHMÚ v modrém klasickém
+rámu. Podle archivní předlohy jsou dny nad mapou; historické snímky ani
+dlouhý článek nejsou součástí pracovní plochy. Nativní časová osa, vrstvy
+a mapa zůstávají živé. Také tento adaptér čeká na instalační vizuální test.
 Na úzkém vysokém okně se pod mapou automaticky otevře živý seznam měst,
 který využije jinak prázdné místo. Mapa si zachová správný poměr stran.
 Seznam můžete sbalit; vaše volba zůstane zachovaná při změně velikosti okna.
 Ze společných zdrojů se nyní sestavuje také Chrome/Edge doplněk. Poslední
 veřejný [zdrojový balíček Chrome/Edge](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.3)
-zůstává beta 3; beta 11 je zatím místní a její instalace v Chromu ani Safari
+zůstává beta 3; beta 19 je zatím místní a její instalace v Chromu ani Safari
 nebyla vizuálně potvrzena. Safari balíček ani veřejné vydání zatím nejsou připraveny.
 Po zveřejnění odpovídajícího userscriptu v `main` se tato beta instaluje stejným
 odkazem jako dříve. Kdo chce vyzkoušet nové rozhraní,
@@ -90,7 +116,7 @@ instalační test. Podrobnosti a zbývající práce jsou v [TODO.md](TODO.md).
 ### Jak beta vypadá
 
 Následující snímky zachycují starší vývojový stav, nikoli vizuální ověření
-instalované bety 11.
+instalované bety 16.
 
 **Radar v portálu:** úzká horní nabídka, mapa a původní rozcestník pod ní.
 
@@ -202,6 +228,16 @@ nevyrábí vlastní předpověď ani náhradní snímky.
 kolečkem nad mapami po třech hodinách. Pokud ČHMÚ některý snímek neposkytuje,
 pole zobrazí „Snímek chybí“; podrobnosti se ukážou po najetí myší.
 Tlačítko **Nový vzhled** vrátí původní současné rozhraní ČHMÚ.
+
+## Synoptická situace v klasickém rozložení
+
+Položka **Synoptická situace** v původním rozcestníku otevírá dnešní živou
+[synoptickou mapu ČHMÚ](https://www.chmi.cz/predpoved-pocasi/synopticka-situace).
+Kompaktní zobrazení ponechává oficiální přehrávač a jeho časový posuvník
+pro aktuální stav a dva další termíny. Vložený panel i samostatná stránka
+využívají dostupnou plochu bez vysoké hlavičky a patičky; data ani obrazové
+podklady se nepřebírají z archivu. Odlišná historická položka
+**Synoptická předpověď** zatím čeká na samostatný věrný výstup.
 
 ## Další old-look stránky
 

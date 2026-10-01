@@ -11,6 +11,9 @@
   const PRODUCT_CHIPS_ID = "chmi-aladin-classic-product-chips";
   const PRODUCT_OPTIONS_ID = "chmi-aladin-classic-product-options";
   const PRODUCT_IDS = ["T", "C", "R3", "W"];
+  const productPreset = animation => animation ? ["T"] : [...PRODUCT_IDS];
+  const nextAnimationIndex = (index, count) => count > 0 ? (index + 1) % count : 0;
+  const animationDelay = speed => ({ slow: 1800, normal: 900, fast: 450 })[speed] ?? 900;
   const NATIVE_PRODUCT_IDS = ["T", "R3", "W", "C", "Cl", "Cm", "Ch", "H", "V", "Txn", "R24"];
   const PRODUCT_LABELS = {
     T: "Teplota",
@@ -109,6 +112,9 @@
   if (globalThis.__chmiAladinClassicTestHooks) {
     Object.assign(globalThis.__chmiAladinClassicTestHooks, {
       PRODUCT_IDS: [...PRODUCT_IDS],
+      productPreset,
+      nextAnimationIndex,
+      animationDelay,
       clampIndex,
       productOrder,
       mapLayout,
@@ -135,6 +141,7 @@
   }
 
   window.__chmiAladinClassicLoaded = true;
+  const animationMode = new URL(location.href).searchParams.get("chmi_classic_animation") === "1";
 
   const storage = globalThis.__chmiClassicStorage ?? globalThis.chrome?.storage?.sync;
   let classicEnabled = false;
@@ -146,6 +153,7 @@
   let observedGrid = null;
   let gridObserver = null;
   let layoutResizeObserver = null;
+  let animationTimer = null;
 
   function dispatchNativeChange(element) {
     if (!element) {
@@ -212,19 +220,20 @@
     );
   }
 
-  function applyFourMapPreset(elements) {
+  function applyProductPreset(elements) {
     if (presetApplied || !hasVerifiedNativeControls(elements)) {
       return false;
     }
 
     const nativeProducts = [...document.querySelectorAll("input.item-check")];
-    if (!PRODUCT_IDS.every((id) => nativeProducts.some((control) => control.id === id))) {
+    const preset = productPreset(animationMode);
+    if (!preset.every((id) => nativeProducts.some((control) => control.id === id))) {
       return false;
     }
 
     let changedProduct = null;
     for (const control of nativeProducts) {
-      const checked = PRODUCT_IDS.includes(control.id);
+      const checked = preset.includes(control.id);
       if (control.checked !== checked) {
         control.checked = checked;
         changedProduct ||= control;
@@ -259,7 +268,7 @@
     brand.id = BRAND_ID;
     brand.innerHTML = `
       <div>
-        <strong>ALADIN – klasické mapy</strong>
+        <strong>${animationMode ? "ALADIN – animace předpovědi" : "ALADIN – klasické mapy"}</strong>
         <span>živá data ČHMÚ</span>
       </div>
       <button type="button" title="Dočasně zobrazit současné rozhraní">Nový vzhled</button>
@@ -282,7 +291,7 @@
       <div class="chmi-aladin-classic-products" aria-label="Zobrazené veličiny">
         <div id="${PRODUCT_CHIPS_ID}"></div>
         <details class="chmi-aladin-classic-product-picker">
-          <summary>Veličiny (4)</summary>
+          <summary>Veličiny (${animationMode ? 1 : 4})</summary>
           <div id="${PRODUCT_OPTIONS_ID}" role="group" aria-label="Veličiny ALADINu"></div>
         </details>
       </div>
@@ -299,6 +308,13 @@
           <button type="button" data-action="next" title="Následující termín">&gt;</button>
           <button type="button" data-action="last" title="Poslední termín">&gt;|</button>
         </div>
+        ${animationMode ? `<div class="chmi-aladin-classic-playback" role="group" aria-label="Animace předpovědi">
+          <button type="button" data-action="play" aria-pressed="false">▶ Přehrát</button>
+          <label for="chmi-aladin-classic-speed">Rychlost:</label>
+          <select id="chmi-aladin-classic-speed" aria-label="Rychlost animace">
+            <option value="slow">Pomalu</option><option value="normal" selected>Běžně</option><option value="fast">Rychle</option>
+          </select>
+        </div>` : ""}
         <small>Kolečkem nad mapami posunete čas o 3 hodiny.</small>
       </div>
       <p class="chmi-aladin-classic-status" role="status" aria-live="polite"></p>
@@ -310,6 +326,7 @@
         return;
       }
       activeTimeIndex = 0;
+      stopAnimation();
       nativeRun.value = event.target.value;
       dispatchNativeChange(nativeRun);
       setStatus("Načítám zvolený běh z ČHMÚ…");
@@ -317,6 +334,12 @@
 
     controls.querySelector(`#${TIME_SELECT_ID}`).addEventListener("change", (event) => {
       setActiveTime(Number.parseInt(event.target.value, 10));
+    });
+
+    controls.querySelector("#chmi-aladin-classic-speed")?.addEventListener("change", event => {
+      const wasPlaying = Boolean(animationTimer);
+      stopAnimation();
+      if (wasPlaying) startAnimation(event.target.value);
     });
 
     controls.querySelector(`#${PRODUCT_OPTIONS_ID}`).addEventListener("change", (event) => {
@@ -337,6 +360,11 @@
 
     controls.addEventListener("click", (event) => {
       const action = event.target.closest("button[data-action]")?.dataset.action;
+      if (action === "play") {
+        if (animationTimer) stopAnimation();
+        else startAnimation(controls.querySelector("#chmi-aladin-classic-speed")?.value);
+        return;
+      }
       const count = timeRows().length;
       if (!action || count === 0) {
         return;
@@ -359,6 +387,36 @@
     if (status && status.textContent !== message) {
       status.textContent = message;
     }
+  }
+
+  function syncAnimationButton() {
+    const button = document.querySelector(`#${CONTROLS_ID} button[data-action="play"]`);
+    if (!button) return;
+    button.textContent = animationTimer ? "❚❚ Pauza" : "▶ Přehrát";
+    button.setAttribute("aria-pressed", String(Boolean(animationTimer)));
+    button.disabled = timeRows().length < 2;
+  }
+
+  function stopAnimation() {
+    if (animationTimer !== null) {
+      window.clearInterval(animationTimer);
+      animationTimer = null;
+    }
+    syncAnimationButton();
+  }
+
+  function startAnimation(speed = "normal") {
+    if (!animationMode || !classicEnabled || document.hidden || timeRows().length < 2) return;
+    stopAnimation();
+    animationTimer = window.setInterval(() => {
+      const rows = timeRows();
+      if (!classicEnabled || document.hidden || rows.length < 2) {
+        stopAnimation();
+        return;
+      }
+      setActiveTime(nextAnimationIndex(activeTimeIndex, rows.length));
+    }, animationDelay(speed));
+    syncAnimationButton();
   }
 
   function syncRunControl(elements) {
@@ -532,11 +590,14 @@
 
     document.querySelectorAll(`#${CONTROLS_ID} button[data-action]`).forEach((button) => {
       const action = button.dataset.action;
+      if (action === "play") return;
       button.disabled =
         rows.length === 0 ||
         ((action === "first" || action === "previous") && activeTimeIndex === 0) ||
         ((action === "next" || action === "last") && activeTimeIndex === rows.length - 1);
     });
+    if (rows.length < 2 && animationTimer) stopAnimation();
+    else syncAnimationButton();
     scheduleGeometry();
   }
 
@@ -647,7 +708,8 @@
     observeLayout(elements);
     syncRunControl(elements);
 
-    const requestedReload = applyFourMapPreset(elements);
+    const requestedReload = applyProductPreset(elements);
+    if (requestedReload) stopAnimation();
     syncProductControls();
     if (!requestedReload) {
       const rows = markGridRows(elements);
@@ -669,6 +731,7 @@
   }
 
   function removeClassicMode() {
+    stopAnimation();
     document.getElementById(BRAND_ID)?.remove();
     document.getElementById(CONTROLS_ID)?.remove();
     document.querySelectorAll(".chmi-aladin-cell-title, .chmi-aladin-empty").forEach(node => node.remove());
@@ -715,6 +778,8 @@
   const rootObserver = new MutationObserver(scheduleRefresh);
   rootObserver.observe(document.documentElement, { childList: true, subtree: true });
   window.addEventListener("resize", scheduleGeometry, { passive: true });
+  document.addEventListener("visibilitychange", () => { if (document.hidden) stopAnimation(); });
+  window.addEventListener("pagehide", stopAnimation, { once: true });
   document.addEventListener("change", (event) => {
     if (event.target?.id === "dateToLoadSelector") {
       activeTimeIndex = 0;

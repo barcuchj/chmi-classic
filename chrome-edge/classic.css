@@ -148,6 +148,11 @@ html.chmi-radar-classic #div_container_data .leaflet-container {
   min-height: 100% !important;
 }
 
+/* dBZ/mm/h is a radar-rainfall legend, not a lightning legend. */
+html.chmi-radar-classic.chmi-radar-classic-lightning-only #div_container_data #div_scl {
+  display: none !important;
+}
+
 html.chmi-radar-classic.chmi-radar-classic-web-maps #div_container_data #div_bg {
   width: 100% !important;
   height: 100% !important;

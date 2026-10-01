@@ -55,8 +55,15 @@
     const ratio = values[2] / values[3];
     return Number.isFinite(ratio) && ratio > 0 ? ratio : null;
   }
+  function regionCardCenter(region, host) {
+    if (![region?.left, region?.top, region?.width, region?.height,
+      host?.left, host?.top, host?.width, host?.height].every(Number.isFinite) ||
+      region.width <= 0 || region.height <= 0 || host.width <= 0 || host.height <= 0) return null;
+    return { left: region.left + region.width / 2 - host.left,
+      top: region.top + region.height / 2 - host.top };
+  }
   if (typeof module === "object" && module.exports) {
-    module.exports = { normalizePeriods, mergePeriods, periodURL, usePortraitCityList, mapAspectRatio };
+    module.exports = { normalizePeriods, mergePeriods, periodURL, usePortraitCityList, mapAspectRatio, regionCardCenter };
     return;
   }
 
@@ -171,6 +178,28 @@
           name && value ? { href: href.href, name, value, weather } : null;
       }).filter(Boolean);
 
+    const positionCityCards = () => {
+      const host = map?.querySelector("#weather-map-details .position-relative");
+      const svg = map?.querySelector("#weather-map");
+      if (!host || !svg) return;
+      const hostRect = host.getBoundingClientRect();
+      // Only the 13 country-map cards use this position. Hidden city/POI
+      // cards have their own coordinates and must stay untouched when opened.
+      for (const card of host.querySelectorAll('.weather-info-container[data-region-id="999"]')) {
+        const region = card.dataset.region;
+        // The official SVG and cards are siblings. The native percentage
+        // positions target city coordinates and drift when the map is resized.
+        // Use the region path's *rendered* bounds, including SVG letterboxing.
+        if (!/^[a-z0-9-]+$/.test(region)) continue;
+        const path = svg.querySelector(`path[data-region="${region}"]`);
+        const center = path && regionCardCenter(path.getBoundingClientRect(), hostRect);
+        if (!center) continue;
+        card.style.left = `${center.left}px`;
+        card.style.top = `${center.top}px`;
+        card.classList.add("chmi-forecast-region-centered");
+      }
+    };
+
     const render = () => {
       scheduled = false;
       if (!map?.isConnected) return;
@@ -180,6 +209,7 @@
         .map(label => ({ label: label.querySelector("span")?.textContent.trim(), input: label.querySelector('input[type="radio"][name="tod"]') }))
         .filter(item => item.label && item.input);
       const cities = cityData(map);
+      positionCityCards();
       if (!periods.length) return;
 
       for (const controls of workspace.querySelectorAll(".chmi-forecast-periods")) {
@@ -321,6 +351,9 @@
       updateLayout = () => {
         const bounds = workspace.getBoundingClientRect();
         const portrait = Boolean(ratio && usePortraitCityList(bounds.width, bounds.height));
+        // The SVG may have acquired new letterboxing even when the portrait
+        // breakpoint itself did not change.
+        requestAnimationFrame(positionCityCards);
         if (workspace.dataset.portrait === String(portrait)) return;
         workspace.dataset.portrait = String(portrait);
         if (!userChoseListState) companion.open = portrait;

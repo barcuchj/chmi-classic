@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.7.0.11",
-  "version_name": "0.7.0-beta.11",
+  "version": "0.7.0.19",
+  "version_name": "0.7.0-beta.19",
   "description": "Vrací klasický vzhled živým meteorologickým aplikacím ČHMÚ a přidává přehledný rozcestník.",
   "permissions": [
     "storage"
@@ -26,7 +26,8 @@
     {
       "matches": [
         "https://www.chmi.cz/",
-        "https://www.chmi.cz/uvod"
+        "https://www.chmi.cz/?*",
+        "https://www.chmi.cz/uvod*"
       ],
       "css": [
         "classic.css", "navigation.css", "catalog.css", "portal.css"
@@ -44,8 +45,7 @@
         "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub*",
         "https://www.chmi.cz/namerena-data/polarni-druzice/*",
         "https://www.chmi.cz/namerena-data/geostacionarni-druzice/*",
-        "https://www.chmi.cz/namerena-data/webkamery",
-        "https://www.chmi.cz/namerena-data/webkamery/",
+        "https://www.chmi.cz/namerena-data/webkamery*",
         "https://www.chmi.cz/namerena-data/webkamera/*"
       ],
       "css": [
@@ -74,16 +74,11 @@
     },
     {
       "matches": [
-        "https://www.chmi.cz/predpoved-pocasi/dnes",
-        "https://www.chmi.cz/predpoved-pocasi/dnes/",
-        "https://www.chmi.cz/predpoved-pocasi/zitra",
-        "https://www.chmi.cz/predpoved-pocasi/zitra/",
-        "https://www.chmi.cz/predpoved-pocasi/pozitri",
-        "https://www.chmi.cz/predpoved-pocasi/pozitri/",
-        "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa",
-        "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa/",
-        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr",
-        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr/"
+        "https://www.chmi.cz/predpoved-pocasi/dnes*",
+        "https://www.chmi.cz/predpoved-pocasi/zitra*",
+        "https://www.chmi.cz/predpoved-pocasi/pozitri*",
+        "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa*",
+        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr*"
       ],
       "css": [
         "portal.css", "embedded.css", "forecast.css"
@@ -96,7 +91,7 @@
     },
     {
       "matches": [
-        "https://hydro.chmi.cz/hppsoldv/main_rain.php"
+        "https://hydro.chmi.cz/hppsoldv/main_rain.php*"
       ],
       "css": [
         "embedded.css", "rainfall.css"
@@ -109,30 +104,95 @@
     },
     {
       "matches": [
+        "https://www.chmi.cz/predpoved-pocasi/synopticka-situace*"
+      ],
+      "css": [
+        "embedded.css", "navigation.css", "synoptic.css"
+      ],
+      "js": [
+        "portal-registry.js", "embedded.js", "navigation.js", "synoptic.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa*"
+      ],
+      "css": [
+        "embedded.css", "navigation.css", "sonde.css"
+      ],
+      "js": [
+        "portal-registry.js", "embedded.js", "navigation.js", "sonde.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum*"
+      ],
+      "css": [
+        "embedded.css", "navigation.css", "klementinum.css"
+      ],
+      "js": [
+        "portal-registry.js", "embedded.js", "navigation.js", "klementinum.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke*"
+      ],
+      "css": [
+        "embedded.css", "navigation.css", "stations.css"
+      ],
+      "js": [
+        "portal-registry.js", "embedded.js", "navigation.js", "stations.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*"
+      ],
+      "css": [
+        "embedded.css", "navigation.css", "ticks.css"
+      ],
+      "js": [
+        "portal-registry.js", "embedded.js", "navigation.js", "ticks.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
         "https://www.chmi.cz/*",
         "https://hydro.chmi.cz/*"
       ],
       "exclude_matches": [
         "https://www.chmi.cz/",
-        "https://www.chmi.cz/uvod",
+        "https://www.chmi.cz/?*",
+        "https://www.chmi.cz/uvod*",
         "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub*",
         "https://www.chmi.cz/namerena-data/polarni-druzice/*",
         "https://www.chmi.cz/namerena-data/geostacionarni-druzice/*",
-        "https://www.chmi.cz/namerena-data/webkamery",
-        "https://www.chmi.cz/namerena-data/webkamery/",
+        "https://www.chmi.cz/namerena-data/webkamery*",
         "https://www.chmi.cz/namerena-data/webkamera/*",
         "https://www.chmi.cz/meteogram/*",
-        "https://www.chmi.cz/predpoved-pocasi/dnes",
-        "https://www.chmi.cz/predpoved-pocasi/dnes/",
-        "https://www.chmi.cz/predpoved-pocasi/zitra",
-        "https://www.chmi.cz/predpoved-pocasi/zitra/",
-        "https://www.chmi.cz/predpoved-pocasi/pozitri",
-        "https://www.chmi.cz/predpoved-pocasi/pozitri/",
-        "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa",
-        "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa/",
-        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr",
-        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr/",
-        "https://hydro.chmi.cz/hppsoldv/main_rain.php"
+        "https://www.chmi.cz/predpoved-pocasi/dnes*",
+        "https://www.chmi.cz/predpoved-pocasi/zitra*",
+        "https://www.chmi.cz/predpoved-pocasi/pozitri*",
+        "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa*",
+        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr*",
+        "https://hydro.chmi.cz/hppsoldv/main_rain.php*",
+        "https://www.chmi.cz/predpoved-pocasi/synopticka-situace*",
+        "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa*",
+        "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum*",
+        "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke*",
+        "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*"
       ],
       "css": [
         "navigation.css",

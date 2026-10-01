@@ -36,6 +36,16 @@ test("userscript builder includes the forecast adapter and its CSS", () => {
   assert.match(source, /\$\{forecastCss/);
   assert.match(source, /\$\{rainfallJs/);
   assert.match(source, /\$\{rainfallCss/);
+  assert.match(source, /\$\{synopticJs/);
+  assert.match(source, /\$\{synopticCss/);
+  assert.match(source, /\$\{sondeJs/);
+  assert.match(source, /\$\{sondeCss/);
+  assert.match(source, /\$\{klementinumJs/);
+  assert.match(source, /\$\{klementinumCss/);
+  assert.match(source, /\$\{stationsJs/);
+  assert.match(source, /\$\{stationsCss/);
+  assert.match(source, /\$\{ticksJs/);
+  assert.match(source, /\$\{ticksCss/);
 });
 test("embedded URLs preserve application settings and bind a session", () => {
   const url = new URL(registry.frameURL("meteosat", "test-session"));
@@ -93,6 +103,80 @@ test("rainfall native query links stay on the exact old-viewer page", () => {
   }
   assert.equal(registry.embeddedContext(new URL("https://hydro.chmi.cz/hppsoldv/hpps_act_rain.php"), name), null);
 });
+test("sonde directory opens only measured Praha-Libuš data, not the forecast pseudosonde", () => {
+  assert.equal(registry.columns[2][7].app, "sonde");
+  const app = registry.get("sonde");
+  assert.equal(app.url, "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa");
+  const framed = new URL(registry.frameURL("sonde", "test-session"));
+  assert.equal(registry.embeddedContext(framed, registry.frameName("sonde", "test-session"))?.id, "sonde");
+  for (const url of [
+    "https://www.chmi.cz/letectvi/sportovni/11520-praha-libus-pseudosondaz-emagram-100hpa",
+    "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-500hpa",
+    "https://evil.test/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa"
+  ]) assert.equal(registry.embeddedContext(new URL(url), registry.frameName("sonde", "test-session")), null);
+});
+test("Klementinum directory opens only the verified live station detail", () => {
+  assert.equal(registry.columns[3][2].app, "klementinum");
+  const app = registry.get("klementinum");
+  assert.equal(app.url, "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum");
+  const framed = new URL(registry.frameURL("klementinum", "test-session"));
+  assert.equal(registry.embeddedContext(framed, registry.frameName("klementinum", "test-session"))?.id, "klementinum");
+  for (const url of [
+    "https://www.chmi.cz/namerena-data/historicka-data/klementinum",
+    "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/l3aber01-abertamy",
+    "https://evil.test/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum"
+  ]) assert.equal(registry.embeddedContext(new URL(url), registry.frameName("klementinum", "test-session")), null);
+});
+test("meteorological station directory uses the verified native station map", () => {
+  assert.equal(registry.columns[3].at(-1).app, "stations");
+  const app = registry.get("stations");
+  assert.equal(app.url, "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke");
+  const framed = new URL(registry.frameURL("stations", "test-session"));
+  assert.equal(registry.embeddedContext(framed, registry.frameName("stations", "test-session"))?.id, "stations");
+  for (const url of [
+    "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/ovzdusi",
+    "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/l3aber01-abertamy",
+    "https://evil.test/namerena-data/umisteni-mericich-stanic/meteorologicke"
+  ]) assert.equal(registry.embeddedContext(new URL(url), registry.frameName("stations", "test-session")), null);
+});
+test("tick activity directory uses only the official live three-day map", () => {
+  assert.equal(registry.columns[1].at(-1).app, "ticks");
+  const app = registry.get("ticks");
+  assert.equal(app.url, "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat");
+  const framed = new URL(registry.frameURL("ticks", "test-session"));
+  assert.equal(registry.embeddedContext(framed, registry.frameName("ticks", "test-session"))?.id, "ticks");
+  for (const url of [
+    "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-komaru",
+    "https://info.chmi.cz/bio/mapy.php?type=kliste",
+    "https://evil.test/predpoved-pocasi/rizika/aktivita-klistat"
+  ]) assert.equal(registry.embeddedContext(new URL(url), registry.frameName("ticks", "test-session")), null);
+});
+test("lightning opens the official radar in a distinct old-look mode", () => {
+  assert.equal(registry.columns[2][3].app, "lightning");
+  const standalone = new URL(registry.get("lightning").url);
+  assert.equal(standalone.origin, "https://produkty.chmi.cz");
+  assert.equal(standalone.pathname, "/radar/");
+  assert.equal(standalone.searchParams.get("chmi_classic_lightning"), "1");
+  const framed = new URL(registry.frameURL("lightning", "test-session"));
+  assert.equal(framed.searchParams.get("chmi_classic_lightning"), "1");
+  assert.equal(registry.embeddedContext(framed, registry.frameName("lightning", "test-session"))?.id, "lightning");
+  assert.equal(registry.matches("radar", framed), false);
+  assert.equal(registry.matches("lightning", new URL("https://produkty.chmi.cz/radar/")), false);
+  assert.equal(registry.matches("lightning", new URL("https://evil.test/radar/?chmi_classic_lightning=1")), false);
+});
+test("ALADIN animation and four-map viewer have distinct routes on the same official app", () => {
+  assert.equal(registry.columns[1][0].app, "aladin-animation");
+  assert.equal(registry.columns[1][1].app, "aladin");
+  const standalone = new URL(registry.get("aladin-animation").url);
+  assert.equal(standalone.origin, "https://produkty.chmi.cz");
+  assert.equal(standalone.pathname, "/aladin/");
+  assert.equal(standalone.searchParams.get("chmi_classic_animation"), "1");
+  const framed = new URL(registry.frameURL("aladin-animation", "test-session"));
+  assert.equal(registry.embeddedContext(framed, registry.frameName("aladin-animation", "test-session"))?.id, "aladin-animation");
+  assert.equal(registry.matches("aladin", framed), false);
+  assert.equal(registry.matches("aladin-animation", new URL("https://produkty.chmi.cz/aladin/")), false);
+  assert.equal(registry.matches("aladin-animation", new URL("https://evil.test/aladin/?chmi_classic_animation=1")), false);
+});
 test("readiness messages require exact origin, frame, app and session", () => {
   const source = {};
   const frame = { contentWindow: source };
@@ -103,6 +187,23 @@ test("readiness messages require exact origin, frame, app and session", () => {
   assert.equal(registry.accepts(event, frame, "radar", "old-session"), false);
   assert.equal(registry.accepts(event, null, "radar", "test-session"), false);
   assert.equal(registry.accepts(event, frame, "meteosat", "test-session"), false);
+});
+test("embedded Úvod returns to the classic portal only for a genuine home link", () => {
+  assert.equal(registry.isHomeLink(new URL("https://www.chmi.cz/uvod")), true);
+  assert.equal(registry.isHomeLink(new URL("https://www.chmi.cz/?t=123")), true);
+  for (const href of ["https://www.chmi.cz/namerena-data", "https://evil.test/uvod", "http://www.chmi.cz/"]) {
+    assert.equal(registry.isHomeLink(new URL(href)), false);
+  }
+  const source = {};
+  const frame = { contentWindow: source };
+  const event = { source, origin: "https://produkty.chmi.cz", data: {
+    type: "chmi-classic-navigate", app: "aladin-animation", session: "test-session", target: "home"
+  } };
+  assert.equal(registry.acceptsNavigation(event, frame, "aladin-animation", "test-session"), true);
+  assert.equal(registry.acceptsNavigation({ ...event, origin: "https://evil.test" }, frame, "aladin-animation", "test-session"), false);
+  assert.equal(registry.acceptsNavigation({ ...event, source: {} }, frame, "aladin-animation", "test-session"), false);
+  assert.equal(registry.acceptsNavigation({ ...event, data: { ...event.data, target: "https://evil.test/" } }, frame, "aladin-animation", "test-session"), false);
+  assert.equal(registry.acceptsNavigation(event, frame, "aladin-animation", "other-session"), false);
 });
 test("every old-directory entry has a known adapter or a reason and no URL", () => {
   for (const item of [...registry.columns.flat(), ...registry.supplementary]) {

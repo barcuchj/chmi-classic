@@ -256,6 +256,21 @@ html.chmi-aladin-classic .chmi-aladin-classic-time-control small {
   white-space: normal;
 }
 
+html.chmi-aladin-classic .chmi-aladin-classic-playback {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+html.chmi-aladin-classic .chmi-aladin-classic-playback label {
+  font-weight: bold;
+}
+
+html.chmi-aladin-classic .chmi-aladin-classic-playback select {
+  width: 90px;
+}
+
 html.chmi-aladin-classic .chmi-aladin-classic-status {
   grid-column: 1 / -1;
   min-height: 16px;

@@ -1,0 +1,114 @@
+/* Preserve ČHMÚ's live replay and its native time-slider; only change its layout. */
+html.chmi-synoptic-classic,
+html.chmi-synoptic-classic body {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #87c4d3;
+}
+html.chmi-synoptic-classic body > :not(#chmi-synoptic-workspace) { display: none !important; }
+html.chmi-synoptic-classic #chmi-synoptic-workspace {
+  position: fixed;
+  inset: 5px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #86a8b8;
+  background: #f2f5ee;
+  color: #153d6d;
+  font: 12px/1.35 Verdana, Arial, sans-serif;
+}
+html.chmi-synoptic-classic #chmi-synoptic-classic-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 5px 9px;
+  border-bottom: 1px solid #a4bdc8;
+  background: #edf6f8;
+}
+html.chmi-synoptic-classic #chmi-synoptic-classic-brand strong { font-size: 13px; }
+html.chmi-synoptic-classic #chmi-synoptic-classic-brand span { color: #586a70; }
+html.chmi-synoptic-classic #chmi-synoptic-classic-brand button {
+  margin-left: auto;
+  padding: 3px 8px;
+  border: 1px solid #8caebe;
+  background: #fff;
+  color: #16466e;
+  cursor: pointer;
+  font: inherit;
+}
+html.chmi-synoptic-classic #chmi-synoptic-workspace > .portlet,
+html.chmi-synoptic-classic #chmi-synoptic-workspace > .portlet .portlet-content,
+html.chmi-synoptic-classic #chmi-synoptic-workspace > .portlet .portlet-content-container,
+html.chmi-synoptic-classic #chmi-synoptic-workspace > .portlet .portlet-body {
+  box-sizing: border-box;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0;
+  min-height: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html.chmi-synoptic-classic #chmi-synoptic-workspace .portlet-header { display: none !important; }
+html.chmi-synoptic-classic #chmi-playabledata {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0;
+  min-height: 0;
+  padding: 6px;
+  background: #f2f5ee;
+}
+html.chmi-synoptic-classic #chmi-timeline {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 3px 8px !important;
+  border: 1px solid #b5c8cd;
+  background: #e8f1f1;
+}
+html.chmi-synoptic-classic #chmi-playableimage-container {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #b5c8cd !important;
+  background: #fff;
+}
+html.chmi-synoptic-classic #chmi-playableimage-container > .playabledata-content-container,
+html.chmi-synoptic-classic #chmi-playableimage-container > #chmi-playableimage-error {
+  box-sizing: border-box;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0;
+  min-height: 0;
+}
+html.chmi-synoptic-classic .playabledata-content-container { text-align: center; }
+html.chmi-synoptic-classic .playabledata-content-container img.chmi-playableimage-img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+html.chmi-classic-embedded.chmi-synoptic-classic #chmi-synoptic-workspace { inset: 0; border: 0; }
+html.chmi-classic-embedded.chmi-synoptic-classic #chmi-synoptic-classic-brand { display: none; }
+@media (max-width: 600px) {
+  html.chmi-synoptic-classic #chmi-synoptic-classic-brand span { display: none; }
+  html.chmi-synoptic-classic #chmi-playabledata { padding: 2px; }
+  html.chmi-synoptic-classic #chmi-timeline { padding: 2px !important; }
+}

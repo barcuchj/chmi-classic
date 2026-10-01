@@ -1,0 +1,144 @@
+/* Archive-inspired shell around the still-live ČHMÚ station map. */
+html.chmi-stations-classic,
+html.chmi-stations-classic body {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background: #89bed0;
+}
+html.chmi-stations-classic body > :not(#chmi-stations-workspace) { display: none !important; }
+html.chmi-stations-classic #chmi-stations-workspace {
+  position: fixed;
+  inset: 3px;
+  z-index: 1000;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #7da5b5;
+  background: #fff;
+  color: #123d62;
+  font: 12px/1.35 Verdana, Arial, sans-serif;
+}
+html.chmi-stations-classic #chmi-stations-classic-brand {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px 12px;
+  min-width: 0;
+  padding: 5px 9px;
+  border-bottom: 1px solid #a6c0cb;
+  background: #e4f0f4;
+}
+html.chmi-stations-classic #chmi-stations-classic-brand h1 {
+  margin: 0 !important;
+  color: #17456b !important;
+  font: bold 15px/1.3 Verdana, Arial, sans-serif !important;
+}
+html.chmi-stations-classic #chmi-stations-classic-brand span { color: #536f7b; }
+html.chmi-stations-classic #chmi-stations-classic-brand button {
+  margin-left: auto;
+  padding: 3px 8px;
+  border: 1px solid #85abbc;
+  background: #fff;
+  color: #17456b;
+  cursor: pointer;
+  font: inherit;
+}
+html.chmi-stations-classic #chmi-stations-classic-brand button:focus-visible,
+html.chmi-stations-classic .ol-menu a:focus-visible {
+  outline: 2px solid #13577f;
+  outline-offset: 2px;
+}
+
+/* Preserve the map portlet and all native markers, layers, popups and events. */
+html.chmi-stations-classic #chmi-stations-workspace .portlet-boundary_ChmiMapComponent_,
+html.chmi-stations-classic #chmi-stations-workspace .portlet,
+html.chmi-stations-classic #chmi-stations-workspace .portlet-content,
+html.chmi-stations-classic #chmi-stations-workspace .portlet-content-container,
+html.chmi-stations-classic #chmi-stations-workspace .portlet-body,
+html.chmi-stations-classic #chmi-stations-workspace .portlet-body > div,
+html.chmi-stations-classic #chmi-stations-workspace #chmu-map-container,
+html.chmi-stations-classic #chmi-stations-workspace .chmu-map-component,
+html.chmi-stations-classic #chmi-stations-workspace .chmu-map-query-container,
+html.chmi-stations-classic #chmi-stations-workspace .chmu--map--container {
+  box-sizing: border-box;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html.chmi-stations-classic #chmi-stations-workspace .portlet-header { display: none !important; }
+html.chmi-stations-classic #chmi-stations-workspace .ol-viewport { width: 100% !important; height: 100% !important; }
+
+/* The old viewer's compact left-hand layer list, using current official filters. */
+html.chmi-stations-classic #chmi-stations-workspace .ol-menu {
+  box-sizing: border-box;
+  left: 8px !important;
+  right: auto !important;
+  top: 54px !important;
+  width: 205px !important;
+  height: auto !important;
+  max-height: calc(100% - 62px) !important;
+  padding: 4px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  border: 1px solid #a2b9c1;
+  border-radius: 0;
+  background: rgb(255 255 255 / 94%);
+  box-shadow: 0 1px 5px rgb(0 0 0 / 18%);
+  scrollbar-width: thin;
+}
+html.chmi-stations-classic #chmi-stations-workspace .ol-menu .inner-wrapper {
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+html.chmi-stations-classic #chmi-stations-workspace .ol-menu-button {
+  min-height: 29px;
+  width: 100%;
+  padding: 2px 5px;
+  border-bottom: 1px solid #a2b9c1;
+  color: #17456b;
+  font: bold 12px Verdana, Arial, sans-serif;
+}
+html.chmi-stations-classic #chmi-stations-workspace .ol-menu .menu--ul {
+  margin: 0 !important;
+  padding: 2px 0 !important;
+  list-style: none;
+}
+html.chmi-stations-classic #chmi-stations-workspace .ol-menu .menu--item {
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html.chmi-stations-classic #chmi-stations-workspace .ol-menu .menu-item-header {
+  min-height: 24px !important;
+  padding: 3px 6px !important;
+  color: #173d69 !important;
+  font: 11px/1.35 Verdana, Arial, sans-serif !important;
+}
+html.chmi-stations-classic #chmi-stations-workspace .ol-menu .menu--item.__selected > .menu-item-header {
+  background: #d4e9ef !important;
+  color: #0c466b !important;
+  font-weight: bold !important;
+}
+html.chmi-stations-classic #chmi-stations-workspace .ol-menu .menu--item--text { white-space: normal; }
+
+@media (max-width: 700px) {
+  html.chmi-stations-classic #chmi-stations-classic-brand { gap: 2px 6px; padding: 3px 5px; }
+  html.chmi-stations-classic #chmi-stations-classic-brand h1 { font-size: 12px !important; }
+  html.chmi-stations-classic #chmi-stations-classic-brand span { display: none; }
+  html.chmi-stations-classic #chmi-stations-workspace .ol-menu {
+    width: min(155px, 44vw) !important;
+    max-height: min(58%, 390px) !important;
+  }
+  html.chmi-stations-classic #chmi-stations-workspace .ol-menu .menu-item-header { font-size: 10px !important; }
+}

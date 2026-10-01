@@ -63,6 +63,20 @@ test("3-hour stepping and wheel direction stay bounded", () => {
   assert.equal(wheelDirection(-120, 0), -1);
   assert.equal(wheelDirection(2, 1), 0);
 });
+test("animation preset and playback use live native rows without generating forecast URLs", () => {
+  const { productPreset, nextAnimationIndex, animationDelay } = loadHooks();
+  assert.deepEqual([...productPreset(false)], ["T", "C", "R3", "W"]);
+  assert.deepEqual([...productPreset(true)], ["T"]);
+  assert.equal(nextAnimationIndex(0, 3), 1);
+  assert.equal(nextAnimationIndex(2, 3), 0);
+  assert.equal(nextAnimationIndex(0, 0), 0);
+  assert.equal(animationDelay("slow"), 1800);
+  assert.equal(animationDelay("normal"), 900);
+  assert.equal(animationDelay("fast"), 450);
+  assert.equal(animationDelay("unknown"), 900);
+  assert.match(source, /timeRows\(\)/);
+  assert.doesNotMatch(source, /getMaps\.php/);
+});
 
 test("map layout maximizes complete maps without cropping at wide and tall sizes", () => {
   const { mapLayout } = loadHooks();

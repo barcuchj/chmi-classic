@@ -2,6 +2,10 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [ ] Nainstalovat beta 19 do běžného Chromu a vizuálně ověřit úvod s URL
+  parametry, webkamery s polohou v URL, krajské ikony při změně šířky okna
+  a návrat odkazem Úvod z aplikace v centrálním panelu. Automatické testy
+  pokrytí URL a logiky jsou hotové; instalovaná beta 18 tyto opravy neobsahuje.
 - [ ] Chrome/Edge doplněk a Tampermonkey userscript mají ze společných zdrojů
   zobrazovat stejný klasický vzhled, navigaci a ovládání každé skutečně
   podporované aplikace ČHMÚ, v samostatné záložce i centrálním panelu.
@@ -227,10 +231,35 @@ aplikace ve starém rozhraní s ověřeným ovládáním a rozložením.
   ověřit nově vytvořené živé adaptéry v instalovaném userscriptu. Beta 8
   používá doložené aktuální mapy a skrývá okolní dlouhé články; živý DOM
   obou map byl ověřen 28. 9., ale vizuální QA této bety čeká na instalaci.
-- [ ] Měření z Klementina: původní rozcestník dokládá položku, ale ne obsah
-  její cílové stránky. Současná oficiální stránka stanice a historická data
-  umožňují živou adaptaci; před aktivací odkazu navrhnout a ověřit starý
-  vzhled, oddělit operativní měření od historických řad a zkontrolovat licenci.
+- [x] Měření z Klementina: původní rozcestník dokládá položku, ale ne obsah
+  cílové stránky. Živý DOM stanice (záložky a tabulka s řádky) ověřen 1. 10.;
+  kompaktní adaptér propojen s rozcestníkem, userscriptem a Chrome manifestem.
+  Archivní portálový snapshot `20260512095825` vrací chybu obsahu a Wayback
+  nemá zachycený statický prefix `meteo/ok/klementinum/*`, takže nejde o
+  věrnou kopii cílové stránky.
+- [ ] Klementinum: instalačně a vizuálně ověřit adaptér ve vloženém panelu
+  i samostatně na široké a úzké obrazovce, přepnutí záložek, historii a
+  případné vnitřní posuvníky. Teprve poté považovat aplikaci za hotovou.
+  Rozpracovaný lokální adaptér nad živými záložkami a tabulkou prošel
+  vývojovou kontrolou 1280×720 a 390×844 bez celostránkového scrollu;
+  nativní přepnutí Teplota/Historická data funguje. Nejde o instalovaný
+  userscript ani Chrome balíček: před aktivací je nutné dokončit začlenění,
+  ověřit oba balíčky a oddělit operativní měření od dlouhých historických řad.
+- [x] Meteorologické stanice: archivní mapa `ShowStations_CZ.html` a současná
+  oficiální mapa byly zkontrolovány 1. 10.; položka rozcestníku je napojena
+  na kompaktní adaptér sdílený userscriptem a Chrome/Edge. Živá mapa zachovává
+  nativní filtry Vše, Teplota, Srážky, Sníh, Vítr a Synop. Historické jemnější
+  členění typů stanic a veličin není v této adaptaci obnovené.
+- [ ] Meteorologické stanice: instalačně a vizuálně ověřit samostatné zobrazení
+  i vložený panel, body mapy, filtry a případný overflow při širokém a úzkém
+  okně. Teprve potom označit aplikaci za hotovou.
+- [x] Aktivita klíšťat: archivní externí viewer `info.chmi.cz/bio/mapy.php`
+  ověřen jako třídenní obrazová mapa; původní URL dnes přesměrovává na
+  oficiální živou mapu. Beta 18 má adaptér nad nativní mapou a časovou osou,
+  sdílený userscriptem a Chrome/Edge.
+- [ ] Aktivita klíšťat: instalačně a vizuálně ověřit mapu, tři dny, přehrávání,
+  vrstvy, legendu a nepřítomnost celostránkového scrollu ve vloženém panelu
+  i samostatně, na širokém i úzkém okně.
 - [ ] Ověřit webkamery v nainstalovaném userscriptu a Chrome/Edge rozšíření:
   přehled ČR, filtr, výběr, detail se snímkem a časovou osou, rozložení v panelu
   i samostatně a šířky desktop/mobil. Teprve potom označit rekonstrukci hotovou.
@@ -254,13 +283,16 @@ aplikace ve starém rozhraní s ověřeným ovládáním a rozložením.
   Hash, datový tok a ovladače doloženy v ignorovaném
   `.build/archive-reference-20260926/lightning/MANIFEST.md`. CSS a datový
   iframe jsou 404; meteorologické snímky nejsou součástí reference.
-- [ ] Blesky: podle uloženého vieweru ověřit a obnovit staré ovladače nad
-  současnými oficiálními daty; adresářový PNG backend archivu nepředpokládat
-  u dnešní aplikace. Živě ověřená stránka ČHMÚ 29. 9. nabízí vrstvu
-  Radar a Blesky; pokročilý radar má výchozí MAX Z(mask) + blesky a dvě
-  průhlednosti. Samostatný CELDN produkt a sdílitelný preset ale ověřeny
-  nejsou, takže položka v rozcestníku zůstává neaktivní. Zvlášť ověřit
-  polohu/kříž, snímky a rozložení bez scrollu.
+- [x] Beta 12: položka Detekce blesků má vlastní režim živého radaru ČHMÚ.
+  Nativní produkt `maxz_mask-li`, dvě průhlednosti a nejnovější skutečně
+  dostupný bleskový snímek byly ověřeny 30. 9. v builtin browseru. Stejný
+  zdroj úpravy používá userscript i Chrome; URL parametr je lokální přepínač
+  adaptace, nikoli oficiální sdílitelný preset ČHMÚ.
+- [ ] Blesky: obnovit další staré ovladače podle uloženého vieweru (polohu,
+  kříž a práci se snímky), ověřit adaptovaný vzhled bez scrollu v panelu i
+  samostatně a provést instalační test obou variant. Současná aktivní položka
+  není úplnou rekonstrukcí původního samostatného CELDN vieweru. Historický
+  PNG backend ani neověřenou licenci nepřebírat.
 - [ ] Radarové odhady srážek: původní odkaz na homepage vede na dodnes živý
   HPPS viewer `https://hydro.chmi.cz/hppsoldv/main_rain.php` s nativními
   intervaly 1/3/6/24 h, variantami i časovou řadou. Adaptér, přesné Chrome
@@ -277,9 +309,12 @@ aplikace ve starém rozhraní s ověřeným ovládáním a rozložením.
   s vlastním inline JS, pěti typy grafů a termíny. Hash a datový tok v
   `.build/archive-reference-20260926/sonde/MANIFEST.md`; CSS a obrazový
   backend jsou v daném replay 404. Nejde o hotovou aplikaci userscriptu.
-- [ ] Sondáže: ověřit současné oficiální grafy a tabulku hladin a obnovit
-  doložené typy/termíny ve starém uspořádání. Nepředpokládat, že moderní
-  web používá stejný adresář PNG; ověřit i dynamické rozložení bez ořezu.
+- [x] Sondáže: ověřena oficiální měřená stránka Praha-Libuš (oddělená od
+  pseudosondáže), dva nativní přehrávače a nabídka grafů včetně ASCII tabulky.
+  Přesný živý cíl je v `ARCHIVE_RESEARCH.md`; starý adresář PNG se nepředpokládá.
+- [ ] Sondáže: instalačně a vizuálně ověřit kompaktní adaptér v userscriptu
+  a Chrome, v panelu i samostatné záložce, na širokém i úzkém okně; zkontrolovat
+  živé přepínání produktu, termínu, čitelnost a scroll bez ořezu.
 - [x] Archiv družic: 26. 9. 2026 skutečně uloženy oba uživatelem zadané
   MSG/AVHRR viewery s inline JS, dostupné CSS a overLIB. Čtyři hashově
   ověřené soubory v `.build/archive-reference-20260926/satellite/MANIFEST.md`.
@@ -388,13 +423,32 @@ aplikace ve starém rozhraní s ověřeným ovládáním a rozložením.
   Jde o samostatnou živou stránku, nikoli instalaci Tampermonkey či iframe.
 - [ ] ALADIN: vizuálně ověřit novou nabídku a rozložení v nainstalovaném
   userscriptu, v centrálním panelu i samostatně a na úzkém okně. Archivní
-  animace měla také volbu polohy, rychlosti a uložení nastavení; tyto funkce
-  nejsou tímto výběrem obnovené.
+  animace měla také volbu polohy, rychlosti a uložení nastavení; beta13 má
+  samostatnou animaci živých tříhodinových termínů, jednu výchozí mapu,
+  přehrání/pauzu a tři rychlosti. Polohu a uložení nastavení zatím neobnovuje;
+  animaci je nutné ověřit v instalovaném userscriptu i Chrome doplňku.
+  Ostatní historické funkce nejsou tímto výběrem obnovené.
 - [x] Zapojit výchozí mapu ČR s živou předpovědí, nikoli archivními teplotami;
   zbývající vizuální a instalační kontrola je v části Úvodní předpovědní mapa výše.
 - [x] Voda/Ovzduší: zapojit současné oficiální živé mapy do centrálního panelu a přidat old-portal obal bez nahrazení `#chmu-map-container` nebo nativního ovládání.
 - [ ] Voda/Ovzduší: po instalaci ověřit živý DOM, vrstvy/ovladače, změnu velikosti a chování v menším okně; poté teprve označit rekonstrukci za vizuálně ověřenou.
 - [ ] Postupně rekonstruovat další položky původního rozcestníku podle archivních HTML/JS a ověřených živých zdrojů; pouhý moderní odkaz není hotovo.
+- [x] Archivně rozlišit „Aktuální mapy“ od mapových aplikací: capture
+  20260825190505 obsahuje prázdnou kategoriální stránku (nadpis + HOME),
+  zatímco radar+srážkoměry, ozon/UV a sníh jsou samostatné položky navigace.
+  Detail a URL jsou v `ARCHIVE_RESEARCH.md`; nepřipisovat kategorii vymyšlený
+  viewer ani ji vydávat za obnovenou datovou aplikaci.
+- [ ] Grafy automatických stanic: podle ověřeného capture 20260628160924
+  obnovit výběr sedmi poboček a konkrétních stanic nad dnešními oficiálními
+  grafy. Nejdřív ověřit živý cíl pro každou pobočku a skutečnou dostupnost
+  grafů; historický text o 10min/30min aktualizaci není záruka dnešního rytmu.
+- [x] Synoptická situace: rozlišena od původní synoptické předpovědi; adaptér
+  propojen se současným nativním tříkrokovým přehrávačem map ČHMÚ bez kopie
+  datového zdroje. Ve vestavěném prohlížeči ověřen živý obraz a přepnutí
+  časového posuvníku.
+- [ ] Synoptická situace: instalačně a vizuálně ověřit nový intranetový obal
+  v Tampermonkey i Chrome, v centrálním iframe i samostatně, na širokém
+  a úzkém okně; zkontrolovat čitelnost mapy a absenci scrollu celé stránky.
 - [ ] Prozkoumat uložené referenční HTML/JS/CSS v .build/archive-reference-20260920;
   nepřebírat neověřenou licenci ani staré závislosti do distribuovaného kódu.
 - [x] Chrome/Edge zdroje a manifest synchronizovány pro podporované aplikace;

@@ -7,9 +7,16 @@
   const apps = {
     forecast: { title: "Počasí v České republice – předpověď", url: "https://www.chmi.cz/predpoved-pocasi/dnes", family: "forecast", section: "weather" },
     radar: { title: "Aktuální radarová data", url: "https://produkty.chmi.cz/radar/", family: "radar", section: "weather" },
+    lightning: { title: "Detekce blesků – živá vrstva radaru", url: "https://produkty.chmi.cz/radar/?chmi_classic_lightning=1", family: "radar", section: "weather" },
     rainfall: { title: "Radarové odhady srážek", url: "https://hydro.chmi.cz/hppsoldv/main_rain.php", family: "rainfall", section: "weather" },
+    synoptic: { title: "Synoptická situace", url: "https://www.chmi.cz/predpoved-pocasi/synopticka-situace", family: "synoptic", section: "weather" },
+    sonde: { title: "Sondážní měření – Praha-Libuš", url: "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa", family: "sonde", section: "weather" },
+    klementinum: { title: "Měření z Klementina", url: "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum", family: "klementinum", section: "weather" },
+    stations: { title: "Meteorologické stanice ČHMÚ", url: "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke", family: "stations", section: "weather" },
+    ticks: { title: "Aktivita klíšťat", url: "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat", family: "ticks", section: "weather" },
     meteosat: { title: "Snímky z družic MSG / Meteosat", url: "https://produkty.chmi.cz/druzice/?time_range=24", family: "satellite", section: "weather" },
     aladin: { title: "ALADIN – mapy", url: "https://produkty.chmi.cz/aladin/", family: "aladin", section: "weather" },
+    "aladin-animation": { title: "ALADIN – animace", url: "https://produkty.chmi.cz/aladin/?chmi_classic_animation=1", family: "aladin", section: "weather" },
     meteogram: { title: "ALADIN – meteogramy", url: "https://www.chmi.cz/meteogram/355-praha", family: "meteogram", section: "weather" },
     webcams: { title: "Webové kamery", url: "https://www.chmi.cz/namerena-data/webkamery", family: "webcams", section: "weather" },
     polar: { title: "Snímky z polárních družic", url: "https://www.chmi.cz/namerena-data/polarni-druzice/true-color", family: "polar", section: "weather" },
@@ -21,9 +28,9 @@
   const pending = (label, reason = "Původní zobrazení této aplikace zatím není obnoveno. Samotný odkaz na nový web nepovažujeme za rekonstrukci.") => ({ label, reason });
   const columns = [
     [{ label: "Předpověď pro ČR", app: "forecast" }, ...["Předpovědi pro kraje", "Týdenní předpověď", "Měsíční výhled", "Synoptická předpověď", "Bio předpověď", "Počasí pro létání", "Sněhové zpravodajství", "Předpovědi pro hory"].map(label => pending(label))],
-    [{ label: "Aladin – animace", app: "aladin" }, { label: "Aladin – mapy", app: "aladin" }, { label: "Aladin – meteogramy", app: "meteogram" }, ...["Přehled počasí v ČR", "Synoptická situace", "Ozonové zpravodajství", "Družicová měření ozonu", "Pylový semafor", "Aktivita klíšťat"].map(label => pending(label))],
-    [{ label: "Aktuální radarová data", app: "radar" }, { label: "Snímky z družic MSG", app: "meteosat" }, { label: "Snímky z družic NOAA", app: "polar" }, pending("Detekce blesků"), { label: "Radarové odhady srážek", app: "rainfall" }, ...["Aktuální mapy", "Grafy automat. stanic", "Sondážní měření", "Počasí a kůrovec"].map(label => pending(label))],
-    [{ label: "Webové kamery", app: "webcams" }, ...["Meteo zprávy – Infomet", "Měření z Klementina", "Mapa zatížení sněhem", "Nalezli jste radiosondu?", "Vertikální profily větru", "Monitoring sucha", "Meteorologické stanice"].map(label => pending(label))]
+    [{ label: "Aladin – animace", app: "aladin-animation" }, { label: "Aladin – mapy", app: "aladin" }, { label: "Aladin – meteogramy", app: "meteogram" }, pending("Přehled počasí v ČR"), { label: "Synoptická situace", app: "synoptic" }, ...["Ozonové zpravodajství", "Družicová měření ozonu", "Pylový semafor"].map(label => pending(label)), { label: "Aktivita klíšťat", app: "ticks" }],
+    [{ label: "Aktuální radarová data", app: "radar" }, { label: "Snímky z družic MSG", app: "meteosat" }, { label: "Snímky z družic NOAA", app: "polar" }, { label: "Detekce blesků", app: "lightning" }, { label: "Radarové odhady srážek", app: "rainfall" }, pending("Aktuální mapy"), pending("Grafy automat. stanic"), { label: "Sondážní měření", app: "sonde" }, pending("Počasí a kůrovec")],
+    [{ label: "Webové kamery", app: "webcams" }, pending("Meteo zprávy – Infomet"), { label: "Měření z Klementina", app: "klementinum" }, ...["Mapa zatížení sněhem", "Nalezli jste radiosondu?", "Vertikální profily větru", "Monitoring sucha"].map(label => pending(label)), { label: "Meteorologické stanice", app: "stations" }]
   ];
   const supplementary = [{ label: "Geostacionární družice", app: "geo" }, { label: "Pravděpodobnost růstu hub", app: "mushrooms" }];
   const normalPath = path => path.replace(/\/+$/, "") || "/";
@@ -33,6 +40,9 @@
     isHomepage(url) {
       return ["www.chmi.cz", "chmi.cz"].includes(url.hostname) && ["/", "/uvod"].includes(normalPath(url.pathname));
     },
+    isHomeLink(url) {
+      return url.protocol === "https:" && this.isHomepage(url);
+    },
     matches(id, url) {
       const app = this.get(id);
       if (!app) return false;
@@ -40,6 +50,12 @@
       if (id === "forecast" && url.origin === target.origin) return /^\/predpoved-pocasi\/(dnes|zitra|pozitri)\/?$/.test(url.pathname);
       if (id === "meteogram" && url.origin === target.origin) return /^\/meteogram\/\d+-[a-z0-9-]+\/?$/.test(url.pathname);
       if (id === "webcams" && url.origin === target.origin && /^\/namerena-data\/webkamera\/[a-z0-9_-]+\/?$/.test(url.pathname)) return true;
+      if (id === "radar" || id === "lightning") return url.origin === target.origin &&
+        normalPath(url.pathname) === normalPath(target.pathname) &&
+        (url.searchParams.get("chmi_classic_lightning") === "1") === (id === "lightning");
+      if (id === "aladin" || id === "aladin-animation") return url.origin === target.origin &&
+        normalPath(url.pathname) === normalPath(target.pathname) &&
+        (url.searchParams.get("chmi_classic_animation") === "1") === (id === "aladin-animation");
       return url.origin === target.origin && normalPath(url.pathname) === normalPath(target.pathname);
     },
     frameURL(id, session) {
@@ -77,6 +93,12 @@
         event.origin === new URL(app.url).origin && event.data?.type === "chmi-classic-status" &&
         event.data.session === session && event.data.app === id &&
         ["ready", "loading"].includes(event.data.state));
+    },
+    acceptsNavigation(event, frame, id, session) {
+      const app = this.get(id);
+      return Boolean(app && frame && event.source === frame.contentWindow &&
+        event.origin === new URL(app.url).origin && event.data?.type === "chmi-classic-navigate" &&
+        event.data.session === session && event.data.app === id && event.data.target === "home");
     }
   };
   globalThis.__chmiClassicApps = Object.freeze(registry);

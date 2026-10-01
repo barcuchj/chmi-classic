@@ -207,7 +207,13 @@
       }, 25000);
     }
     const onMessage = event => {
-      if (root.isConnected && registry.accepts(event, frame, current, session)) setStatus(event.data.state);
+      if (!root.isConnected) return;
+      if (registry.acceptsNavigation(event, frame, current, session)) {
+        if (location.hash !== "#classic=forecast") location.hash = "#classic=forecast";
+        else selectSection("weather");
+        return;
+      }
+      if (registry.accepts(event, frame, current, session)) setStatus(event.data.state);
     };
     const onHash = () => {
       if (!root.isConnected) return;

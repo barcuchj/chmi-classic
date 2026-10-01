@@ -65,6 +65,20 @@ test("forecast map aspect ratio comes from validated native SVG geometry", () =>
   }
 });
 
+test("forecast cards follow the rendered centre of their own region after resizing", () => {
+  const { regionCardCenter } = forecastCore();
+  assert.deepEqual({ ...regionCardCenter(
+    { left: 620, top: 340, width: 160, height: 100 },
+    { left: 200, top: 100, width: 900, height: 600 }
+  ) }, { left: 500, top: 290 });
+  assert.deepEqual({ ...regionCardCenter(
+    { left: 410, top: 250, width: 80, height: 50 },
+    { left: 100, top: 50, width: 650, height: 400 }
+  ) }, { left: 350, top: 225 });
+  assert.equal(regionCardCenter({ left: 0, top: 0, width: 0, height: 10 },
+    { left: 0, top: 0, width: 100, height: 100 }), null);
+});
+
 test("forecast initialization waits for native checked property after DOM mutations", () => {
   const frames = [];
   const observations = [];

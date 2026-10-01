@@ -106,7 +106,7 @@ Wayback index pro [historickou větev `meteo/ov/*`](https://web.archive.org/web/
 Z ověřeného HTML vyplývá:
 
 - **ALADIN animace** používá staré volby `Teplota ve 2 m`, `Srážky celkové za 3 h`, `Vítr v 10 m`, `Nárazy větru`, `Oblačnost`, `Relativní vlhkost`, `Ventilační index`, dále průhlednost, velikost `proměnná dle okna`, `4x` a `GoogleMaps`, rychlost animace, poslední snímek, navigační kříž, kruhy a geolokaci.
-- **Srovnání se živým ALADINem (23.–26. 9. 2026):** [oficiální aplikace](https://produkty.chmi.cz/aladin/) v nabídce „Veličiny“ skutečně nabízí mj. relativní vlhkost (`H`) a ventilační index (`V`), vedle teploty, srážek, větru, oblačnosti a dalších produktů. „Nárazy větru“ v zobrazené aktuální nabídce nebyly. Klasický adaptér `chrome-edge/aladin.js` nyní zrcadlí všech 11 doložených nativních checkboxů `T/R3/W/C/Cl/Cm/Ch/H/V/Txn/R24`; výchozí jsou čtyři `T/C/R3/W`. Rozložení se odvozuje od počtu vybraných map. Staré ovládání polohy a animace tím není obnovené. Archivní snapshot při otevření neměl načtené meteorologické snímky (`XX.XX.XXXX`, prázdný seznam), takže jeho datovou funkci nelze považovat za ověřenou. Živá vývojová kontrola současného userscriptu a instalační test jsou rozlišené v `TODO.md`.
+- **Srovnání se živým ALADINem (23.–30. 9. 2026):** [oficiální aplikace](https://produkty.chmi.cz/aladin/) v nabídce „Veličiny“ skutečně nabízí mj. relativní vlhkost (`H`) a ventilační index (`V`), vedle teploty, srážek, větru, oblačnosti a dalších produktů. „Nárazy větru“ v zobrazené aktuální nabídce nebyly. Klasický adaptér `chrome-edge/aladin.js` zrcadlí všech 11 doložených nativních checkboxů `T/R3/W/C/Cl/Cm/Ch/H/V/Txn/R24`; mapový režim má výchozí čtyři `T/C/R3/W`, animační jednu `T`. Rozložení se odvozuje od počtu vybraných map. Beta13 přidává přehrávání nativních tříhodinových termínů na samostatné adrese s parametrem `chmi_classic_animation=1`, který se ve živém ALADINu zachoval; nejde o původní backend ani kompletní starý animační viewer. Archivní snapshot při otevření neměl načtené meteorologické snímky (`XX.XX.XXXX`, prázdný seznam), takže jeho datovou funkci nelze považovat za ověřenou. Živá vývojová kontrola současného userscriptu a instalační test jsou rozlišené v `TODO.md`.
 - **ALADIN mapy** mají checkboxy pro veličiny a volbu `Vše`; mapová tabulka se skládá z běhu modelu a řad `00` až `72` po 3 hodinách. Zdrojová cesta je `.../results/public/mapy/data/<run>/<produkt>_public_<termín>.png` a seznam běhů je `.../results/public/mapy/mdirs.txt`.
 - **Meteogramy** mají starý filtr `Vše / Obce / Letiště / ČHMÚ místa / Lyžařská střediska / Vodní plochy`. Výchozí textová lokalita je `Praha (okr. Praha)`; URL hash se používá pro textový název lokality a po načtení `nameid` se převede na ID PNG. Ověřený tvar odkazu je například [Prostějov (okr. Prostějov)](https://www.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/meteogramy/mhtml/m.html#Prost%C4%9Bjov%20(okr.%20Prost%C4%9Bjov)).
 - Archivní HTML proto používáme jako zdroj chování a navigace. `legacy.js`/`legacy.css` nepřebírají historický JavaScript, jQuery, CSS, mapové podklady ani meteorologické snímky; zachovávají současný backend a přidávají jen vlastní rozhraní.
@@ -195,6 +195,18 @@ radaru a blesků, ne o důkaz samostatného historického CELDN prohlížeče.
 Ovladač pro uložení nastavení jako záložku nebyl použit; trvalá sdílitelná
 adresa samotných blesků zatím není ověřená.
 
+Vývojové ověření 30. 9. 2026: v živém pokročilém radaru má `#select_prod`
+hodnotu `maxz_mask-li`; `#input_opa_slider_data1` a
+`#input_opa_slider_data2` opravdu mění zvlášť průhlednost radarového a
+bleskového snímku. Při nastavení 0/1 zůstává načtená oficiální vrstva
+`/radar/input_data/blesk/` a radarový obraz se skryje. Nativní seznam
+vybraných měření je řazen od nejnovějšího, časový posuvník od nejstaršího;
+poslední předpovědní pozice nemají bleskový obraz. Proto adaptace volí poslední
+měřenou pozici, u které seznam obsahuje bleskový soubor. To je doložený
+uživatelský preset nad současnou aplikací, ne přenesený historický CELDN
+backend ani oficiální deep link. Zobrazení hotového userscriptu/rozšíření ještě
+není instalačně ověřeno.
+
 Ve stejné živé aplikaci má nativní `#select_prod` čtyři odhady srážek:
 `sum_merge_1h`, `sum_merge_3h`, `sum_merge_6h` a `sum_merge_24h`.
 Přepnutí na 1 hodinu v běžící aplikaci skutečně změnilo popis na „1h suma
@@ -257,6 +269,19 @@ a přepíná předrenderovaná PNG. CSS `por.css`, adresář dat i výchozí
 funkční archivní nebo současnou datovou aplikaci. Samostatný vlastní JS
 soubor tato stránka nevyžaduje. Autor je uveden jako Pavla Skrivankova,
 © ČHMÚ 2018, CC BY-NC-ND 3.0 Česko; zdroj nebyl přibalen do MIT userscriptu.
+
+Živá návaznost ověřená 1. 10. 2026 ve vestavěném prohlížeči:
+[aerologická měření](https://www.chmi.cz/letectvi/aerologicka-mereni)
+vedou přes lokalitu Praha-Libuš k oddělené **předpovědní pseudosondáži**
+`/letectvi/sportovni/11520-praha-libus-pseudosondaz-emagram-100hpa` a odtud
+záložka „Aerologická měření“ na skutečně **měřený**
+[emagram Praha-Libuš](https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa).
+Tento detail měl dva nativní přehrávače `#chmi-playabledata` (vzestup/sestup),
+každý s `#imageSlider` 1–12 a načteným obrazem 600 × 500 px. Nativní nabídka
+obsahovala Emagram 100/500 hPa, Skew-T, Profil větru, Hodograf a ASCII tabulku.
+Obrázky byly aktuální datové URI generované současným ČHMÚ; jejich obsah se
+nekopíruje ani nepovažuje za archivní soubor. Dostupnost všech šesti voleb a
+ovládání v instalovaném adaptéru je nutno otestovat zvlášť.
 
 ## Stažené družicové viewery a závislosti (26. 9. 2026)
 
@@ -398,15 +423,55 @@ Implementace proto v této etapě přidává do katalogu přesné vstupní cesty
 **Klementinum (ověřeno 29. 9. 2026):** archivovaný seznam
 `weather-links-20260825-browser-extracted.html` dokládá položku „Měření z
 Klementina“ a její historický cíl. Obsah cílové stránky ani její ovladače
-zatím nejsou doložené replay HTML; samotný odkaz není rekonstrukce.
+zatím nejsou doložené replay HTML: [portálový snapshot
+`20260512095825`](https://web.archive.org/web/20260512095825/https://intranet.chmi.cz/historicka-data/pocasi/praha-klementinum)
+zobrazuje hlavičku a navigaci, ale hlavní obsah hlásí chybu načítání.
+[Wayback index statického prefixu](https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/meteo/ok/klementinum/*)
+při kontrole neobsahoval žádnou zachycenou URL. To nevylučuje jinou archivní
+kopii, ale samotný odkaz není rekonstrukce.
 [Současná stránka stanice Praha–Klementinum](https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum)
-nabízí počasí, teplotu, srážky, vítr, SYNOP a historická data. Upozorňuje,
+nabízí počasí, teplotu, srážky, vítr, SYNOP a historická data. Dne 1. 10.
+2026 byl ve vestavěném prohlížeči znovu ověřen její naplněný desetiminutový
+stůl a nativní záložky. Na těchto skutečných komponentách stojí kompaktní
+adaptér beta 16; instalovaný vzhled a interakce v panelu se teprve ověří.
+Stránka upozorňuje,
 že operativní měření mají zpoždění a mohou se po verifikaci změnit.
 [Historická stanice Klementinum](https://www.chmi.cz/namerena-data/historicka-data/klementinum)
 odděleně popisuje dlouhou měřicí řadu a odkazuje na Open Data pod indikativy
 `0-203-0-11514` a `0-203-0-11515`. Případný adaptér musí držet živá
 operativní měření a historické řady odděleně; bez dalšího archivního podkladu
 by jeho starý vzhled byl vlastní adaptací, nikoli věrnou kopií.
+Živá stránka měla při kontrole tabulku 20 desetiminutových řádků a vlastní
+záložky Počasí/Teplota/Srážky/Vítr/Synop/Historická data. Rozpracovaný
+adaptér ponechává tyto nativní prvky a skrývá pouze nesouvisející seznam
+stanic pod nimi. Vývojová kontrola na 1280×720 a 390×844 potvrdila průchod
+Teplota a Historická data bez scrollu dokumentu; grafy a tabulky mají vlastní
+nutný posuv. Nejde o test instalovaného userscriptu/Chrome rozšíření.
+
+**Meteorologické stanice (ověřeno 1. 10. 2026):** [archivní mapa
+`ShowStations_CZ.html`](https://web.archive.org/web/20260825190505/https://intranet.chmi.cz/files/portal/docs/poboc/OS/stanice/ShowStations_CZ.html)
+obsahuje mapu a levý panel s filtry typů stanic (AMS, AKS, ASS, MSS,
+ASNS, MKS a jejich podtypy), měřených veličin, poboček, krajů a ORP.
+Archivní Leaflet mapa při kontrole zobrazovala část značek bez ikon;
+její JavaScript, CSS ani obrázky se proto nepřebírají do veřejného balíčku
+bez ověření licence a funkčnosti. [Současná oficiální mapa meteorologických
+stanic](https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke)
+má živé body a nativní menu Vše, Teplota, Srážky, Sníh, Vítr a Synop.
+Kliknutí na bod při kontrole otevřelo detail stanice Tokáň. Beta 17 jen
+přeskládává tuto živou mapu do kompaktního klasického rámu; historické
+podtypy stanic současný filtr nepokrývá. Instalační a vizuální ověření
+userscriptu a Chrome/Edge adaptéru ještě zbývá.
+
+**Aktivita klíšťat (ověřeno 1. 10. 2026):** původní odkaz z rozcestníku
+ukazuje na `https://info.chmi.cz/bio/mapy.php?type=kliste`. Zachycení
+[11. 12. 2023](https://web.archive.org/web/20231211030523/https://info.chmi.cz/bio/mapy.php?type=kliste)
+ve vestavěném prohlížeči skutečně vykreslilo tři denní náhledy a velkou
+mapu pod nimi; dále dlouhý vysvětlující článek. Zachycení z 10. 8. 2026
+již vrací přesměrování na [současnou oficiální mapu](https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat).
+Ta při kontrole nabízela nativní mapu, časovou osu o třech denních krocích,
+přehrávání, legendu a výběr vrstvy „Předpověď aktivity klíšťat“. Beta 18
+přeskupuje živou komponentu do kompaktního modrého rámu; archivní snímky
+nepřebírá. Samostatný a vložený adaptér je nutné instalačně vizuálně ověřit.
 
 `Wayback timestamp` je `neověřen`, pokud dostupné rozhraní neposkytlo bezpečně
 otevřitelný konkrétní snapshot. To neznamená, že ve Wayback Machine není; projekt
@@ -424,7 +489,7 @@ v takovém případě nabízí pouze Wayback index původní URL.
 | Blesky – PNG adresář | `https://intranet.chmi.cz/files/portal/docs/meteo/blesk/data/` | neověřen | indexovaný oficiální adresář obsahoval `aktual.png` i timestampované PNG | současný radar/blesky / Open Data | pouze přímý odkaz; nic se nehardcoduje jako „nejnovější“ |
 | Radar – statická stránka | `https://intranet.chmi.cz/files/portal/docs/meteo/rad/data.html` | neověřen | původní sloučený radarový obrázek + odkaz na viewer | `https://produkty.chmi.cz/radar/` | legacy shell |
 | Meteosat VIS-IR JPG | `https://intranet.chmi.cz/files/portal/docs/meteo/sat/msg_hrit/img-msgeu-1160x800-vis-ir/` | neověřen | veřejný index obsahoval timestampované JPG po 15 min | současný Meteosat | pouze přímý adresář; obrázky se nebalí |
-| Aktuální mapy | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/aktualni-mapy` | neověřen | starý rozcestník aktuálních map, radar+srážkoměry, ozon/UV a sníh | současná naměřená data | legacy portálový rám |
+| Aktuální mapy | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/aktualni-mapy` | `20260825190505` | [Ověřený snapshot](https://web.archive.org/web/20260825190505/https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/aktualni-mapy) má v hlavním panelu jen nadpis a odkaz HOME; radar+srážkoměry, ozon/UV a sníh jsou **oddělené položky levé navigace**, nikoli obsah této stránky. Není zde samostatná mapová aplikace ani iframe. | současné mapy je třeba přiřazovat jednotlivým doloženým položkám | původní kategoriální stránka; nevymýšlet mapový viewer |
 | Srážky radar+srážkoměry | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/srazky-radar-srazkomery` | neověřen | konkrétní historická stránka | současný radar/nowcast | legacy portálový rám |
 | Ozonové a UV zpravodajství | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/ozonove-a-uv-zpravodajstvi` | neověřen | konkrétní historická stránka s UV indexem | současný web ČHMÚ | legacy portálový rám |
 | Družicové měření ozonu | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/druzicove-mereni-ozonu` | neověřen | konkrétní historická stránka | současný web ČHMÚ | legacy portálový rám |
@@ -434,7 +499,7 @@ v takovém případě nabízí pouze Wayback index původní URL.
 | Stanice – tlak | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/profesionalni-stanice/mapy/tlak-vzduchu` | neověřen | konkrétní historická mapa | současná naměřená data | legacy portálový rám |
 | Sněhové zpravodajství – hory | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/snehove_zpravodajstvi/snih-CR-hory` | neověřen | konkrétní historická stránka | současný web ČHMÚ | legacy portálový rám |
 | Automatické sněhoměrné stanice | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/snehove_zpravodajstvi/automaticke-snehomerne-stanice` | neověřen | konkrétní historická stránka | současný web ČHMÚ | legacy portálový rám |
-| Grafy automatických stanic | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/grafy-automatickych-stanic` | neověřen | stará stránka uvádí 10min data, aktualizaci po 30 min a neexistenci archivu grafů | současná naměřená data | legacy portálový rám |
+| Grafy automatických stanic | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/grafy-automatickych-stanic` | `20260628160924` | [Ověřený snapshot](https://web.archive.org/web/20260628160924/https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/grafy-automatickych-stanic) obsahuje mapu poboček a sedm odkazů Brno, České Budějovice, Hradec Králové, Ostrava, Plzeň, Praha, Ústí nad Labem (`pobocka.BR/CB/HK/OS/PL/PR/UL.1.html`); text uvádí 10min data, obnovu po 30 min, čas SEČ, neověřená data a chybějící archiv grafů. Samotné živé grafy a dostupnost jednotlivých historických cílů tím nejsou prokázány. | současná naměřená data je nutno spárovat s konkrétními stanicemi/grafy | referenční pobočková navigace, nehotový adaptér |
 | Synoptický detail Praha-Libuš | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/profesionalni-stanice/prehled-stanic/praha-libus` | neověřen | synoptické veličiny v čase měření a -1/-2/-3 h | současná síť stanic | legacy portálový rám |
 | Stanice – srážky/sníh | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/profesionalni-stanice/mapy/srazky` | neověřen | historická mapa profesionální staniční sítě | současné srážkové mapy | legacy portálový rám |
 | Stanice – vítr | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/stanice/profesionalni-stanice/mapy/vitr` | neověřen | historická mapa větru | současná tabulka/mapy stanic | legacy portálový rám |
@@ -443,7 +508,7 @@ v takovém případě nabízí pouze Wayback index původní URL.
 | Sondáž Praha-Libuš | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/ceska-republika/sondazni-mereni/sondazni-mereni-praha-libus` | neověřen | historická stránka observatoře | současná radiosondážní měření | legacy portálový rám |
 | Výškové analýzy Evropa | `https://intranet.chmi.cz/aktualni-situace/aktualni-stav-pocasi/evropa/vyskove-analyzy` | neověřen | konkrétní stará stránka dohledána | současná synoptika / letecké výškové produkty | legacy portálový rám; bez náhradní falešné mapy |
 | Přechody front přes Prahu | `https://intranet.chmi.cz/historicka-data/pocasi/prechody-front-pres-prahu` | neověřen | konkrétní historická stránka | současná stránka stejného tématu | legacy portálový rám |
-| Klementinum | `https://intranet.chmi.cz/historicka-data/pocasi/praha-klementinum` | neověřen | archivní rozcestník dokládá odkaz, nikoli obsah nebo ovladače cílové stránky | [současná stanice](https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum) + [historie](https://www.chmi.cz/namerena-data/historicka-data/klementinum) | teprve kandidát na adaptér nad živými daty |
+| Klementinum | `https://intranet.chmi.cz/historicka-data/pocasi/praha-klementinum` | neověřen | archivní rozcestník dokládá odkaz, nikoli obsah nebo ovladače cílové stránky | [současná stanice](https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum) + [historie](https://www.chmi.cz/namerena-data/historicka-data/klementinum) | beta 16: kompaktní adaptér nad živými daty, nikoli věrná kopie; instalační QA čeká |
 | Klementinum – statická data | `https://intranet.chmi.cz/files/portal/docs/meteo/ok/klementinum/klemzaklinfo_cs.html` | neověřen | odkaz na tabulku nalezen, replay obsahu nepotvrzen | současné Klementinum | pouze referenční odkaz |
 | Historické mapy stanic | `https://intranet.chmi.cz/historicka-data/pocasi/mapy-stanic` | neověřen | konkrétní historická stránka | současná historická data | legacy portálový rám |
 | Měsíční přehledy pozorování | `https://intranet.chmi.cz/historicka-data/pocasi/mesicni-data/mesicni-prehledy-pozorovani` | neověřen | tabulkové měsíční teploty, srážky a další charakteristiky | současná historická data/Open Data | legacy portálový rám |
@@ -455,6 +520,25 @@ v takovém případě nabízí pouze Wayback index původní URL.
 | Letištní oblačnost/srážky/RH | `https://intranet.chmi.cz/predpovedi/predpovedi-pocasi/letecke/oblacnost-srazky-vlhkost/` | neověřen | konkrétní stará stránka | současná nízká oblačnost/letectví | legacy portálový rám |
 
 ## Historická navigace – další doložené výstupy
+
+### Synoptická situace versus synoptická předpověď (30. 9. 2026)
+
+Archivní rozcestník dokládá dvě různé adresy:
+`/aktualni-situace/aktualni-stav-pocasi/evropa/synopticka-situace`
+(aktuální situace) a `/predpovedi/predpovedi-pocasi/evropa/synopticka-situace`
+(předpověď). Pro první je doložen odkaz, nikoli uložené tělo cílové stránky.
+Pro druhou je samostatně uložené HTML výstupu
+`/files/portal/docs/meteo/om/evropa/preba/preba_portal.html` ze snapshotu
+`20260505091557`: tři statické mapy pro 36/60/84 hodin; jejich GIF a vlastní
+JS/CSS nejsou místně uložené (viz `.build/archive-reference-20260926/information/MANIFEST.md`).
+
+Dnešní `https://www.chmi.cz/predpoved-pocasi/synopticka-situace` obsahuje
+živou komponentu `#chmi-playabledata`: dnešní mapu a dva předpovědní kroky,
+nativní posuvník `#imageSlider` s rozsahem 1–3 a nativní tlačítko přehrávání.
+Ve vestavěném prohlížeči se 30. 9. načetl obraz 1240 × 802 a posuvník
+přepnul na druhý snímek. Adaptér obnovuje rozložení pro **Synoptickou situaci**,
+ale tento kratší živý tok není vydáván za původní samostatnou synoptickou
+předpověď 36/60/84 hodin. Staré mapy ani skripty nejsou kopírovány do balíčku.
 
 Stará homepage a sitemap potvrzují, že uživatelé měli z jednoho rozcestníku
 přístup také k následujícím kategoriím. Ne u všech se podařilo v této etapě
