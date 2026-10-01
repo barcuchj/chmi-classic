@@ -2,6 +2,10 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [ ] Týdenní předpověď: beta 21 zapojuje živý oficiální text a graf do
+  kompaktního panelu. Po instalaci ověřit přepínání Text/Graf, denní navigaci,
+  čitelnost grafu, centrální panel i samostatnou záložku v širokém a úzkém
+  okně. Archivní dynamický obsah stránky nebyl získán.
 - [ ] Bio předpověď: beta 20 zapojuje živou dvoudenní mapu a obě nativní
   tabulky do kompaktního klasického rámu. Po instalaci ověřit časovou osu,
   přepínání tabulek, zobrazení v centrálním panelu i samostatně a overflow

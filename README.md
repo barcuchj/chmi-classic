@@ -1,12 +1,17 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## Lokální beta 0.7.0-beta.20 – aplikace na jednom místě
+## Beta 0.7.0-beta.21 – aplikace na jednom místě
 
 **Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
 
-**Testovací beta, nikoli dokončená obnova všech aplikací.** Lokální beta 20
-navazuje na opravy bety 19 a zapojuje položku Bio předpověď do rozcestníku.
-Její nové rozložení ještě vyžaduje instalační vizuální ověření.
+**Testovací beta, nikoli dokončená obnova všech aplikací.** Beta 21
+zapojuje Týdenní předpověď: aktuální text a graf ČHMÚ zůstávají živé,
+ale mají kompaktní ovládání ve starém stylu. Skutečný obsah staré stránky
+se v dostupném archivním záznamu nedochoval. Vykreslení po instalaci obou
+variant je ještě nutné vizuálně ověřit.
+
+Beta 20 zapojila položku Bio předpověď do rozcestníku; její nové rozložení
+také ještě vyžaduje instalační vizuální ověření.
 
 Beta 18
 navazuje na živé záložky Voda a Ovzduší a doplňuje úvodní předpověď počasí
@@ -43,7 +48,7 @@ který využije jinak prázdné místo. Mapa si zachová správný poměr stran.
 Seznam můžete sbalit; vaše volba zůstane zachovaná při změně velikosti okna.
 Ze společných zdrojů se nyní sestavuje také Chrome/Edge doplněk. Poslední
 veřejný [zdrojový balíček Chrome/Edge](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.3)
-zůstává beta 3; beta 20 je zatím místní a její instalace v Chromu ani Safari
+zůstává beta 3; beta 21 není vydaný ZIP a její instalace v Chromu ani Safari
 nebyla vizuálně potvrzena. Safari balíček ani veřejné vydání zatím nejsou připraveny.
 Po zveřejnění odpovídajícího userscriptu v `main` se tato beta instaluje stejným
 odkazem jako dříve. Kdo chce vyzkoušet nové rozhraní,

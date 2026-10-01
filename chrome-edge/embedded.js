@@ -48,6 +48,7 @@
         app.family === "stations" ? document.querySelector("html.chmi-stations-classic #chmi-stations-workspace #chmu-map-container") :
         app.family === "ticks" ? document.querySelector("html.chmi-ticks-classic #chmi-ticks-workspace #chmu-map-container") :
         app.family === "bio" ? document.querySelector("html.chmi-bio-classic #chmi-bio-workspace #chmu-map-container") :
+        app.family === "week" ? document.querySelector("html.chmi-week-classic #chmi-week-workspace #chmi-week-forecast") :
         app.family === "rainfall" ? document.getElementById("chmi-rainfall-brand") :
         ["water", "air"].includes(app.family) ? document.getElementById("chmi-hydro-air-classic-brand") :
         document.getElementById(app.family === "mushrooms" ? "chmi-hub-classic-brand" : "chmi-satellite-classic-portal-products");
@@ -58,6 +59,12 @@
       const forecastMedia = app.family === "forecast" && visible(document.getElementById("weather-map")) &&
         document.querySelectorAll("#weather-map path").length > 0 &&
         document.querySelectorAll("#weather-map-details a.weather-info").length > 0;
+      const weekMedia = app.family === "week" && (
+        (visible(document.getElementById("chmi-week-forecast")) &&
+          document.querySelectorAll("#chmi-week-forecast .chmu-forecast-content h3").length >= 5) ||
+        (visible(document.querySelector("#chmi-week-graph canvas")) &&
+          document.querySelector("#chmi-week-graph canvas")?.width >= 500)
+      );
       const meteogramCanvas = document.querySelector(".chmi-meteogram-workspace canvas[id*='ChmiGraph']");
       const meteogramMedia = app.family === "meteogram" && visible(meteogramCanvas) &&
         meteogramCanvas.width > 300 && meteogramCanvas.height > 150;
@@ -74,7 +81,7 @@
       const lightningMedia = id === "lightning" && [...document.querySelectorAll('#div_container_data img[src*="/input_data/blesk/"]')]
         .some(node => visible(node) && node.complete && node.naturalWidth > 32 &&
           Number(getComputedStyle(node.parentElement).opacity) > 0);
-      const media = id === "lightning" ? lightningMedia : app.family === "sonde" ? sondeMedia : app.family === "klementinum" ? klementinumMedia : forecastMedia || meteogramMedia || rainfallMedia || synopticMedia || mapMedia || [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img, .playabledata-content-container .chmi-playableimage-img")]
+      const media = id === "lightning" ? lightningMedia : app.family === "sonde" ? sondeMedia : app.family === "klementinum" ? klementinumMedia : forecastMedia || weekMedia || meteogramMedia || rainfallMedia || synopticMedia || mapMedia || [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img, .playabledata-content-container .chmi-playableimage-img")]
         .some(node => visible(node) && (node.tagName === "CANVAS" ? node.width > 0 && node.height > 0 : node.complete && node.naturalWidth > 32));
       window.parent.postMessage({ type: "chmi-classic-status", app: id, session, state: adapter && media ? "ready" : "loading" }, parentURL.origin);
     }

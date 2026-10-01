@@ -3,7 +3,7 @@ set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CHROMIUM_FILES=(manifest.json portal-registry.js embedded.js portal.js portal.css embedded.css
-  aladin.js aladin.css webcams.js webcams.css meteogram.js meteogram.css forecast.js forecast.css rainfall.js rainfall.css synoptic.js synoptic.css sonde.js sonde.css klementinum.js klementinum.css stations.js stations.css ticks.js ticks.css bio.js bio.css navigation.js navigation.css
+  aladin.js aladin.css webcams.js webcams.css meteogram.js meteogram.css forecast.js forecast.css rainfall.js rainfall.css synoptic.js synoptic.css sonde.js sonde.css klementinum.js klementinum.css stations.js stations.css ticks.js ticks.css bio.js bio.css week.js week.css navigation.js navigation.css
   catalog.js catalog.css legacy.js legacy.css content.js classic.css
   satellite.js satellite.css popup.html popup.css popup.js)
 

@@ -165,6 +165,18 @@ test("bio forecast directory opens the official live two-day map", () => {
     "https://evil.test/predpoved-pocasi/bio-predpoved"
   ]) assert.equal(registry.embeddedContext(new URL(url), registry.frameName("bio", "test-session")), null);
 });
+test("weekly forecast directory opens the official live chart and text", () => {
+  assert.equal(registry.columns[0][2].app, "week");
+  const app = registry.get("week");
+  assert.equal(app.url, "https://www.chmi.cz/predpoved-pocasi/tyden");
+  const framed = new URL(registry.frameURL("week", "test-session"));
+  assert.equal(registry.embeddedContext(framed, registry.frameName("week", "test-session"))?.id, "week");
+  for (const url of [
+    "https://www.chmi.cz/predpoved-pocasi/mesic",
+    "https://www.chmi.cz/predpoved-pocasi/dnes",
+    "https://evil.test/predpoved-pocasi/tyden"
+  ]) assert.equal(registry.embeddedContext(new URL(url), registry.frameName("week", "test-session")), null);
+});
 test("lightning opens the official radar in a distinct old-look mode", () => {
   assert.equal(registry.columns[2][3].app, "lightning");
   const standalone = new URL(registry.get("lightning").url);

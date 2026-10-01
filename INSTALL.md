@@ -5,7 +5,7 @@ snímky dál pocházejí z ČHMÚ; nejde o přehrávání starého počasí z ar
 
 ## Chci vyzkoušet nejnovější podobu portálu
 
-**Lokálně připravený userscript je 0.7.0-beta.20 — testovací verze.** Má centrální panel
+**Aktuální userscript je 0.7.0-beta.21 — testovací verze.** Má centrální panel
 pro aplikace, rozcestník a tlačítko **Zvětšit panel**. Celý původní intranet
 ještě obnovený není. Úvodní předpověď ČR má nově třídenní panel; Voda a Ovzduší mají
 živé adaptéry. Červeně přeškrtnuté položky čekají na rekonstrukci.
@@ -33,8 +33,10 @@ Klasický rám ponechává mapu na obrazovce; staré archivní obrázky neukazuj
 Také zde zbývá kontrola po instalaci.
 **Bio předpověď** má živou mapu se dvěma dny a rozbalovací oblastní přehled.
 Její nový klasický obal zatím čeká na vizuální kontrolu po instalaci.
-Tato lokální beta dosud nebyla zveřejněna na GitHubu: instalační odkaz níže
-proto nemusí nabízet její nové funkce. [Podívejte se na dvě ukázky vzhledu](README.md#jak-beta-vypadá).
+**Týdenní předpověď** zpřístupní živý text ČHMÚ po jednotlivých dnech a
+jejich živý graf v samostatné záložce uvnitř panelu. Dlouhý text se posouvá
+uvnitř aplikace, ne celou stránkou. Její instalovaný vzhled ještě čeká na
+vizuální kontrolu. [Podívejte se na dvě ukázky staršího vzhledu](README.md#jak-beta-vypadá).
 
 Nejjednodušší cesta je přes **Tampermonkey**, správce malých úprav webových
 stránek. Pro tuto betu nepotřebujete Xcode ani účet vývojáře.

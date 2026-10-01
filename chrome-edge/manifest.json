@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.7.0.20",
-  "version_name": "0.7.0-beta.20",
+  "version": "0.7.0.21",
+  "version_name": "0.7.0-beta.21",
   "description": "Vrací klasický vzhled živým meteorologickým aplikacím ČHMÚ a přidává přehledný rozcestník.",
   "permissions": [
     "storage"
@@ -182,6 +182,19 @@
     },
     {
       "matches": [
+        "https://www.chmi.cz/predpoved-pocasi/tyden*"
+      ],
+      "css": [
+        "embedded.css", "navigation.css", "week.css"
+      ],
+      "js": [
+        "portal-registry.js", "embedded.js", "navigation.js", "week.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
         "https://www.chmi.cz/*",
         "https://hydro.chmi.cz/*"
       ],
@@ -206,7 +219,8 @@
         "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum*",
         "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke*",
         "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*",
-        "https://www.chmi.cz/predpoved-pocasi/bio-predpoved*"
+        "https://www.chmi.cz/predpoved-pocasi/bio-predpoved*",
+        "https://www.chmi.cz/predpoved-pocasi/tyden*"
       ],
       "css": [
         "navigation.css",

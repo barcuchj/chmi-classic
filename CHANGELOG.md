@@ -1,5 +1,13 @@
 # Přehled změn
 
+## 0.7.0-beta.21 – 2026-10-01 (testovací sestavení)
+
+- Původní odkaz **Týdenní předpověď** vede na živý oficiální text a graf.
+  Denní tlačítka, přepínání Text/Graf a kompaktní starý rám ponechávají
+  předpověď ve středním panelu bez rolování celé stránky.
+- Dostupný archiv zachoval název a odkaz, ne dynamické tělo předpovědi;
+  nejde proto o doslovnou kopii. Vzhled po instalaci dosud není ověřený.
+
 ## 0.7.0-beta.20 – 2026-10-01 (místní testovací sestavení)
 
 - Původní odkaz **Bio předpověď** vede na současnou živou biometeorologickou
