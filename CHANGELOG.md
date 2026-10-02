@@ -1,5 +1,17 @@
 # Přehled změn
 
+## 0.7.0-beta.22 – 2026-10-02 (testovací sestavení)
+
+- Položka **Předpovědi pro kraje** otevírá živou krajskou předpověď ČHMÚ.
+  Modrá nabídka všech 14 krajů, volba dne a kompaktní textový panel vycházejí
+  z archivního vzhledu. Fungují v centrálním panelu i samostatné záložce.
+- Přechod na jiný kraj zachová zvolený den, včetně „Další dny“, i když
+  samotný oficiální seznam krajů odkazuje u tohoto zobrazení na „Pozítří“.
+- Archiv zachoval rozvržení a názvy krajů, nikoli dynamický text předpovědi;
+  obsah je proto vždy aktuální z ČHMÚ. Samostatný adaptér byl vývojově
+  vykreslen s živým obsahem ve 1200 × 938 a 390 × 844 px, včetně „Další dny“.
+  Instalované ověření Tampermonkey, Chrome balíčku a centrálního iframe zbývá.
+
 ## 0.7.0-beta.21 – 2026-10-01 (testovací sestavení)
 
 - Původní odkaz **Týdenní předpověď** vede na živý oficiální text a graf.

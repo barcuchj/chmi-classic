@@ -29,6 +29,18 @@ DOM, datový backend a ovládání původní stránky, pokud ještě existují, 
 jen společnou navigaci a responzivní geometrii. Tím se zároveň vyhýbáme
 kopírování assetů s nejasnou nebo restriktivní licencí.
 
+## Krajské předpovědi (ověřeno 1. 10. 2026)
+
+[Archivní Karlovarský kraj z 25. 8. 2026](https://web.archive.org/web/20260825190505/https://intranet.chmi.cz/predpovedi/predpovedi-pocasi/ceska-republika/kraje/karlovarsky)
+ve vestavěném prohlížeči ukazuje modrou levou nabídku 14 krajů, červený
+nadpis kraje a šedý obsahový panel. Dynamické tělo předpovědi v tomto
+zachycení chybí; nelze je z archivu přebírat jako fungující obsah.
+[Živá krajská předpověď ČHMÚ](https://www.chmi.cz/predpoved-pocasi/karlovarsky-kraj/dnes)
+poskytuje skutečný text a odkazy pro všech 14 krajů a dny dnes, zítra,
+pozítří a další dny. Praha byla zvlášť ověřena pro zítřek. Beta 22 proto
+rekonstruuje uspořádání a navigaci, ale ponechává současný oficiální text.
+Archivní CSS, skripty ani obrazové podklady se do veřejného balíčku nekopírují.
+
 ## Mapa historických cest
 
 ### Další skutečně stažené HTML (26. 9. 2026)

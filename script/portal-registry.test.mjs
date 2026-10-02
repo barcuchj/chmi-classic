@@ -177,6 +177,23 @@ test("weekly forecast directory opens the official live chart and text", () => {
     "https://evil.test/predpoved-pocasi/tyden"
   ]) assert.equal(registry.embeddedContext(new URL(url), registry.frameName("week", "test-session")), null);
 });
+test("regional forecast directory retains all fourteen official routes in one panel", () => {
+  assert.equal(registry.columns[0][1].app, "regions");
+  assert.equal(registry.get("regions").url, "https://www.chmi.cz/predpoved-pocasi/karlovarsky-kraj/dnes");
+  const name = registry.frameName("regions", "test-session");
+  for (const url of [
+    "https://www.chmi.cz/predpoved-pocasi/karlovarsky-kraj/dnes",
+    "https://www.chmi.cz/predpoved-pocasi/praha/zitra",
+    "https://www.chmi.cz/predpoved-pocasi/kraj-vysocina/pozitri",
+    "https://www.chmi.cz/predpoved-pocasi/zlinsky-kraj/dalsi-dny"
+  ]) assert.equal(registry.embeddedContext(new URL(url), name)?.id, "regions");
+  for (const url of [
+    "https://www.chmi.cz/predpoved-pocasi/tyden",
+    "https://www.chmi.cz/predpoved-pocasi/evil-kraj/dnes",
+    "https://www.chmi.cz/predpoved-pocasi/praha/mesic",
+    "https://evil.test/predpoved-pocasi/praha/dnes"
+  ]) assert.equal(registry.embeddedContext(new URL(url), name), null);
+});
 test("lightning opens the official radar in a distinct old-look mode", () => {
   assert.equal(registry.columns[2][3].app, "lightning");
   const standalone = new URL(registry.get("lightning").url);

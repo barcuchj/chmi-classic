@@ -24,6 +24,9 @@ const [bioJs, bioCss] = await Promise.all(
 const [weekJs, weekCss] = await Promise.all(
   ["week.js", "week.css"].map(name => readFile(join(sourceRoot, name), "utf8"))
 );
+const [regionsJs, regionsCss] = await Promise.all(
+  ["regions.js", "regions.css"].map(name => readFile(join(sourceRoot, name), "utf8"))
+);
 
 const [radarCss, satelliteCss, navigationCss, catalogCss, legacyCss, navigationJs, radarJs, satelliteJs, catalogJs, legacyJs] = await Promise.all([
   readFile(join(sourceRoot, "classic.css"), "utf8"),
@@ -41,7 +44,7 @@ const [radarCss, satelliteCss, navigationCss, catalogCss, legacyCss, navigationJ
 const metadata = `// ==UserScript==
 // @name         ČHMÚ Classic – meteorologické výstupy
 // @namespace    https://github.com/
-// @version      0.7.0-beta.21
+// @version      0.7.0-beta.22
 // @description  Vrací klasický vzhled, historické adaptace a jednotný katalog živých i archivních meteorologických výstupů ČHMÚ.
 // @author       ČHMÚ Classic contributors
 // @homepageURL  https://github.com/barcuchj/chmi-classic
@@ -117,7 +120,8 @@ const bridge = `
       "/o-chmu/publikace-a-vzdelavani/zpravy-a-datove-prehledy",
       "/letectvi"
     ];
-    return path === "/" || path === "/uvod" || prefixes.some((prefix) => path.startsWith(prefix));
+    return path === "/" || path === "/uvod" || prefixes.some((prefix) => path.startsWith(prefix)) ||
+      /^\\/predpoved-pocasi\\/(?:[a-z-]+-kraj|praha|kraj-vysocina)\\/(?:dnes|zitra|pozitri|dalsi-dny)$/.test(path);
   }
 
   function renderRestoreButton() {
@@ -155,7 +159,7 @@ const bridge = `
     location.reload();
   });
 
-  GM_addStyle(${JSON.stringify(`${radarCss}\n${satelliteCss}\n${navigationCss}\n${catalogCss}\n${legacyCss}\n${aladinCss}\n${portalCss}\n${embeddedCss}\n${webcamsCss}\n${meteogramCss}\n${forecastCss}\n${rainfallCss}\n${synopticCss}\n${sondeCss}\n${klementinumCss}\n${stationsCss}\n${ticksCss}\n${bioCss}\n${weekCss}\n
+  GM_addStyle(${JSON.stringify(`${radarCss}\n${satelliteCss}\n${navigationCss}\n${catalogCss}\n${legacyCss}\n${aladinCss}\n${portalCss}\n${embeddedCss}\n${webcamsCss}\n${meteogramCss}\n${forecastCss}\n${rainfallCss}\n${synopticCss}\n${sondeCss}\n${klementinumCss}\n${stationsCss}\n${ticksCss}\n${bioCss}\n${weekCss}\n${regionsCss}\n
 #chmi-classic-userscript-restore {
   position: fixed;
   right: 12px;
@@ -173,7 +177,7 @@ const bridge = `
   renderRestoreButton();
 })();`;
 
-const output = `${metadata}\n\n${bridge}\n\n${portalRegistryJs}\n\n${embeddedJs}\n\n${portalJs}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n\n${webcamsJs.trimEnd()}\n\n${meteogramJs.trimEnd()}\n\n${forecastJs.trimEnd()}\n\n${rainfallJs.trimEnd()}\n\n${synopticJs.trimEnd()}\n\n${sondeJs.trimEnd()}\n\n${klementinumJs.trimEnd()}\n\n${stationsJs.trimEnd()}\n\n${ticksJs.trimEnd()}\n\n${bioJs.trimEnd()}\n\n${weekJs.trimEnd()}\n\n${catalogJs.trimEnd()}\n\n${legacyJs.trimEnd()}\n`;
+const output = `${metadata}\n\n${bridge}\n\n${portalRegistryJs}\n\n${embeddedJs}\n\n${portalJs}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n\n${webcamsJs.trimEnd()}\n\n${meteogramJs.trimEnd()}\n\n${forecastJs.trimEnd()}\n\n${rainfallJs.trimEnd()}\n\n${synopticJs.trimEnd()}\n\n${sondeJs.trimEnd()}\n\n${klementinumJs.trimEnd()}\n\n${stationsJs.trimEnd()}\n\n${ticksJs.trimEnd()}\n\n${bioJs.trimEnd()}\n\n${weekJs.trimEnd()}\n\n${regionsJs.trimEnd()}\n\n${catalogJs.trimEnd()}\n\n${legacyJs.trimEnd()}\n`;
 
 await mkdir(dirname(outputPath), { recursive: true });
 await writeFile(outputPath, output, "utf8");

@@ -1,0 +1,199 @@
+/* Regional forecasts: archived blue region menu, living official text. */
+html.chmi-regions-classic,
+html.chmi-regions-classic body {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background: #8ec2d3;
+}
+html.chmi-regions-classic body > :not(#chmi-regions-workspace) { display: none !important; }
+html.chmi-regions-classic #chmi-regions-workspace {
+  position: fixed;
+  inset: 3px;
+  z-index: 1000;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: clamp(158px, 17vw, 205px) minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #819cad;
+  background: #fff;
+  color: #17346c;
+  font: 12px/1.4 Verdana, Arial, sans-serif;
+}
+html.chmi-regions-classic #chmi-regions-brand {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 5px 8px;
+  border-bottom: 2px solid #6b8db5;
+  background: #263b83;
+  color: #fff;
+}
+html.chmi-regions-classic #chmi-regions-brand h1 {
+  margin: 0 !important;
+  color: #fff !important;
+  font: bold 14px/1.3 Verdana, Arial, sans-serif !important;
+}
+html.chmi-regions-classic #chmi-regions-brand span { margin-right: auto; color: #e2ecfa; }
+html.chmi-regions-classic #chmi-regions-brand button {
+  padding: 3px 7px;
+  border: 1px solid #9cb8d0;
+  border-radius: 0;
+  background: #fff;
+  color: #17346c;
+  cursor: pointer;
+  font: bold 10px Verdana, Arial, sans-serif;
+}
+html.chmi-regions-classic #chmi-regions-nav {
+  grid-column: 1;
+  grid-row: 2 / 4;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-right: 1px solid #8da9c7;
+  background: #1c5fa4;
+}
+html.chmi-regions-classic #chmi-regions-nav h2 {
+  margin: 0 !important;
+  padding: 5px 8px;
+  border-bottom: 1px solid #7399c0;
+  background: #edf0f3;
+  color: #b13939 !important;
+  font: bold 12px Verdana, Arial, sans-serif !important;
+}
+html.chmi-regions-classic #chmi-regions-list {
+  box-sizing: border-box;
+  max-height: calc(100% - 27px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+html.chmi-regions-classic #chmi-regions-list a {
+  display: block;
+  padding: 4px 8px;
+  border-bottom: 1px solid #3574ad;
+  color: #fff !important;
+  text-decoration: none !important;
+  font: bold 11px Verdana, Arial, sans-serif;
+}
+html.chmi-regions-classic #chmi-regions-list a:hover,
+html.chmi-regions-classic #chmi-regions-list a[aria-current="page"] {
+  background: #d6e8f7;
+  color: #14387f !important;
+}
+html.chmi-regions-classic #chmi-regions-select { display: none; }
+html.chmi-regions-classic #chmi-regions-periods {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 4px 6px;
+  border-bottom: 1px solid #a7bacf;
+  background: #edf4fa;
+}
+html.chmi-regions-classic #chmi-regions-periods a {
+  padding: 3px 8px;
+  border: 1px solid #abc0d6;
+  background: #fff;
+  color: #17346c !important;
+  text-decoration: none !important;
+  font: bold 11px Verdana, Arial, sans-serif;
+}
+html.chmi-regions-classic #chmi-regions-periods a[aria-current="page"] { background: #d3e7f6; }
+html.chmi-regions-classic #chmi-regions-forecast {
+  grid-column: 2;
+  grid-row: 3;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 6px clamp(8px, 2vw, 26px);
+  scrollbar-width: thin;
+  background: #fff;
+}
+html.chmi-regions-classic #chmi-regions-forecast .portlet,
+html.chmi-regions-classic #chmi-regions-forecast .portlet-content,
+html.chmi-regions-classic #chmi-regions-forecast .portlet-content-container,
+html.chmi-regions-classic #chmi-regions-forecast .portlet-body {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html.chmi-regions-classic #chmi-regions-forecast .portlet-header,
+html.chmi-regions-classic #chmi-regions-forecast .text-forecast__curtain,
+html.chmi-regions-classic #chmi-regions-forecast .text-forecast__link--close,
+html.chmi-regions-classic #chmi-regions-forecast .text-forecast__link--open { display: none !important; }
+html.chmi-regions-classic #chmi-regions-forecast .text-forecast,
+html.chmi-regions-classic #chmi-regions-forecast .chmu-forecast-content {
+  box-sizing: border-box;
+  max-width: none !important;
+  max-height: none !important;
+  overflow: visible !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #fff !important;
+}
+html.chmi-regions-classic #chmi-regions-forecast h3 {
+  margin: 12px 0 4px !important;
+  padding: 5px 6px;
+  border-bottom: 1px solid #a6bfd2;
+  background: #e9f0f6;
+  color: #b13939 !important;
+  font: bold 13px Verdana, Arial, sans-serif !important;
+}
+html.chmi-regions-classic #chmi-regions-forecast h4 {
+  margin: 8px 0 3px !important;
+  color: #17346c !important;
+  font: bold 12px Verdana, Arial, sans-serif !important;
+}
+html.chmi-regions-classic #chmi-regions-forecast p {
+  margin: 3px 0 !important;
+  padding: 0 !important;
+  font: 12px/1.5 Verdana, Arial, sans-serif !important;
+}
+html.chmi-regions-classic #chmi-regions-workspace a:focus-visible,
+html.chmi-regions-classic #chmi-regions-workspace select:focus-visible,
+html.chmi-regions-classic #chmi-regions-workspace button:focus-visible {
+  outline: 2px solid #d85524;
+  outline-offset: 1px;
+}
+@media (max-width: 700px) {
+  html.chmi-regions-classic #chmi-regions-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+  }
+  html.chmi-regions-classic #chmi-regions-brand { flex-wrap: wrap; }
+  html.chmi-regions-classic #chmi-regions-nav {
+    grid-column: 1;
+    grid-row: 2;
+    border-right: 0;
+    padding: 4px;
+  }
+  html.chmi-regions-classic #chmi-regions-nav h2,
+  html.chmi-regions-classic #chmi-regions-list { display: none; }
+  html.chmi-regions-classic #chmi-regions-select {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 3px 5px;
+    border: 1px solid #b9cce0;
+    background: #fff;
+    color: #17346c;
+    font: bold 11px Verdana, Arial, sans-serif;
+  }
+  html.chmi-regions-classic #chmi-regions-periods { grid-column: 1; grid-row: 3; }
+  html.chmi-regions-classic #chmi-regions-forecast { grid-column: 1; grid-row: 4; }
+}
