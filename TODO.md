@@ -2,6 +2,11 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [ ] Měsíční výhled: beta 23 používá aktuální slovní text a oficiální PDF
+  s grafy/statistikou. Vývojové vykreslení samostatné stránky v 1280 × 720
+  a 390 × 844 px prošlo; po instalaci ověřit centrální panel, přepínání PDF,
+  čitelnost a případné posuvníky v Chrome i Tampermonkey. Původní statistické
+  tabulky a grafy nejsou samostatně převedeny z PDF do HTML.
 - [ ] Předpovědi pro kraje: beta 22 zapojuje živý oficiální text pro všech
   14 krajů, přepínání dne a modré archivní rozvržení. Po instalaci ověřit
   přepínání krajů/dnů a chování v centrálním panelu i samostatně v širokém
@@ -245,6 +250,9 @@ aplikace ve starém rozhraní s ověřeným ovládáním a rozložením.
   ověřit nově vytvořené živé adaptéry v instalovaném userscriptu. Beta 8
   používá doložené aktuální mapy a skrývá okolní dlouhé články; živý DOM
   obou map byl ověřen 28. 9., ale vizuální QA této bety čeká na instalaci.
+  Kurýrní rešerše 2. 10. našla kandidáty na další vodní a ovzdušní položky;
+  před aktivací dalších odkazů přímo ověřit zejména seznam a původní `href`
+  ze snapshotů `?tab=1` a `?tab=2` (podrobnosti v `ARCHIVE_RESEARCH.md`).
 - [x] Měření z Klementina: původní rozcestník dokládá položku, ale ne obsah
   cílové stránky. Živý DOM stanice (záložky a tabulka s řádky) ověřen 1. 10.;
   kompaktní adaptér propojen s rozcestníkem, userscriptem a Chrome manifestem.

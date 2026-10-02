@@ -48,6 +48,8 @@ test("userscript builder includes the forecast adapter and its CSS", () => {
   assert.match(source, /\$\{ticksCss/);
   assert.match(source, /\$\{bioJs/);
   assert.match(source, /\$\{bioCss/);
+  assert.match(source, /\$\{monthlyJs/);
+  assert.match(source, /\$\{monthlyCss/);
 });
 test("embedded URLs preserve application settings and bind a session", () => {
   const url = new URL(registry.frameURL("meteosat", "test-session"));
@@ -176,6 +178,18 @@ test("weekly forecast directory opens the official live chart and text", () => {
     "https://www.chmi.cz/predpoved-pocasi/dnes",
     "https://evil.test/predpoved-pocasi/tyden"
   ]) assert.equal(registry.embeddedContext(new URL(url), registry.frameName("week", "test-session")), null);
+});
+test("monthly outlook directory opens the current official text and PDF", () => {
+  assert.equal(registry.columns[0][3].app, "monthly");
+  const app = registry.get("monthly");
+  assert.equal(app.url, "https://www.chmi.cz/predpoved-pocasi/mesic");
+  const framed = new URL(registry.frameURL("monthly", "test-session"));
+  assert.equal(registry.embeddedContext(framed, registry.frameName("monthly", "test-session"))?.id, "monthly");
+  for (const url of [
+    "https://www.chmi.cz/predpoved-pocasi/tyden",
+    "https://www.chmi.cz/predpoved-pocasi/praha/mesic",
+    "https://evil.test/predpoved-pocasi/mesic"
+  ]) assert.equal(registry.embeddedContext(new URL(url), registry.frameName("monthly", "test-session")), null);
 });
 test("regional forecast directory retains all fourteen official routes in one panel", () => {
   assert.equal(registry.columns[0][1].app, "regions");

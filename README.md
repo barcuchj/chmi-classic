@@ -1,10 +1,19 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## Beta 0.7.0-beta.22 – aplikace na jednom místě
+## Beta 0.7.0-beta.23 – aplikace na jednom místě
 
 **Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
 
-**Testovací beta, nikoli dokončená obnova všech aplikací.** Beta 22
+**Testovací beta, nikoli dokončená obnova všech aplikací.** Beta 23
+zapojuje **Měsíční výhled**: aktuální slovní předpověď ČHMÚ a její oficiální
+grafické PDF se statistikou období. Slovní a grafický pohled se přepínají
+uvnitř kompaktního modrého panelu; PDF lze také otevřít samostatně. Archivní
+stránka měla tabulky a grafy přímo v HTML, ale její hodnoty z roku 2025/2026
+nejsou použity jako dnešní předpověď. Vývojové vykreslení na živé stránce
+prošlo při 1280 × 720 a 390 × 844 px; instalaci obou balíčků a centrální
+panel je ještě třeba vizuálně ověřit.
+
+Beta 22
 zapojuje **Předpovědi pro kraje**: všech 14 krajů a volbu dne v klasickém
 modrém rozhraní nad aktuálním textem ČHMÚ. Archiv dochoval původní nabídku,
 ne samotný dynamický text. Samostatný adaptér byl vývojově vizuálně ověřen
@@ -55,7 +64,7 @@ který využije jinak prázdné místo. Mapa si zachová správný poměr stran.
 Seznam můžete sbalit; vaše volba zůstane zachovaná při změně velikosti okna.
 Ze společných zdrojů se nyní sestavuje také Chrome/Edge doplněk. Poslední
 veřejný [zdrojový balíček Chrome/Edge](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.3)
-zůstává beta 3; beta 22 není vydaný ZIP a její instalace v Chromu ani Safari
+zůstává beta 3; beta 23 není vydaný ZIP a její instalace v Chromu ani Safari
 nebyla vizuálně potvrzena. Safari balíček ani veřejné vydání zatím nejsou připraveny.
 Po zveřejnění odpovídajícího userscriptu v `main` se tato beta instaluje stejným
 odkazem jako dříve. Kdo chce vyzkoušet nové rozhraní,

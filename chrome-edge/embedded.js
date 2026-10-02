@@ -49,6 +49,7 @@
         app.family === "ticks" ? document.querySelector("html.chmi-ticks-classic #chmi-ticks-workspace #chmu-map-container") :
         app.family === "bio" ? document.querySelector("html.chmi-bio-classic #chmi-bio-workspace #chmu-map-container") :
         app.family === "week" ? document.querySelector("html.chmi-week-classic #chmi-week-workspace #chmi-week-forecast") :
+        app.family === "monthly" ? document.querySelector("html.chmi-monthly-classic #chmi-monthly-workspace #chmi-monthly-summary") :
         app.family === "regions" ? document.querySelector("html.chmi-regions-classic #chmi-regions-workspace #chmi-regions-forecast") :
         app.family === "rainfall" ? document.getElementById("chmi-rainfall-brand") :
         ["water", "air"].includes(app.family) ? document.getElementById("chmi-hydro-air-classic-brand") :
@@ -66,6 +67,8 @@
         (visible(document.querySelector("#chmi-week-graph canvas")) &&
           document.querySelector("#chmi-week-graph canvas")?.width >= 500)
       );
+      const monthlyMedia = app.family === "monthly" &&
+        document.querySelectorAll("#chmi-monthly-summary article p").length >= 2;
       const regionsMedia = app.family === "regions" &&
         visible(document.getElementById("chmi-regions-forecast")) &&
         document.querySelector("#chmi-regions-forecast .chmu-forecast-content h3")?.textContent?.trim();
@@ -85,7 +88,7 @@
       const lightningMedia = id === "lightning" && [...document.querySelectorAll('#div_container_data img[src*="/input_data/blesk/"]')]
         .some(node => visible(node) && node.complete && node.naturalWidth > 32 &&
           Number(getComputedStyle(node.parentElement).opacity) > 0);
-      const media = id === "lightning" ? lightningMedia : app.family === "sonde" ? sondeMedia : app.family === "klementinum" ? klementinumMedia : forecastMedia || weekMedia || regionsMedia || meteogramMedia || rainfallMedia || synopticMedia || mapMedia || [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img, .playabledata-content-container .chmi-playableimage-img")]
+      const media = id === "lightning" ? lightningMedia : app.family === "sonde" ? sondeMedia : app.family === "klementinum" ? klementinumMedia : forecastMedia || weekMedia || monthlyMedia || regionsMedia || meteogramMedia || rainfallMedia || synopticMedia || mapMedia || [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img, .playabledata-content-container .chmi-playableimage-img")]
         .some(node => visible(node) && (node.tagName === "CANVAS" ? node.width > 0 && node.height > 0 : node.complete && node.naturalWidth > 32));
       window.parent.postMessage({ type: "chmi-classic-status", app: id, session, state: adapter && media ? "ready" : "loading" }, parentURL.origin);
     }

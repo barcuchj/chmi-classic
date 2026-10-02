@@ -20,6 +20,7 @@ test("specific adapters cover live ČHMÚ URLs with query parameters", () => {
     "https://www.chmi.cz/namerena-data/webkamery?c=50.0000,15.8258,7.7307&l=webkamery,ZTM",
     "https://www.chmi.cz/predpoved-pocasi/dnes?obdobi=dnes-odpoledne",
     "https://www.chmi.cz/predpoved-pocasi/tyden?obdobi=tyden",
+    "https://www.chmi.cz/predpoved-pocasi/mesic",
     "https://www.chmi.cz/predpoved-pocasi/karlovarsky-kraj/dnes?obdobi=dnes-odpoledne",
     "https://www.chmi.cz/predpoved-pocasi/praha/zitra?obdobi=zitra-rano",
     "https://www.chmi.cz/predpoved-pocasi/kraj-vysocina/pozitri",
@@ -31,7 +32,7 @@ test("specific adapters cover live ČHMÚ URLs with query parameters", () => {
       rule.matches.some(pattern => covers(pattern, url)) &&
       !(rule.exclude_matches ?? []).some(pattern => covers(pattern, url)));
     assert.equal(specific.length, 1, `${url} must use one specific adapter`);
-    assert.ok(specific[0].js.some(file => ["portal.js", "webcams.js", "forecast.js", "week.js", "regions.js", "stations.js", "rainfall.js"].includes(file)));
+    assert.ok(specific[0].js.some(file => ["portal.js", "webcams.js", "forecast.js", "week.js", "monthly.js", "regions.js", "stations.js", "rainfall.js"].includes(file)));
   }
 });
 
@@ -45,7 +46,7 @@ test("Chrome Web Store metadata stays valid and names the local beta", () => {
 
 test("only explicit live application routes run in child frames", () => {
   const framed = manifest.content_scripts.filter(rule => rule.all_frames);
-  assert.equal(framed.length, 12);
+  assert.equal(framed.length, 13);
   assert.deepEqual(framed[0].matches, [
     "https://produkty.chmi.cz/radar/*",
     "https://produkty.chmi.cz/druzice/*",
@@ -87,6 +88,9 @@ test("only explicit live application routes run in child frames", () => {
     "https://www.chmi.cz/predpoved-pocasi/tyden*"
   ]);
   assert.deepEqual(framed[11].matches, [
+    "https://www.chmi.cz/predpoved-pocasi/mesic*"
+  ]);
+  assert.deepEqual(framed[12].matches, [
     "https://www.chmi.cz/predpoved-pocasi/*-kraj/*",
     "https://www.chmi.cz/predpoved-pocasi/praha/*",
     "https://www.chmi.cz/predpoved-pocasi/kraj-vysocina/*"
@@ -121,6 +125,7 @@ test("meteogram and forecast adapters work standalone and in the classic panel",
   for (const route of manifest.content_scripts[10].matches) assert.ok(generic.exclude_matches.includes(route));
   for (const route of manifest.content_scripts[11].matches) assert.ok(generic.exclude_matches.includes(route));
   for (const route of manifest.content_scripts[12].matches) assert.ok(generic.exclude_matches.includes(route));
+  for (const route of manifest.content_scripts[13].matches) assert.ok(generic.exclude_matches.includes(route));
 });
 
 test("every active portal app has the same adapter assets in Chrome and userscript", () => {
@@ -139,6 +144,7 @@ test("every active portal app has the same adapter assets in Chrome and userscri
     ticks: ["ticks.js", "ticks.css"],
     bio: ["bio.js", "bio.css"],
     week: ["week.js", "week.css"],
+    monthly: ["monthly.js", "monthly.css"],
     regions: ["regions.js", "regions.css"],
     meteosat: ["satellite.js", "satellite.css"],
     aladin: ["aladin.js", "aladin.css"],
