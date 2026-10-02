@@ -5,7 +5,7 @@ snímky dál pocházejí z ČHMÚ; nejde o přehrávání starého počasí z ar
 
 ## Chci vyzkoušet nejnovější podobu portálu
 
-**Aktuální userscript je 0.7.0-beta.22 — testovací verze.** Má centrální panel
+**Aktuální userscript je 0.7.0-beta.23 — testovací verze.** Má centrální panel
 pro aplikace, rozcestník a tlačítko **Zvětšit panel**. Celý původní intranet
 ještě obnovený není. Úvodní předpověď ČR má nově třídenní panel; Voda a Ovzduší mají
 živé adaptéry. Červeně přeškrtnuté položky čekají na rekonstrukci.
@@ -41,6 +41,10 @@ vizuální kontrolu. [Podívejte se na dvě ukázky staršího vzhledu](README.m
 modrém panelu. Samotný text předpovědi zůstává aktuální z ČHMÚ; v archivu se
 jeho historický obsah nedochoval. Také tato nová úprava čeká na instalační
 vizuální kontrolu.
+**Měsíční výhled** má aktuální slovní předpověď a tlačítko **Grafy a statistika**.
+To zobrazí živé grafické PDF ČHMÚ přímo v panelu; odkaz **Otevřít PDF** jej
+otevře v samostatné záložce. Staré archivní údaje se nezobrazují jako aktuální.
+Podoba po instalaci obou variant ještě čeká na kontrolu.
 
 Nejjednodušší cesta je přes **Tampermonkey**, správce malých úprav webových
 stránek. Pro tuto betu nepotřebujete Xcode ani účet vývojáře.
@@ -95,12 +99,12 @@ stále nabízet starší verzi.
 ## Chrome a Edge – testovací beta bez Tampermonkey
 
 Poslední veřejný [Chrome/Edge balíček 0.7.0-beta.3](https://github.com/barcuchj/chmi-classic/releases/download/v0.7.0-beta.3/chmi-classic-chrome-edge-0.7.0-beta.3.zip)
-obsahuje centrální portál a webkamery. Zdrojová beta 22 navíc sdílí s userscriptem
+obsahuje centrální portál a webkamery. Zdrojová beta 23 navíc sdílí s userscriptem
 adaptéry pro předpověď, meteogram, vodu, ovzduší a radarové odhady srážek
 i v centrálním panelu, stejně jako animaci ALADINu, synoptickou situaci a
 sondážní měření, Klementinum, meteorologické stanice, aktivitu klíšťat,
-biometeorologickou, týdenní a krajské předpovědi.
-Balíček beta 22 zatím není veřejně vydaný ani instalačně
+biometeorologickou, týdenní, krajské i měsíční předpovědi.
+Balíček beta 23 zatím není veřejně vydaný ani instalačně
 a vizuálně ověřený;
 odkaz na betu 3 proto nemůže ukázat všechny nové funkce.
 

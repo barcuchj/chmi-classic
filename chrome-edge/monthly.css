@@ -1,0 +1,132 @@
+/* Compact intranet-style shell over today's official monthly forecast. */
+html.chmi-monthly-classic,
+html.chmi-monthly-classic body {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background: #89bed0;
+}
+html.chmi-monthly-classic body > :not(#chmi-monthly-workspace) { display: none !important; }
+html.chmi-monthly-classic #chmi-monthly-workspace {
+  position: fixed;
+  inset: 3px;
+  z-index: 1000;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #829dae;
+  background: #fff;
+  color: #17346c;
+  font: 12px/1.4 Verdana, Arial, sans-serif;
+}
+html.chmi-monthly-classic #chmi-monthly-brand {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px 10px;
+  min-width: 0;
+  padding: 5px 9px;
+  border-bottom: 2px solid #698ab2;
+  background: #273a83;
+  color: #fff;
+}
+html.chmi-monthly-classic #chmi-monthly-brand h1 {
+  margin: 0 !important;
+  color: #fff !important;
+  font: bold 15px/1.3 Verdana, Arial, sans-serif !important;
+}
+html.chmi-monthly-classic #chmi-monthly-brand span {
+  margin-right: auto;
+  color: #e2edff;
+  font-weight: bold;
+}
+html.chmi-monthly-classic #chmi-monthly-workspace button,
+html.chmi-monthly-classic #chmi-monthly-workspace a {
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 3px 8px;
+  border: 1px solid #9ab9d9;
+  border-radius: 0;
+  background: #fff;
+  color: #17346c;
+  cursor: pointer;
+  font: bold 11px/1.3 Verdana, Arial, sans-serif;
+  text-decoration: none;
+}
+html.chmi-monthly-classic #chmi-monthly-workspace :is(button, a):focus-visible {
+  outline: 2px solid #24a5d0;
+  outline-offset: 2px;
+}
+html.chmi-monthly-classic #chmi-monthly-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  min-width: 0;
+  padding: 5px;
+  border-bottom: 1px solid #a1b4d1;
+  background: #edf4fb;
+}
+html.chmi-monthly-classic #chmi-monthly-nav button[aria-pressed="true"] { background: #d7eafb; }
+html.chmi-monthly-classic #chmi-monthly-main {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+html.chmi-monthly-classic #chmi-monthly-main > section {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+html.chmi-monthly-classic #chmi-monthly-main > section[hidden] { display: none !important; }
+html.chmi-monthly-classic #chmi-monthly-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 8px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: clamp(6px, 2vw, 18px);
+  scrollbar-width: thin;
+}
+html.chmi-monthly-classic #chmi-monthly-summary article {
+  min-width: 0;
+  padding: 0 10px 8px;
+  border: 1px solid #a1b4d1;
+  background: #fff;
+}
+html.chmi-monthly-classic #chmi-monthly-summary h2 {
+  margin: 0 -10px 7px !important;
+  padding: 5px 10px;
+  border-bottom: 1px solid #a1b4d1;
+  background: #e8f0f8;
+  color: #17346c !important;
+  font: bold 14px/1.3 Verdana, Arial, sans-serif !important;
+}
+html.chmi-monthly-classic #chmi-monthly-summary p {
+  margin: 0 !important;
+  color: #1d2940 !important;
+  font: 13px/1.55 Verdana, Arial, sans-serif !important;
+}
+html.chmi-monthly-classic #chmi-monthly-pdf-frame {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
+}
+@media (max-width: 700px) {
+  html.chmi-monthly-classic #chmi-monthly-brand { padding: 3px 5px; }
+  html.chmi-monthly-classic #chmi-monthly-brand h1 { font-size: 12px !important; }
+  html.chmi-monthly-classic #chmi-monthly-brand span { font-size: 10px; }
+  html.chmi-monthly-classic #chmi-monthly-nav { padding: 3px; gap: 2px; }
+  html.chmi-monthly-classic #chmi-monthly-summary { grid-template-columns: minmax(0, 1fr); }
+}

@@ -16,6 +16,7 @@
     ticks: { title: "Aktivita klíšťat", url: "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat", family: "ticks", section: "weather" },
     bio: { title: "Biometeorologická předpověď", url: "https://www.chmi.cz/predpoved-pocasi/bio-predpoved", family: "bio", section: "weather" },
     week: { title: "Týdenní předpověď", url: "https://www.chmi.cz/predpoved-pocasi/tyden", family: "week", section: "weather" },
+    monthly: { title: "Měsíční výhled počasí", url: "https://www.chmi.cz/predpoved-pocasi/mesic", family: "monthly", section: "weather" },
     regions: { title: "Předpovědi pro kraje", url: "https://www.chmi.cz/predpoved-pocasi/karlovarsky-kraj/dnes", family: "regions", section: "weather" },
     meteosat: { title: "Snímky z družic MSG / Meteosat", url: "https://produkty.chmi.cz/druzice/?time_range=24", family: "satellite", section: "weather" },
     aladin: { title: "ALADIN – mapy", url: "https://produkty.chmi.cz/aladin/", family: "aladin", section: "weather" },
@@ -30,7 +31,7 @@
   };
   const pending = (label, reason = "Původní zobrazení této aplikace zatím není obnoveno. Samotný odkaz na nový web nepovažujeme za rekonstrukci.") => ({ label, reason });
   const columns = [
-    [{ label: "Předpověď pro ČR", app: "forecast" }, { label: "Předpovědi pro kraje", app: "regions" }, { label: "Týdenní předpověď", app: "week" }, ...["Měsíční výhled", "Synoptická předpověď"].map(label => pending(label)), { label: "Bio předpověď", app: "bio" }, ...["Počasí pro létání", "Sněhové zpravodajství", "Předpovědi pro hory"].map(label => pending(label))],
+    [{ label: "Předpověď pro ČR", app: "forecast" }, { label: "Předpovědi pro kraje", app: "regions" }, { label: "Týdenní předpověď", app: "week" }, { label: "Měsíční výhled", app: "monthly" }, pending("Synoptická předpověď"), { label: "Bio předpověď", app: "bio" }, ...["Počasí pro létání", "Sněhové zpravodajství", "Předpovědi pro hory"].map(label => pending(label))],
     [{ label: "Aladin – animace", app: "aladin-animation" }, { label: "Aladin – mapy", app: "aladin" }, { label: "Aladin – meteogramy", app: "meteogram" }, pending("Přehled počasí v ČR"), { label: "Synoptická situace", app: "synoptic" }, ...["Ozonové zpravodajství", "Družicová měření ozonu", "Pylový semafor"].map(label => pending(label)), { label: "Aktivita klíšťat", app: "ticks" }],
     [{ label: "Aktuální radarová data", app: "radar" }, { label: "Snímky z družic MSG", app: "meteosat" }, { label: "Snímky z družic NOAA", app: "polar" }, { label: "Detekce blesků", app: "lightning" }, { label: "Radarové odhady srážek", app: "rainfall" }, pending("Aktuální mapy"), pending("Grafy automat. stanic"), { label: "Sondážní měření", app: "sonde" }, pending("Počasí a kůrovec")],
     [{ label: "Webové kamery", app: "webcams" }, pending("Meteo zprávy – Infomet"), { label: "Měření z Klementina", app: "klementinum" }, ...["Mapa zatížení sněhem", "Nalezli jste radiosondu?", "Vertikální profily větru", "Monitoring sucha"].map(label => pending(label)), { label: "Meteorologické stanice", app: "stations" }]

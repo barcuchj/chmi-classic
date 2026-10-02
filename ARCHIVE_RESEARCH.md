@@ -598,6 +598,12 @@ Původní rozložení výhledu má tabulky a pravděpodobnostní grafy, ale obsa
 platí pro 22. 12. 2025–18. 1. 2026, ne pro datum archivace. Dva ostatní soubory
 jsou články, ne interaktivní aplikace. Podrobnosti/hash/metoda/licenční
 omezení: `.build/archive-reference-20260926/information-batch32/MANIFEST.md`.
+Současný oficiální [měsíční výhled](https://www.chmi.cz/predpoved-pocasi/mesic)
+publikuje živý slovní text a odkaz na
+[grafické PDF](https://www.chmi.cz/documents/d/chmi.cz/mesicni-2), jehož
+stránky obsahují také statistické tabulky a pravděpodobnostní grafy. Adaptér
+beta 23 čte tyto živé zdroje na oficiální stránce; historické hodnoty ani
+archivní obrázky do rozšíření nekopíruje. Ověřeno 2. 10. 2026.
 Ozon o3uvb v konkrétním capture nyní vrací 404; filterlist_min.js vrací
 HTML obal a jeho iframe je blokován. Ani jedno není získaný zdroj.
 Aktuální reporty jsou `tooling/verification-batch32.json` a
@@ -1066,3 +1072,19 @@ Archívem automaticky vložený iframe požádal o `.../20260825190446if_/.../la
 `ERR_BLOCKED_BY_CLIENT`, `blockedReason: inspector`. Žádný JSON ani nový
 receipt nebyl získán. Tento výsledek platí jen pro uvedený capture; zbývající
 JSON konfigurace ani dvě CSS nebyly touto kontrolou hromadně ověřeny.
+
+## Kandidáti pro další rekonstrukci VODA a OVZDUŠÍ (2. 10. 2026)
+
+Kurýrní rešerše vytipovala k přímému ověření archivní vstupy
+[`?tab=1`](https://web.archive.org/web/*/https://intranet.chmi.cz/?tab=1)
+a [`?tab=2`](https://web.archive.org/web/*/https://intranet.chmi.cz/?tab=2).
+Pro ovzduší také možné původní výstupy
+[`actual_hour_data_CZ.html`](https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/uoco/web_generator/actual_hour_data_CZ.html)
+a [`actual_3hour_map_CZ.html`](https://web.archive.org/web/*/https://intranet.chmi.cz/files/portal/docs/uoco/web_generator/actual_3hour_map_CZ.html).
+Současnými oficiálními kandidáty jsou
+[aktuální vodní stavy](https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa),
+[tabulka kvality ovzduší](https://www.chmi.cz/namerena-data/data-z-mericich-stanic/tabulka-kvality-ovzdusi)
+a [AIMgrafy](https://ovzdusi.chmi.cz/AIMgrafy/). Rešeršní prostředí ale
+neotevřelo funkční Wayback snapshot `?tab=2`; úplný seznam a přesné historické
+`href` položek OVZDUŠÍ zůstávají **neověřené**. Tito kandidáti proto sami
+o sobě neaktivují žádný odkaz v rozcestníku.
