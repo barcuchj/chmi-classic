@@ -1,10 +1,17 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## Beta 0.7.0-beta.21 – aplikace na jednom místě
+## Beta 0.7.0-beta.22 – aplikace na jednom místě
 
 **Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
 
-**Testovací beta, nikoli dokončená obnova všech aplikací.** Beta 21
+**Testovací beta, nikoli dokončená obnova všech aplikací.** Beta 22
+zapojuje **Předpovědi pro kraje**: všech 14 krajů a volbu dne v klasickém
+modrém rozhraní nad aktuálním textem ČHMÚ. Archiv dochoval původní nabídku,
+ne samotný dynamický text. Samostatný adaptér byl vývojově vizuálně ověřen
+v širokém i úzkém okně; instalaci userscriptu a rozšíření včetně centrálního
+panelu ještě zbývá ověřit.
+
+Beta 21
 zapojuje Týdenní předpověď: aktuální text a graf ČHMÚ zůstávají živé,
 ale mají kompaktní ovládání ve starém stylu. Skutečný obsah staré stránky
 se v dostupném archivním záznamu nedochoval. Vykreslení po instalaci obou
@@ -48,7 +55,7 @@ který využije jinak prázdné místo. Mapa si zachová správný poměr stran.
 Seznam můžete sbalit; vaše volba zůstane zachovaná při změně velikosti okna.
 Ze společných zdrojů se nyní sestavuje také Chrome/Edge doplněk. Poslední
 veřejný [zdrojový balíček Chrome/Edge](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.3)
-zůstává beta 3; beta 21 není vydaný ZIP a její instalace v Chromu ani Safari
+zůstává beta 3; beta 22 není vydaný ZIP a její instalace v Chromu ani Safari
 nebyla vizuálně potvrzena. Safari balíček ani veřejné vydání zatím nejsou připraveny.
 Po zveřejnění odpovídajícího userscriptu v `main` se tato beta instaluje stejným
 odkazem jako dříve. Kdo chce vyzkoušet nové rozhraní,

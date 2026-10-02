@@ -16,6 +16,7 @@
     ticks: { title: "Aktivita klíšťat", url: "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat", family: "ticks", section: "weather" },
     bio: { title: "Biometeorologická předpověď", url: "https://www.chmi.cz/predpoved-pocasi/bio-predpoved", family: "bio", section: "weather" },
     week: { title: "Týdenní předpověď", url: "https://www.chmi.cz/predpoved-pocasi/tyden", family: "week", section: "weather" },
+    regions: { title: "Předpovědi pro kraje", url: "https://www.chmi.cz/predpoved-pocasi/karlovarsky-kraj/dnes", family: "regions", section: "weather" },
     meteosat: { title: "Snímky z družic MSG / Meteosat", url: "https://produkty.chmi.cz/druzice/?time_range=24", family: "satellite", section: "weather" },
     aladin: { title: "ALADIN – mapy", url: "https://produkty.chmi.cz/aladin/", family: "aladin", section: "weather" },
     "aladin-animation": { title: "ALADIN – animace", url: "https://produkty.chmi.cz/aladin/?chmi_classic_animation=1", family: "aladin", section: "weather" },
@@ -29,12 +30,13 @@
   };
   const pending = (label, reason = "Původní zobrazení této aplikace zatím není obnoveno. Samotný odkaz na nový web nepovažujeme za rekonstrukci.") => ({ label, reason });
   const columns = [
-    [{ label: "Předpověď pro ČR", app: "forecast" }, pending("Předpovědi pro kraje"), { label: "Týdenní předpověď", app: "week" }, ...["Měsíční výhled", "Synoptická předpověď"].map(label => pending(label)), { label: "Bio předpověď", app: "bio" }, ...["Počasí pro létání", "Sněhové zpravodajství", "Předpovědi pro hory"].map(label => pending(label))],
+    [{ label: "Předpověď pro ČR", app: "forecast" }, { label: "Předpovědi pro kraje", app: "regions" }, { label: "Týdenní předpověď", app: "week" }, ...["Měsíční výhled", "Synoptická předpověď"].map(label => pending(label)), { label: "Bio předpověď", app: "bio" }, ...["Počasí pro létání", "Sněhové zpravodajství", "Předpovědi pro hory"].map(label => pending(label))],
     [{ label: "Aladin – animace", app: "aladin-animation" }, { label: "Aladin – mapy", app: "aladin" }, { label: "Aladin – meteogramy", app: "meteogram" }, pending("Přehled počasí v ČR"), { label: "Synoptická situace", app: "synoptic" }, ...["Ozonové zpravodajství", "Družicová měření ozonu", "Pylový semafor"].map(label => pending(label)), { label: "Aktivita klíšťat", app: "ticks" }],
     [{ label: "Aktuální radarová data", app: "radar" }, { label: "Snímky z družic MSG", app: "meteosat" }, { label: "Snímky z družic NOAA", app: "polar" }, { label: "Detekce blesků", app: "lightning" }, { label: "Radarové odhady srážek", app: "rainfall" }, pending("Aktuální mapy"), pending("Grafy automat. stanic"), { label: "Sondážní měření", app: "sonde" }, pending("Počasí a kůrovec")],
     [{ label: "Webové kamery", app: "webcams" }, pending("Meteo zprávy – Infomet"), { label: "Měření z Klementina", app: "klementinum" }, ...["Mapa zatížení sněhem", "Nalezli jste radiosondu?", "Vertikální profily větru", "Monitoring sucha"].map(label => pending(label)), { label: "Meteorologické stanice", app: "stations" }]
   ];
   const supplementary = [{ label: "Geostacionární družice", app: "geo" }, { label: "Pravděpodobnost růstu hub", app: "mushrooms" }];
+  const regionSlugs = new Set(["karlovarsky-kraj", "plzensky-kraj", "ustecky-kraj", "stredocesky-kraj", "praha", "jihocesky-kraj", "liberecky-kraj", "kralovehradecky-kraj", "pardubicky-kraj", "kraj-vysocina", "olomoucky-kraj", "jihomoravsky-kraj", "moravskoslezsky-kraj", "zlinsky-kraj"]);
   const normalPath = path => path.replace(/\/+$/, "") || "/";
   const registry = {
     apps, columns, supplementary,
@@ -50,6 +52,10 @@
       if (!app) return false;
       const target = new URL(app.url);
       if (id === "forecast" && url.origin === target.origin) return /^\/predpoved-pocasi\/(dnes|zitra|pozitri)\/?$/.test(url.pathname);
+      if (id === "regions" && url.origin === target.origin) {
+        const match = /^\/predpoved-pocasi\/([a-z-]+)\/(dnes|zitra|pozitri|dalsi-dny)\/?$/.exec(url.pathname);
+        return Boolean(match && regionSlugs.has(match[1]));
+      }
       if (id === "meteogram" && url.origin === target.origin) return /^\/meteogram\/\d+-[a-z0-9-]+\/?$/.test(url.pathname);
       if (id === "webcams" && url.origin === target.origin && /^\/namerena-data\/webkamera\/[a-z0-9_-]+\/?$/.test(url.pathname)) return true;
       if (id === "radar" || id === "lightning") return url.origin === target.origin &&

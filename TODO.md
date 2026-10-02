@@ -2,6 +2,12 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [ ] Předpovědi pro kraje: beta 22 zapojuje živý oficiální text pro všech
+  14 krajů, přepínání dne a modré archivní rozvržení. Po instalaci ověřit
+  přepínání krajů/dnů a chování v centrálním panelu i samostatně v širokém
+  a úzkém okně, včetně zbytečných posuvníků. Přímé vývojové vykreslení
+  při 1200 × 938 a 390 × 844 px a „Další dny“ prošlo; balíčky a iframe
+  zatím testované nejsou. Archivní text se nedochoval.
 - [ ] Týdenní předpověď: beta 21 zapojuje živý oficiální text a graf do
   kompaktního panelu. Po instalaci ověřit přepínání Text/Graf, denní navigaci,
   čitelnost grafu, centrální panel i samostatnou záložku v širokém a úzkém

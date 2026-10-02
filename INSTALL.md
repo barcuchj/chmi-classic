@@ -5,7 +5,7 @@ snímky dál pocházejí z ČHMÚ; nejde o přehrávání starého počasí z ar
 
 ## Chci vyzkoušet nejnovější podobu portálu
 
-**Aktuální userscript je 0.7.0-beta.21 — testovací verze.** Má centrální panel
+**Aktuální userscript je 0.7.0-beta.22 — testovací verze.** Má centrální panel
 pro aplikace, rozcestník a tlačítko **Zvětšit panel**. Celý původní intranet
 ještě obnovený není. Úvodní předpověď ČR má nově třídenní panel; Voda a Ovzduší mají
 živé adaptéry. Červeně přeškrtnuté položky čekají na rekonstrukci.
@@ -37,6 +37,10 @@ Její nový klasický obal zatím čeká na vizuální kontrolu po instalaci.
 jejich živý graf v samostatné záložce uvnitř panelu. Dlouhý text se posouvá
 uvnitř aplikace, ne celou stránkou. Její instalovaný vzhled ještě čeká na
 vizuální kontrolu. [Podívejte se na dvě ukázky staršího vzhledu](README.md#jak-beta-vypadá).
+**Předpovědi pro kraje** nabízí seznam 14 krajů a volbu dne v klasickém
+modrém panelu. Samotný text předpovědi zůstává aktuální z ČHMÚ; v archivu se
+jeho historický obsah nedochoval. Také tato nová úprava čeká na instalační
+vizuální kontrolu.
 
 Nejjednodušší cesta je přes **Tampermonkey**, správce malých úprav webových
 stránek. Pro tuto betu nepotřebujete Xcode ani účet vývojáře.
@@ -91,11 +95,12 @@ stále nabízet starší verzi.
 ## Chrome a Edge – testovací beta bez Tampermonkey
 
 Poslední veřejný [Chrome/Edge balíček 0.7.0-beta.3](https://github.com/barcuchj/chmi-classic/releases/download/v0.7.0-beta.3/chmi-classic-chrome-edge-0.7.0-beta.3.zip)
-obsahuje centrální portál a webkamery. Místní beta 18 navíc sdílí s userscriptem
+obsahuje centrální portál a webkamery. Zdrojová beta 22 navíc sdílí s userscriptem
 adaptéry pro předpověď, meteogram, vodu, ovzduší a radarové odhady srážek
 i v centrálním panelu, stejně jako animaci ALADINu, synoptickou situaci a
-sondážní měření, Klementinum, meteorologické stanice a aktivitu klíšťat.
-Balíček beta 18 zatím není veřejně vydaný ani instalačně
+sondážní měření, Klementinum, meteorologické stanice, aktivitu klíšťat,
+biometeorologickou, týdenní a krajské předpovědi.
+Balíček beta 22 zatím není veřejně vydaný ani instalačně
 a vizuálně ověřený;
 odkaz na betu 3 proto nemůže ukázat všechny nové funkce.
 
