@@ -1,8 +1,30 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## Beta 0.7.0-beta.25 – pylový semafor
+## 0.7.26 – kompaktní VODA a OVZDUŠÍ (testovací vydání)
 
 **Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
+
+Verze 0.7.26 opravuje příliš vysoké hlavičky živých map **VODA** a **OVZDUŠÍ**:
+úzká lišta nechává více prostoru mapě, legendě a původním ovladačům.
+Legenda zůstává uvnitř mapy a nezakrývá své tlačítko ani na mobilu.
+Záložky se správně vybírají také přes `#classic=water` a `#classic=air`;
+odkaz lze uložit a při návratu na Počasí zůstává předchozí aplikace.
+Klasický mapový panel se potvrzuje až po načtení správné nativní konfigurace,
+canvasu a povolené časové osy, ne podle samotné hlavičky.
+Chrome instalace prošla při 1280 × 800 a 390 × 844 px, samostatně i uprostřed
+portálu. Podrobnosti a zbývající omezení: [QA 0.7.26](docs/qa-beta26.md).
+Tampermonkey se sestavuje ze stejných zdrojů; jeho skutečná instalace ještě
+ověřena není. Jde nadále o testovací, ne kompletně obnovený portál.
+
+Od tohoto vydání mají Chrome a userscript společné číselné označení
+`0.7.26`, `0.7.27` atd. Stav testovacího vydání zůstává uvedený zde a
+na GitHubu; dříve vydané beta tagy se nemění.
+
+![VODA v klasickém panelu – verze 0.7.26](docs/screenshots/beta26-water.png)
+![OVZDUŠÍ v klasickém panelu – verze 0.7.26](docs/screenshots/beta26-air.png)
+![VODA – legenda uvnitř mapového panelu](docs/screenshots/0.7.26-water-legend.png)
+
+### Předchozí beta 25
 
 **Testovací beta, nikoli dokončená obnova všech aplikací.** Beta 25 přidává
 **Pylový semafor** do původního rozcestníku. Živá třídenní mapa ČHMÚ má
@@ -93,7 +115,7 @@ Na úzkém vysokém okně se pod mapou automaticky otevře živý seznam měst,
 který využije jinak prázdné místo. Mapa si zachová správný poměr stran.
 Seznam můžete sbalit; vaše volba zůstane zachovaná při změně velikosti okna.
 Ze společných zdrojů se nyní sestavuje také Chrome/Edge doplněk. Poslední
-veřejný [balíček Chrome/Edge beta 25](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.25)
+veřejný [balíček Chrome/Edge 0.7.26](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.26)
 obsahuje stejné adaptéry jako userscript. Omezený instalační test v Chromu
 je uveden výše; nejde o kontrolu všech aplikací ani Edge a Safari.
 Aktuální Safari balíček zatím není připravený.

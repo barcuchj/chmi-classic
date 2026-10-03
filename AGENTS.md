@@ -10,6 +10,14 @@
 - Repozitář je `github-first`: po ověření pracuj v cílené větvi, používej Conventional Commits, pushni větev a otevři PR proti `main`; do `main` po úvodním zveřejnění neposílej změny přímo.
 - Veřejný repozitář je `https://github.com/barcuchj/chmi-classic`. Balíčky pro Release vytvářej pouze přes `./script/package_release.sh` a před nahráním ověř jejich obsah.
 
+## Číslování verzí — schváleno uživatelem 3. 10. 2026
+
+- Od vydání `0.7.26` používej společné číselné verze `major.minor.patch`
+  bez `version_name` a bez přípony beta. Autoritativní číslo je
+  `chrome-edge/manifest.json`: userscript i název Chrome balíčku ho přebírají
+  automaticky. Testovací stav uváděj v dokumentaci / GitHub prerelease,
+  ne jako příponu čísla. Staré vydané tagy neměň.
+
 ## Kurýr v2 — projektová výjimka schválená uživatelem 3. 10. 2026
 
 - Kurýr nesmí nyní ani v budoucích bězích čekat pouze na ověření přesného názvu

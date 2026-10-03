@@ -1,5 +1,24 @@
 # Přehled změn
 
+## 0.7.26 – 2026-10-03 (testovací sestavení)
+
+- Přechod na číselné verze bez přípony beta. Manifest je jediný zdroj čísla
+  pro Chrome, userscript i balíček; `0.7.26` je vyšší než `0.7.0.25`.
+
+- VODA/OVZDUŠÍ: explicitní řádkové rozložení odolává nativnímu stylu ČHMÚ;
+  centrální hlavička má 26 px místo přibližně 89 px. Dokument nepřesahuje viewport.
+- Záložky a hash nyní souhlasí při přímém otevření i změně odkazu;
+  návrat na Počasí zachová naposledy vybranou meteorologickou aplikaci.
+- Živá mapa se potvrzuje až po správné konfiguraci, skutečném canvasu a
+  povoleném časovém ovladači. ARIA stav wrapperu se zpřístupní jen potom;
+  vypnutí vrací původní atributy a zachovává nativní mapu.
+- Rozbalená legenda VODY/OVZDUŠÍ zůstává uvnitř mapového panelu a nezakrývá
+  vlastní tlačítko; na mobilu se přesune nad spodní lištu. Nativní položky
+  a data se nemění, dlouhá legenda může mít vlastní lokální posouvání.
+- Stejná oprava v Chrome i generovaném userscriptu; instalační QA Chrome,
+  166 regresních testů a tři nové skutečné screenshoty. Tampermonkey,
+  Edge/Safari a úplné pokrytí alternativních URL/vrstev ještě zbývají.
+
 ## 0.7.0-beta.25 – 2026-10-03 (testovací sestavení)
 
 - Doplněk i tlačítko v liště mají původní radarovou ikonu projektu ze Store

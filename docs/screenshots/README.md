@@ -1,5 +1,21 @@
 # Snímky beta rozhraní
 
+## Instalovaná verze 0.7.26
+
+`beta26-water.png` a `beta26-air.png`: pořízeno 3. 10. 2026 v izolovaném
+Chrome for Testing při 1280 × 800 px, s instalovanou verzí 0.7.26 bez Tampermonkey.
+Centrální záložky `https://www.chmi.cz/#classic=water` a `#classic=air`;
+zdroj měření ČHMÚ, mapa © OpenStreetMap contributors. Jen viewport, bez
+osobních karet/adresního řádku a bez grafických úprav. Data jsou ukázkou
+z okamžiku pořízení, nikoli aktuálními hodnotami pro libovolné datum čtení.
+[Rozsah a omezení QA](../qa-beta26.md). Podklady třetích stran nepřebírají
+automaticky MIT licenci kódu projektu.
+
+`0.7.26-water-legend.png`: stejná skutečně instalovaná verze, 1557 × 985 px,
+otevřená legenda i nabídka vrstev VODY. Text a značky legendy zůstávají
+uvnitř mapy; vlastní tlačítko lze zavřít. Stejný zdroj a licenční omezení
+jako u obou výše uvedených map. Bez grafických úprav.
+
 ## Instalovaná beta 25
 
 `beta25-pylovy-semafor.png`: pořízeno 3. 10. 2026 v izolovaném profilu

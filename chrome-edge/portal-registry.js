@@ -92,6 +92,21 @@
       return !event.defaultPrevented && event.button === 0 &&
         !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
     },
+    panelShiftX(panel, viewport) {
+      const left = viewport.left + 4;
+      const right = Math.max(left, viewport.right - panel.width - 4);
+      return Math.min(right, Math.max(left, panel.left)) - panel.left;
+    },
+    panelShiftY(panel, viewport, anchor) {
+      let top = panel.top;
+      if (top < viewport.top + 4 || top + panel.height > viewport.bottom - 4 ||
+          (top <= anchor.bottom && top + panel.height >= anchor.top)) {
+        top = anchor.bottom + 4 + panel.height <= viewport.bottom - 4
+          ? anchor.bottom + 4 : anchor.top - panel.height - 4;
+      }
+      return top - panel.top + this.panelShiftX({ left: top, width: panel.height },
+        { left: viewport.top, right: viewport.bottom });
+    },
     route(hash) {
       if (!hash) return "forecast";
       const id = /^#classic=([a-z-]+)$/.exec(hash)?.[1];

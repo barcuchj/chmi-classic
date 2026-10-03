@@ -50,12 +50,20 @@ test("specific adapters cover live ČHMÚ URLs with query parameters", () => {
   }
 });
 
-test("Chrome Web Store metadata stays valid and names the local beta", () => {
+test("Chrome and userscript share a numeric version newer than published betas", () => {
   assert.ok(manifest.description.length <= 132, `description has ${manifest.description.length} characters`);
-  assert.match(manifest.version, /^\d+(?:\.\d+){0,3}$/);
-  assert.match(manifest.version_name, /^0\.7\.0-beta\.\d+$/);
+  assert.match(manifest.version, /^(?:0|[1-9]\d*)(?:\.(?:0|[1-9]\d*)){2}$/);
+  assert.ok(manifest.version.split(".").every(part => Number(part) <= 65535));
+  assert.equal(manifest.version_name, undefined, "display the actual numeric version");
+  const previous = [0, 7, 0, 25];
+  const current = manifest.version.split(".").map(Number);
+  const differing = previous.findIndex((value, i) => value !== (current[i] ?? 0));
+  assert.ok(differing >= 0 && (current[differing] ?? 0) > previous[differing]);
   const builder = readFileSync(join(root, "script/build_userscript.mjs"), "utf8");
-  assert.ok(builder.includes(`// @version      ${manifest.version_name}`));
+  assert.ok(builder.includes('// @version      ${manifest.version}'));
+  const packageScript = readFileSync(join(root, "script/package_release.sh"), "utf8");
+  assert.ok(packageScript.includes("manifest.json').version\""));
+  assert.ok(!packageScript.includes("manifest.json').version_name"));
 });
 
 test("only explicit live application routes run in child frames", () => {
