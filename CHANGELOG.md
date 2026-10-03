@@ -1,5 +1,27 @@
 # Přehled změn
 
+## 0.7.0-beta.25 – 2026-10-03 (testovací sestavení)
+
+- Doplněk i tlačítko v liště mají původní radarovou ikonu projektu ze Store
+  podkladů. Manifest a instalační ZIP obsahují PNG 16/32/48/128 px;
+  regresní testy ověřují rozměry a zabalení, nikoli jen existenci souboru.
+- Rozpoznání rizikových map přijímá také přesnou nativní mobilní konfiguraci
+  `?client=mobile`; přímé otevření v úzkém okně už nevynechá adaptér.
+
+- Pylový semafor je aktivní v původním rozcestníku: nativní živá třídenní
+  mapa ČHMÚ ve společném kompaktním rámu s aktivitou klíšťat.
+- Zachována legenda, přepínání dnů, animace a vrstvy; vysvětlení pylového
+  semaforu zůstává dostupné samostatným oficiálním odkazem.
+- Opraveno oříznutí názvů dnů uvnitř zmenšené časové osy. V centrálním
+  panelu není duplicitní nadpis mapy ani přepínač vzhledu.
+- Nativní wrapper i bez Classicu označoval již funkční mapu jako skrytou
+  a nedostupnou. Adaptér opravuje pouze tato ARIA metadata po ověření živé
+  mapy a povolené časové osy; skutečně zakázané ovladače nemění.
+- Společné zdroje pro userscript a Chrome/Edge, explicitní pravidlo iframe
+  jen pro pylový semafor. Instalační test userscriptu zbývá.
+- Podklady ozonových položek v `docs/research/ozone-sources.md`: aktuální
+  ozon/UV graf není zaměňován za družicovou mapu celkového ozonu.
+
 ## 0.7.0-beta.24 – 2026-10-03 (testovací sestavení)
 
 - GitHub CI používá úplnou kontrolu zdrojů, manifestu, shody userscriptu a

@@ -1,9 +1,15 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.7.0.24",
-  "version_name": "0.7.0-beta.24",
+  "version": "0.7.0.25",
+  "version_name": "0.7.0-beta.25",
   "description": "Vrací klasický vzhled živým meteorologickým aplikacím ČHMÚ a přidává přehledný rozcestník.",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
   "permissions": [
     "storage"
   ],
@@ -20,7 +26,13 @@
   ],
   "action": {
     "default_title": "ČHMÚ Classic – meteorologické výstupy",
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
   },
   "content_scripts": [
     {
@@ -156,7 +168,8 @@
     },
     {
       "matches": [
-        "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*"
+        "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*",
+        "https://www.chmi.cz/predpoved-pocasi/rizika/pylovy-semafor*"
       ],
       "css": [
         "embedded.css", "navigation.css", "ticks.css"
@@ -247,6 +260,7 @@
         "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum*",
         "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke*",
         "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*",
+        "https://www.chmi.cz/predpoved-pocasi/rizika/pylovy-semafor*",
         "https://www.chmi.cz/predpoved-pocasi/bio-predpoved*",
         "https://www.chmi.cz/predpoved-pocasi/tyden*",
         "https://www.chmi.cz/predpoved-pocasi/mesic*",

@@ -55,6 +55,11 @@ aktuální meteorologická data.
 
 ## Další vývojové reference
 
+- Ikona doplňku: původní neutrální ikona projektu vytvořená v Classic chatu,
+  dodaná v `chmi-classic-chrome-web-store-assets.zip` dne 22. 9. 2026.
+  Identický zdroj 128 × 128 px a zmenšené varianty jsou v `chrome-edge/icons/`.
+  Nejde o převzetí oficiálního loga ČHMÚ; původ popisuje přiložené README.
+
 - Apple – Safari Web Extensions:
   <https://developer.apple.com/documentation/safariservices/packaging-a-web-extension-for-safari>
 

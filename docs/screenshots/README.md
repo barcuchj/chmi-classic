@@ -1,6 +1,17 @@
 # Snímky beta rozhraní
 
-## Aktuální instalovaná beta 24
+## Instalovaná beta 25
+
+`beta25-pylovy-semafor.png`: pořízeno 3. 10. 2026 v izolovaném profilu
+Chrome for Testing při 1280 × 800 px, s instalovanou beta 25 bez Tampermonkey.
+Položka Pylový semafor otevřená z rozcestníku na `https://www.chmi.cz/`
+zobrazuje živou mapu `https://www.chmi.cz/predpoved-pocasi/rizika/pylovy-semafor`
+pro 4. 10. 2026. Bez grafických úprav, osobních karet a adresního řádku.
+Zdroj meteorologických údajů ČHMÚ, mapa © OpenStreetMap contributors.
+Nejde o současnou předpověď platnou v libovolný den čtení tohoto dokumentu.
+Rozsah a limity: [QA beta 25](../qa-beta25.md).
+
+## Instalovaná beta 24
 
 Pořízeno 3. 10. 2026 ve skutečně instalovaném Chrome rozšíření, bez aktivního
 Tampermonkey, v odděleném testovacím profilu při 1280 × 800 px. Pouze viewport,

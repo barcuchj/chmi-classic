@@ -153,6 +153,18 @@ test("meteorological station directory uses the verified native station map", ()
     "https://evil.test/namerena-data/umisteni-mericich-stanic/meteorologicke"
   ]) assert.equal(registry.embeddedContext(new URL(url), registry.frameName("stations", "test-session")), null);
 });
+test("pollen directory opens its own exact official route, with preserved panel context", () => {
+  assert.equal(registry.columns[1].at(-2).app, "pollen");
+  const app = registry.get("pollen");
+  assert.equal(app.url, "https://www.chmi.cz/predpoved-pocasi/rizika/pylovy-semafor");
+  const framed = new URL(registry.frameURL("pollen", "test-session"));
+  const name = registry.frameName("pollen", "test-session");
+  assert.equal(registry.embeddedContext(framed, name)?.id, "pollen");
+  assert.equal(registry.embeddedContext(new URL(`${app.url}?t=202610030800&l=kraje,pyl,ZTM`), name)?.id, "pollen");
+  for (const url of [`${app.url}/extra`, "https://evil.test/predpoved-pocasi/rizika/pylovy-semafor", registry.get("ticks").url]) {
+    assert.equal(registry.embeddedContext(new URL(url), name), null);
+  }
+});
 test("tick activity directory uses only the official live three-day map", () => {
   assert.equal(registry.columns[1].at(-1).app, "ticks");
   const app = registry.get("ticks");

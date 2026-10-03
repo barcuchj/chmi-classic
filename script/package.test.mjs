@@ -14,8 +14,14 @@ test("Chrome package includes every asset referenced by the manifest", () => {
   const files = declaration[1].trim().split(/\s+/);
   assert.equal(new Set(files).size, files.length, "package contains duplicate entries");
   const referenced = new Set(["manifest.json", "popup.html"]);
+  for (const file of Object.values(manifest.icons ?? {})) referenced.add(file);
+  for (const file of Object.values(manifest.action.default_icon ?? {})) referenced.add(file);
   for (const rule of manifest.content_scripts) {
     for (const file of [...(rule.js ?? []), ...(rule.css ?? [])]) referenced.add(file);
   }
   for (const file of referenced) assert.ok(files.includes(file), `${file} is missing from Chrome package`);
+});
+
+test("Chrome package creates directories for nested icon assets", () => {
+  assert.match(packageSource, /mkdir -p "\$\(dirname "\$CHROMIUM_STAGE\/package\/\$file"\)"/);
 });

@@ -47,7 +47,7 @@ const [radarCss, satelliteCss, navigationCss, catalogCss, legacyCss, navigationJ
 const metadata = `// ==UserScript==
 // @name         ČHMÚ Classic – meteorologické výstupy
 // @namespace    https://github.com/
-// @version      0.7.0-beta.24
+// @version      0.7.0-beta.25
 // @description  Vrací klasický vzhled, historické adaptace a jednotný katalog živých i archivních meteorologických výstupů ČHMÚ.
 // @author       ČHMÚ Classic contributors
 // @homepageURL  https://github.com/barcuchj/chmi-classic
@@ -107,6 +107,7 @@ const bridge = `
       "/namerena-data/webkamera/",
       "/predpoved-pocasi/synopticka-situace",
       "/predpoved-pocasi/rizika/aktivita-klistat",
+      "/predpoved-pocasi/rizika/pylovy-semafor",
       "/predpoved-pocasi/bio-predpoved",
       "/predpoved-pocasi/tyden",
       "/predpoved-pocasi/mesic",
