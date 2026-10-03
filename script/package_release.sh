@@ -9,9 +9,13 @@ CHROMIUM_FILES=(manifest.json portal-registry.js embedded.js portal.js portal.cs
   icons/icon-16.png icons/icon-32.png icons/icon-48.png icons/icon-128.png)
 
 if [[ "${1:-}" == "--chrome-only" ]]; then
-  VERSION="$(node -p "require('$PROJECT_ROOT/chrome-edge/manifest.json').version_name")"
-  if [[ ! "$VERSION" =~ ^0\.7\.0-beta\.[0-9]+$ ]]; then
-    echo "Unsupported Chrome beta version: $VERSION" >&2
+  VERSION="$(node -p "require('$PROJECT_ROOT/chrome-edge/manifest.json').version")"
+  if [[ ! "$VERSION" =~ ^(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*)){0,3}$ ]]; then
+    echo "Unsupported Chrome numeric version: $VERSION" >&2
+    exit 2
+  fi
+  if ! node -e 'const parts = process.argv[1].split(".").map(Number); process.exit(parts.some(n => n > 65535) || parts.every(n => n === 0) ? 1 : 0)' "$VERSION"; then
+    echo "Chrome version components must be 0..65535 and not all zero: $VERSION" >&2
     exit 2
   fi
   DIST_ROOT="$PROJECT_ROOT/dist"

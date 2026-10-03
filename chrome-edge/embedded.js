@@ -52,7 +52,7 @@
         app.family === "monthly" ? document.querySelector("html.chmi-monthly-classic #chmi-monthly-workspace #chmi-monthly-summary") :
         app.family === "regions" ? document.querySelector("html.chmi-regions-classic #chmi-regions-workspace #chmi-regions-forecast") :
         app.family === "rainfall" ? document.getElementById("chmi-rainfall-brand") :
-        ["water", "air"].includes(app.family) ? document.getElementById("chmi-hydro-air-classic-brand") :
+        ["water", "air"].includes(app.family) ? document.querySelector("html.chmi-hydro-air-classic #chmu-map-container[data-chmi-hydro-air-native='verified']") :
         document.getElementById(app.family === "mushrooms" ? "chmi-hub-classic-brand" : "chmi-satellite-classic-portal-products");
       const nativeMap = document.getElementById("chmu-map-container");
       const mapMedia = nativeMap && visible(nativeMap) && Boolean(nativeMap.querySelector(

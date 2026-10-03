@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 const scriptRoot = dirname(fileURLToPath(import.meta.url));
 const projectRoot = dirname(scriptRoot);
 const sourceRoot = join(projectRoot, "chrome-edge");
+const manifest = JSON.parse(await readFile(join(sourceRoot, "manifest.json"), "utf8"));
 const outputPath = join(projectRoot, "tampermonkey", "chmi-classic.user.js");
 const [portalRegistryJs, embeddedJs, portalJs, portalCss, embeddedCss, aladinJs, aladinCss, webcamsJs, webcamsCss, meteogramJs, meteogramCss, forecastJs, forecastCss, rainfallJs, rainfallCss, synopticJs, synopticCss, sondeJs, sondeCss, klementinumJs, klementinumCss] = await Promise.all(
   ["portal-registry.js", "embedded.js", "portal.js", "portal.css", "embedded.css", "aladin.js", "aladin.css", "webcams.js", "webcams.css", "meteogram.js", "meteogram.css", "forecast.js", "forecast.css", "rainfall.js", "rainfall.css", "synoptic.js", "synoptic.css", "sonde.js", "sonde.css", "klementinum.js", "klementinum.css"]
@@ -47,7 +48,7 @@ const [radarCss, satelliteCss, navigationCss, catalogCss, legacyCss, navigationJ
 const metadata = `// ==UserScript==
 // @name         ČHMÚ Classic – meteorologické výstupy
 // @namespace    https://github.com/
-// @version      0.7.0-beta.25
+// @version      ${manifest.version}
 // @description  Vrací klasický vzhled, historické adaptace a jednotný katalog živých i archivních meteorologických výstupů ČHMÚ.
 // @author       ČHMÚ Classic contributors
 // @homepageURL  https://github.com/barcuchj/chmi-classic

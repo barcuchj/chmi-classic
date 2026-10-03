@@ -7,6 +7,18 @@ const context = vm.createContext({ URL });
 vm.runInContext(readFileSync(new URL("../chrome-edge/portal-registry.js", import.meta.url), "utf8"), context);
 const registry = context.__chmiClassicApps;
 
+test("floating map legends stay inside the visible map, not outside the iframe", () => {
+  assert.equal(registry.panelShiftX({ left: -60, width: 222 }, { left: 5, right: 1251 }), 69);
+  assert.equal(registry.panelShiftX({ left: 14, width: 222 }, { left: 5, right: 1251 }), 0);
+  assert.equal(registry.panelShiftX({ left: 280, width: 222 }, { left: 5, right: 385 }), -121);
+});
+
+test("legends stay above a bottom toolbar and do not cover their toggle", () => {
+  assert.equal(registry.panelShiftY({ top: 790, height: 340 }, { top: 30, bottom: 838 }, { top: 755, bottom: 785 }), -379);
+  assert.equal(registry.panelShiftY({ top: 130, height: 391 }, { top: 30, bottom: 707 }, { top: 126, bottom: 158 }), 32);
+  assert.equal(registry.panelShiftY({ top: 166, height: 391 }, { top: 30, bottom: 707 }, { top: 126, bottom: 158 }), 0);
+});
+
 test("narrow portal keeps the app on screen and confines directory scrolling", () => {
   const css = readFileSync(new URL("../chrome-edge/portal.css", import.meta.url), "utf8");
   assert.match(css, /html\.chmi-classic-portal-active\s*\{[^}]*overflow: hidden/s);

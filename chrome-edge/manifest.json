@@ -1,8 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.7.0.25",
-  "version_name": "0.7.0-beta.25",
+  "version": "0.7.26",
   "description": "Vrací klasický vzhled živým meteorologickým aplikacím ČHMÚ a přidává přehledný rozcestník.",
   "icons": {
     "16": "icons/icon-16.png",

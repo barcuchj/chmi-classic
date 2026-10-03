@@ -40,6 +40,7 @@
     let session = null;
     let timeout = null;
     let selectedSection = "weather";
+    let weatherApp = "forecast";
     document.documentElement.classList.add("chmi-classic-portal-active");
     const root = el("div");
     root.id = "chmi-classic-portal";
@@ -135,8 +136,8 @@
         event.preventDefault();
         const hash = `#classic=${entry.app}`;
         if (location.hash === hash) {
-          if (selectedSection !== "weather") selectSection("weather");
-          else openApp(entry.app);
+          weatherApp = entry.app;
+          selectSection("weather");
         } else location.hash = hash;
       });
       return anchor;
@@ -161,7 +162,7 @@
       workspace.setAttribute("aria-busy", String(state !== "ready"));
       if (state === "ready") { clearTimeout(timeout); notice.hidden = true; }
     }
-    function selectSection(key) {
+    function selectSection(key, updateHash = true) {
       selectedSection = key;
       for (const tab of tabs.querySelectorAll("button")) {
         const active = tab.dataset.section === key;
@@ -171,15 +172,14 @@
       workspace.setAttribute("aria-labelledby", `chmi-portal-tab-${key}`);
       directory.hidden = extra.hidden = key !== "weather";
       standalone.hidden = false;
-      if (key === "weather") { openApp(registry.route(location.hash)); return; }
-      if (key === "water" || key === "air") {
-        openApp(key);
-        return;
-      }
+      const id = key === "weather" ? weatherApp : key;
+      openApp(id);
+      if (updateHash && location.hash !== `#classic=${id}`) location.hash = `#classic=${id}`;
     }
     function openApp(id, force = false) {
       const app = registry.get(id);
       if (!app || (current === id && frame && !force)) return;
+      if ((app.section ?? "weather") === "weather") weatherApp = id;
       clearTimeout(timeout);
       frame?.remove();
       current = id;
@@ -217,15 +217,17 @@
     };
     const onHash = () => {
       if (!root.isConnected) return;
-      if (selectedSection !== "weather") selectSection("weather");
-      else openApp(registry.route(location.hash));
+      const id = registry.route(location.hash);
+      const section = registry.get(id)?.section ?? "weather";
+      if (section === "weather") weatherApp = id;
+      selectSection(section, false);
     };
     window.addEventListener("message", onMessage);
     window.addEventListener("hashchange", onHash);
     root.addEventListener("keydown", event => {
       if (event.key === "Escape" && root.classList.contains("chmi-portal-expanded")) expand.click();
     });
-    selectSection("weather");
+    onHash();
   }
   function initialize(result) {
     if (result[KEY] === false) { window.__chmiClassicPortalCandidate = false; return; }
@@ -263,6 +265,16 @@
   let resizeDispatchScheduled = false;
   let observedMap = null;
   let resizeObserver = null;
+  const originalAria = new Map();
+
+  function nativeMapReady(map) {
+    const config = `https://data-provider.chmi.cz/api/map/init/${kind === "water" ? "hydrologie.povrchove-vody" : "ovzdusi.kvalita"}`;
+    const component = map?.querySelector(`.chmu-map-component[data-config-url="${config}"], .chmu-map-component[data-config-url="${config}?client=mobile"]`);
+    const canvas = map?.querySelector(".ol-viewport canvas");
+    const timeline = map?.querySelector('input[aria-label="Časová osa"]');
+    return Boolean(component && canvas?.width >= 300 && canvas?.height >= 200 &&
+      timeline && !timeline.disabled && Number(timeline.max) > 1);
+  }
 
   function savePreference(value) {
     storage?.set({ [STORAGE_KEY]: value });
@@ -315,11 +327,29 @@
     const rect = map.getBoundingClientRect();
     const available = Math.floor(window.innerHeight - Math.max(0, rect.top) - 6);
     document.documentElement.style.setProperty("--chmi-hydro-air-fit-height", `${Math.max(0, available)}px`);
+    requestAnimationFrame(() => {
+      if (!enabled) return;
+      for (const panel of map.querySelectorAll?.(".ol-legend.__expanded .base-map-wrapper") ?? []) {
+        const rect = panel.getBoundingClientRect();
+        if (!rect.width || !rect.height) continue;
+        const previous = parseFloat(panel.style.getPropertyValue("--chmi-legend-shift-x")) || 0;
+        const previousY = parseFloat(panel.style.getPropertyValue("--chmi-legend-shift-y")) || 0;
+        const bounds = map.getBoundingClientRect();
+        const shift = globalThis.__chmiClassicApps.panelShiftX({ left: rect.left - previous, width: rect.width }, bounds);
+        panel.style.setProperty("--chmi-legend-shift-x", `${shift}px`);
+        const button = panel.closest(".ol-legend")?.querySelector(".ol-legend-button");
+        if (button) {
+          const shiftY = globalThis.__chmiClassicApps.panelShiftY({ top: rect.top - previousY, height: rect.height }, bounds, button.getBoundingClientRect());
+          panel.style.setProperty("--chmi-legend-shift-y", `${shiftY}px`);
+        }
+      }
+    });
     if (globalThis.ResizeObserver && observedMap !== map) {
       resizeObserver?.disconnect();
       resizeObserver = new ResizeObserver(() => scheduleGeometry(false));
       resizeObserver.observe(map);
       observedMap = map;
+      map.addEventListener("click", () => scheduleGeometry(false));
     }
   }
 
@@ -335,7 +365,12 @@
 
   function applyMode() {
     // A late or failed native map must not leave an otherwise useful page blank.
-    if (!findMap()?.closest(".lfr-layout-structure-item-chmimapcomponent")) return;
+    const map = findMap();
+    if (!map?.closest(".lfr-layout-structure-item-chmimapcomponent") || !nativeMapReady(map)) return;
+    if (!originalAria.has(map)) originalAria.set(map, [map.getAttribute("aria-hidden"), map.getAttribute("aria-disabled")]);
+    map.setAttribute("aria-hidden", "false");
+    map.setAttribute("aria-disabled", "false");
+    map.dataset.chmiHydroAirNative = "verified";
     const first = !document.documentElement.classList.contains(ROOT_CLASS);
     document.documentElement.classList.add(ROOT_CLASS);
     const brandChanged = ensureBrand();
@@ -353,6 +388,18 @@
     observedMap = null;
     document.documentElement.style.removeProperty("--chmi-hydro-air-fit-height");
     document.documentElement.classList.remove(ROOT_CLASS);
+    for (const [map, values] of originalAria) {
+      for (const [index, name] of ["aria-hidden", "aria-disabled"].entries()) {
+        if (values[index] == null) map.removeAttribute(name);
+        else map.setAttribute(name, values[index]);
+      }
+      delete map.dataset.chmiHydroAirNative;
+      for (const panel of map.querySelectorAll?.(".ol-legend .base-map-wrapper") ?? []) {
+        panel.style.removeProperty("--chmi-legend-shift-x");
+        panel.style.removeProperty("--chmi-legend-shift-y");
+      }
+    }
+    originalAria.clear();
     dispatchResize();
   }
 
@@ -373,7 +420,10 @@
 
   window.addEventListener("resize", () => { if (enabled) requestAnimationFrame(updateGeometry); });
   window.addEventListener("scroll", () => scheduleGeometry(false), { passive: true });
-  new MutationObserver(scheduleRefresh).observe(document.documentElement, { childList: true, subtree: true });
+  new MutationObserver(scheduleRefresh).observe(document.documentElement, {
+    childList: true, subtree: true, attributes: true,
+    attributeFilter: ["width", "height", "data-config-url", "disabled", "max"]
+  });
 
   if (storage) storage.get({ [STORAGE_KEY]: true }, result => setMode(result[STORAGE_KEY]));
   else setMode(true);

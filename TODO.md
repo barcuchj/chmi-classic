@@ -2,6 +2,19 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [x] 0.7.26: společné číselné verze z manifestu pro Chrome a userscript,
+  automatický název balíčku a regresní kontrola vzestupné aktualizace.
+- [x] 0.7.26: zhuštění hlaviček VODA/OVZDUŠÍ, správné záložky podle
+  odkazu a skutečná připravenost mapového ovládání. Chrome instalace
+  samostatně i centrálně v 1280 × 800 a 390 × 844 px; osa, legenda,
+  zoom, zvětšení/Escape a vypnutí úpravy ověřeny. [QA](docs/qa-beta26.md).
+- [ ] VODA/OVZDUŠÍ: rozšířit audit na všechny vrstvy a jejich alternativní
+  URL. Nativní PM10 volba mění cestu na `pm10-hodinovy-prumer`; přepnutí
+  uvnitř otevřeného panelu prošlo, ale přímý vstup/reload této URL ještě
+  nemá ověřené pokrytí adaptérem a iframe pravidly. Tabulkové přehledy
+  zůstávají odkazy na živý původní web, nejsou obnovené klasické aplikace.
+  Doplnit Tampermonkey, Edge/Safari, další původní položky obou rozcestníků.
+
 - [x] Ikona doplňku: původní Store ikona vložená do manifestu rozšíření
   i tlačítka v liště (16/32/48/128 px), zobrazení ověřené na kartě
   instalované bety 25. Store beta 21 vyžaduje nahrání/schválení nového ZIPu;

@@ -61,7 +61,8 @@ html.chmi-classic-portal-active body > :not(#chmi-classic-portal):not(script):no
 html.chmi-hydro-air-classic,
 html.chmi-hydro-air-classic body {
   width: 100%;
-  min-height: 100%;
+  height: 100dvh !important;
+  min-height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
   background: #fff !important;
@@ -108,6 +109,8 @@ html.chmi-hydro-air-classic .chmi-hydro-air-content > .lfr-layout-structure-item
 html.chmi-hydro-air-classic #chmi-hydro-air-classic-brand {
   box-sizing: border-box;
   display: flex;
+  flex-direction: row !important;
+  flex-wrap: wrap;
   align-items: center;
   gap: 7px;
   width: calc(100% + 10px);
@@ -125,6 +128,7 @@ html.chmi-hydro-air-classic #chmi-hydro-air-classic-brand strong {
 }
 html.chmi-hydro-air-classic #chmi-hydro-air-classic-brand nav {
   display: flex;
+  flex-direction: row !important;
   align-items: stretch;
   gap: 2px;
   min-width: 0;
@@ -189,6 +193,14 @@ html.chmi-hydro-air-classic #chmu-map-container .leaflet-left,
 html.chmi-hydro-air-classic .chmi-hydro-air-map-host .leaflet-left { left: 6px !important; }
 html.chmi-hydro-air-classic #chmu-map-container .leaflet-right,
 html.chmi-hydro-air-classic .chmi-hydro-air-map-host .leaflet-right { right: 6px !important; }
+/* The native legend is anchored to a toolbar button; its negative offset can
+   become stale after an iframe resize. Keep text within the actual map. */
+html.chmi-hydro-air-classic #chmu-map-container .ol-legend .base-map-wrapper {
+  transform: translate(var(--chmi-legend-shift-x, 0px), var(--chmi-legend-shift-y, 0px)) !important;
+  max-width: calc(100vw - 24px) !important;
+  max-height: calc(var(--chmi-hydro-air-fit-height, 100dvh) - 8px) !important;
+  overflow-y: auto;
+}
 html.chmi-hydro-air-classic #chmu-map-container .maplibregl-ctrl-top-left,
 html.chmi-hydro-air-classic .chmi-hydro-air-map-host .maplibregl-ctrl-top-left { top: 6px !important; left: 6px !important; }
 html.chmi-hydro-air-classic #chmu-map-container .maplibregl-ctrl-top-right,

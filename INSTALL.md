@@ -5,7 +5,7 @@ snímky dál pocházejí z ČHMÚ; nejde o přehrávání starého počasí z ar
 
 ## Chci vyzkoušet nejnovější podobu portálu
 
-**Aktuální userscript je 0.7.0-beta.25 — testovací verze.** Má centrální panel
+**Aktuální userscript je 0.7.26 — testovací verze.** Má centrální panel
 pro aplikace, rozcestník a tlačítko **Zvětšit panel**. Celý původní intranet
 ještě obnovený není. Úvodní předpověď ČR má nově třídenní panel; Voda a Ovzduší mají
 živé adaptéry. Červeně přeškrtnuté položky čekají na rekonstrukci.
@@ -101,7 +101,7 @@ stále nabízet starší verzi.
 
 ## Chrome a Edge – testovací beta bez Tampermonkey
 
-Aktuální [Chrome/Edge balíček 0.7.0-beta.25](https://github.com/barcuchj/chmi-classic/releases/download/v0.7.0-beta.25/chmi-classic-chrome-edge-0.7.0-beta.25.zip)
+Aktuální [Chrome/Edge balíček 0.7.26](https://github.com/barcuchj/chmi-classic/releases/download/v0.7.26/chmi-classic-chrome-edge-0.7.26.zip)
 obsahuje centrální portál a webkamery a sdílí s userscriptem
 adaptéry pro předpověď, meteogram, vodu, ovzduší a radarové odhady srážek
 i v centrálním panelu, stejně jako animaci ALADINu, synoptickou situaci a
