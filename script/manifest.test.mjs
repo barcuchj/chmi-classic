@@ -8,6 +8,20 @@ import vm from "node:vm";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const manifest = JSON.parse(readFileSync(join(root, "chrome-edge/manifest.json"), "utf8"));
 
+test("extension and toolbar icons are packaged PNGs at the declared sizes", () => {
+  for (const size of [16, 32, 48, 128]) {
+    const path = manifest.icons?.[size];
+    assert.equal(typeof path, "string", `extension icon ${size} is missing`);
+    assert.equal(manifest.action.default_icon?.[size], path, `toolbar icon ${size} differs`);
+    assert.match(path, /^icons\/icon-\d+\.png$/);
+    const png = readFileSync(join(root, "chrome-edge", path));
+    assert.equal(png.subarray(0, 8).toString("hex"), "89504e470d0a1a0a");
+    assert.equal(png.toString("ascii", 12, 16), "IHDR");
+    assert.equal(png.readUInt32BE(16), size);
+    assert.equal(png.readUInt32BE(20), size);
+  }
+});
+
 function covers(pattern, url) {
   const regex = new RegExp(`^${pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\\\*/g, ".*")}$`);
   return regex.test(url);
@@ -79,7 +93,8 @@ test("only explicit live application routes run in child frames", () => {
     "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke*"
   ]);
   assert.deepEqual(framed[8].matches, [
-    "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*"
+    "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*",
+    "https://www.chmi.cz/predpoved-pocasi/rizika/pylovy-semafor*"
   ]);
   assert.deepEqual(framed[9].matches, [
     "https://www.chmi.cz/predpoved-pocasi/bio-predpoved*"
@@ -142,6 +157,7 @@ test("every active portal app has the same adapter assets in Chrome and userscri
     klementinum: ["klementinum.js", "klementinum.css"],
     stations: ["stations.js", "stations.css"],
     ticks: ["ticks.js", "ticks.css"],
+    pollen: ["ticks.js", "ticks.css"],
     bio: ["bio.js", "bio.css"],
     week: ["week.js", "week.css"],
     monthly: ["monthly.js", "monthly.css"],

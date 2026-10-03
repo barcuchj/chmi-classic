@@ -9,3 +9,14 @@
 - Změny veřejného chování, podporovaných URL nebo instalace zapiš do `README.md`; trvalé navazující kroky udržuj v `TODO.md`.
 - Repozitář je `github-first`: po ověření pracuj v cílené větvi, používej Conventional Commits, pushni větev a otevři PR proti `main`; do `main` po úvodním zveřejnění neposílej změny přímo.
 - Veřejný repozitář je `https://github.com/barcuchj/chmi-classic`. Balíčky pro Release vytvářej pouze přes `./script/package_release.sh` a před nahráním ověř jejich obsah.
+
+## Kurýr v2 — projektová výjimka schválená uživatelem 3. 10. 2026
+
+- Kurýr nesmí nyní ani v budoucích bězích čekat pouze na ověření přesného názvu
+  modelu v Classicu. Preferuj dostupný Sol/High, ale pokud UI název modelu
+  nezpřístupní, zaznamenej `model: unverified` a pokračuj v předání.
+- Tato výslovná uživatelská volba má přednost před přesnou modelovou bránou
+  skillu. Nadále ověř správný přiřazený chat, režim Chat a effort High;
+  zachovej ochranu podkladů, idempotenci a ověření převzatých souborů.
+- Netvrď, že neověřený model je potvrzený Sol, a neobcházej přihlášení
+  ani bezpečnostní blokace. Konfigurace `.kuryr-v2/` zůstává jen místní.

@@ -1,10 +1,27 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## Beta 0.7.0-beta.24 – více místa pro aplikace
+## Beta 0.7.0-beta.25 – pylový semafor
 
 **Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
 
-**Testovací beta, nikoli dokončená obnova všech aplikací.** Beta 24
+**Testovací beta, nikoli dokončená obnova všech aplikací.** Beta 25 přidává
+**Pylový semafor** do původního rozcestníku. Živá třídenní mapa ČHMÚ má
+kompaktní modrý rám, časovou osu a dostupnou legendu. Otevírá se uprostřed
+portálu i samostatně; tlačítko **Zvětšit panel** funguje také zde. Dlouhý článek
+nezabírá mapu, ale odkaz **O pylovém semaforu** jej otevře zvlášť.
+Zachované jsou původní mapové komponenty, data a jejich ovládání — nejde
+o převzetí archivních hodnot ani o doslovnou kopii nedochovaného vieweru.
+Instalovaná Chrome beta 25 byla ověřena v 1280 × 800 a 390 × 844 px;
+instalační test Tampermonkey zatím zbývá. [Podrobnosti ověření](docs/qa-beta25.md).
+
+Doplněk má nyní vlastní radarovou ikonu z původních podkladů pro Store,
+také pro tlačítko v liště. Oprava se v již instalované Store verzi projeví
+až po nahrání a schválení aktualizovaného balíčku; nejde o automatickou změnu
+staré bety 21 v obchodě.
+
+![Pylový semafor v klasickém centrálním panelu – instalovaná beta 25](docs/screenshots/beta25-pylovy-semafor.png)
+
+Beta 24
 zmenšuje ovladače a hlavičky webkamer, skládá jejich mapu a seznam podle
 velikosti okna a schovává dlouhé informace do rozbalovacího řádku.
 Radar má kompaktnější pravý panel s rozbalovacím popisem vrstvy.
@@ -76,7 +93,7 @@ Na úzkém vysokém okně se pod mapou automaticky otevře živý seznam měst,
 který využije jinak prázdné místo. Mapa si zachová správný poměr stran.
 Seznam můžete sbalit; vaše volba zůstane zachovaná při změně velikosti okna.
 Ze společných zdrojů se nyní sestavuje také Chrome/Edge doplněk. Poslední
-veřejný [balíček Chrome/Edge beta 24](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.24)
+veřejný [balíček Chrome/Edge beta 25](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.25)
 obsahuje stejné adaptéry jako userscript. Omezený instalační test v Chromu
 je uveden výše; nejde o kontrolu všech aplikací ani Edge a Safari.
 Aktuální Safari balíček zatím není připravený.

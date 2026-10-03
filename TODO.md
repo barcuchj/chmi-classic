@@ -2,6 +2,24 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [x] Ikona doplňku: původní Store ikona vložená do manifestu rozšíření
+  i tlačítka v liště (16/32/48/128 px), zobrazení ověřené na kartě
+  instalované bety 25. Store beta 21 vyžaduje nahrání/schválení nového ZIPu;
+  publikace do Store v tomto kroku neproběhla.
+
+- [ ] Pylový semafor: beta 25 zapojuje živou třídenní mapu, legendu a
+  oficiální vysvětlení. Instalovaná Chrome adaptace prošla samostatně i
+  v centrálním panelu, 1280 × 800 a 390 × 844; časová osa, legenda,
+  zvětšení/Escape a přepnutí původního vzhledu ověřeny. Zbývá skutečná
+  instalace Tampermonkey, Edge/Safari a úplný audit všech vrstev/animace.
+  Archiv dokládá původní odkaz `info.chmi.cz/bio/mapy.php?type=pyly`, nikoli
+  tělo starého vieweru. [Rozsah testu](docs/qa-beta25.md).
+- [ ] Ozonové zpravodajství: podklady nyní mají doloženou současnou stránku
+  s ozonovým grafem a UV tabulkou. Připravit kompaktní adaptér ze živých
+  komponent. Družicová měření ozonu zůstávají neaktivní: dnešní ČHMÚ
+  družicový produkt celkového ozonu nebyl doložen; Meteosat jej nenahrazuje.
+  [Podklady a mezery v důkazech](docs/research/ozone-sources.md).
+
 - [x] Beta 24: skutečná instalace Chrome bez Tampermonkey; centrální radar
   v 1280 × 800, kamery a měsíční výhled také v 390 × 844. Opraveny
   nadbytečné hlavičky/ovladače, pravý panel radaru, fit PDF a rolování
@@ -40,9 +58,11 @@
 - [x] Tři skutečné snímky nainstalované bety 24 pro GitHub (1280 × 800),
   původ a zdroje v `docs/screenshots/README.md`. Před použitím v Chrome Store
   ověřit aktuální požadavky obchodu; nejde o již podanou položku.
-- [ ] Kurýr v2 — Pylový semafor: obnovený běh nemohl ověřit přiřazený Classic
-  chat; `Browser is not available: iab`. Nic neodesláno. Pokračovat ve
-  stejném běhu po dostupnosti kanálu; neblokuje místní implementaci.
+- [ ] Kurýr v2: audit 3. 10. našel přiřazený Classic chat, ale žádný marker
+  pylového běhu; poslední odpověď byla pro jinou rešerši VODA/OVZDUŠÍ.
+  Model nebyl ověřitelný. Uživatel nyní výslovně ruší čekání na přesný
+  název modelu i pro další běhy; projektová výjimka v `AGENTS.md`.
+  Pylovou implementaci znovu nezadávat; další kurýrní úloha je ozon/UV.
 
 ## Lokální nástroje pro úspornější práci
 

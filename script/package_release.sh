@@ -5,7 +5,8 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CHROMIUM_FILES=(manifest.json portal-registry.js embedded.js portal.js portal.css embedded.css
   aladin.js aladin.css webcams.js webcams.css meteogram.js meteogram.css forecast.js forecast.css rainfall.js rainfall.css synoptic.js synoptic.css sonde.js sonde.css klementinum.js klementinum.css stations.js stations.css ticks.js ticks.css bio.js bio.css week.js week.css monthly.js monthly.css regions.js regions.css navigation.js navigation.css
   catalog.js catalog.css legacy.js legacy.css content.js classic.css
-  satellite.js satellite.css popup.html popup.css popup.js)
+  satellite.js satellite.css popup.html popup.css popup.js
+  icons/icon-16.png icons/icon-32.png icons/icon-48.png icons/icon-128.png)
 
 if [[ "${1:-}" == "--chrome-only" ]]; then
   VERSION="$(node -p "require('$PROJECT_ROOT/chrome-edge/manifest.json').version_name")"
@@ -24,6 +25,7 @@ if [[ "${1:-}" == "--chrome-only" ]]; then
   trap 'rm -r -- "$CHROMIUM_STAGE"' EXIT
   mkdir -p "$CHROMIUM_STAGE/package"
   for file in "${CHROMIUM_FILES[@]}"; do
+    mkdir -p "$(dirname "$CHROMIUM_STAGE/package/$file")"
     cp "$PROJECT_ROOT/chrome-edge/$file" "$CHROMIUM_STAGE/package/$file"
   done
   (

@@ -1,4 +1,4 @@
-/* The old three-day viewer's blue framing around today's live ČHMÚ map. */
+/* Shared compact blue framing around today's native tick and pollen maps. */
 html.chmi-ticks-classic,
 html.chmi-ticks-classic body {
   width: 100%;
@@ -42,6 +42,16 @@ html.chmi-ticks-classic #chmi-ticks-classic-brand h1 {
   font: bold 15px/1.3 Verdana, Arial, sans-serif !important;
 }
 html.chmi-ticks-classic #chmi-ticks-classic-brand span { color: #e2edff; }
+html.chmi-ticks-classic #chmi-ticks-classic-brand .chmi-risk-info {
+  margin: 0;
+  padding: 2px 5px;
+  border: 1px solid #9ab9d9;
+  border-radius: 0;
+  background: #ecf3fa;
+  color: #17346c;
+  text-decoration: underline;
+  font: 11px/1.4 Verdana, Arial, sans-serif;
+}
 html.chmi-ticks-classic #chmi-ticks-classic-brand button {
   margin-left: auto;
   padding: 3px 8px;
@@ -100,8 +110,40 @@ html.chmi-ticks-classic #chmi-ticks-workspace .chmu--map--timeline .timeline--co
   height: 32px !important;
 }
 html.chmi-ticks-classic #chmi-ticks-workspace .chmu--map--timeline .top--label {
+  display: block !important;
   color: #17346c !important;
   font: bold 11px/1.2 Verdana, Arial, sans-serif !important;
+  height: 18px !important;
+}
+/* Native inner strip is 84px tall: shrinking only its parent clips the dates. */
+html.chmi-ticks-classic #chmi-ticks-workspace .chmu--map--timeline .timeline--wrapper {
+  height: 48px !important;
+  min-height: 0 !important;
+}
+html.chmi-ticks-classic #chmi-ticks-workspace .chmu--map--timeline .top--line {
+  display: flex !important;
+  height: 18px !important;
+}
+html.chmi-ticks-classic #chmi-ticks-workspace .chmu--map--timeline .top--label span {
+  visibility: visible !important;
+}
+html.chmi-ticks-classic #chmi-ticks-workspace .chmu--map--timeline .mobile--box {
+  display: none !important;
+}
+html.chmi-ticks-classic #chmi-ticks-workspace .chmu--map--timeline > .bottom--line {
+  display: flex !important;
+  flex: 0 0 65px !important;
+  margin-left: 8px !important;
+}
+html.chmi-ticks-classic #chmi-ticks-workspace .chmu--map--timeline .__helper {
+  height: 28px !important;
+}
+html.chmi-ticks-classic #chmi-ticks-workspace .chmu--map--timeline > .bottom--line > div:not(.top--label) {
+  height: 28px !important;
+}
+html.chmi-ticks-classic #chmi-ticks-workspace .ol-control .control-button {
+  width: 30px !important;
+  height: 30px !important;
 }
 html.chmi-ticks-classic #chmi-ticks-workspace .chmu--map--container {
   box-sizing: border-box;
@@ -146,4 +188,7 @@ html.chmi-ticks-classic #chmi-ticks-workspace .ol-menu-button {
     padding: 3px !important;
   }
   html.chmi-ticks-classic #chmi-ticks-workspace .ol-menu { width: min(155px, 46vw) !important; }
+  html.chmi-ticks-classic #chmi-ticks-workspace .chmu--map--timeline .timeline--wrapper {
+    height: 42px !important;
+  }
 }
