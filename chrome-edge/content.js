@@ -148,6 +148,65 @@
     return changed;
   }
 
+  function ensureLayerDescriptionDisclosures() {
+    const menuContainer = document.getElementById("div_container_menu");
+    if (!menuContainer) {
+      return false;
+    }
+
+    const candidates = [...menuContainer.querySelectorAll(
+      ".accordion-body p, .accordion-body div"
+    )].filter((element) => {
+      if (element.closest("[data-chmi-radar-layer-description]")) {
+        return false;
+      }
+
+      const text = element.textContent.replace(/\s+/g, " ").trim();
+      if (text.length < 100) {
+        return false;
+      }
+
+      if (element.querySelector("button, input, select, textarea, [role='button'], [role='slider']")) {
+        return false;
+      }
+
+      return ![...element.querySelectorAll("p, div")].some((child) =>
+        child.textContent.replace(/\s+/g, " ").trim().length >= 100
+      );
+    });
+
+    for (const element of candidates) {
+      const disclosure = document.createElement("details");
+      disclosure.className = "chmi-radar-classic-layer-description";
+      disclosure.dataset.chmiRadarLayerDescription = "true";
+
+      const summary = document.createElement("summary");
+      summary.textContent = "Zobrazit celý popis vrstvy";
+
+      const content = document.createElement("div");
+      content.className = "chmi-radar-classic-layer-description-content";
+
+      element.replaceWith(disclosure);
+      content.append(element);
+      disclosure.append(summary, content);
+    }
+
+    return candidates.length > 0;
+  }
+
+  function removeLayerDescriptionDisclosures() {
+    document.querySelectorAll("details[data-chmi-radar-layer-description]").forEach((disclosure) => {
+      const original = disclosure.querySelector(
+        ".chmi-radar-classic-layer-description-content > *"
+      );
+      if (original) {
+        disclosure.replaceWith(original);
+      } else {
+        disclosure.remove();
+      }
+    });
+  }
+
   function updateRadarFitGeometry() {
     const dataContainer = document.getElementById("div_container_data");
     if (!dataContainer) {
@@ -448,12 +507,21 @@
     document.documentElement.classList.add(ROOT_CLASS);
     const sectionsChanged = markNonApplicationSections();
     const layoutChanged = ensureResponsiveLayout();
+    const descriptionsChanged = ensureLayerDescriptionDisclosures();
     const brandChanged = ensureBrand();
     const toolbarChanged = ensureDisplayToolbar();
     applyInitialRadarState();
     const lightningChanged = applyLightningPreset();
 
-    if (!hadRootClass || sectionsChanged || layoutChanged || brandChanged || toolbarChanged || lightningChanged) {
+    if (
+      !hadRootClass ||
+      sectionsChanged ||
+      layoutChanged ||
+      descriptionsChanged ||
+      brandChanged ||
+      toolbarChanged ||
+      lightningChanged
+    ) {
       notifyLayoutChanged();
     }
   }
@@ -461,6 +529,7 @@
   function removeClassicMode() {
     document.getElementById(TOOLBAR_ID)?.remove();
     document.getElementById(BRAND_ID)?.remove();
+    removeLayerDescriptionDisclosures();
     document.querySelectorAll(`.${HIDDEN_CLASS}`).forEach((element) => {
       element.classList.remove(HIDDEN_CLASS);
     });

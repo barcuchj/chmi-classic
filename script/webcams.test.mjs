@@ -8,12 +8,16 @@ import vm from "node:vm";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const source = readFileSync(join(root, "chrome-edge/webcams.js"), "utf8");
 
-function run(pathname, enabled = true) {
+function run(pathname, enabled = true, withInfo = false) {
   const rootClasses = new Set();
   const workspaceClasses = new Set();
   const mapClasses = new Set();
   const listClasses = new Set();
-  const workspace = { classList: { add: value => workspaceClasses.add(value) } };
+  const element = () => ({ children: [], append(...nodes) { this.children.push(...nodes); } });
+  const originalInfo = { textContent: "Official camera information" };
+  const info = { ...element(), classList: { contains: name => name === "lfr-layout-structure-item-text" },
+    childNodes: [originalInfo], querySelector: () => null };
+  const workspace = { children: withInfo ? [info] : [], classList: { add: value => workspaceClasses.add(value) } };
   const mapBlock = { parentElement: workspace, classList: { add: value => mapClasses.add(value) } };
   const listBlock = { parentElement: workspace, classList: { add: value => listClasses.add(value) } };
   const playerBlock = { parentElement: workspace, classList: { add() {} } };
@@ -24,6 +28,7 @@ function run(pathname, enabled = true) {
     querySelector: selector => selector === ".chmi-playableimage-img" ? image : null };
   const window = { addEventListener() {}, dispatchEvent() {} };
   const document = {
+    createElement: element,
     documentElement: { classList: { add: (...values) => values.forEach(value => rootClasses.add(value)) } },
     getElementById: id => id === "chmu-map-container" ? map : id === "chmi-playabledata" ? player : null,
     querySelector: selector => selector.startsWith("[id^=") ? signpost : null
@@ -35,7 +40,7 @@ function run(pathname, enabled = true) {
     MutationObserver: class { observe() {} disconnect() {} },
     setTimeout() {}, Event: class {}
   });
-  return { rootClasses, workspaceClasses, mapClasses, listClasses, map, player };
+  return { rootClasses, workspaceClasses, mapClasses, listClasses, map, player, info, originalInfo };
 }
 
 test("native camera map and list are marked and share one compact workspace", () => {
@@ -57,4 +62,12 @@ test("native camera detail keeps the live image player", () => {
 test("disabled classic mode and other routes are untouched", () => {
   assert.equal(run("/namerena-data/webkamery", false).rootClasses.size, 0);
   assert.equal(run("/namerena-data/webkamera/brno-brno/extra").rootClasses.size, 0);
+});
+
+test("camera information is folded without replacing official content", () => {
+  const result = run("/namerena-data/webkamery", true, true);
+  const details = result.info.children[0];
+  assert.equal(details.className, "chmi-webcams-info");
+  assert.equal(details.children[0].textContent, "Informace k webovým kamerám");
+  assert.equal(details.children[1].children[0], result.originalInfo);
 });

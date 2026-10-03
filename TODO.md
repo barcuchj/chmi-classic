@@ -2,10 +2,16 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [x] Beta 24: skutečná instalace Chrome bez Tampermonkey; centrální radar
+  v 1280 × 800, kamery a měsíční výhled také v 390 × 844. Opraveny
+  nadbytečné hlavičky/ovladače, pravý panel radaru, fit PDF a rolování
+  celého úzkého portálu. Přepínání času radaru a kamery reagovalo.
+  Rozsah a známé chyby zdrojového webu: [QA beta 24](docs/qa-beta24.md).
+
 - [ ] Měsíční výhled: beta 23 používá aktuální slovní text a oficiální PDF
   s grafy/statistikou. Vývojové vykreslení samostatné stránky v 1280 × 720
-  a 390 × 844 px prošlo; po instalaci ověřit centrální panel, přepínání PDF,
-  čitelnost a případné posuvníky v Chrome i Tampermonkey. Původní statistické
+  a 390 × 844 px prošlo; centrální Chrome beta 24, PDF a čitelnost ověřeny.
+  Zbývá instalace Tampermonkey a úplné ověření samostatné stránky. Původní statistické
   tabulky a grafy nejsou samostatně převedeny z PDF do HTML.
 - [ ] Předpovědi pro kraje: beta 22 zapojuje živý oficiální text pro všech
   14 krajů, přepínání dne a modré archivní rozvržení. Po instalaci ověřit
@@ -21,18 +27,22 @@
   tabulky do kompaktního klasického rámu. Po instalaci ověřit časovou osu,
   přepínání tabulek, zobrazení v centrálním panelu i samostatně a overflow
   při širokém i úzkém okně. Archivní obsah starého prohlížeče nebyl získán.
-- [ ] Nainstalovat beta 19 do běžného Chromu a vizuálně ověřit úvod s URL
-  parametry, webkamery s polohou v URL, krajské ikony při změně šířky okna
-  a návrat odkazem Úvod z aplikace v centrálním panelu. Automatické testy
-  pokrytí URL a logiky jsou hotové; instalovaná beta 18 tyto opravy neobsahuje.
+- [ ] Dokončit instalační audit všech aktivních položek v beta 24:
+  krajské ikony při změně šířky, návrat Úvod, samostatné aplikace,
+  VODA/OVZDUŠÍ a oba způsoby instalace. Chrome s URL parametry a
+  centrální kamery/radar/měsíční výhled již ověřeny; nejde o úplný audit.
 - [ ] Chrome/Edge doplněk a Tampermonkey userscript mají ze společných zdrojů
   zobrazovat stejný klasický vzhled, navigaci a ovládání každé skutečně
   podporované aplikace ČHMÚ, v samostatné záložce i centrálním panelu.
   Test manifestu musí hlídat pokrytí všech aktivních aplikací a jejich adaptérů;
   za hotovo se počítá až instalační a vizuální ověření obou variant na živých
   stránkách. Neobnovené položky zůstávají neaktivní a označené vysvětlením.
-- [ ] Pro GitHub a Chrome Web Store připravit 2–3 skutečné snímky aktuální
-  nainstalované verze; nepoužívat staré ani kompozitní obrázky jako důkaz bety.
+- [x] Tři skutečné snímky nainstalované bety 24 pro GitHub (1280 × 800),
+  původ a zdroje v `docs/screenshots/README.md`. Před použitím v Chrome Store
+  ověřit aktuální požadavky obchodu; nejde o již podanou položku.
+- [ ] Kurýr v2 — Pylový semafor: obnovený běh nemohl ověřit přiřazený Classic
+  chat; `Browser is not available: iab`. Nic neodesláno. Pokračovat ve
+  stejném běhu po dostupnosti kanálu; neblokuje místní implementaci.
 
 ## Lokální nástroje pro úspornější práci
 
@@ -124,9 +134,9 @@
   a vysvětlení teplot SIVS. Hash/metoda a omezení v ignorovaném
   `.build/archive-reference-20260926/information-batch32/MANIFEST.md`.
   Nejde o tři rekonstruované aplikace ani aktuální meteorologická data.
-- [ ] Měsíční výhled: podle uloženého rozložení dohledat dnešní oficiální
-  zdroje textu, statistických tabulek a grafů; teprve potom vytvořit živý
-  adaptér. Archivní hodnoty z přelomu 2025/2026 nesmí být výchozí předpověď.
+- [x] Měsíční výhled: zapojen živý oficiální text a PDF s tabulkami/grafy
+  v beta 23–24. Instalační ověření a zbývající rozdíly od původního HTML
+  jsou uvedeny v aktuálním cíli nahoře. Archivní hodnoty nejsou předpověď.
 - [x] Dávka 33: `filterlist_min.js` a `meteogram.css` získány jako skutečné
   HTTP 200 odpovědi přirozeně načtených závislostí stránky meteogramů. Přímý
   JS odkaz dříve vracel blokovaný HTML obal; ten se nepočítá jako zdroj.
@@ -200,7 +210,7 @@ aplikace ve starém rozhraní s ověřeným ovládáním a rozložením.
 | Část | Stav |
 | --- | --- |
 | Radar, MSG/Meteosat, polární a geostacionární družice, houby, ALADIN | Zapojené do centrálního panelu; implementace existuje, úplné ověření a dílčí opravy ještě probíhají. |
-| Webové kamery | Beta 3: odkaz aktivní; adaptér používá nativní mapu, filtry, seznam, živý snímek a časovou osu. Nové rozložení a instalaci ještě nutno vizuálně ověřit. Grafy měření nejsou u ověřeného detailu Brno dostupné. |
+| Webové kamery | Beta 24: nativní mapa, filtr Brno, živý detail a časová osa ověřeny v centrálním panelu instalovaného Chrome. Samostatná záložka a Tampermonkey zbývají. Grafy měření nejsou u ověřeného detailu Brno dostupné. |
 | Meteogramy | Beta 10: živý graf, vyhledávání a tabulky jsou v kompaktním adaptéru; odkaz v původním rozcestníku je aktivní. Instalaci a vzhled v panelu i samostatně zbývá ověřit. |
 | Další měření a stanice, synoptika, letectví, historické výstupy | Dohledané katalogové odkazy nejsou dokončenými aplikacemi intranetu; rekonstrukce zbývá. |
 | Open Data a archivy | Referenční zdroje, nikoli rekonstruované aplikace. |
