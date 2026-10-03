@@ -1,5 +1,27 @@
 # Přehled změn
 
+## 0.7.0-beta.24 – 2026-10-03 (testovací sestavení)
+
+- GitHub CI používá úplnou kontrolu zdrojů, manifestu, shody userscriptu a
+  všech regresních testů. Tři aktuální snímky instalace jsou v návodu.
+
+- Webkamery: kompaktní nadpisy, filtry, stránkování a návrat na mapu;
+  informace se rozbalují nad mapou. Časová osa detailu byla zmenšena
+  ze 108 na 52 px při zachování nativních ovladačů a snímků.
+- Radar: ovladače se vejdou do pravého panelu, dlouhý popis vrstvy se
+  rozbaluje. Výchozí panel v testovaném okně nemá zbytečný posuvník.
+- Úzký portál drží aplikaci na obrazovce; posouvá se jen dlouhý rozcestník.
+- Měsíční PDF nabízí čitelnou šířku a celou stránku. Přepnutí vytvoří nový
+  rámec, protože změna samotného fragmentu adresy v Chrome neaplikovala zoom.
+- Instalovaná Chrome beta 24 ověřena pro centrální radar, kamery a měsíční
+  panel, úzký portál a interakce. Tři aktuální screenshoty v README.
+  Tampermonkey, Safari/Edge a ostatní aplikace nejsou tímto testem ověřeny.
+
+## 0.7.0-beta.23 – 2026-10-02 (testovací sestavení)
+
+- Měsíční výhled: současný slovní text a oficiální PDF s grafy/statistikou
+  v kompaktním klasickém panelu. Nejde o použití archivních předpovědí.
+
 ## 0.7.0-beta.22 – 2026-10-02 (testovací sestavení)
 
 - Položka **Předpovědi pro kraje** otevírá živou krajskou předpověď ČHMÚ.

@@ -1,17 +1,30 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## Beta 0.7.0-beta.23 – aplikace na jednom místě
+## Beta 0.7.0-beta.24 – více místa pro aplikace
 
 **Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
 
-**Testovací beta, nikoli dokončená obnova všech aplikací.** Beta 23
+**Testovací beta, nikoli dokončená obnova všech aplikací.** Beta 24
+zmenšuje ovladače a hlavičky webkamer, skládá jejich mapu a seznam podle
+velikosti okna a schovává dlouhé informace do rozbalovacího řádku.
+Radar má kompaktnější pravý panel s rozbalovacím popisem vrstvy.
+Na úzkém displeji se posouvá pouze dlouhý rozcestník; hlavní aplikace
+zůstává na obrazovce. Měsíční PDF nabízí **Na šířku – čitelně** a
+**Celá stránka**. Změna opravdu znovu načte nativní PDF viewer.
+Chrome beta 24 byla skutečně instalována do odděleného testovacího profilu
+bez Tampermonkey; ověřeny kamery, radar a měsíční výhled v centrálním panelu.
+Rozsah, rozměry a zbývající omezení popisuje [záznam ověření](docs/qa-beta24.md).
+Instalaci stejného userscriptu v Tampermonkey a ostatní aplikace ještě
+nelze označit za ověřené.
+
+Beta 23
 zapojuje **Měsíční výhled**: aktuální slovní předpověď ČHMÚ a její oficiální
 grafické PDF se statistikou období. Slovní a grafický pohled se přepínají
 uvnitř kompaktního modrého panelu; PDF lze také otevřít samostatně. Archivní
 stránka měla tabulky a grafy přímo v HTML, ale její hodnoty z roku 2025/2026
 nejsou použity jako dnešní předpověď. Vývojové vykreslení na živé stránce
-prošlo při 1280 × 720 a 390 × 844 px; instalaci obou balíčků a centrální
-panel je ještě třeba vizuálně ověřit.
+prošlo při 1280 × 720 a 390 × 844 px. Centrální panel a přepínání PDF byly
+následně ověřeny v instalované Chrome betě 24; Tampermonkey ještě zbývá.
 
 Beta 22
 zapojuje **Předpovědi pro kraje**: všech 14 krajů a volbu dne v klasickém
@@ -63,9 +76,10 @@ Na úzkém vysokém okně se pod mapou automaticky otevře živý seznam měst,
 který využije jinak prázdné místo. Mapa si zachová správný poměr stran.
 Seznam můžete sbalit; vaše volba zůstane zachovaná při změně velikosti okna.
 Ze společných zdrojů se nyní sestavuje také Chrome/Edge doplněk. Poslední
-veřejný [zdrojový balíček Chrome/Edge](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.3)
-zůstává beta 3; beta 23 není vydaný ZIP a její instalace v Chromu ani Safari
-nebyla vizuálně potvrzena. Safari balíček ani veřejné vydání zatím nejsou připraveny.
+veřejný [balíček Chrome/Edge beta 24](https://github.com/barcuchj/chmi-classic/releases/tag/v0.7.0-beta.24)
+obsahuje stejné adaptéry jako userscript. Omezený instalační test v Chromu
+je uveden výše; nejde o kontrolu všech aplikací ani Edge a Safari.
+Aktuální Safari balíček zatím není připravený.
 Po zveřejnění odpovídajícího userscriptu v `main` se tato beta instaluje stejným
 odkazem jako dříve. Kdo chce vyzkoušet nové rozhraní,
 otevře [instalační odkaz](https://raw.githubusercontent.com/barcuchj/chmi-classic/main/tampermonkey/chmi-classic.user.js)
@@ -95,8 +109,9 @@ srážky na začátku běhu), místo prázdného pole uvidíte vysvětlení.
 
 Webkamery mají nově v rozcestníku aktivní odkaz na živou mapu ČHMÚ; výběr
 kamer, snímek a časová osa používají původní komponenty zdrojové stránky.
-Rozložení je připravené pro centrální panel i samostatnou záložku, ale
-výsledné vykreslení této bety ještě nebylo ověřeno z nainstalovaného balíčku.
+Mapa, filtrování Brna, živý detail a časová osa byly ověřeny v centrálním
+panelu instalované Chrome bety 24, také v úzkém okně. Samostatnou záložku
+a Tampermonkey je nutné ověřit zvlášť.
 Grafy měření se nesimulují tam, kde je zdrojová stránka nenabízí.
 
 Kompaktní meteogram zachovává nativní graf,
@@ -139,19 +154,22 @@ instalační test. Podrobnosti a zbývající práce jsou v [TODO.md](TODO.md).
 
 ### Jak beta vypadá
 
-Následující snímky zachycují starší vývojový stav, nikoli vizuální ověření
-instalované bety 16.
+Následující tři snímky pocházejí ze skutečně nainstalované Chrome bety 24,
+pořízené 3. 10. 2026 v okně 1280 × 800 px bez aktivního Tampermonkey.
 
 **Radar v portálu:** úzká horní nabídka, mapa a původní rozcestník pod ní.
 
-![Radar v centrálním panelu ČHMÚ Classic](docs/screenshots/portal-radar.png)
+![Radar v centrálním panelu ČHMÚ Classic beta 24](docs/screenshots/beta24-radar.png)
 
-**Meteosat po kliknutí na Zvětšit panel:** mapa má celou pracovní plochu,
-podrobnější nastavení se rozbaluje vpravo. Tlačítko Zpět na portál vrátí nabídky.
+**Živá kamera Brno:** kompaktní časová osa a větší snímek, seznam kamer vpravo.
 
-![Meteosat ve zvětšeném panelu](docs/screenshots/meteosat-expanded.png)
+![Webkamera Brno v centrálním panelu beta 24](docs/screenshots/beta24-webkamera.png)
 
-Jde o skutečné snímky vývojové bety z 20. 9. 2026, nikoli grafické návrhy.
+**Měsíční výhled:** oficiální PDF v čitelném režimu na šířku.
+
+![Měsíční PDF v centrálním panelu beta 24](docs/screenshots/beta24-mesicni-pdf.png)
+
+Jde o skutečné snímky, nikoli grafické návrhy.
 Zobrazené počasí je stav při pořízení snímků, ne aktuální předpověď.
 [Zdroje snímků a rozsah ověření](docs/screenshots/README.md).
 

@@ -47,6 +47,7 @@ html.chmi-monthly-classic #chmi-monthly-brand span {
   font-weight: bold;
 }
 html.chmi-monthly-classic #chmi-monthly-workspace button,
+html.chmi-monthly-classic #chmi-monthly-workspace select,
 html.chmi-monthly-classic #chmi-monthly-workspace a {
   box-sizing: border-box;
   display: inline-block;
@@ -66,12 +67,14 @@ html.chmi-monthly-classic #chmi-monthly-workspace :is(button, a):focus-visible {
 html.chmi-monthly-classic #chmi-monthly-nav {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 3px;
   min-width: 0;
   padding: 5px;
   border-bottom: 1px solid #a1b4d1;
   background: #edf4fb;
 }
+html.chmi-monthly-classic #chmi-monthly-pdf-fit[hidden] { display: none !important; }
 html.chmi-monthly-classic #chmi-monthly-nav button[aria-pressed="true"] { background: #d7eafb; }
 html.chmi-monthly-classic #chmi-monthly-main {
   min-width: 0;

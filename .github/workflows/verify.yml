@@ -17,16 +17,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Check JavaScript syntax
-        run: |
-          for file in chrome-edge/*.js; do node --check "$file"; done
-          node --check script/build_userscript.mjs
-          node --check tampermonkey/chmi-classic.user.js
-      - name: Portal and ALADIN regression tests
-        run: node --test script/portal-registry.test.mjs script/aladin-core.test.mjs
-      - name: Check manifest
-        run: node -e "JSON.parse(require('fs').readFileSync('chrome-edge/manifest.json', 'utf8'))"
-      - name: Rebuild userscript
-        run: |
-          node script/build_userscript.mjs
-          git diff --exit-code
+      - name: Verify syntax, manifest, userscript parity and regression tests
+        run: node script/check.mjs

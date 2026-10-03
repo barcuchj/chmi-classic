@@ -1,5 +1,27 @@
 # Snímky beta rozhraní
 
+## Aktuální instalovaná beta 24
+
+Pořízeno 3. 10. 2026 ve skutečně instalovaném Chrome rozšíření, bez aktivního
+Tampermonkey, v odděleném testovacím profilu při 1280 × 800 px. Pouze viewport,
+bez osobních karet/adresního řádku; bez grafických úprav a kompozitů.
+
+- `beta24-radar.png`: `https://www.chmi.cz/#classic=radar`, živá aplikace
+  `https://produkty.chmi.cz/radar/`; ČHMÚ a © OpenStreetMap contributors.
+- `beta24-webkamera.png`: živý detail
+  `https://www.chmi.cz/namerena-data/webkamera/brno-brno` v portálu;
+  snímky a měření ČHMÚ, kamera nese identifikaci výrobce v obrazu.
+- `beta24-mesicni-pdf.png`: živé oficiální PDF
+  `https://www.chmi.cz/documents/d/chmi.cz/mesicni-2` z měsíčního výhledu,
+  ČHMÚ, období 28. 9. až 25. 10. 2026. Zachycená data nejsou aktuální
+  předpovědí pro každého dalšího čtenáře.
+
+Rozsah testu a omezení: [QA beta 24](../qa-beta24.md). Snímky lze použít jako
+uživatelské ukázky; samy neprokazují obnovu všech aplikací ani schválení Store.
+MIT licence kódu se nevztahuje automaticky na data, značky a mapové podklady.
+
+## Starší vývojové snímky
+
 Pořízeno 20. 9. 2026 ve vestavěném prohlížeči, při kontrole okna 1440 × 900.
 Snímky nebyly graficky upravované a neobsahují osobní karty ani adresní řádek.
 

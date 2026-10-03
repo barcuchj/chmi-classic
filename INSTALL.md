@@ -5,7 +5,7 @@ snímky dál pocházejí z ČHMÚ; nejde o přehrávání starého počasí z ar
 
 ## Chci vyzkoušet nejnovější podobu portálu
 
-**Aktuální userscript je 0.7.0-beta.23 — testovací verze.** Má centrální panel
+**Aktuální userscript je 0.7.0-beta.24 — testovací verze.** Má centrální panel
 pro aplikace, rozcestník a tlačítko **Zvětšit panel**. Celý původní intranet
 ještě obnovený není. Úvodní předpověď ČR má nově třídenní panel; Voda a Ovzduší mají
 živé adaptéry. Červeně přeškrtnuté položky čekají na rekonstrukci.
@@ -36,7 +36,7 @@ Její nový klasický obal zatím čeká na vizuální kontrolu po instalaci.
 **Týdenní předpověď** zpřístupní živý text ČHMÚ po jednotlivých dnech a
 jejich živý graf v samostatné záložce uvnitř panelu. Dlouhý text se posouvá
 uvnitř aplikace, ne celou stránkou. Její instalovaný vzhled ještě čeká na
-vizuální kontrolu. [Podívejte se na dvě ukázky staršího vzhledu](README.md#jak-beta-vypadá).
+vizuální kontrolu. [Podívejte se na tři ukázky aktuální bety](README.md#jak-beta-vypadá).
 **Předpovědi pro kraje** nabízí seznam 14 krajů a volbu dne v klasickém
 modrém panelu. Samotný text předpovědi zůstává aktuální z ČHMÚ; v archivu se
 jeho historický obsah nedochoval. Také tato nová úprava čeká na instalační
@@ -44,7 +44,9 @@ vizuální kontrolu.
 **Měsíční výhled** má aktuální slovní předpověď a tlačítko **Grafy a statistika**.
 To zobrazí živé grafické PDF ČHMÚ přímo v panelu; odkaz **Otevřít PDF** jej
 otevře v samostatné záložce. Staré archivní údaje se nezobrazují jako aktuální.
-Podoba po instalaci obou variant ještě čeká na kontrolu.
+V Chrome betě 24 je přepínání ověřené. Volba **Na šířku – čitelně** zvětší
+text; **Celá stránka** ukáže přehled celého dokumentu. Posuvník uvnitř PDF
+je při čitelné velikosti potřeba, ale portál se neposouvá.
 
 Nejjednodušší cesta je přes **Tampermonkey**, správce malých úprav webových
 stránek. Pro tuto betu nepotřebujete Xcode ani účet vývojáře.
@@ -57,8 +59,9 @@ stránek. Pro tuto betu nepotřebujete Xcode ani účet vývojáře.
    pouze jedna varianta, jinak se jejich úpravy mohou překrývat.
 5. Otevřete [úvodní stránku ČHMÚ](https://www.chmi.cz/) a jednou ji obnovte.
 
-Beta zatím prošla vývojovým ověřením ve vestavěném prohlížeči. Úplné ověření
-instalace v Tampermonkey a chování ve všech prohlížečích ještě není dokončené.
+Beta 24 prošla také instalační kontrolou v odděleném Chrome: kamery,
+radar a měsíční výhled v centrálním panelu. Úplné ověření instalace
+v Tampermonkey a chování všech aplikací a prohlížečů ještě není dokončené.
 
 ## Jak se nový portál používá
 
@@ -98,21 +101,24 @@ stále nabízet starší verzi.
 
 ## Chrome a Edge – testovací beta bez Tampermonkey
 
-Poslední veřejný [Chrome/Edge balíček 0.7.0-beta.3](https://github.com/barcuchj/chmi-classic/releases/download/v0.7.0-beta.3/chmi-classic-chrome-edge-0.7.0-beta.3.zip)
-obsahuje centrální portál a webkamery. Zdrojová beta 23 navíc sdílí s userscriptem
+Aktuální [Chrome/Edge balíček 0.7.0-beta.24](https://github.com/barcuchj/chmi-classic/releases/download/v0.7.0-beta.24/chmi-classic-chrome-edge-0.7.0-beta.24.zip)
+obsahuje centrální portál a webkamery a sdílí s userscriptem
 adaptéry pro předpověď, meteogram, vodu, ovzduší a radarové odhady srážek
 i v centrálním panelu, stejně jako animaci ALADINu, synoptickou situaci a
 sondážní měření, Klementinum, meteorologické stanice, aktivitu klíšťat,
 biometeorologickou, týdenní, krajské i měsíční předpovědi.
-Balíček beta 23 zatím není veřejně vydaný ani instalačně
-a vizuálně ověřený;
-odkaz na betu 3 proto nemůže ukázat všechny nové funkce.
+Kamery, radar a měsíční panel byly ověřeny z nainstalované bety 24
+bez souběžného Tampermonkey. Zbývající aplikace ještě procházejí kontrolou.
 
 1. Stáhněte ZIP a rozbalte jej do složky, kterou později nepřesunete ani nesmažete.
 2. Otevřete `chrome://extensions` nebo `edge://extensions`.
 3. Zapněte **Režim pro vývojáře** a zvolte **Načíst rozbalené**.
 4. Vyberte rozbalenou složku, v níž přímo vidíte `manifest.json`.
 5. Máte-li Tampermonkey variantu ČHMÚ Classic, vypněte ji pro web ČHMÚ.
+
+Při aktualizaci nahraďte soubory v dosavadní složce rozšíření, na stránce
+rozšíření klikněte na **Znovu načíst** a obnovte otevřené stránky ČHMÚ.
+Nevytvářejte druhou současně aktivní kopii.
 
 Odkaz na webkamery v rozcestníku otevírá oficiální mapu se seznamem kamer;
 po výběru kamery má zůstat snímek a časová osa na stejné stránce v klasickém

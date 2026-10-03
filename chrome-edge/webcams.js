@@ -20,6 +20,18 @@
           workspace.classList.add("chmi-webcams-workspace");
           mapBlock.classList.add("chmi-webcams-map-block");
           listBlock.classList.add("chmi-webcams-list-block");
+          const info = [...workspace.children].find(node => node.classList.contains("lfr-layout-structure-item-text"));
+          if (info && !info.querySelector(".chmi-webcams-info")) {
+            const details = document.createElement("details");
+            details.className = "chmi-webcams-info";
+            const summary = document.createElement("summary");
+            summary.textContent = "Informace k webovým kamerám";
+            const content = document.createElement("div");
+            // Keep the official content and any links; do not substitute a copy.
+            content.append(...info.childNodes);
+            details.append(summary, content);
+            info.append(details);
+          }
           map.dataset.chmiWebcamsNative = "verified";
           document.documentElement.classList.add("chmi-webcams-classic", "chmi-webcams-overview");
           requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));

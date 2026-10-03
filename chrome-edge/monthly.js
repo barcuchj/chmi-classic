@@ -14,8 +14,23 @@
     }
   }
 
+  function monthlyPdfHref(pdfHref, fit = "width") {
+    const url = new URL(pdfHref);
+    url.hash = fit === "page"
+      ? "toolbar=0&navpanes=0&view=Fit&zoom=page-fit"
+      : "toolbar=0&navpanes=0&view=FitH&zoom=page-width";
+    return url.href;
+  }
+
+  function replaceMonthlyPdfFrame(frame, pdfHref, fit) {
+    const replacement = frame.cloneNode(false);
+    replacement.src = monthlyPdfHref(pdfHref, fit);
+    frame.replaceWith(replacement);
+    return replacement;
+  }
+
   if (typeof module === "object" && module.exports) {
-    module.exports = { monthlyDataReady };
+    module.exports = { monthlyDataReady, monthlyPdfHref, replaceMonthlyPdfFrame };
     return;
   }
 
@@ -93,7 +108,20 @@
       pdfOpen.target = "_blank";
       pdfOpen.rel = "noopener noreferrer";
       pdfOpen.textContent = "Otevřít PDF ↗";
-      nav.append(summaryButton, pdfButton, pdfOpen);
+      const pdfFitLabel = document.createElement("label");
+      pdfFitLabel.id = "chmi-monthly-pdf-fit";
+      pdfFitLabel.hidden = true;
+      pdfFitLabel.textContent = "Velikost PDF: ";
+      const pdfFit = document.createElement("select");
+      pdfFit.setAttribute("aria-label", "Velikost PDF");
+      [["width", "Na šířku – čitelně"], ["page", "Celá stránka"]].forEach(([value, text]) => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = text;
+        pdfFit.append(option);
+      });
+      pdfFitLabel.append(pdfFit);
+      nav.append(summaryButton, pdfButton, pdfOpen, pdfFitLabel);
 
       const main = document.createElement("main");
       main.id = "chmi-monthly-main";
@@ -112,7 +140,7 @@
       const pdfPanel = document.createElement("section");
       pdfPanel.id = "chmi-monthly-pdf";
       pdfPanel.hidden = true;
-      const pdfFrame = document.createElement("iframe");
+      let pdfFrame = document.createElement("iframe");
       pdfFrame.id = "chmi-monthly-pdf-frame";
       pdfFrame.title = "Grafy a statistika měsíčního výhledu ČHMÚ";
       pdfFrame.setAttribute("loading", "lazy");
@@ -122,10 +150,17 @@
       function showPdf(show) {
         summaryPanel.hidden = show;
         pdfPanel.hidden = !show;
+        pdfFitLabel.hidden = !show;
         summaryButton.setAttribute("aria-pressed", String(!show));
         pdfButton.setAttribute("aria-pressed", String(show));
-        if (show && !pdfFrame.src) pdfFrame.src = pdfUrl + "#toolbar=0&navpanes=0&view=Fit";
+        if (show && !pdfFrame.src) pdfFrame.src = monthlyPdfHref(pdfUrl, pdfFit.value);
       }
+      pdfFit.addEventListener("change", () => {
+        // Chromium's native PDF viewer does not reliably reapply fit parameters
+        // for a fragment-only navigation. A new frame starts it with the chosen
+        // view while keeping the official document and its browser controls.
+        pdfFrame = replaceMonthlyPdfFrame(pdfFrame, pdfUrl, pdfFit.value);
+      });
       summaryButton.addEventListener("click", () => showPdf(false));
       pdfButton.addEventListener("click", () => showPdf(true));
       workspace.append(header, nav, main);

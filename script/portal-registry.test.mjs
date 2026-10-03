@@ -7,6 +7,16 @@ const context = vm.createContext({ URL });
 vm.runInContext(readFileSync(new URL("../chrome-edge/portal-registry.js", import.meta.url), "utf8"), context);
 const registry = context.__chmiClassicApps;
 
+test("narrow portal keeps the app on screen and confines directory scrolling", () => {
+  const css = readFileSync(new URL("../chrome-edge/portal.css", import.meta.url), "utf8");
+  assert.match(css, /html\.chmi-classic-portal-active\s*\{[^}]*overflow: hidden/s);
+  const narrow = css.slice(css.indexOf("@media (max-width: 760px)"), css.indexOf("/* VODA"));
+  assert.match(narrow, /height: calc\(100dvh - 12px\); min-height: 0/);
+  assert.match(narrow, /\.chmi-portal-workspace\s*\{ flex: 1; min-height: 0/);
+  assert.match(narrow, /\.chmi-portal-directory\s*\{[^}]*max-height: clamp\(120px, 24dvh, 210px\);[^}]*overflow-y: auto/s);
+  assert.doesNotMatch(narrow, /height: auto|68dvh/);
+});
+
 test("only the current homepage gets the portal shell", () => {
   for (const path of ["/", "/uvod", "/uvod/"]) assert.equal(registry.isHomepage(new URL(`https://www.chmi.cz${path}`)), true);
   assert.equal(registry.isHomepage(new URL("https://www.chmi.cz/namerena-data")), false);
