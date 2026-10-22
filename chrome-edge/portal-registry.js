@@ -53,6 +53,8 @@
       const app = this.get(id);
       if (!app) return false;
       const target = new URL(app.url);
+      if (id === "air" && url.origin === target.origin) return [normalPath(target.pathname),
+        "/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer"].includes(normalPath(url.pathname));
       if (id === "forecast" && url.origin === target.origin) return /^\/predpoved-pocasi\/(dnes|zitra|pozitri)\/?$/.test(url.pathname);
       if (id === "regions" && url.origin === target.origin) {
         const match = /^\/predpoved-pocasi\/([a-z-]+)\/(dnes|zitra|pozitri|dalsi-dny)\/?$/.exec(url.pathname);

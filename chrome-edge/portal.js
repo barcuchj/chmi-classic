@@ -76,7 +76,7 @@
     tabs.setAttribute("role", "tablist");
     tabs.setAttribute("aria-label", "Produkty ČHMÚ");
     for (const [key, title] of [["weather", "☼ POČASÍ"], ["water", "≋ VODA"], ["air", "☘ OVZDUŠÍ"]]) {
-      const tab = button(title, () => selectSection(key), "chmi-portal-tab");
+      const tab = button(title, () => openSectionDefault(key), "chmi-portal-tab");
       tab.dataset.section = key;
       tab.id = `chmi-portal-tab-${key}`;
       tab.setAttribute("role", "tab");
@@ -90,7 +90,7 @@
       const index = list.indexOf(document.activeElement);
       const next = event.key === "Home" ? 0 : event.key === "End" ? 2 : (index + (event.key === "ArrowRight" ? 1 : 2)) % 3;
       list[next].focus();
-      selectSection(list[next].dataset.section);
+      openSectionDefault(list[next].dataset.section);
     });
     const workspace = el("section", "chmi-portal-workspace");
     workspace.id = "chmi-portal-workspace";
@@ -162,7 +162,13 @@
       workspace.setAttribute("aria-busy", String(state !== "ready"));
       if (state === "ready") { clearTimeout(timeout); notice.hidden = true; }
     }
-    function selectSection(key, updateHash = true) {
+    function openSectionDefault(key) {
+      if (key === "weather") weatherApp = "forecast";
+      // The frame may have navigated to a detail while the outer hash stayed
+      // unchanged. A deliberate section click must restore its start page.
+      selectSection(key, true, true);
+    }
+    function selectSection(key, updateHash = true, force = false) {
       selectedSection = key;
       for (const tab of tabs.querySelectorAll("button")) {
         const active = tab.dataset.section === key;
@@ -173,7 +179,7 @@
       directory.hidden = extra.hidden = key !== "weather";
       standalone.hidden = false;
       const id = key === "weather" ? weatherApp : key;
-      openApp(id);
+      openApp(id, force);
       if (updateHash && location.hash !== `#classic=${id}`) location.hash = `#classic=${id}`;
     }
     function openApp(id, force = false) {
@@ -246,7 +252,8 @@
   const kind = ["www.chmi.cz", "chmi.cz"].includes(location.hostname) &&
     path === "/voda/aktualni-stav-rek-povodnova-mapa" ? "water" :
     ["www.chmi.cz", "chmi.cz"].includes(location.hostname) &&
-    path === "/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr" ? "air" : null;
+    ["/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr",
+      "/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer"].includes(path) ? "air" : null;
   if (!kind) return;
   window.__chmiHydroAirClassicLoaded = true;
 
@@ -268,7 +275,9 @@
   const originalAria = new Map();
 
   function nativeMapReady(map) {
-    const config = `https://data-provider.chmi.cz/api/map/init/${kind === "water" ? "hydrologie.povrchove-vody" : "ovzdusi.kvalita"}`;
+    const configKey = kind === "water" ? "hydrologie.povrchove-vody" :
+      path.endsWith("/pm10-hodinovy-prumer") ? "ovzdusi.pm10-hod" : "ovzdusi.kvalita";
+    const config = `https://data-provider.chmi.cz/api/map/init/${configKey}`;
     const component = map?.querySelector(`.chmu-map-component[data-config-url="${config}"], .chmu-map-component[data-config-url="${config}?client=mobile"]`);
     const canvas = map?.querySelector(".ol-viewport canvas");
     const timeline = map?.querySelector('input[aria-label="Časová osa"]');

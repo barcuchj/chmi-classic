@@ -27,7 +27,9 @@ function run(path, withMap = true, native = {}) {
   const content = { classList: contentClasses };
   const component = { parentElement: content };
   const attributes = new Map([["aria-hidden", "true"], ["aria-disabled", "true"]]);
-  const config = path.startsWith("/voda/") ? "hydrologie.povrchove-vody" : "ovzdusi.kvalita";
+  const config = native.config ?? (path.startsWith("/voda/") ? "hydrologie.povrchove-vody" :
+    path.endsWith("/pm10-hodinovy-prumer") ? "ovzdusi.pm10-hod" : "ovzdusi.kvalita");
+  const configURL = `https://data-provider.chmi.cz/api/map/init/${config}${native.mobile ? "?client=mobile" : ""}`;
   const map = withMap ? {
     dataset: {},
     classList: mapClasses,
@@ -35,7 +37,8 @@ function run(path, withMap = true, native = {}) {
     setAttribute: (key, value) => attributes.set(key, value),
     removeAttribute: key => attributes.delete(key),
     querySelector(selector) {
-      if (selector.includes("data-config-url")) return native.wrongConfig ? null : { config };
+      if (selector.includes("data-config-url")) return !native.wrongConfig &&
+        selector.includes(`[data-config-url="${configURL}"]`) ? { config } : null;
       if (selector === ".ol-viewport canvas") return { width: native.emptyCanvas ? 0 : 600, height: 400 };
       if (selector.includes("Časová osa")) return { disabled: Boolean(native.loading), max: "167" };
       return null;
@@ -72,7 +75,8 @@ function run(path, withMap = true, native = {}) {
 
 for (const [path, table] of [
   ["/voda/aktualni-stav-rek-povodnova-mapa", "/voda/tabulka-hydrologie"],
-  ["/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr", "/namerena-data/data-z-mericich-stanic/tabulka-kvality-ovzdusi"]
+  ["/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr", "/namerena-data/data-z-mericich-stanic/tabulka-kvality-ovzdusi"],
+  ["/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer", "/namerena-data/data-z-mericich-stanic/tabulka-kvality-ovzdusi"]
 ]) {
   test(`${path} keeps its native map and offers official tabular data`, () => {
     const page = run(path);
@@ -106,3 +110,9 @@ for (const [path, table] of [
     });
   }
 }
+
+test("PM10 accepts its mobile config but never the generic air-quality map", () => {
+  const path = "/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer";
+  assert.equal(run(path, true, { mobile: true }).map.dataset.chmiHydroAirNative, "verified");
+  assert.equal(run(path, true, { config: "ovzdusi.kvalita" }).map.dataset.chmiHydroAirNative, undefined);
+});

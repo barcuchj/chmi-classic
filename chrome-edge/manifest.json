@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.7.26",
+  "version": "0.7.27",
   "description": "Vrací klasický vzhled živým meteorologickým aplikacím ČHMÚ a přidává přehledný rozcestník.",
   "icons": {
     "16": "icons/icon-16.png",
@@ -89,7 +89,8 @@
         "https://www.chmi.cz/predpoved-pocasi/zitra*",
         "https://www.chmi.cz/predpoved-pocasi/pozitri*",
         "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa*",
-        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr*"
+        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr*",
+        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer*"
       ],
       "css": [
         "portal.css", "embedded.css", "forecast.css"
@@ -253,6 +254,7 @@
         "https://www.chmi.cz/predpoved-pocasi/pozitri*",
         "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa*",
         "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr*",
+        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer*",
         "https://hydro.chmi.cz/hppsoldv/main_rain.php*",
         "https://www.chmi.cz/predpoved-pocasi/synopticka-situace*",
         "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa*",

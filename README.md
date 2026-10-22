@@ -1,6 +1,19 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## 0.7.26 – kompaktní VODA a OVZDUŠÍ (testovací vydání)
+## 0.7.27 – výchozí záložky a pododkaz PM10
+
+Kliknutí na **POČASÍ**, **VODA** nebo **OVZDUŠÍ** vždy obnoví výchozí
+aplikaci: předpověď ČR, vodní stavy nebo přehled kvality ovzduší.
+Platí to i při opakovaném kliknutí a ovládání klávesnicí. Přímé odkazy
+`#classic=…` a historie nadále otevírají zvolenou aplikaci.
+
+Nativní pododkaz **PM10 – hodinový průměr** zachová klasickou mapu
+samostatně i uvnitř portálu, včetně reloadu a čerstvého potvrzení načtení.
+Chrome a userscript používají stejné zdroje. Ověřeno skutečné rozšíření
+v odděleném Chrome profilu; instalace Tampermonkey, Safari a Edge nebyla
+v této verzi znovu testována. [Rozsah QA](docs/qa-0.7.27.md).
+
+### Předchozí 0.7.26 – kompaktní VODA a OVZDUŠÍ
 
 **Chcete ji pouze používat? Začněte [návodem k instalaci a aktualizaci](INSTALL.md).**
 
@@ -8,7 +21,7 @@ Verze 0.7.26 opravuje příliš vysoké hlavičky živých map **VODA** a **OVZD
 úzká lišta nechává více prostoru mapě, legendě a původním ovladačům.
 Legenda zůstává uvnitř mapy a nezakrývá své tlačítko ani na mobilu.
 Záložky se správně vybírají také přes `#classic=water` a `#classic=air`;
-odkaz lze uložit a při návratu na Počasí zůstává předchozí aplikace.
+odkaz lze uložit; od 0.7.27 kliknutí na Počasí obnovuje výchozí předpověď.
 Klasický mapový panel se potvrzuje až po načtení správné nativní konfigurace,
 canvasu a povolené časové osy, ne podle samotné hlavičky.
 Chrome instalace prošla při 1280 × 800 a 390 × 844 px, samostatně i uprostřed

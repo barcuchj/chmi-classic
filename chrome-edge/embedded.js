@@ -8,7 +8,7 @@
   const { id, session } = context;
   let parentURL;
   try { parentURL = new URL(document.referrer); } catch { return; }
-  const nativeNavigation = ["webcams", "forecast", "meteogram", "rainfall"].includes(id) && registry.matches(id, parentURL);
+  const nativeNavigation = ["webcams", "forecast", "meteogram", "rainfall", "water", "air"].includes(id) && registry.matches(id, parentURL);
   if (parentURL.protocol !== "https:" || !(registry.isHomepage(parentURL) || nativeNavigation) ||
       !registry.matches(id, url) || !/^[a-zA-Z0-9-]{8,80}$/.test(session ?? "")) return;
 

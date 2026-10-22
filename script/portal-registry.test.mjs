@@ -7,6 +7,20 @@ const context = vm.createContext({ URL });
 vm.runInContext(readFileSync(new URL("../chrome-edge/portal-registry.js", import.meta.url), "utf8"), context);
 const registry = context.__chmiClassicApps;
 
+test("native PM10 navigation retains the air panel session without broadening the route allowlist", () => {
+  const path = "/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer";
+  const name = registry.frameName("air", "test-session");
+  for (const suffix of ["", "/", "?t=202610211800&l=layer_stanice,kraje,layer_image,ZTM"]) {
+    const url = new URL(`https://www.chmi.cz${path}${suffix}`);
+    assert.equal(registry.matches("air", url), true);
+    assert.equal(registry.embeddedContext(url, name)?.id, "air");
+  }
+  for (const url of [`https://evil.test${path}`, `https://www.chmi.cz${path}-unknown`,
+    "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/tabulka-kvality-ovzdusi"]) {
+    assert.equal(registry.embeddedContext(new URL(url), name), null);
+  }
+});
+
 test("floating map legends stay inside the visible map, not outside the iframe", () => {
   assert.equal(registry.panelShiftX({ left: -60, width: 222 }, { left: 5, right: 1251 }), 69);
   assert.equal(registry.panelShiftX({ left: 14, width: 222 }, { left: 5, right: 1251 }), 0);
