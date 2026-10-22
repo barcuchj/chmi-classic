@@ -16,6 +16,7 @@ function shell(hash) {
     addEventListener(name, callback) { this.listeners[name] = callback; }
     remove() { this.isConnected = false; }
     click() { this.listeners.click?.({ button: 0, preventDefault() {} }); }
+    focus() { document.activeElement = this; }
     querySelectorAll(selector) {
       const descendants = this.children.flatMap(child => [child, ...child.querySelectorAll("*")]);
       return descendants.filter(child => selector === "*" || selector === "button" && child.tag === "button" || selector === "[data-app]" && child.dataset.app);
@@ -52,11 +53,40 @@ for (const [id, section] of [["water", "water"], ["air", "air"], ["pollen", "wea
   });
 }
 
-test("section clicks update the bookmark and keep the previously selected weather app", () => {
+test("section clicks open the default forecast instead of the last weather application", () => {
   const page = shell("#classic=pollen");
   page.document.getElementById("chmi-portal-tab-water").click();
   assert.equal(page.location.hash, "#classic=water");
   page.route(page.location.hash);
   page.document.getElementById("chmi-portal-tab-weather").click();
-  assert.equal(page.location.hash, "#classic=pollen");
+  assert.equal(page.location.hash, "#classic=forecast");
+});
+
+for (const [section, app] of [["weather", "forecast"], ["water", "water"], ["air", "air"]]) {
+  test(`reselecting ${section} reloads its default URL even after navigation inside the frame`, () => {
+    const page = shell(`#classic=${app}`);
+    const before = page.nodes.find(node => node.tag === "iframe" && node.isConnected);
+    page.document.getElementById(`chmi-portal-tab-${section}`).click();
+    const after = page.nodes.find(node => node.tag === "iframe" && node.isConnected);
+    assert.notEqual(after, before);
+    assert.equal(page.location.hash, `#classic=${app}`);
+    assert.equal(new URL(after.src).searchParams.get("chmi_classic_embed"), app);
+  });
+}
+
+test("keyboard tab navigation also restores the section default", () => {
+  const page = shell("#classic=pollen");
+  const tabs = page.nodes.find(node => node.className === "chmi-portal-tabs");
+  page.document.getElementById("chmi-portal-tab-weather").focus();
+  tabs.listeners.keydown({ key: "End", preventDefault() {} });
+  assert.equal(page.location.hash, "#classic=air");
+  tabs.listeners.keydown({ key: "Home", preventDefault() {} });
+  assert.equal(page.location.hash, "#classic=forecast");
+});
+
+test("reselecting a directory link still opens that application, not the section default", () => {
+  const page = shell("#classic=radar");
+  page.nodes.find(node => node.dataset.app === "radar").click();
+  assert.equal(page.location.hash, "#classic=radar");
+  assert.equal(new URL(page.nodes.find(node => node.tag === "iframe" && node.isConnected).src).pathname, "/radar/");
 });

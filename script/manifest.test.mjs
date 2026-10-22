@@ -85,7 +85,8 @@ test("only explicit live application routes run in child frames", () => {
     "https://www.chmi.cz/predpoved-pocasi/zitra*",
     "https://www.chmi.cz/predpoved-pocasi/pozitri*",
     "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa*",
-    "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr*"
+    "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr*",
+    "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer*"
   ]);
   assert.deepEqual(framed[3].matches, ["https://hydro.chmi.cz/hppsoldv/main_rain.php*"]);
   assert.deepEqual(framed[4].matches, [

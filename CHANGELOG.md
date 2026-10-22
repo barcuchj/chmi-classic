@@ -1,5 +1,16 @@
 # Přehled změn
 
+## 0.7.27 – 2026-10-22
+
+- Každé kliknutí na POČASÍ/VODA/OVZDUŠÍ obnoví výchozí aplikaci,
+  i po nativním přechodu na detail uvnitř panelu. Zachovány přímé hash
+  odkazy a historie; stejné chování má klávesnicová navigace.
+- Hodinové PM10: přesná konfigurace živé mapy, Chrome iframe pravidlo
+  a kompaktní režim po nativní navigaci/reloadu. Bez nových host oprávnění.
+- Regresní testy kontrolují URL, referrer, čerstvou relaci a skutečnou
+  připravenost mapy. Vydání oddělené od starších nedokončených modulů.
+
+
 ## 0.7.26 – 2026-10-03 (testovací sestavení)
 
 - Přechod na číselné verze bez přípony beta. Manifest je jediný zdroj čísla

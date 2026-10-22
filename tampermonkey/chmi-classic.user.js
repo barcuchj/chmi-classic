@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ČHMÚ Classic – meteorologické výstupy
 // @namespace    https://github.com/
-// @version      0.7.26
+// @version      0.7.27
 // @description  Vrací klasický vzhled, historické adaptace a jednotný katalog živých i archivních meteorologických výstupů ČHMÚ.
 // @author       ČHMÚ Classic contributors
 // @homepageURL  https://github.com/barcuchj/chmi-classic
@@ -177,6 +177,8 @@
       const app = this.get(id);
       if (!app) return false;
       const target = new URL(app.url);
+      if (id === "air" && url.origin === target.origin) return [normalPath(target.pathname),
+        "/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer"].includes(normalPath(url.pathname));
       if (id === "forecast" && url.origin === target.origin) return /^\/predpoved-pocasi\/(dnes|zitra|pozitri)\/?$/.test(url.pathname);
       if (id === "regions" && url.origin === target.origin) {
         const match = /^\/predpoved-pocasi\/([a-z-]+)\/(dnes|zitra|pozitri|dalsi-dny)\/?$/.exec(url.pathname);
@@ -264,7 +266,7 @@
   const { id, session } = context;
   let parentURL;
   try { parentURL = new URL(document.referrer); } catch { return; }
-  const nativeNavigation = ["webcams", "forecast", "meteogram", "rainfall"].includes(id) && registry.matches(id, parentURL);
+  const nativeNavigation = ["webcams", "forecast", "meteogram", "rainfall", "water", "air"].includes(id) && registry.matches(id, parentURL);
   if (parentURL.protocol !== "https:" || !(registry.isHomepage(parentURL) || nativeNavigation) ||
       !registry.matches(id, url) || !/^[a-zA-Z0-9-]{8,80}$/.test(session ?? "")) return;
 
@@ -435,7 +437,7 @@
     tabs.setAttribute("role", "tablist");
     tabs.setAttribute("aria-label", "Produkty ČHMÚ");
     for (const [key, title] of [["weather", "☼ POČASÍ"], ["water", "≋ VODA"], ["air", "☘ OVZDUŠÍ"]]) {
-      const tab = button(title, () => selectSection(key), "chmi-portal-tab");
+      const tab = button(title, () => openSectionDefault(key), "chmi-portal-tab");
       tab.dataset.section = key;
       tab.id = `chmi-portal-tab-${key}`;
       tab.setAttribute("role", "tab");
@@ -449,7 +451,7 @@
       const index = list.indexOf(document.activeElement);
       const next = event.key === "Home" ? 0 : event.key === "End" ? 2 : (index + (event.key === "ArrowRight" ? 1 : 2)) % 3;
       list[next].focus();
-      selectSection(list[next].dataset.section);
+      openSectionDefault(list[next].dataset.section);
     });
     const workspace = el("section", "chmi-portal-workspace");
     workspace.id = "chmi-portal-workspace";
@@ -521,7 +523,13 @@
       workspace.setAttribute("aria-busy", String(state !== "ready"));
       if (state === "ready") { clearTimeout(timeout); notice.hidden = true; }
     }
-    function selectSection(key, updateHash = true) {
+    function openSectionDefault(key) {
+      if (key === "weather") weatherApp = "forecast";
+      // The frame may have navigated to a detail while the outer hash stayed
+      // unchanged. A deliberate section click must restore its start page.
+      selectSection(key, true, true);
+    }
+    function selectSection(key, updateHash = true, force = false) {
       selectedSection = key;
       for (const tab of tabs.querySelectorAll("button")) {
         const active = tab.dataset.section === key;
@@ -532,7 +540,7 @@
       directory.hidden = extra.hidden = key !== "weather";
       standalone.hidden = false;
       const id = key === "weather" ? weatherApp : key;
-      openApp(id);
+      openApp(id, force);
       if (updateHash && location.hash !== `#classic=${id}`) location.hash = `#classic=${id}`;
     }
     function openApp(id, force = false) {
@@ -605,7 +613,8 @@
   const kind = ["www.chmi.cz", "chmi.cz"].includes(location.hostname) &&
     path === "/voda/aktualni-stav-rek-povodnova-mapa" ? "water" :
     ["www.chmi.cz", "chmi.cz"].includes(location.hostname) &&
-    path === "/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr" ? "air" : null;
+    ["/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr",
+      "/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer"].includes(path) ? "air" : null;
   if (!kind) return;
   window.__chmiHydroAirClassicLoaded = true;
 
@@ -627,7 +636,9 @@
   const originalAria = new Map();
 
   function nativeMapReady(map) {
-    const config = `https://data-provider.chmi.cz/api/map/init/${kind === "water" ? "hydrologie.povrchove-vody" : "ovzdusi.kvalita"}`;
+    const configKey = kind === "water" ? "hydrologie.povrchove-vody" :
+      path.endsWith("/pm10-hodinovy-prumer") ? "ovzdusi.pm10-hod" : "ovzdusi.kvalita";
+    const config = `https://data-provider.chmi.cz/api/map/init/${configKey}`;
     const component = map?.querySelector(`.chmu-map-component[data-config-url="${config}"], .chmu-map-component[data-config-url="${config}?client=mobile"]`);
     const canvas = map?.querySelector(".ol-viewport canvas");
     const timeline = map?.querySelector('input[aria-label="Časová osa"]');

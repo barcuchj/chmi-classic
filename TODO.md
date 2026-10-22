@@ -2,6 +2,18 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [x] 0.7.27: výchozí aplikace při každém kliknutí na POČASÍ/VODA/OVZDUŠÍ;
+  pododkaz hodinového PM10 v klasickém režimu, přímo i centrálně.
+  181 automatických testů, živý Chrome průchod ve třech šířkách.
+  [QA a omezení](docs/qa-0.7.27.md).
+- [ ] Dokončit starší místní moduly jednotlivě: ozon/UV (grafy a rozložení),
+  automatické stanice (mutační smyčka, detaily, balení), přehled počasí
+  (legenda), Bio, sníh a týdenní předpověď (nová regresní kontrola).
+  Nezařazovat do vydání jen podle úspěšného sestavení.
+- [ ] Prověřit pododkazy seznam → detail → návrat (kamery, stanice),
+  nativní přepínání vrstev a odkazy do nového panelu; odlišit obnovený
+  adaptér od obecného katalogového vzhledu.
+
 - [x] 0.7.26: společné číselné verze z manifestu pro Chrome a userscript,
   automatický název balíčku a regresní kontrola vzestupné aktualizace.
 - [x] 0.7.26: zhuštění hlaviček VODA/OVZDUŠÍ, správné záložky podle
@@ -9,9 +21,8 @@
   samostatně i centrálně v 1280 × 800 a 390 × 844 px; osa, legenda,
   zoom, zvětšení/Escape a vypnutí úpravy ověřeny. [QA](docs/qa-beta26.md).
 - [ ] VODA/OVZDUŠÍ: rozšířit audit na všechny vrstvy a jejich alternativní
-  URL. Nativní PM10 volba mění cestu na `pm10-hodinovy-prumer`; přepnutí
-  uvnitř otevřeného panelu prošlo, ale přímý vstup/reload této URL ještě
-  nemá ověřené pokrytí adaptérem a iframe pravidly. Tabulkové přehledy
+  URL. Hodinové PM10 včetně přímého vstupu/reloadu a iframe kontextu
+  je vyřešené v 0.7.27; ostatní vrstvy nejsou tímto ověřené. Tabulkové přehledy
   zůstávají odkazy na živý původní web, nejsou obnovené klasické aplikace.
   Doplnit Tampermonkey, Edge/Safari, další původní položky obou rozcestníků.
 
