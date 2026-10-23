@@ -93,8 +93,18 @@
       window.parent.postMessage({ type: "chmi-classic-status", app: id, session, state: adapter && media ? "ready" : "loading" }, parentURL.origin);
     }
     report();
-    const timer = setInterval(report, 1500);
-    window.addEventListener("pagehide", () => clearInterval(timer), { once: true });
+    let timer = setInterval(report, 1500);
+    window.addEventListener("pagehide", () => {
+      clearInterval(timer);
+      // Cover native child navigation before its next document can be painted.
+      window.parent.postMessage({ type: "chmi-classic-status", app: id, session, state: "loading" }, parentURL.origin);
+    });
+    window.addEventListener("pageshow", event => {
+      if (!event.persisted) return;
+      report();
+      clearInterval(timer);
+      timer = setInterval(report, 1500);
+    });
   };
   if (storage) storage.get({ chmiRadarClassicEnabled: true }, start);
   else start({ chmiRadarClassicEnabled: true });

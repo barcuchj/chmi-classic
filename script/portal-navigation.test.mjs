@@ -8,8 +8,10 @@ import { readFileSync } from "node:fs";
 function shell(hash) {
   const events = {};
   const nodes = [];
+  const timers = new Map();
+  let sequence = 0;
   class Node {
-    constructor(tag) { this.tag = tag; this.children = []; this.attributes = {}; this.listeners = {}; this.dataset = {}; this.isConnected = true; }
+    constructor(tag) { this.tag = tag; this.children = []; this.attributes = {}; this.listeners = {}; this.dataset = {}; this.isConnected = true; if (tag === "iframe") this.contentWindow = {}; }
     append(...children) { this.children.push(...children); }
     setAttribute(name, value) { this.attributes[name] = value; }
     removeAttribute(name) { delete this.attributes[name]; }
@@ -32,11 +34,18 @@ function shell(hash) {
   const window = { addEventListener: (name, callback) => events[name] = callback, removeEventListener() {}, dispatchEvent() {} };
   window.top = window;
   const location = { href: `https://www.chmi.cz/${hash}`, hash };
-  const context = vm.createContext({ document, window, location, URL, crypto: { randomUUID: () => "test-session" }, setTimeout() {}, clearTimeout() {} });
+  const context = vm.createContext({ document, window, location, URL, crypto: { randomUUID: () => `test-session-${++sequence}` },
+    setTimeout(callback) { const id = ++sequence; timers.set(id, callback); return id; },
+    clearTimeout(id) { timers.delete(id); } });
   vm.runInContext(readFileSync(new URL("../chrome-edge/portal-registry.js", import.meta.url), "utf8"), context);
   vm.runInContext(readFileSync(new URL("../chrome-edge/portal.js", import.meta.url), "utf8"), context);
   const route = value => { location.hash = value; events.hashchange(); };
-  return { document, nodes, location, route };
+  const send = (frame, state, origin = new URL(frame.src).origin) => {
+    const url = new URL(frame.src);
+    events.message({ source: frame.contentWindow, origin, data: { type: "chmi-classic-status",
+      app: url.searchParams.get("chmi_classic_embed"), session: url.searchParams.get("chmi_classic_session"), state } });
+  };
+  return { document, nodes, location, route, timers, send };
 }
 
 for (const [id, section] of [["water", "water"], ["air", "air"], ["pollen", "weather"], ["radar", "weather"]]) {
@@ -89,4 +98,60 @@ test("reselecting a directory link still opens that application, not the section
   page.nodes.find(node => node.dataset.app === "radar").click();
   assert.equal(page.location.hash, "#classic=radar");
   assert.equal(new URL(page.nodes.find(node => node.tag === "iframe" && node.isConnected).src).pathname, "/radar/");
+});
+
+test("all central applications stay covered until their own validated readiness message", () => {
+  for (const app of ["forecast", "radar", "water", "air", "webcams", "meteogram"]) {
+    const page = shell(`#classic=${app}`);
+    const frame = page.nodes.find(node => node.tag === "iframe" && node.isConnected);
+    const loading = page.nodes.find(node => node.className === "chmi-portal-loading");
+    assert.ok(loading, app);
+    assert.equal(loading.hidden, false);
+    assert.equal(frame.inert, true);
+    assert.equal(frame.attributes["aria-hidden"], "true");
+    page.send(frame, "ready", "https://example.org");
+    assert.equal(loading.hidden, false, "foreign messages cannot reveal native UI");
+    page.send(frame, "ready");
+    assert.equal(loading.hidden, true, app);
+    assert.equal(frame.inert, false);
+    assert.equal(frame.attributes["aria-hidden"], undefined);
+    assert.equal(page.timers.size, 0);
+  }
+});
+
+test("loading timeout stays covered, repeated polls preserve error, late readiness recovers", () => {
+  const page = shell("#classic=forecast");
+  const frame = page.nodes.find(node => node.tag === "iframe" && node.isConnected);
+  const notice = page.nodes.find(node => node.className === "chmi-portal-notice");
+  const loading = page.nodes.find(node => node.className === "chmi-portal-loading");
+  const [timer, expire] = [...page.timers][0];
+  page.send(frame, "loading");
+  assert.equal([...page.timers][0][0], timer, "poll must not postpone timeout");
+  expire();
+  assert.equal(notice.hidden, false);
+  page.send(frame, "loading");
+  assert.equal(notice.hidden, false);
+  assert.equal(loading.hidden, false);
+  assert.equal(frame.inert, true);
+  page.send(frame, "ready");
+  assert.equal(notice.hidden, true);
+  assert.equal(loading.hidden, true);
+});
+
+test("native navigation re-arms the cover and watchdog; retry rejects the previous frame", () => {
+  const page = shell("#classic=forecast");
+  const frame = page.nodes.find(node => node.tag === "iframe" && node.isConnected);
+  const stage = page.document.getElementById("chmi-portal-stage");
+  page.send(frame, "ready");
+  page.send(frame, "loading");
+  assert.equal(frame.inert, true);
+  assert.equal(page.timers.size, 1);
+  const notice = page.nodes.find(node => node.className === "chmi-portal-notice");
+  notice.querySelector("button").click();
+  assert.equal(page.timers.size, 1);
+  page.send(frame, "ready");
+  assert.equal(stage.dataset.state, "loading");
+  const next = page.nodes.find(node => node.tag === "iframe" && node.isConnected);
+  page.send(next, "ready");
+  assert.equal(stage.dataset.state, "ready");
 });

@@ -2,6 +2,14 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [x] 0.7.28: společná ochrana centrálního panelu proti probliknutí
+  nového webu; timeout, opakování, pozdní potvrzení a BFCache životní cyklus.
+  Chrome živá předpověď ve dvou šířkách, VODA po řízeném výpadku.
+  [QA a omezení](docs/qa-0.7.28.md).
+- [ ] Samostatně otevřené stránky: případnou ochranu již od prvního
+  vykreslení dokumentu řešit odděleně s respektováním vypnutého Classicu;
+  ochrana v 0.7.28 se týká centrálního panelu. Ověřit instalaci Tampermonkey.
+
 - [x] 0.7.27: výchozí aplikace při každém kliknutí na POČASÍ/VODA/OVZDUŠÍ;
   pododkaz hodinového PM10 v klasickém režimu, přímo i centrálně.
   181 automatických testů, živý Chrome průchod ve třech šířkách.
