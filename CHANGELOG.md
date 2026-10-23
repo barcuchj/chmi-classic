@@ -1,5 +1,15 @@
 # Přehled změn
 
+## 0.7.28 – 2026-10-23
+
+- Centrální panel nezobrazuje nový web během přípravy klasické aplikace.
+  Společná načítací plocha chrání všechny položky rozcestníku; rámec
+  zůstává rozměřený pro živé mapy/grafy, ale není ovládatelný před připravením.
+- Časový limit nelze odkládat opakovanými stavovými zprávami. Chyba nabídne
+  opakování, pozdní úspěch obnoví panel. Cizí nebo staré zprávy jej neodkryjí.
+- Nativní navigace rámce znovu aktivuje ochranu; návrat z BFCache obnoví
+  jediný stavový časovač. Bez nových oprávnění a bez zásahů do dat ČHMÚ.
+
 ## 0.7.27 – 2026-10-22
 
 - Každé kliknutí na POČASÍ/VODA/OVZDUŠÍ obnoví výchozí aplikaci,

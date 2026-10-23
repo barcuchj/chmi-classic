@@ -1,6 +1,15 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## 0.7.27 – výchozí záložky a pododkaz PM10
+## 0.7.28 – načítání bez probliknutí nového webu
+
+Centrální panel při přepínání aplikací nejdříve ukáže neutrální načítací
+plochu. Živou aplikaci odkryje až po potvrzení klasického rozhraní a obsahu.
+Platí společně pro všechny aplikace rozcestníku, nejen předpověď ČR.
+Nativní podstránky při odchodu znovu zakryje; mapám a grafům přitom zachová
+rozměry pro vykreslení. Při pomalém načítání nabídne opakování nebo samostatné
+otevření, nikoli nečekané zobrazení nového webu. [Ověření a omezení](docs/qa-0.7.28.md).
+
+### Předchozí 0.7.27 – výchozí záložky a pododkaz PM10
 
 Kliknutí na **POČASÍ**, **VODA** nebo **OVZDUŠÍ** vždy obnoví výchozí
 aplikaci: předpověď ČR, vodní stavy nebo přehled kvality ovzduší.

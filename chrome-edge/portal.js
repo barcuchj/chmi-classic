@@ -111,11 +111,13 @@
     toolbar.append(title, status, standalone, expand);
     const stage = el("div", "chmi-portal-stage");
     stage.id = "chmi-portal-stage";
+    const loading = el("div", "chmi-portal-loading", "Připravuji klasické rozhraní a živá data ČHMÚ…");
+    loading.setAttribute("aria-hidden", "true"); // The toolbar already announces status.
     const notice = el("div", "chmi-portal-notice");
     const noticeText = el("p");
     notice.append(noticeText, button("Zkusit znovu", () => openApp(current ?? "radar", true)));
     notice.hidden = true;
-    stage.append(notice);
+    stage.append(loading, notice);
     workspace.append(toolbar, stage);
     const directory = el("nav", "chmi-portal-directory");
     directory.setAttribute("aria-label", "Původní rozcestník aplikací");
@@ -156,11 +158,31 @@
     root.append(topbar, main);
     document.body.append(root);
 
-    function setStatus(state) {
+    function setStatus(state, restart = false) {
+      // Polling must not postpone the watchdog or erase a timeout explanation.
+      if (!restart && stage.dataset.state === state) return;
+      clearTimeout(timeout);
       stage.dataset.state = state;
       status.textContent = state === "ready" ? "Oficiální živá aplikace ČHMÚ" : "Načítám aplikaci a její data…";
       workspace.setAttribute("aria-busy", String(state !== "ready"));
-      if (state === "ready") { clearTimeout(timeout); notice.hidden = true; }
+      loading.hidden = state === "ready";
+      notice.hidden = true;
+      frame.inert = state !== "ready";
+      if (state === "ready") {
+        frame.removeAttribute("aria-hidden");
+        frame.removeAttribute("tabindex");
+      } else {
+        frame.setAttribute("aria-hidden", "true");
+        frame.setAttribute("tabindex", "-1");
+        loading.textContent = "Připravuji klasické rozhraní a živá data ČHMÚ…";
+        timeout = setTimeout(() => {
+          status.textContent = "Načtení aplikace zatím nebylo potvrzeno";
+          loading.textContent = "Klasické rozhraní zatím není připravené.";
+          noticeText.textContent = "ČHMÚ může odpovídat pomalu nebo chybí oprávnění userscriptu uvnitř rámce. Zkuste načtení znovu nebo použijte Otevřít samostatně. Jakmile bude klasické rozhraní připravené, panel se zobrazí automaticky.";
+          notice.hidden = false;
+          workspace.setAttribute("aria-busy", "false");
+        }, 25000);
+      }
     }
     function openSectionDefault(key) {
       if (key === "weather") weatherApp = "forecast";
@@ -203,14 +225,8 @@
       frame.title = `${app.title} – klasické rozhraní`;
       frame.referrerPolicy = "strict-origin";
       frame.src = registry.frameURL(id, session);
-      setStatus("loading");
+      setStatus("loading", true);
       stage.append(frame);
-      timeout = setTimeout(() => {
-        status.textContent = "Načtení aplikace zatím nebylo potvrzeno";
-        noticeText.textContent = "ČHMÚ může odpovídat pomalu nebo chybí oprávnění userscriptu uvnitř rámce. Panel neoznačujeme za funkční, dokud se nepotvrdí jeho rozhraní a mapové podklady.";
-        notice.hidden = false;
-        workspace.setAttribute("aria-busy", "false");
-      }, 25000);
     }
     const onMessage = event => {
       if (!root.isConnected) return;
