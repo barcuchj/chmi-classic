@@ -3,6 +3,7 @@
 const STORAGE_KEY = "chmiRadarClassicEnabled";
 const checkbox = document.getElementById("classic-enabled");
 const status = document.getElementById("status");
+document.getElementById("share-installation").append(globalThis.__chmiClassicSharing.createControl());
 
 function renderStatus(enabled) {
   status.textContent = enabled

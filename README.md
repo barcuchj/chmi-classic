@@ -1,6 +1,18 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## 0.7.28 – načítání bez probliknutí nového webu
+## 0.7.29 – sdílení instalace a kompaktní informační stránky
+
+V horní liště portálu a v nabídce doplňku je **Sdílet doplněk**.
+**Kopírovat odkaz** připraví instalační adresu pro zprávu, e-mail nebo
+sociální síť; **Sdílet přes…** otevře systémové sdílení, pokud jej prohlížeč
+podporuje. Pokud schránka není dostupná, lze označený odkaz zkopírovat ručně.
+Posílá se pouze veřejná [instalační stránka Chrome Web Store](https://chromewebstore.google.com/detail/ogciancfjbeghkcjkhijmbaabpohccpp).
+
+Historická data a další stránky se společnou klasickou hlavičkou mají
+opět úzkou vodorovnou lištu. Hlavní odkazy historických dat jsou viditelné
+hned po otevření. [Ověření 0.7.29](docs/qa-0.7.29.md).
+
+### Předchozí 0.7.28 – načítání bez probliknutí nového webu
 
 Centrální panel při přepínání aplikací nejdříve ukáže neutrální načítací
 plochu. Živou aplikaci odkryje až po potvrzení klasického rozhraní a obsahu.

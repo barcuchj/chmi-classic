@@ -50,6 +50,10 @@ nav {
   gap: 5px;
 }
 
+#share-installation { margin: 0 0 12px; }
+#share-installation .chmi-share { display: block; }
+#share-installation .chmi-share-panel { position: static; width: 100%; margin-top: 6px; box-shadow: none; }
+
 a {
   display: block;
   color: #176b95;

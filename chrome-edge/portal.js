@@ -66,7 +66,10 @@
     const warnings = external("! VÝSTRAHY", "https://vystrahy-cr.chmi.cz/");
     warnings.className = "chmi-portal-warning-link";
     warnings.title = "Ověřit aktuální výstrahy na oficiálním webu ČHMÚ (nová karta)";
-    utilities.append(warnings, newLook);
+    utilities.append(warnings);
+    const sharing = globalThis.__chmiClassicSharing?.createControl();
+    if (sharing) utilities.append(sharing);
+    utilities.append(newLook);
     const primary = el("nav", "chmi-portal-primary");
     primary.setAttribute("aria-label", "Hlavní nabídka");
     for (const [text, href] of [["PŘEDPOVĚDI", "https://www.chmi.cz/predpoved-pocasi"], ["AKTUÁLNÍ SITUACE", "https://www.chmi.cz/namerena-data"], ["HISTORICKÁ DATA", "https://www.chmi.cz/namerena-data/historicka-data"], ["INFORMACE A SLUŽBY", "https://www.chmi.cz/o-chmu/produkty-a-sluzby"], ["O NÁS", "https://www.chmi.cz/o-chmu"], ["KONTAKTY", "https://www.chmi.cz/o-chmu/kontakty"]]) primary.append(external(text, href));
