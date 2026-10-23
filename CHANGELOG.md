@@ -1,5 +1,14 @@
 # Přehled změn
 
+## 0.7.29 – 2026-10-23
+
+- Tlačítko Sdílet doplněk v portálu a popupu: kopírování instalační URL,
+  systémové sdílení podle podpory prohlížeče, možnost ručního kopírování.
+  Pevný veřejný Store odkaz bez adresy prohlížené stránky, bez nových oprávnění.
+- Historická data a společný katalogový obal: explicitní vodorovné rozložení
+  a automatická výška hlavičky odolná proti nativním stylům ČHMÚ.
+  V testovaném desktopovém okně hlavička klesla z 550 na 38 px.
+
 ## 0.7.28 – 2026-10-23
 
 - Centrální panel nezobrazuje nový web během přípravy klasické aplikace.

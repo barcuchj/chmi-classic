@@ -1,0 +1,11 @@
+/* One installation URL; no remote widgets or social-network scripts. */
+.chmi-share { position: relative; display: inline-block; flex: 0 0 auto; color: #123477; font: 12px/1.4 Arial, sans-serif; }
+#chmi-classic-portal .chmi-portal-utilities { position: relative; }
+#chmi-classic-portal .chmi-portal-utilities .chmi-share { position: static; }
+.chmi-share button { border: 1px solid #8eb4c4; border-radius: 2px; padding: 4px 7px; color: #17577a; background: #f4fbfd; font: 12px/1.3 Arial, sans-serif; cursor: pointer; }
+.chmi-share .chmi-share-panel { position: absolute; right: 0; top: calc(100% + 5px); z-index: 2147483647; width: min(310px, calc(100vw - 30px)); padding: 10px; border: 1px solid #8eb4c4; border-radius: 3px; background: #f4fbfd; box-shadow: 0 3px 8px #31566a44; box-sizing: border-box; white-space: normal; }
+.chmi-share [hidden] { display: none !important; }
+.chmi-share p { margin: 0 0 7px; color: #123477; font: inherit; }
+.chmi-share input { display: block; box-sizing: border-box; width: 100%; min-width: 0; margin: 0 0 8px; padding: 5px; border: 1px solid #8eb4c4; background: #fff; color: #123477; font: 12px Arial, sans-serif; }
+.chmi-share a { display: block; margin: 8px 0; color: #17577a; font: inherit; }
+.chmi-share :focus-visible { outline: 2px solid #d57900; outline-offset: 2px; }

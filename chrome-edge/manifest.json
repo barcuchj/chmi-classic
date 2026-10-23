@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.7.28",
+  "version": "0.7.29",
   "description": "Vrací klasický vzhled živým meteorologickým aplikacím ČHMÚ a přidává přehledný rozcestník.",
   "icons": {
     "16": "icons/icon-16.png",
@@ -41,10 +41,10 @@
         "https://www.chmi.cz/uvod*"
       ],
       "css": [
-        "classic.css", "navigation.css", "catalog.css", "portal.css"
+        "classic.css", "navigation.css", "catalog.css", "portal.css", "sharing.css"
       ],
       "js": [
-        "portal-registry.js", "portal.js", "navigation.js", "content.js", "catalog.js"
+        "sharing.js", "portal-registry.js", "portal.js", "navigation.js", "content.js", "catalog.js"
       ],
       "run_at": "document_idle"
     },

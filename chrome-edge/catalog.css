@@ -303,12 +303,17 @@ html.chmi-catalog-shell #chmi-catalog-classic-brand {
   position: relative;
   z-index: 1000;
   display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+  flex: 0 0 auto !important;
+  height: auto !important;
+  max-height: none !important;
   flex-wrap: wrap !important;
   align-items: center !important;
   gap: 5px 7px;
   width: calc(100% + 16px);
   min-width: 0;
-  min-height: 38px;
+  min-height: 38px !important;
   margin: -1px -8px 7px;
   padding: 6px 8px;
   color: #176b95;

@@ -2,6 +2,11 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [x] 0.7.29: sdílení veřejného instalačního odkazu v portálu i popupu,
+  kopírování, dostupné systémové sdílení a ruční záloha při odmítnutí schránky.
+  Společná katalogová hlavička historických dat opravena a ověřena
+  na živém webu, včetně historické podstránky a letectví. [QA](docs/qa-0.7.29.md).
+
 - [x] 0.7.28: společná ochrana centrálního panelu proti probliknutí
   nového webu; timeout, opakování, pozdní potvrzení a BFCache životní cyklus.
   Chrome živá předpověď ve dvou šířkách, VODA po řízeném výpadku.
