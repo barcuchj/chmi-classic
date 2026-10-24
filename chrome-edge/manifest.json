@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.7.29",
+  "version": "0.7.30",
   "description": "Vrací klasický vzhled živým meteorologickým aplikacím ČHMÚ a přidává přehledný rozcestník.",
   "icons": {
     "16": "icons/icon-16.png",
@@ -231,6 +231,49 @@
       "js": [
         "portal-registry.js", "embedded.js", "navigation.js", "regions.js"
       ],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "https://www.chmi.cz/predpoved-pocasi*",
+        "https://www.chmi.cz/namerena-data*",
+        "https://www.chmi.cz/o-chmu*",
+        "https://www.chmi.cz/voda*",
+        "https://www.chmi.cz/letectvi*"
+      ],
+      "exclude_matches": [
+        "https://produkty.chmi.cz/radar/*",
+        "https://produkty.chmi.cz/druzice/*",
+        "https://produkty.chmi.cz/aladin/*",
+        "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub*",
+        "https://www.chmi.cz/namerena-data/polarni-druzice/*",
+        "https://www.chmi.cz/namerena-data/geostacionarni-druzice/*",
+        "https://www.chmi.cz/namerena-data/webkamery*",
+        "https://www.chmi.cz/namerena-data/webkamera/*",
+        "https://www.chmi.cz/meteogram/*",
+        "https://www.chmi.cz/predpoved-pocasi/dnes*",
+        "https://www.chmi.cz/predpoved-pocasi/zitra*",
+        "https://www.chmi.cz/predpoved-pocasi/pozitri*",
+        "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa*",
+        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr*",
+        "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer*",
+        "https://hydro.chmi.cz/hppsoldv/main_rain.php*",
+        "https://www.chmi.cz/predpoved-pocasi/synopticka-situace*",
+        "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa*",
+        "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum*",
+        "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke*",
+        "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*",
+        "https://www.chmi.cz/predpoved-pocasi/rizika/pylovy-semafor*",
+        "https://www.chmi.cz/predpoved-pocasi/bio-predpoved*",
+        "https://www.chmi.cz/predpoved-pocasi/tyden*",
+        "https://www.chmi.cz/predpoved-pocasi/mesic*",
+        "https://www.chmi.cz/predpoved-pocasi/*-kraj/*",
+        "https://www.chmi.cz/predpoved-pocasi/praha/*",
+        "https://www.chmi.cz/predpoved-pocasi/kraj-vysocina/*"
+      ],
+      "css": ["embedded.css", "information.css"],
+      "js": ["portal-registry.js", "embedded.js", "information.js"],
       "run_at": "document_idle",
       "all_frames": true
     },

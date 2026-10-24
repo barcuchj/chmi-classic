@@ -860,6 +860,10 @@
     const nav = document.createElement("nav");
     nav.className = "chmi-classic-navigation chmi-catalog-core-navigation";
     nav.setAttribute("aria-label", "ČHMÚ Classic – hlavní aplikace");
+    const portal = document.createElement("a");
+    portal.href = "https://www.chmi.cz/";
+    portal.textContent = "← Úvod portálu";
+    nav.append(portal);
     for (const [href, label] of corePaths) {
       const link = document.createElement("a");
       link.href = href;

@@ -1,5 +1,17 @@
 # Přehled změn
 
+## 0.7.30 – 2026-10-24
+
+- Celá horní nabídka otevírá obsah v centrálním panelu a zachovává plné
+  menu i snadný návrat. Samostatné katalogové stránky mají odkaz na portál.
+- Informační stránky: kompaktní typografie, odstraněné duplicitní
+  hlavičky/patičky, responzivní rozcestníky a ověřený původní obsah ČHMÚ.
+- Nativní přesměrování i odkazy do známých aplikací se předávají jejich
+  klasickému panelu se zachováním cíle, města a parametrů. Cizí URL,
+  přihlašovací údaje v URL a zprávy nesprávné relace se nepřijímají.
+- Běžné informační podstránky zůstávají v rámu; explicitní nové karty
+  a stahování zachovávají standardní chování prohlížeče.
+
 ## 0.7.29 – 2026-10-23
 
 - Tlačítko Sdílet doplněk v portálu a popupu: kopírování instalační URL,

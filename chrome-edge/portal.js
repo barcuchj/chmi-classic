@@ -39,6 +39,7 @@
     let frame = null;
     let session = null;
     let timeout = null;
+    let pendingNavigation = null;
     let selectedSection = "weather";
     let weatherApp = "forecast";
     document.documentElement.classList.add("chmi-classic-portal-active");
@@ -72,7 +73,18 @@
     utilities.append(newLook);
     const primary = el("nav", "chmi-portal-primary");
     primary.setAttribute("aria-label", "Hlavní nabídka");
-    for (const [text, href] of [["PŘEDPOVĚDI", "https://www.chmi.cz/predpoved-pocasi"], ["AKTUÁLNÍ SITUACE", "https://www.chmi.cz/namerena-data"], ["HISTORICKÁ DATA", "https://www.chmi.cz/namerena-data/historicka-data"], ["INFORMACE A SLUŽBY", "https://www.chmi.cz/o-chmu/produkty-a-sluzby"], ["O NÁS", "https://www.chmi.cz/o-chmu"], ["KONTAKTY", "https://www.chmi.cz/o-chmu/kontakty"]]) primary.append(external(text, href));
+    for (const [text, id] of [["PŘEDPOVĚDI", "forecasts"], ["AKTUÁLNÍ SITUACE", "observations"], ["HISTORICKÁ DATA", "history"], ["INFORMACE A SLUŽBY", "services"], ["O NÁS", "about"], ["KONTAKTY", "contacts"]]) {
+      const anchor = link(text, registry.get(id).url);
+      anchor.dataset.app = id;
+      anchor.title = "Otevřít v portálu; Ctrl/⌘+klik nebo prostřední tlačítko otevře novou záložku";
+      anchor.addEventListener("click", event => {
+        if (!registry.shouldOpenInPanel(event)) return;
+        event.preventDefault();
+        if (location.hash === `#classic=${id}`) openApp(id, true);
+        else location.hash = `#classic=${id}`;
+      });
+      primary.append(anchor);
+    }
     // Never infer warning status from an archive screenshot or failed request.
     const main = el("main", "chmi-portal-main");
     const tabs = el("div", "chmi-portal-tabs");
@@ -166,7 +178,7 @@
       if (!restart && stage.dataset.state === state) return;
       clearTimeout(timeout);
       stage.dataset.state = state;
-      status.textContent = state === "ready" ? "Oficiální živá aplikace ČHMÚ" : "Načítám aplikaci a její data…";
+      status.textContent = state === "ready" ? (registry.get(current)?.family === "information" ? "Oficiální obsah ČHMÚ" : "Oficiální živá aplikace ČHMÚ") : "Načítám aplikaci a její data…";
       workspace.setAttribute("aria-busy", String(state !== "ready"));
       loading.hidden = state === "ready";
       notice.hidden = true;
@@ -193,7 +205,7 @@
       // unchanged. A deliberate section click must restore its start page.
       selectSection(key, true, true);
     }
-    function selectSection(key, updateHash = true, force = false) {
+    function selectSection(key, updateHash = true, force = false, destination = null) {
       selectedSection = key;
       for (const tab of tabs.querySelectorAll("button")) {
         const active = tab.dataset.section === key;
@@ -204,19 +216,23 @@
       directory.hidden = extra.hidden = key !== "weather";
       standalone.hidden = false;
       const id = key === "weather" ? weatherApp : key;
-      openApp(id, force);
+      openApp(id, force, destination);
       if (updateHash && location.hash !== `#classic=${id}`) location.hash = `#classic=${id}`;
     }
-    function openApp(id, force = false) {
+    function openApp(id, force = false, destination = null) {
       const app = registry.get(id);
-      if (!app || (current === id && frame && !force)) return;
+      if (!app || (current === id && frame && !force && !destination)) return;
+      directory.hidden = extra.hidden = app.family === "information" || (app.section ?? "weather") !== "weather";
       if ((app.section ?? "weather") === "weather") weatherApp = id;
       clearTimeout(timeout);
       frame?.remove();
       current = id;
       session = crypto.randomUUID();
       title.textContent = app.title;
-      standalone.href = app.url;
+      const standaloneURL = new URL(destination ?? app.url);
+      standaloneURL.searchParams.delete("chmi_classic_embed");
+      standaloneURL.searchParams.delete("chmi_classic_session");
+      standalone.href = standaloneURL.href;
       notice.hidden = true;
       notice.querySelector("button").hidden = false;
       for (const anchor of root.querySelectorAll("[data-app]")) {
@@ -227,15 +243,18 @@
       frame.name = registry.frameName(id, session);
       frame.title = `${app.title} – klasické rozhraní`;
       frame.referrerPolicy = "strict-origin";
-      frame.src = registry.frameURL(id, session);
+      frame.src = registry.frameURL(id, session, destination);
       setStatus("loading", true);
       stage.append(frame);
     }
     const onMessage = event => {
       if (!root.isConnected) return;
       if (registry.acceptsNavigation(event, frame, current, session)) {
-        if (location.hash !== "#classic=forecast") location.hash = "#classic=forecast";
-        else selectSection("weather");
+        const target = event.data.target === "home" ? "forecast" : event.data.target;
+        if (location.hash !== `#classic=${target}`) {
+          pendingNavigation = {id:target,url:event.data.url ?? null};
+          location.hash = `#classic=${target}`;
+        } else openApp(target, true, event.data.url ?? null);
         return;
       }
       if (registry.accepts(event, frame, current, session)) setStatus(event.data.state);
@@ -243,9 +262,11 @@
     const onHash = () => {
       if (!root.isConnected) return;
       const id = registry.route(location.hash);
+      const destination = pendingNavigation?.id === id ? pendingNavigation.url : null;
+      pendingNavigation = null;
       const section = registry.get(id)?.section ?? "weather";
       if (section === "weather") weatherApp = id;
-      selectSection(section, false);
+      selectSection(section, false, false, destination);
     };
     window.addEventListener("message", onMessage);
     window.addEventListener("hashchange", onHash);

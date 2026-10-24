@@ -1,6 +1,22 @@
 # ČHMÚ Classic – meteorologické výstupy
 
-## 0.7.29 – sdílení instalace a kompaktní informační stránky
+## 0.7.30 – celá horní nabídka uvnitř portálu
+
+Běžné kliknutí na **PŘEDPOVĚDI**, **AKTUÁLNÍ SITUACE**, **HISTORICKÁ DATA**,
+**INFORMACE A SLUŽBY**, **O NÁS** a **KONTAKTY** otevře obsah v centrálním
+panelu. Kompletní horní nabídka zůstává na obrazovce. Na informačních
+stránkách je také **Úvod portálu** a odkaz na rozcestník aktuální sekce.
+Historická data mají kompaktní nadpisy a přehledné čtyři sloupce odkazů
+v běžném desktopovém okně; v úzkém okně se přirozeně skládají pod sebe.
+
+Podporované aplikace otevřené z těchto stránek přebírá jejich klasický
+panel včetně konkrétního cíle a parametrů. Přesměrování předpovědního
+rozcestníku na dnešní předpověď se přepne do mapového rozhraní.
+Úmyslné Ctrl/⌘+kliknutí a **Otevřít samostatně** zůstávají dostupné;
+samostatné katalogové stránky mají nově odkaz **Úvod portálu**.
+[Podrobné ověření a rozsah](docs/qa-0.7.30.md).
+
+### Předchozí 0.7.29 – sdílení instalace a kompaktní informační stránky
 
 V horní liště portálu a v nabídce doplňku je **Sdílet doplněk**.
 **Kopírovat odkaz** připraví instalační adresu pro zprávu, e-mail nebo

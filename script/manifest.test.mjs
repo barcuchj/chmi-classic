@@ -68,7 +68,7 @@ test("Chrome and userscript share a numeric version newer than published betas",
 
 test("only explicit live application routes run in child frames", () => {
   const framed = manifest.content_scripts.filter(rule => rule.all_frames);
-  assert.equal(framed.length, 13);
+  assert.equal(framed.length, 14);
   assert.deepEqual(framed[0].matches, [
     "https://produkty.chmi.cz/radar/*",
     "https://produkty.chmi.cz/druzice/*",
@@ -119,6 +119,13 @@ test("only explicit live application routes run in child frames", () => {
     "https://www.chmi.cz/predpoved-pocasi/praha/*",
     "https://www.chmi.cz/predpoved-pocasi/kraj-vysocina/*"
   ]);
+  assert.deepEqual(framed[13].matches, [
+    "https://www.chmi.cz/predpoved-pocasi*",
+    "https://www.chmi.cz/namerena-data*",
+    "https://www.chmi.cz/o-chmu*",
+    "https://www.chmi.cz/voda*",
+    "https://www.chmi.cz/letectvi*"
+  ]);
   for (const rule of framed) {
     assert.ok(rule.js.indexOf("portal-registry.js") < rule.js.indexOf("embedded.js"));
     assert.ok(rule.css.includes("embedded.css"));
@@ -157,6 +164,12 @@ test("every active portal app has the same adapter assets in Chrome and userscri
   vm.runInContext(readFileSync(join(root, "chrome-edge/portal-registry.js"), "utf8"), context);
   const builder = readFileSync(join(root, "script/build_userscript.mjs"), "utf8");
   const assets = {
+    forecasts: ["information.js", "information.css"],
+    observations: ["information.js", "information.css"],
+    history: ["information.js", "information.css"],
+    services: ["information.js", "information.css"],
+    about: ["information.js", "information.css"],
+    contacts: ["information.js", "information.css"],
     forecast: ["forecast.js", "forecast.css"],
     radar: ["content.js", "classic.css"],
     lightning: ["content.js", "classic.css"],

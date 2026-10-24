@@ -54,6 +54,35 @@ test("hash routes cannot inject arbitrary frame URLs", () => {
   for (const bad of ["#classic=https://evil.test/", "#classic=__proto__", "#classic=constructor", "#classic=%72adar"]) assert.equal(registry.route(bad), "radar");
   assert.equal(registry.frameURL("constructor", "abcdefgh"), null);
 });
+
+test("information frames keep bounded CHMI sections through child navigation", () => {
+  for (const id of ["forecasts", "observations", "history", "services", "about", "contacts"]) {
+    for (const path of ["/namerena-data/historicka-data", "/namerena-data/historicka-data/mapy-teploty-vzduchu", "/o-chmu/kontakty", "/voda/historicka-hydrologie", "/voda/podzemni-vody", "/letectvi/aerologicka-mereni"])
+      assert.equal(registry.matches(id, new URL("https://www.chmi.cz" + path)), true);
+    for (const bad of ["https://evil.test/o-chmu", "https://www.chmi.cz/o-chmu-foreign", "https://www.chmi.cz/", "http://www.chmi.cz/o-chmu"])
+      assert.equal(registry.matches(id, new URL(bad)), false);
+  }
+});
+
+test("native information links recognize supported satellite products but reject unknown ones", () => {
+  assert.equal(registry.nativeAppFor(new URL("https://www.chmi.cz/namerena-data/radar-nowcast/srazky-a-blesky")), "radar");
+  for(const [path,id] of [["geostacionarni-druzice/sandwich-ir-bt","geo"], ["polarni-druzice/night-overview","polar"]]) {
+    const url=new URL("https://www.chmi.cz/namerena-data/"+path);
+    assert.equal(registry.nativeAppFor(url),id);
+    assert.equal(registry.embeddedContext(url,registry.frameName(id,"test-session"))?.id,id);
+  }
+  assert.equal(registry.nativeAppFor(new URL("https://www.chmi.cz/namerena-data/geostacionarni-druzice/unknown")),null);
+});
+
+test("only a validated information frame can hand off a known application to its parent", () => {
+  const source = {}, frame = {contentWindow:source};
+  const event = {source,origin:"https://www.chmi.cz",data:{type:"chmi-classic-navigate",app:"history",session:"test-session",target:"radar"}};
+  assert.equal(registry.acceptsNavigation(event,frame,"history","test-session"),true);
+  for(const target of ["https://evil.test", "constructor", "__proto__"])
+    assert.equal(registry.acceptsNavigation({...event,data:{...event.data,target}},frame,"history","test-session"),false);
+  assert.equal(registry.acceptsNavigation({...event,origin:"https://evil.test"},frame,"history","test-session"),false);
+  assert.equal(registry.acceptsNavigation(event,frame,"history","stale-session"),false);
+});
 test("forecast days remain explicit same-origin panel routes", () => {
   assert.equal(registry.columns[0][0].app, "forecast");
   const name = registry.frameName("forecast", "test-session");
