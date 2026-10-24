@@ -45,7 +45,12 @@ function shell(hash) {
     events.message({ source: frame.contentWindow, origin, data: { type: "chmi-classic-status",
       app: url.searchParams.get("chmi_classic_embed"), session: url.searchParams.get("chmi_classic_session"), state } });
   };
-  return { document, nodes, location, route, timers, send };
+  const navigate = (frame, target, url) => {
+    const source = new URL(frame.src);
+    events.message({source:frame.contentWindow,origin:source.origin,data:{type:"chmi-classic-navigate",
+      app:source.searchParams.get("chmi_classic_embed"),session:source.searchParams.get("chmi_classic_session"),target,url}});
+  };
+  return { document, nodes, location, route, timers, send, navigate };
 }
 
 for (const [id, section] of [["water", "water"], ["air", "air"], ["pollen", "weather"], ["radar", "weather"]]) {
@@ -99,6 +104,20 @@ test("reselecting a directory link still opens that application, not the section
   assert.equal(page.location.hash, "#classic=radar");
   assert.equal(new URL(page.nodes.find(node => node.tag === "iframe" && node.isConnected).src).pathname, "/radar/");
 });
+
+for (const [label, id] of [["PŘEDPOVĚDI", "forecasts"], ["AKTUÁLNÍ SITUACE", "observations"],
+  ["HISTORICKÁ DATA", "history"], ["INFORMACE A SLUŽBY", "services"], ["O NÁS", "about"], ["KONTAKTY", "contacts"]]) {
+  test(`primary ${label} opens inside the portal and POČASÍ returns to forecast`, () => {
+    const page = shell("#classic=radar");
+    page.nodes.find(node => node.tag === "a" && node.textContent === label).click();
+    assert.equal(page.location.hash, `#classic=${id}`);
+    page.route(page.location.hash);
+    assert.equal(new URL(page.nodes.find(node => node.tag === "iframe" && node.isConnected).src).searchParams.get("chmi_classic_embed"), id);
+    assert.equal(page.nodes.find(node => node.className === "chmi-portal-directory").hidden, true);
+    page.document.getElementById("chmi-portal-tab-weather").click();
+    assert.equal(page.location.hash, "#classic=forecast");
+  });
+}
 
 test("all central applications stay covered until their own validated readiness message", () => {
   for (const app of ["forecast", "radar", "water", "air", "webcams", "meteogram"]) {
@@ -154,4 +173,28 @@ test("native navigation re-arms the cover and watchdog; retry rejects the previo
   const next = page.nodes.find(node => node.tag === "iframe" && node.isConnected);
   page.send(next, "ready");
   assert.equal(stage.dataset.state, "ready");
+});
+
+test("handoff preserves the selected town and parameters while replacing frame credentials", () => {
+  const page=shell("#classic=history");
+  const frame=page.nodes.find(n=>n.tag==="iframe"&&n.isConnected);
+  page.navigate(frame,"meteogram","https://www.chmi.cz/meteogram/387-prostejov?foo=selected&chmi_classic_session=stale-session");
+  assert.equal(page.location.hash,"#classic=meteogram");
+  page.route(page.location.hash);
+  const next=page.nodes.find(n=>n.tag==="iframe"&&n.isConnected);
+  const url=new URL(next.src);
+  assert.equal(url.pathname,"/meteogram/387-prostejov");
+  assert.equal(url.searchParams.get("foo"),"selected");
+  assert.notEqual(url.searchParams.get("chmi_classic_session"),"stale-session");
+  const standalone=page.nodes.find(n=>n.className==="chmi-portal-button chmi-portal-standalone");
+  assert.equal(new URL(standalone.href).pathname,url.pathname);
+  assert.equal(new URL(standalone.href).searchParams.has("chmi_classic_session"),false);
+});
+
+test("handoff never accepts arbitrary or credential-bearing destinations", () => {
+  const page=shell("#classic=history");
+  const frame=page.nodes.find(n=>n.tag==="iframe"&&n.isConnected);
+  for(const url of ["https://evil.test/meteogram/387-prostejov","https://www.chmi.cz/o-chmu", "https://user:pass@www.chmi.cz/meteogram/387-prostejov"])
+    page.navigate(frame,"meteogram",url);
+  assert.equal(page.location.hash,"#classic=history");
 });

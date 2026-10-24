@@ -37,3 +37,17 @@ test("loading CSS suppresses painting without removing native map layout", () =>
   assert.match(rule, /pointer-events:\s*none/);
   assert.doesNotMatch(rule, /display:|visibility:|height:|width:/);
 });
+
+test("an informational section redirected to a native forecast hands off its frame identity", () => {
+  const messages = [];
+  const context = vm.createContext({URL, location:{href:"https://www.chmi.cz/predpoved-pocasi/dnes"},
+    window:{top:{},name:"chmi-classic:forecasts:test-session",parent:{postMessage:(data,origin)=>messages.push({data,origin})}},
+    document:{referrer:"https://www.chmi.cz/"}});
+  for (const file of ["portal-registry.js", "embedded.js"])
+    vm.runInContext(readFileSync(new URL("../chrome-edge/" + file, import.meta.url), "utf8"), context);
+  assert.equal(messages.length, 1);
+  assert.equal(messages[0].data.target, "forecast");
+  assert.equal(messages[0].data.app, "forecasts");
+  assert.equal(messages[0].data.session, "test-session");
+  assert.equal(messages[0].origin, "https://www.chmi.cz");
+});

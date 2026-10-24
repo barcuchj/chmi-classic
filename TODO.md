@@ -2,6 +2,12 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [x] 0.7.30: všech šest položek hlavního menu se běžně otevírá v portálu,
+  s plnou horní navigací, odkazy na úvod/rozcestník a kompaktním obsahem.
+  Podstránky historie a služeb i návrat na počasí ověřeny při 1280/390.
+  Přesměrování do aplikací zachovává výběr a předává nový ověřený iframe.
+  [QA a hranice pokrytí](docs/qa-0.7.30.md).
+
 - [x] 0.7.29: sdílení veřejného instalačního odkazu v portálu i popupu,
   kopírování, dostupné systémové sdílení a ruční záloha při odmítnutí schránky.
   Společná katalogová hlavička historických dat opravena a ověřena

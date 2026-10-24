@@ -2,9 +2,15 @@
   "use strict";
   if (globalThis.__chmiClassicApps) return;
 
-  // Only explicit reconstructed adapters may become clickable in the portal.
-  // An existing modern URL alone is not proof of an old-look application.
+  // Explicit application adapters and first-party information sections.
+  // Information pages retain their native content inside the classic shell.
   const apps = {
+    forecasts: { title: "Předpovědi", url: "https://www.chmi.cz/predpoved-pocasi", family: "information", section: "weather" },
+    observations: { title: "Aktuální situace – naměřená data", url: "https://www.chmi.cz/namerena-data", family: "information", section: "weather" },
+    history: { title: "Historická data", url: "https://www.chmi.cz/namerena-data/historicka-data", family: "information", section: "weather" },
+    services: { title: "Informace a služby", url: "https://www.chmi.cz/o-chmu/produkty-a-sluzby", family: "information", section: "weather" },
+    about: { title: "O ČHMÚ", url: "https://www.chmi.cz/o-chmu", family: "information", section: "weather" },
+    contacts: { title: "Kontakty", url: "https://www.chmi.cz/o-chmu/kontakty", family: "information", section: "weather" },
     forecast: { title: "Počasí v České republice – předpověď", url: "https://www.chmi.cz/predpoved-pocasi/dnes", family: "forecast", section: "weather" },
     radar: { title: "Aktuální radarová data", url: "https://produkty.chmi.cz/radar/", family: "radar", section: "weather" },
     lightning: { title: "Detekce blesků – živá vrstva radaru", url: "https://produkty.chmi.cz/radar/?chmi_classic_lightning=1", family: "radar", section: "weather" },
@@ -43,6 +49,10 @@
   const registry = {
     apps, columns, supplementary,
     get(id) { return Object.hasOwn(apps, id) ? apps[id] : null; },
+    nativeAppFor(url) {
+      if (url.origin === "https://www.chmi.cz" && normalPath(url.pathname) === "/namerena-data/radar-nowcast/srazky-a-blesky") return "radar";
+      return Object.keys(apps).find(id => apps[id].family !== "information" && this.matches(id, url)) ?? null;
+    },
     isHomepage(url) {
       return ["www.chmi.cz", "chmi.cz"].includes(url.hostname) && ["/", "/uvod"].includes(normalPath(url.pathname));
     },
@@ -53,6 +63,15 @@
       const app = this.get(id);
       if (!app) return false;
       const target = new URL(app.url);
+      if (app.family === "information") return url.origin === target.origin &&
+        ["/predpoved-pocasi", "/namerena-data", "/o-chmu", "/voda", "/letectvi"]
+          .some(path => normalPath(url.pathname) === path || url.pathname.startsWith(path + "/"));
+      if (["geo", "polar"].includes(id) && url.origin === target.origin) {
+        const prefix = id === "geo" ? "/namerena-data/geostacionarni-druzice/" : "/namerena-data/polarni-druzice/";
+        const slugs = id === "geo" ? ["sandwich-ir-bt", "ir", "true-color", "vis-ir", "airmass", "24h-m", "cloud-type"] :
+          ["sandwich-ir-bt", "true-color", "vis-ir", "24h-m", "cloud-type", "night-overview"];
+        return slugs.some(slug => normalPath(url.pathname) === prefix + slug);
+      }
       if (id === "air" && url.origin === target.origin) return [normalPath(target.pathname),
         "/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer"].includes(normalPath(url.pathname));
       if (id === "forecast" && url.origin === target.origin) return /^\/predpoved-pocasi\/(dnes|zitra|pozitri)\/?$/.test(url.pathname);
@@ -70,10 +89,12 @@
         (url.searchParams.get("chmi_classic_animation") === "1") === (id === "aladin-animation");
       return url.origin === target.origin && normalPath(url.pathname) === normalPath(target.pathname);
     },
-    frameURL(id, session) {
+    frameURL(id, session, destination = null) {
       const app = this.get(id);
       if (!app) return null;
-      const url = new URL(app.url);
+      let url;
+      try { url = new URL(destination ?? app.url); } catch { return null; }
+      if (!this.matches(id, url) || url.username || url.password) return null;
       url.searchParams.set("chmi_classic_embed", id);
       url.searchParams.set("chmi_classic_session", session);
       return url.href;
@@ -123,9 +144,13 @@
     },
     acceptsNavigation(event, frame, id, session) {
       const app = this.get(id);
-      return Boolean(app && frame && event.source === frame.contentWindow &&
+      const authorized = Boolean(app && frame && event.source === frame.contentWindow &&
         event.origin === new URL(app.url).origin && event.data?.type === "chmi-classic-navigate" &&
-        event.data.session === session && event.data.app === id && event.data.target === "home");
+        event.data.session === session && event.data.app === id);
+      if (!authorized) return false;
+      if (event.data.target === "home") return event.data.url == null;
+      return app.family === "information" && Boolean(this.get(event.data.target)) &&
+        (event.data.url == null || this.frameURL(event.data.target, session, event.data.url) !== null);
     }
   };
   globalThis.__chmiClassicApps = Object.freeze(registry);

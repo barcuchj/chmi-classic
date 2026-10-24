@@ -8,7 +8,7 @@
   const { id, session } = context;
   let parentURL;
   try { parentURL = new URL(document.referrer); } catch { return; }
-  const nativeNavigation = ["webcams", "forecast", "meteogram", "rainfall", "water", "air"].includes(id) && registry.matches(id, parentURL);
+  const nativeNavigation = (["webcams", "forecast", "meteogram", "rainfall", "water", "air", "geo", "polar"].includes(id) || registry.get(id)?.family === "information") && registry.matches(id, parentURL);
   if (parentURL.protocol !== "https:" || !(registry.isHomepage(parentURL) || nativeNavigation) ||
       !registry.matches(id, url) || !/^[a-zA-Z0-9-]{8,80}$/.test(session ?? "")) return;
 
@@ -16,6 +16,13 @@
   const storage = globalThis.chrome?.storage?.sync ?? globalThis.__chmiClassicStorage;
   const start = result => {
     if (result.chmiRadarClassicEnabled === false) return;
+    // Some section entry URLs redirect to an existing application. Re-enter
+    // it with its own frame identity instead of mixing information/map modes.
+    const redirectedApp = registry.get(id)?.family === "information" && registry.nativeAppFor(url);
+    if (redirectedApp) {
+      window.parent.postMessage({ type: "chmi-classic-navigate", app: id, session, target: redirectedApp, url: url.href }, parentURL.origin);
+      return;
+    }
     document.documentElement.classList.add("chmi-classic-embedded");
     // A native breadcrumb inside the iframe must return to the parent classic
     // portal, not replace this small panel with the modern ČHMÚ homepage.
@@ -36,6 +43,7 @@
       const visible = node => node && node.getBoundingClientRect().width > 0 && node.getBoundingClientRect().height > 0 && getComputedStyle(node).visibility !== "hidden";
       const app = registry.get(id);
       const adapter = id === "lightning" ? document.querySelector("html.chmi-radar-classic-lightning-only #chmi-radar-classic-toolbar") :
+        app.family === "information" ? document.querySelector("html.chmi-information-classic main [data-chmi-information-native='verified']") :
         app.family === "radar" ? document.getElementById("chmi-radar-classic-toolbar") :
         app.family === "satellite" ? document.getElementById("chmi-satellite-classic-selector") :
         app.family === "aladin" ? document.querySelector("[data-chmi-aladin-native='verified'] #chmi-aladin-classic-controls") :
@@ -88,7 +96,7 @@
       const lightningMedia = id === "lightning" && [...document.querySelectorAll('#div_container_data img[src*="/input_data/blesk/"]')]
         .some(node => visible(node) && node.complete && node.naturalWidth > 32 &&
           Number(getComputedStyle(node.parentElement).opacity) > 0);
-      const media = id === "lightning" ? lightningMedia : app.family === "sonde" ? sondeMedia : app.family === "klementinum" ? klementinumMedia : forecastMedia || weekMedia || monthlyMedia || regionsMedia || meteogramMedia || rainfallMedia || synopticMedia || mapMedia || [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img, .playabledata-content-container .chmi-playableimage-img")]
+      const media = app.family === "information" ? visible(adapter) && adapter.textContent.trim().length >= 50 : id === "lightning" ? lightningMedia : app.family === "sonde" ? sondeMedia : app.family === "klementinum" ? klementinumMedia : forecastMedia || weekMedia || monthlyMedia || regionsMedia || meteogramMedia || rainfallMedia || synopticMedia || mapMedia || [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img, .playabledata-content-container .chmi-playableimage-img")]
         .some(node => visible(node) && (node.tagName === "CANVAS" ? node.width > 0 && node.height > 0 : node.complete && node.naturalWidth > 32));
       window.parent.postMessage({ type: "chmi-classic-status", app: id, session, state: adapter && media ? "ready" : "loading" }, parentURL.origin);
     }
