@@ -39,14 +39,17 @@ test("specific adapters cover live ČHMÚ URLs with query parameters", () => {
     "https://www.chmi.cz/predpoved-pocasi/praha/zitra?obdobi=zitra-rano",
     "https://www.chmi.cz/predpoved-pocasi/kraj-vysocina/pozitri",
     "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke?c=50,15,8",
-    "https://hydro.chmi.cz/hppsoldv/main_rain.php?id=1&t=r"
+    "https://hydro.chmi.cz/hppsoldv/main_rain.php?id=1&t=r",
+    "https://hydro.chmi.cz/hppsoldv/hpps_snh_list.php?fkraj=108",
+    "https://hydro.chmi.cz/hppsoldv/hpps_snh_detail.php?seq=2800537",
+    "https://www.chmi.cz/predpoved-pocasi/lyzarska-strediska-a-hory/beskydy"
   ];
   for (const url of urls) {
     const specific = manifest.content_scripts.filter(rule => rule.js?.includes("portal-registry.js") &&
       rule.matches.some(pattern => covers(pattern, url)) &&
       !(rule.exclude_matches ?? []).some(pattern => covers(pattern, url)));
     assert.equal(specific.length, 1, `${url} must use one specific adapter`);
-    assert.ok(specific[0].js.some(file => ["portal.js", "webcams.js", "forecast.js", "week.js", "monthly.js", "regions.js", "stations.js", "rainfall.js"].includes(file)));
+    assert.ok(specific[0].js.some(file => ["portal.js", "webcams.js", "forecast.js", "week.js", "monthly.js", "regions.js", "stations.js", "rainfall.js", "snow.js", "mountain-forecast.js"].includes(file)));
   }
 });
 
@@ -67,7 +70,12 @@ test("Chrome and userscript share a numeric version newer than published betas",
 });
 
 test("only explicit live application routes run in child frames", () => {
-  const framed = manifest.content_scripts.filter(rule => rule.all_frames);
+  const additional = manifest.content_scripts.filter(rule => rule.all_frames && (rule.js.includes("snow.js") || rule.js.includes("mountain-forecast.js")));
+  assert.deepEqual(additional.map(rule => rule.matches), [
+    ["https://hydro.chmi.cz/hppsoldv/hpps_snh_list.php*", "https://hydro.chmi.cz/hppsoldv/hpps_snh_detail.php*"],
+    ["https://www.chmi.cz/predpoved-pocasi/lyzarska-strediska-a-hory/*"]
+  ]);
+  const framed = manifest.content_scripts.filter(rule => rule.all_frames && !additional.includes(rule));
   assert.equal(framed.length, 14);
   assert.deepEqual(framed[0].matches, [
     "https://produkty.chmi.cz/radar/*",
@@ -126,7 +134,7 @@ test("only explicit live application routes run in child frames", () => {
     "https://www.chmi.cz/voda*",
     "https://www.chmi.cz/letectvi*"
   ]);
-  for (const rule of framed) {
+  for (const rule of [...framed, ...additional]) {
     assert.ok(rule.js.indexOf("portal-registry.js") < rule.js.indexOf("embedded.js"));
     assert.ok(rule.css.includes("embedded.css"));
   }
@@ -148,15 +156,13 @@ test("meteogram and forecast adapters work standalone and in the classic panel",
   assert.ok(generic.exclude_matches.includes("https://www.chmi.cz/meteogram/*"));
   for (const route of manifest.content_scripts[3].matches) assert.ok(generic.exclude_matches.includes(route));
   assert.ok(generic.exclude_matches.includes("https://hydro.chmi.cz/hppsoldv/main_rain.php*"));
-  for (const route of manifest.content_scripts[5].matches) assert.ok(generic.exclude_matches.includes(route));
-  for (const route of manifest.content_scripts[6].matches) assert.ok(generic.exclude_matches.includes(route));
-  for (const route of manifest.content_scripts[7].matches) assert.ok(generic.exclude_matches.includes(route));
-  for (const route of manifest.content_scripts[8].matches) assert.ok(generic.exclude_matches.includes(route));
-  for (const route of manifest.content_scripts[9].matches) assert.ok(generic.exclude_matches.includes(route));
-  for (const route of manifest.content_scripts[10].matches) assert.ok(generic.exclude_matches.includes(route));
-  for (const route of manifest.content_scripts[11].matches) assert.ok(generic.exclude_matches.includes(route));
-  for (const route of manifest.content_scripts[12].matches) assert.ok(generic.exclude_matches.includes(route));
-  for (const route of manifest.content_scripts[13].matches) assert.ok(generic.exclude_matches.includes(route));
+  for (const rule of manifest.content_scripts.filter(item => item.all_frames && !item.js.includes("information.js"))) {
+    for (const route of rule.matches) {
+      if (route.startsWith("https://www.chmi.cz/") || route.startsWith("https://hydro.chmi.cz/")) {
+        assert.ok(generic.exclude_matches.includes(route), route);
+      }
+    }
+  }
 });
 
 test("every active portal app has the same adapter assets in Chrome and userscript", () => {
@@ -170,11 +176,15 @@ test("every active portal app has the same adapter assets in Chrome and userscri
     services: ["information.js", "information.css"],
     about: ["information.js", "information.css"],
     contacts: ["information.js", "information.css"],
+    aviation: ["information.js", "information.css"],
     forecast: ["forecast.js", "forecast.css"],
     radar: ["content.js", "classic.css"],
     lightning: ["content.js", "classic.css"],
     rainfall: ["rainfall.js", "rainfall.css"],
+    snow: ["snow.js", "snow.css"],
+    mountains: ["mountain-forecast.js", "mountain-forecast.css"],
     synoptic: ["synoptic.js", "synoptic.css"],
+    "synoptic-forecast": ["synoptic.js", "synoptic.css"],
     sonde: ["sonde.js", "sonde.css"],
     klementinum: ["klementinum.js", "klementinum.css"],
     stations: ["stations.js", "stations.css"],

@@ -12,6 +12,7 @@
   const start = settings => {
     if (settings.chmiRadarClassicEnabled === false) return;
     document.documentElement.classList.add("chmi-information-classic");
+    if (context.id === "aviation") document.documentElement.classList.add("chmi-information-aviation");
     const send = (target, url = null) => window.parent.postMessage({type:"chmi-classic-navigate",app:context.id,session:context.session,target,...(url ? {url} : {})}, parentURL.origin);
     const refresh = () => {
       const main = document.querySelector("main");

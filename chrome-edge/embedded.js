@@ -6,9 +6,21 @@
   const context = registry.embeddedContext(url, window.name);
   if (!context) return;
   const { id, session } = context;
+  const parentOriginKey = id === "snow" ? `chmi-classic-parent-origin:${id}:${session}` : null;
   let parentURL;
   try { parentURL = new URL(document.referrer); } catch { return; }
-  const nativeNavigation = (["webcams", "forecast", "meteogram", "rainfall", "water", "air", "geo", "polar"].includes(id) || registry.get(id)?.family === "information") && registry.matches(id, parentURL);
+  if (parentOriginKey) {
+    const parentIsClassicHome = parentURL.protocol === "https:" && registry.isHomepage(parentURL);
+    if (parentIsClassicHome) {
+      try { sessionStorage.setItem(parentOriginKey, parentURL.origin); } catch {}
+    } else if (registry.matches(id, parentURL)) {
+      try {
+        const savedParent = new URL(sessionStorage.getItem(parentOriginKey));
+        if (savedParent.protocol === "https:" && registry.isHomepage(savedParent)) parentURL = savedParent;
+      } catch {}
+    }
+  }
+  const nativeNavigation = (["webcams", "forecast", "meteogram", "rainfall", "snow", "mountains", "water", "air", "geo", "polar"].includes(id) || registry.get(id)?.family === "information") && registry.matches(id, parentURL);
   if (parentURL.protocol !== "https:" || !(registry.isHomepage(parentURL) || nativeNavigation) ||
       !registry.matches(id, url) || !/^[a-zA-Z0-9-]{8,80}$/.test(session ?? "")) return;
 
@@ -59,6 +71,8 @@
         app.family === "week" ? document.querySelector("html.chmi-week-classic #chmi-week-workspace #chmi-week-forecast") :
         app.family === "monthly" ? document.querySelector("html.chmi-monthly-classic #chmi-monthly-workspace #chmi-monthly-summary") :
         app.family === "regions" ? document.querySelector("html.chmi-regions-classic #chmi-regions-workspace #chmi-regions-forecast") :
+        app.family === "snow" ? document.querySelector("html.chmi-snow-classic #chmi-snow-workspace[data-chmi-snow-native='verified']") :
+        app.family === "mountains" ? document.querySelector("html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace main[data-chmi-mountain-forecast-native='verified']") :
         app.family === "rainfall" ? document.getElementById("chmi-rainfall-brand") :
         ["water", "air"].includes(app.family) ? document.querySelector("html.chmi-hydro-air-classic #chmu-map-container[data-chmi-hydro-air-native='verified']") :
         document.getElementById(app.family === "mushrooms" ? "chmi-hub-classic-brand" : "chmi-satellite-classic-portal-products");
@@ -93,10 +107,22 @@
       const klementinumTable = document.querySelector("[data-chmi-klementinum-native='verified'] [id^='p_p_id_ChmiDynamicTable_INSTANCE_'] table");
       const klementinumMedia = app.family === "klementinum" && visible(klementinumTable) &&
         klementinumTable.tBodies[0]?.rows.length > 0;
+      const snowWorkspace = document.querySelector("html.chmi-snow-classic #chmi-snow-workspace[data-chmi-snow-native='verified']");
+      const snowStatus = snowWorkspace?.querySelector("#chmi-snow-status");
+      const snowFiltersVisible = ["fkraj", "foblast", "frbot"].every(name =>
+        visible(snowWorkspace?.querySelector(`#${name}, [name="${name}"]`)));
+      const snowMedia = app.family === "snow" && visible(snowWorkspace) && (
+        (snowWorkspace.dataset.kind === "list" && snowFiltersVisible && visible(snowWorkspace.querySelector("table.chmi-snow-data-table")) &&
+          snowWorkspace.querySelectorAll("table.chmi-snow-data-table tr").length > 1 &&
+          ["snow", "empty", "missing", "no-results"].includes(snowStatus?.dataset.state)) ||
+        (snowWorkspace.dataset.kind === "detail" && visible(snowWorkspace.querySelector(".chmi-snow-detail-native")))
+      );
+      const mountainTable = document.querySelector('#chmi-mountain-forecast-workspace [id^="ChmiDynamicTable_"] table');
+      const mountainMedia = app.family === "mountains" && visible(mountainTable) && mountainTable.tBodies[0]?.rows.length > 0;
       const lightningMedia = id === "lightning" && [...document.querySelectorAll('#div_container_data img[src*="/input_data/blesk/"]')]
         .some(node => visible(node) && node.complete && node.naturalWidth > 32 &&
           Number(getComputedStyle(node.parentElement).opacity) > 0);
-      const media = app.family === "information" ? visible(adapter) && adapter.textContent.trim().length >= 50 : id === "lightning" ? lightningMedia : app.family === "sonde" ? sondeMedia : app.family === "klementinum" ? klementinumMedia : forecastMedia || weekMedia || monthlyMedia || regionsMedia || meteogramMedia || rainfallMedia || synopticMedia || mapMedia || [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img, .playabledata-content-container .chmi-playableimage-img")]
+      const media = app.family === "information" ? visible(adapter) && adapter.textContent.trim().length >= 50 : id === "lightning" ? lightningMedia : app.family === "sonde" ? sondeMedia : app.family === "klementinum" ? klementinumMedia : app.family === "snow" ? snowMedia : app.family === "mountains" ? mountainMedia : forecastMedia || weekMedia || monthlyMedia || regionsMedia || meteogramMedia || rainfallMedia || synopticMedia || mapMedia || [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img, .playabledata-content-container .chmi-playableimage-img")]
         .some(node => visible(node) && (node.tagName === "CANVAS" ? node.width > 0 && node.height > 0 : node.complete && node.naturalWidth > 32));
       window.parent.postMessage({ type: "chmi-classic-status", app: id, session, state: adapter && media ? "ready" : "loading" }, parentURL.origin);
     }

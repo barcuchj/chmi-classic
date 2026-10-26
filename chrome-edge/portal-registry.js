@@ -11,11 +11,13 @@
     services: { title: "Informace a služby", url: "https://www.chmi.cz/o-chmu/produkty-a-sluzby", family: "information", section: "weather" },
     about: { title: "O ČHMÚ", url: "https://www.chmi.cz/o-chmu", family: "information", section: "weather" },
     contacts: { title: "Kontakty", url: "https://www.chmi.cz/o-chmu/kontakty", family: "information", section: "weather" },
+    aviation: { title: "Počasí pro létání – rozcestník ČHMÚ", url: "https://www.chmi.cz/letectvi", family: "information", section: "weather" },
     forecast: { title: "Počasí v České republice – předpověď", url: "https://www.chmi.cz/predpoved-pocasi/dnes", family: "forecast", section: "weather" },
     radar: { title: "Aktuální radarová data", url: "https://produkty.chmi.cz/radar/", family: "radar", section: "weather" },
     lightning: { title: "Detekce blesků – živá vrstva radaru", url: "https://produkty.chmi.cz/radar/?chmi_classic_lightning=1", family: "radar", section: "weather" },
     rainfall: { title: "Radarové odhady srážek", url: "https://hydro.chmi.cz/hppsoldv/main_rain.php", family: "rainfall", section: "weather" },
     synoptic: { title: "Synoptická situace", url: "https://www.chmi.cz/predpoved-pocasi/synopticka-situace", family: "synoptic", section: "weather" },
+    "synoptic-forecast": { title: "Synoptická předpověď", url: "https://www.chmi.cz/predpoved-pocasi/synopticka-situace?chmi_classic_synoptic_forecast=1", family: "synoptic", section: "weather" },
     sonde: { title: "Sondážní měření – Praha-Libuš", url: "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa", family: "sonde", section: "weather" },
     klementinum: { title: "Měření z Klementina", url: "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum", family: "klementinum", section: "weather" },
     stations: { title: "Meteorologické stanice ČHMÚ", url: "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke", family: "stations", section: "weather" },
@@ -33,12 +35,14 @@
     polar: { title: "Snímky z polárních družic", url: "https://www.chmi.cz/namerena-data/polarni-druzice/true-color", family: "polar", section: "weather" },
     geo: { title: "Geostacionární družice", url: "https://www.chmi.cz/namerena-data/geostacionarni-druzice/true-color", family: "geo", section: "weather" },
     mushrooms: { title: "Pravděpodobnost růstu hub", url: "https://www.chmi.cz/namerena-data/pravdepodobnost-rustu-hub", family: "mushrooms", section: "weather" },
+    snow: { title: "Sněhové zpravodajství", url: "https://hydro.chmi.cz/hppsoldv/hpps_snh_list.php", family: "snow", section: "weather" },
+    mountains: { title: "Předpovědi pro hory", url: "https://www.chmi.cz/predpoved-pocasi/lyzarska-strediska-a-hory/sumava-a-novohradske-hory", family: "mountains", section: "weather" },
     water: { title: "VODA – aktuální vodní stavy a povodňová mapa", url: "https://www.chmi.cz/voda/aktualni-stav-rek-povodnova-mapa", family: "water", section: "water" },
     air: { title: "OVZDUŠÍ – aktuální mapy kvality ovzduší", url: "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr", family: "air", section: "air" }
   };
   const pending = (label, reason = "Původní zobrazení této aplikace zatím není obnoveno. Samotný odkaz na nový web nepovažujeme za rekonstrukci.") => ({ label, reason });
   const columns = [
-    [{ label: "Předpověď pro ČR", app: "forecast" }, { label: "Předpovědi pro kraje", app: "regions" }, { label: "Týdenní předpověď", app: "week" }, { label: "Měsíční výhled", app: "monthly" }, pending("Synoptická předpověď"), { label: "Bio předpověď", app: "bio" }, ...["Počasí pro létání", "Sněhové zpravodajství", "Předpovědi pro hory"].map(label => pending(label))],
+    [{ label: "Předpověď pro ČR", app: "forecast" }, { label: "Předpovědi pro kraje", app: "regions" }, { label: "Týdenní předpověď", app: "week" }, { label: "Měsíční výhled", app: "monthly" }, { label: "Synoptická předpověď", app: "synoptic-forecast" }, { label: "Bio předpověď", app: "bio" }, { label: "Počasí pro létání", app: "aviation" }, { label: "Sněhové zpravodajství", app: "snow" }, { label: "Předpovědi pro hory", app: "mountains" }],
     [{ label: "Aladin – animace", app: "aladin-animation" }, { label: "Aladin – mapy", app: "aladin" }, { label: "Aladin – meteogramy", app: "meteogram" }, pending("Přehled počasí v ČR"), { label: "Synoptická situace", app: "synoptic" }, ...["Ozonové zpravodajství", "Družicová měření ozonu"].map(label => pending(label)), { label: "Pylový semafor", app: "pollen" }, { label: "Aktivita klíšťat", app: "ticks" }],
     [{ label: "Aktuální radarová data", app: "radar" }, { label: "Snímky z družic MSG", app: "meteosat" }, { label: "Snímky z družic NOAA", app: "polar" }, { label: "Detekce blesků", app: "lightning" }, { label: "Radarové odhady srážek", app: "rainfall" }, pending("Aktuální mapy"), pending("Grafy automat. stanic"), { label: "Sondážní měření", app: "sonde" }, pending("Počasí a kůrovec")],
     [{ label: "Webové kamery", app: "webcams" }, pending("Meteo zprávy – Infomet"), { label: "Měření z Klementina", app: "klementinum" }, ...["Mapa zatížení sněhem", "Nalezli jste radiosondu?", "Vertikální profily větru", "Monitoring sucha"].map(label => pending(label)), { label: "Meteorologické stanice", app: "stations" }]
@@ -63,6 +67,11 @@
       const app = this.get(id);
       if (!app) return false;
       const target = new URL(app.url);
+      if ((id === "synoptic" || id === "synoptic-forecast") && url.origin === target.origin && normalPath(url.pathname) === normalPath(target.pathname)) {
+        return (url.searchParams.get("chmi_classic_synoptic_forecast") === "1") === (id === "synoptic-forecast");
+      }
+      if (id === "snow" && url.origin === target.origin) return /^\/hppsoldv\/hpps_snh_(?:list|detail)\.php\/?$/.test(url.pathname);
+      if (id === "mountains" && url.origin === target.origin) return /^\/predpoved-pocasi\/lyzarska-strediska-a-hory\/(?:sumava-a-novohradske-hory|cesky-les-a-slavkovsky-les|krusne-hory|jizerske-hory|krkonose|orlicke-hory|jeseniky-a-kralicky-sneznik|beskydy|zdarske-vrchy|bile-karpaty-a-hostynsko-vsetinske-vrchy)\/?$/.test(url.pathname);
       if (app.family === "information") return url.origin === target.origin &&
         ["/predpoved-pocasi", "/namerena-data", "/o-chmu", "/voda", "/letectvi"]
           .some(path => normalPath(url.pathname) === path || url.pathname.startsWith(path + "/"));

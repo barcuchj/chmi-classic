@@ -9,8 +9,20 @@
       !/\/synop-bez-dat(?:[?#]|$)/.test(image.currentSrc || image.src);
   }
 
+  // The official timeline labels its first forecast step; do not assume it
+  // always follows the first analysis or fetch a separate copy of the data.
+  function forecastStep(slider, replay) {
+    const marker = replay?.querySelector("#top_labels .top--label .forecast")?.closest(".top--label");
+    const position = marker?.style?.left;
+    if (!/^\d+(?:\.\d+)?%$/.test(position ?? "")) return null;
+    const min = Number(slider?.min), max = Number(slider?.max);
+    const percent = Number.parseFloat(position);
+    if (!Number.isFinite(min) || !Number.isFinite(max) || max <= min || percent < 0 || percent > 100) return null;
+    return Math.round(min + (max - min) * percent / 100);
+  }
+
   if (typeof module === "object" && module.exports) {
-    module.exports = { replayReady };
+    module.exports = { replayReady, forecastStep };
     return;
   }
 
@@ -19,11 +31,13 @@
   window.__chmiClassicSynopticLoaded = true;
 
   const storage = globalThis.chrome?.storage?.sync ?? globalThis.__chmiClassicStorage;
+  const wantsForecast = new URL(location.href).searchParams.get("chmi_classic_synoptic_forecast") === "1";
   const start = result => {
     if (result.chmiRadarClassicEnabled === false) return;
 
     let observer;
     let deadline;
+    let forecastSelection = null;
     const onImageLoad = event => {
       if (event.target.matches?.("#chmi-playabledata .playabledata-content-container img.chmi-playableimage-img")) adapt();
     };
@@ -39,6 +53,19 @@
       const image = replay?.querySelector(".playabledata-content-container img.chmi-playableimage-img");
       const portlet = replay?.closest('[id^="portlet_ChmiImagesReplay_"]');
       if (!portlet || !replayReady(slider, image)) return false;
+      if (wantsForecast) {
+        const step = forecastStep(slider, replay);
+        if (step === null) return false;
+        if (!forecastSelection && Number(slider.value) !== step) {
+          forecastSelection = { previousSrc: image.currentSrc || image.src };
+          slider.value = String(step);
+          slider.dispatchEvent(new Event("input", { bubbles: true }));
+          slider.dispatchEvent(new Event("change", { bubbles: true }));
+          return false;
+        }
+        if (forecastSelection && (Number(slider.value) !== step ||
+            (image.currentSrc || image.src) === forecastSelection.previousSrc)) return false;
+      }
       stopWaiting();
 
       const workspace = document.createElement("section");
@@ -47,7 +74,7 @@
       const header = document.createElement("header");
       header.id = "chmi-synoptic-classic-brand";
       const heading = document.createElement("strong");
-      heading.textContent = "ČHMÚ · Synoptická situace";
+      heading.textContent = wantsForecast ? "ČHMÚ · Synoptická předpověď" : "ČHMÚ · Synoptická situace";
       const caption = document.createElement("span");
       caption.textContent = "Atlantik – Evropa · klasické rozhraní";
       const restore = document.createElement("button");

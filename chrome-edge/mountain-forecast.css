@@ -1,0 +1,48 @@
+/* The table, text, explanations and links remain the live ČHMÚ elements. */
+html.chmi-mountain-forecast-classic, html.chmi-mountain-forecast-classic body {
+  min-width: 0 !important; margin: 0 !important; padding: 0 !important; background: #91c9d4 !important;
+}
+html.chmi-mountain-forecast-classic body > :not(#chmi-mountain-forecast-workspace) { display: none !important; }
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace {
+  box-sizing: border-box; min-width: 0; margin: 5px; border: 1px solid #8aa9b5;
+  background: #f3f5ef; color: #153c6d; font: 12px/1.4 Verdana, Arial, sans-serif;
+}
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-brand {
+  display: flex !important; align-items: center; gap: 8px; padding: 6px 9px;
+  border-bottom: 1px solid #a4bdc8; background: #e8f4f7; color: #153c6d;
+}
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-brand button {
+  margin-left: auto; padding: 3px 8px; border: 1px solid #8caebe; background: white; color: #16466e; font: inherit; cursor: pointer;
+}
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-nav {
+  display: flex !important; flex-wrap: wrap; gap: 3px 10px; padding: 7px 9px;
+  border-bottom: 1px solid #b4c9cc; background: #e8efeb;
+}
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-nav a { color: #164c80 !important; text-decoration: underline; }
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-nav a[aria-current="page"] { color: #173b55 !important; font-weight: bold; text-decoration: none; }
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace > main {
+  display: block !important; box-sizing: border-box; width: 100% !important; max-width: none !important;
+  min-width: 0 !important; margin: 0 !important; padding: 10px !important; background: #f8faf6 !important;
+}
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace main h1 { margin: 0 0 8px !important; font-size: 18px !important; }
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace main h2 { margin: 12px 0 6px !important; font-size: 15px !important; }
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace [id^="ChmiDynamicTable_"] { max-width: 100% !important; overflow-x: auto !important; }
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace .dynamic-table__wrapper { max-width: 100% !important; overflow-x: auto !important; }
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace .explanatory { min-height: 38px !important; z-index: 3; }
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace .dropdown-menu.show { display: block !important; max-width: min(90vw, 650px); white-space: normal !important; }
+html.chmi-classic-embedded.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace { margin: 0; border: 0; }
+html.chmi-classic-embedded.chmi-mountain-forecast-classic #chmi-mountain-forecast-brand { display: none !important; }
+@media (max-width: 600px) {
+  html.chmi-mountain-forecast-classic #chmi-mountain-forecast-nav { gap: 5px 9px; }
+  html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace > main { padding: 7px !important; }
+}
+/* Native typography and inline flex widths otherwise overwhelm the compact panel. */
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace main h1 .chmu-h1,
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace main h1 .chmu-h1 span {
+  font: bold 18px/1.25 Verdana, Arial, sans-serif !important;
+}
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace [id^="ChmiDynamicTable_"] table { width: 100% !important; min-width: 760px; }
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace [id^="ChmiDynamicTable_"] td > div > div { flex-wrap: wrap !important; }
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace [id^="ChmiDynamicTable_"] td div[style*="margin-left"],
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace [id^="ChmiDynamicTable_"] td img[style*="margin-left"] { margin-left: 4px !important; }
+html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace .dropdown-menu.show { max-height: 65vh; overflow: auto; }
