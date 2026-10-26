@@ -34,6 +34,12 @@ const [weekJs, weekCss] = await Promise.all(
 const [monthlyJs, monthlyCss] = await Promise.all(
   ["monthly.js", "monthly.css"].map(name => readFile(join(sourceRoot, name), "utf8"))
 );
+const [mountainJs, mountainCss] = await Promise.all(
+  ["mountain-forecast.js", "mountain-forecast.css"].map(name => readFile(join(sourceRoot, name), "utf8"))
+);
+const [snowJs, snowCss] = await Promise.all(
+  ["snow.js", "snow.css"].map(name => readFile(join(sourceRoot, name), "utf8"))
+);
 const [regionsJs, regionsCss] = await Promise.all(
   ["regions.js", "regions.css"].map(name => readFile(join(sourceRoot, name), "utf8"))
 );
@@ -95,7 +101,8 @@ const bridge = `
       return path.startsWith("/radar") || path.startsWith("/druzice") || path.startsWith("/aladin");
     }
     if (location.hostname === "hydro.chmi.cz") {
-      return path.startsWith("/hpps/srz") || path === "/hppsoldv/main_rain.php";
+      return path.startsWith("/hpps/srz") || path === "/hppsoldv/main_rain.php" ||
+        path === "/hppsoldv/hpps_snh_list.php" || path === "/hppsoldv/hpps_snh_detail.php";
     }
     if (location.hostname === "intranet.chmi.cz" || location.hostname === "portal.chmi.cz") {
       return true;
@@ -171,7 +178,7 @@ const bridge = `
     location.reload();
   });
 
-  GM_addStyle(${JSON.stringify(`${informationCss}\n${sharingCss}\n${radarCss}\n${satelliteCss}\n${navigationCss}\n${catalogCss}\n${legacyCss}\n${aladinCss}\n${portalCss}\n${embeddedCss}\n${webcamsCss}\n${meteogramCss}\n${forecastCss}\n${rainfallCss}\n${synopticCss}\n${sondeCss}\n${klementinumCss}\n${stationsCss}\n${ticksCss}\n${bioCss}\n${weekCss}\n${monthlyCss}\n${regionsCss}\n
+  GM_addStyle(${JSON.stringify(`${informationCss}\n${sharingCss}\n${radarCss}\n${satelliteCss}\n${navigationCss}\n${catalogCss}\n${legacyCss}\n${aladinCss}\n${portalCss}\n${embeddedCss}\n${webcamsCss}\n${meteogramCss}\n${forecastCss}\n${rainfallCss}\n${synopticCss}\n${sondeCss}\n${klementinumCss}\n${stationsCss}\n${ticksCss}\n${bioCss}\n${weekCss}\n${monthlyCss}\n${regionsCss}\n${snowCss}\n${mountainCss}\n
 #chmi-classic-userscript-restore {
   position: fixed;
   right: 12px;
@@ -189,7 +196,7 @@ const bridge = `
   renderRestoreButton();
 })();`;
 
-const output = `${metadata}\n\n${bridge}\n\n${sharingJs}\n\n${portalRegistryJs}\n\n${embeddedJs}\n\n${portalJs}\n\n${informationJs}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n\n${webcamsJs.trimEnd()}\n\n${meteogramJs.trimEnd()}\n\n${forecastJs.trimEnd()}\n\n${rainfallJs.trimEnd()}\n\n${synopticJs.trimEnd()}\n\n${sondeJs.trimEnd()}\n\n${klementinumJs.trimEnd()}\n\n${stationsJs.trimEnd()}\n\n${ticksJs.trimEnd()}\n\n${bioJs.trimEnd()}\n\n${weekJs.trimEnd()}\n\n${monthlyJs.trimEnd()}\n\n${regionsJs.trimEnd()}\n\n${catalogJs.trimEnd()}\n\n${legacyJs.trimEnd()}\n`;
+const output = `${metadata}\n\n${bridge}\n\n${sharingJs}\n\n${portalRegistryJs}\n\n${embeddedJs}\n\n${portalJs}\n\n${informationJs}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n\n${webcamsJs.trimEnd()}\n\n${meteogramJs.trimEnd()}\n\n${forecastJs.trimEnd()}\n\n${rainfallJs.trimEnd()}\n\n${synopticJs.trimEnd()}\n\n${sondeJs.trimEnd()}\n\n${klementinumJs.trimEnd()}\n\n${stationsJs.trimEnd()}\n\n${ticksJs.trimEnd()}\n\n${bioJs.trimEnd()}\n\n${weekJs.trimEnd()}\n\n${monthlyJs.trimEnd()}\n\n${regionsJs.trimEnd()}\n\n${snowJs.trimEnd()}\n\n${mountainJs.trimEnd()}\n\n${catalogJs.trimEnd()}\n\n${legacyJs.trimEnd()}\n`;
 
 await mkdir(dirname(outputPath), { recursive: true });
 await writeFile(outputPath, output, "utf8");

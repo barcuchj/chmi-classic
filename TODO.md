@@ -2,6 +2,12 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [x] 0.7.31: synoptická předpověď (současný přehrávač ČHMÚ), letecký
+  rozcestník, sněhové zpravodajství a předpovědi pro hory v centrálním
+  panelu. [Ověření a omezení](docs/qa-0.7.31.md).
+- [ ] Ověřit další letecké podstránky a detailové grafy sněhových stanic;
+  samostatnou historickou aplikaci synoptické předpovědi nenahrazovat archivem.
+
 - [x] 0.7.30: všech šest položek hlavního menu se běžně otevírá v portálu,
   s plnou horní navigací, odkazy na úvod/rozcestník a kompaktním obsahem.
   Podstránky historie a služeb i návrat na počasí ověřeny při 1280/390.
@@ -27,7 +33,7 @@
   [QA a omezení](docs/qa-0.7.27.md).
 - [ ] Dokončit starší místní moduly jednotlivě: ozon/UV (grafy a rozložení),
   automatické stanice (mutační smyčka, detaily, balení), přehled počasí
-  (legenda), Bio, sníh a týdenní předpověď (nová regresní kontrola).
+  (legenda), Bio a týdenní předpověď (nová regresní kontrola).
   Nezařazovat do vydání jen podle úspěšného sestavení.
 - [ ] Prověřit pododkazy seznam → detail → návrat (kamery, stanice),
   nativní přepínání vrstev a odkazy do nového panelu; odlišit obnovený

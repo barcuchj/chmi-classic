@@ -1,0 +1,212 @@
+/* Compact archive-inspired shell around the live HPPS snow table/detail. */
+html.chmi-snow-classic,
+html.chmi-snow-classic body {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100dvh;
+  min-width: 0;
+  min-height: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #8ebfd0 !important;
+  color: #183b64;
+  font: 12px/1.3 Verdana, Arial, sans-serif;
+}
+html.chmi-snow-classic body > :not(#chmi-snow-workspace):not(script):not(style) {
+  display: none !important;
+}
+html.chmi-snow-classic #chmi-snow-workspace,
+html.chmi-snow-classic #chmi-snow-workspace * {
+  box-sizing: border-box;
+}
+html.chmi-snow-classic #chmi-snow-workspace {
+  position: fixed;
+  inset: 3px;
+  z-index: 1000;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #7899aa;
+  background: #fff;
+}
+html.chmi-snow-classic #chmi-snow-classic-brand {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px 10px;
+  min-width: 0;
+  min-height: 28px;
+  padding: 4px 7px;
+  border-bottom: 1px solid #a7bdc7;
+  background: linear-gradient(#fff, #e4eff3);
+}
+html.chmi-snow-classic #chmi-snow-classic-brand strong {
+  color: #173f69;
+  font-size: 13px;
+  white-space: nowrap;
+}
+html.chmi-snow-classic #chmi-snow-classic-brand > span {
+  color: #60757e;
+  font-size: 10px;
+}
+html.chmi-snow-classic #chmi-snow-classic-brand > a {
+  margin-left: auto;
+  color: #174f7a;
+  font-size: 10px;
+  white-space: nowrap;
+}
+html.chmi-snow-classic #chmi-snow-classic-brand button {
+  min-height: 23px;
+  padding: 2px 7px;
+  border: 1px solid #8baab7;
+  border-radius: 0;
+  background: #f8fbfc;
+  color: #174f7a;
+  cursor: pointer;
+  font: 10px Verdana, Arial, sans-serif;
+}
+html.chmi-snow-classic #chmi-snow-classic-brand :focus-visible,
+html.chmi-snow-classic .chmi-snow-native :focus-visible {
+  outline: 2px solid #d57900;
+  outline-offset: 1px;
+}
+html.chmi-snow-classic #chmi-snow-status {
+  order: 3;
+  flex: 1 1 100%;
+  min-width: 0;
+  padding: 2px 5px;
+  border: 1px solid #b8c9d0;
+  background: #f4f8fa;
+  color: #40545c;
+  font: 10px/1.25 Verdana, Arial, sans-serif;
+}
+html.chmi-snow-classic #chmi-snow-status[data-state="empty"] {
+  border-color: #9db8c5;
+  background: #f5fafc;
+  color: #365765;
+}
+html.chmi-snow-classic #chmi-snow-status[data-state="snow"] {
+  border-color: #87a7bb;
+  background: #edf6fb;
+  color: #164c70;
+  font-weight: 700;
+}
+html.chmi-snow-classic #chmi-snow-status[data-state="missing"],
+html.chmi-snow-classic #chmi-snow-status[data-state="no-results"] {
+  border-color: #c9b675;
+  background: #fffbea;
+  color: #66551f;
+}
+html.chmi-snow-classic .chmi-snow-native {
+  min-width: 0;
+  min-height: 0;
+  padding: 5px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  background: #fff;
+}
+html.chmi-snow-classic .chmi-snow-native > form {
+  max-width: 100% !important;
+  margin: 0 0 4px !important;
+}
+html.chmi-snow-classic .chmi-snow-native .chmi-snow-category-cell {
+  display: table-cell !important;
+  visibility: visible !important;
+}
+html.chmi-snow-classic .chmi-snow-native .chmi-snow-category-control {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+html.chmi-snow-classic .chmi-snow-native input,
+html.chmi-snow-classic .chmi-snow-native select,
+html.chmi-snow-classic .chmi-snow-native button {
+  max-width: 100%;
+  min-height: 22px;
+  font: 11px Arial, sans-serif;
+}
+html.chmi-snow-classic table.chmi-snow-data-table {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 2px 0 0 !important;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+  background: #fff !important;
+  color: #142e4d !important;
+  font: 10px/1.2 Verdana, Arial, sans-serif !important;
+}
+html.chmi-snow-classic table.chmi-snow-data-table th,
+html.chmi-snow-classic table.chmi-snow-data-table td {
+  min-width: 0;
+  padding: 2px 4px !important;
+  border: 1px solid #bccbd2 !important;
+  background: #fff;
+  color: inherit;
+  text-align: center;
+  white-space: nowrap;
+}
+html.chmi-snow-classic table.chmi-snow-data-table th {
+  background: #e6f0f4 !important;
+  color: #173f69 !important;
+  font-weight: 700 !important;
+}
+html.chmi-snow-classic table.chmi-snow-data-table td:nth-child(2),
+html.chmi-snow-classic table.chmi-snow-data-table th:nth-child(2),
+html.chmi-snow-classic table.chmi-snow-data-table td:nth-child(4),
+html.chmi-snow-classic table.chmi-snow-data-table th:nth-child(4) {
+  text-align: left;
+  white-space: normal;
+}
+html.chmi-snow-classic table.chmi-snow-data-table a {
+  color: #123e76 !important;
+  text-decoration: underline;
+}
+html.chmi-snow-classic table.chmi-snow-data-table [data-chmi-snow-latest="true"] {
+  border-left-color: #668fa3 !important;
+  border-right-color: #668fa3 !important;
+  background: #eef6f9 !important;
+  font-weight: 700;
+}
+html.chmi-snow-classic table.chmi-snow-data-table .chmi-snow-positive {
+  background: #dcecf5 !important;
+  color: #0d456d !important;
+}
+html.chmi-snow-classic table.chmi-snow-data-table .chmi-snow-missing,
+html.chmi-snow-classic table.chmi-snow-data-table .chmi-snow-invalid {
+  background: #fff9e6 !important;
+  color: #756527 !important;
+}
+html.chmi-snow-classic #chmi-snow-workspace[data-kind="detail"] .chmi-snow-native {
+  overflow-x: hidden;
+}
+html.chmi-snow-classic .chmi-snow-detail-native {
+  width: min(100%, 900px) !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+}
+html.chmi-classic-embedded.chmi-snow-classic #chmi-snow-workspace {
+  inset: 0;
+  border: 0;
+}
+html.chmi-classic-embedded.chmi-snow-classic #chmi-snow-classic-brand {
+  min-height: 24px;
+  padding: 3px 5px;
+}
+html.chmi-classic-embedded.chmi-snow-classic #chmi-snow-classic-brand > span,
+html.chmi-classic-embedded.chmi-snow-classic #chmi-snow-classic-brand > a {
+  display: none;
+}
+@media (max-width: 700px) {
+  html.chmi-snow-classic #chmi-snow-workspace { inset: 0; border: 0; }
+  html.chmi-snow-classic #chmi-snow-classic-brand { gap: 3px 6px; }
+  html.chmi-snow-classic #chmi-snow-classic-brand strong { font-size: 12px; }
+  html.chmi-snow-classic #chmi-snow-status { font-size: 9px; }
+  html.chmi-snow-classic .chmi-snow-native { padding: 3px; }
+  html.chmi-snow-classic table.chmi-snow-data-table { font-size: 9px !important; }
+  html.chmi-snow-classic table.chmi-snow-data-table th,
+  html.chmi-snow-classic table.chmi-snow-data-table td { padding: 2px 3px !important; }
+}

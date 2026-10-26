@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.7.30",
+  "version": "0.7.31",
   "description": "Vrací klasický vzhled živým meteorologickým aplikacím ČHMÚ a přidává přehledný rozcestník.",
   "icons": {
     "16": "icons/icon-16.png",
@@ -129,6 +129,16 @@
     },
     {
       "matches": [
+        "https://hydro.chmi.cz/hppsoldv/hpps_snh_list.php*",
+        "https://hydro.chmi.cz/hppsoldv/hpps_snh_detail.php*"
+      ],
+      "css": ["embedded.css", "snow.css"],
+      "js": ["portal-registry.js", "embedded.js", "snow.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
         "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa*"
       ],
       "css": [
@@ -236,6 +246,15 @@
     },
     {
       "matches": [
+        "https://www.chmi.cz/predpoved-pocasi/lyzarska-strediska-a-hory/*"
+      ],
+      "css": ["embedded.css", "mountain-forecast.css"],
+      "js": ["portal-registry.js", "embedded.js", "mountain-forecast.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
         "https://www.chmi.cz/predpoved-pocasi*",
         "https://www.chmi.cz/namerena-data*",
         "https://www.chmi.cz/o-chmu*",
@@ -259,7 +278,10 @@
         "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/aktualni-mapy-kvality-ovzdusi-cr*",
         "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer*",
         "https://hydro.chmi.cz/hppsoldv/main_rain.php*",
+        "https://hydro.chmi.cz/hppsoldv/hpps_snh_list.php*",
+        "https://hydro.chmi.cz/hppsoldv/hpps_snh_detail.php*",
         "https://www.chmi.cz/predpoved-pocasi/synopticka-situace*",
+        "https://www.chmi.cz/predpoved-pocasi/lyzarska-strediska-a-hory/*",
         "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa*",
         "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum*",
         "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke*",
@@ -300,6 +322,9 @@
         "https://www.chmi.cz/namerena-data/data-z-mericich-stanic/pm10-hodinovy-prumer*",
         "https://hydro.chmi.cz/hppsoldv/main_rain.php*",
         "https://www.chmi.cz/predpoved-pocasi/synopticka-situace*",
+        "https://www.chmi.cz/predpoved-pocasi/lyzarska-strediska-a-hory/*",
+        "https://hydro.chmi.cz/hppsoldv/hpps_snh_list.php*",
+        "https://hydro.chmi.cz/hppsoldv/hpps_snh_detail.php*",
         "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa*",
         "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum*",
         "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke*",

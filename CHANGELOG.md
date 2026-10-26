@@ -1,5 +1,14 @@
 # Přehled změn
 
+## 0.7.31 – 2026-10-26
+
+- Synoptická předpověď otevírá živou časovou osu ČHMÚ na prvním termínu
+  označeném jako předpověď; dostupná zůstává i samostatná synoptická situace.
+- Letecký rozcestník a jeho informační podstránky se otevírají v portálu.
+- Sněhové zpravodajství používá živou tabulku HPPS a původní filtry, řazení
+  a detail stanice. Horské předpovědi zachovávají tabulky a výběr pohoří.
+- Stejné zdroje jsou součástí rozšíření i sestaveného userscriptu.
+
 ## 0.7.30 – 2026-10-24
 
 - Celá horní nabídka otevírá obsah v centrálním panelu a zachovává plné

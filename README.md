@@ -1,5 +1,15 @@
 # ČHMÚ Classic – meteorologické výstupy
 
+## 0.7.31 – další položky předpovědí
+
+Rozcestník otevírá **Synoptickou předpověď**, **Počasí pro létání**,
+**Sněhové zpravodajství** a **Předpovědi pro hory** v centrálním panelu.
+Synoptická předpověď využívá dnešní časovou osu ČHMÚ a začíná prvním
+termínem označeným jako předpověď. Letecká položka vede do současného
+oficiálního rozcestníku; produkty jako TAF se otevírají v témže panelu.
+Sněhová tabulka i horské předpovědi zachovávají živá data a původní ovládání.
+[Ověření a omezení](docs/qa-0.7.31.md).
+
 ## 0.7.30 – celá horní nabídka uvnitř portálu
 
 Běžné kliknutí na **PŘEDPOVĚDI**, **AKTUÁLNÍ SITUACE**, **HISTORICKÁ DATA**,
@@ -365,10 +375,11 @@ Tlačítko **Nový vzhled** vrátí původní současné rozhraní ČHMÚ.
 Položka **Synoptická situace** v původním rozcestníku otevírá dnešní živou
 [synoptickou mapu ČHMÚ](https://www.chmi.cz/predpoved-pocasi/synopticka-situace).
 Kompaktní zobrazení ponechává oficiální přehrávač a jeho časový posuvník
-pro aktuální stav a dva další termíny. Vložený panel i samostatná stránka
+pro aktuální stav a dostupné předpovědní termíny. Vložený panel i samostatná stránka
 využívají dostupnou plochu bez vysoké hlavičky a patičky; data ani obrazové
-podklady se nepřebírají z archivu. Odlišná historická položka
-**Synoptická předpověď** zatím čeká na samostatný věrný výstup.
+podklady se nepřebírají z archivu. Položka **Synoptická předpověď**
+otevírá stejný současný přehrávač rovnou na prvním předpovědním termínu;
+nejde o kopii již nedostupné samostatné historické aplikace.
 
 ## Další old-look stránky
 
