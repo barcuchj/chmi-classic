@@ -1,0 +1,130 @@
+/* Preserve ČHMÚ's live replay and its native time-slider; only change its layout. */
+html.chmi-wind-classic,
+html.chmi-wind-classic body {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #87c4d3;
+}
+html.chmi-wind-classic body > :not(#chmi-wind-workspace) { display: none !important; }
+html.chmi-wind-classic #chmi-wind-workspace {
+  position: fixed;
+  inset: 5px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #86a8b8;
+  background: #f2f5ee;
+  color: #153d6d;
+  font: 12px/1.35 Verdana, Arial, sans-serif;
+}
+html.chmi-wind-classic #chmi-wind-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 5px 9px;
+  border-bottom: 1px solid #a4bdc8;
+  background: #edf6f8;
+}
+html.chmi-wind-classic #chmi-wind-brand strong { font-size: 13px; }
+html.chmi-wind-classic #chmi-wind-brand span { color: #586a70; }
+html.chmi-wind-classic #chmi-wind-brand button {
+  margin-left: auto;
+  padding: 3px 8px;
+  border: 1px solid #8caebe;
+  background: #fff;
+  color: #16466e;
+  cursor: pointer;
+  font: inherit;
+}
+html.chmi-wind-classic #chmi-wind-workspace > .portlet,
+html.chmi-wind-classic #chmi-wind-workspace > .portlet .portlet-content,
+html.chmi-wind-classic #chmi-wind-workspace > .portlet .portlet-content-container,
+html.chmi-wind-classic #chmi-wind-workspace > .portlet .portlet-body {
+  box-sizing: border-box;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0;
+  min-height: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html.chmi-wind-classic #chmi-wind-workspace .portlet-header { display: none !important; }
+html.chmi-wind-classic #chmi-playabledata {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0;
+  min-height: 0;
+  padding: 6px;
+  background: #f2f5ee;
+}
+html.chmi-wind-classic #chmi-timeline {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 3px 8px !important;
+  border: 1px solid #b5c8cd;
+  background: #e8f1f1;
+}
+html.chmi-wind-classic #chmi-playableimage-container {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #b5c8cd !important;
+  background: #fff;
+}
+html.chmi-wind-classic #chmi-playableimage-container > .playabledata-content-container,
+html.chmi-wind-classic #chmi-playableimage-container > #chmi-playableimage-error {
+  box-sizing: border-box;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0;
+  min-height: 0;
+}
+html.chmi-wind-classic .playabledata-content-container { text-align: center; }
+html.chmi-wind-classic .playabledata-content-container img.chmi-playableimage-img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+html.chmi-classic-embedded.chmi-wind-classic #chmi-wind-workspace { inset: 0; border: 0; }
+html.chmi-classic-embedded.chmi-wind-classic #chmi-wind-brand { display: none; }
+@media (max-width: 600px) {
+  html.chmi-wind-classic #chmi-wind-brand span { display: none; }
+  html.chmi-wind-classic #chmi-playabledata { padding: 2px; }
+  html.chmi-wind-classic #chmi-timeline { padding: 2px !important; }
+}
+
+html.chmi-wind-classic #chmi-wind-workspace { grid-template-rows: auto auto minmax(0, 1fr); }
+html.chmi-wind-classic #chmi-wind-brand { flex-wrap: wrap; }
+html.chmi-wind-classic #chmi-wind-stations { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 5px 9px; font-size: 13px; }
+html.chmi-wind-classic #chmi-wind-stations a { color: #17456b; text-decoration: underline; }
+html.chmi-wind-classic #chmi-wind-stations a[aria-current] { font-weight: bold; }
+html.chmi-wind-classic #chmi-wind-stations a:focus-visible { outline: 2px solid #d57900; outline-offset: 2px; }
+html.chmi-wind-classic .chmi-timeline--wrapper { min-width: 0; overflow-x: auto; }
+
+html.chmi-wind-classic #chmi-timeline { display: flex !important; padding: 4px !important; }
+html.chmi-wind-classic .chmi-timeline--control { flex: 0 0 44px !important; width: 44px !important; margin-right: 6px !important; }
+html.chmi-wind-classic .chmi-timeline--control button { width: 38px !important; height: 38px !important; }
+html.chmi-wind-classic .chmi-timeline--wrapper { flex: 1 1 0 !important; width: 0 !important; overflow-x: hidden; }
+html.chmi-wind-classic .chmi-timeline--wrapper > div { max-width: 100%; }
+
+html.chmi-classic-embedded.chmi-wind-classic #chmi-wind-workspace { grid-template-rows: auto minmax(0, 1fr); }

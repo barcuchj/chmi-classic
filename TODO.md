@@ -2,6 +2,22 @@
 
 ## Aktuální cíl a kritérium shody
 
+- [x] 0.7.32: další tři položky — Počasí a kůrovec (vývoj generace),
+  měřené vertikální profily větru Cheb/Doksany a Nalezli jste radiosondu?
+  Živý Chrome centrálně i samostatně 1280/390, osa/snímek, změna stanice,
+  legenda/zoom, fotografie/zvětšení/Escape a návrat. 226/226 testů;
+  úplný Chrome ZIP. Rozsah a zdroje: [README](README.md),
+  [provenience](THIRD_PARTY_NOTICES.md#další-tři-položky-rozcestníku--28-10-2026).
+- [ ] Vertikální profily větru: případné rozšíření na Kuchařovice/Temelín
+  a radarové profily Brdy/Skalky musí doložit skutečná měřená data a
+  nativní cíle. Nyní jsou adaptované pouze Cheb a Doksany.
+- [ ] Nové tři položky: samostatná instalace Tampermonkey a Edge;
+  rojení kůrovce je odlišný produkt a zůstává mimo dokončený rozsah.
+- [ ] Blokováno — Safari: stávající wrapper cílí na macOS 10.14,
+  instalované Xcode podporuje až 12.0+. Ověření 28. 10. končí na
+  deployment targetu; nejprve vyřešit kompatibilitu a úplnou synchronizaci
+  Resources. Safari build ani provoz nových modulů zatím nepotvrzeny.
+
 - [x] 0.7.31: synoptická předpověď (současný přehrávač ČHMÚ), letecký
   rozcestník, sněhové zpravodajství a předpovědi pro hory v centrálním
   panelu. [Ověření a omezení](docs/qa-0.7.31.md).

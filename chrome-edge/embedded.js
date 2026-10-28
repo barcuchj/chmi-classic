@@ -20,7 +20,7 @@
       } catch {}
     }
   }
-  const nativeNavigation = (["webcams", "forecast", "meteogram", "rainfall", "snow", "mountains", "water", "air", "geo", "polar"].includes(id) || registry.get(id)?.family === "information") && registry.matches(id, parentURL);
+  const nativeNavigation = (["webcams", "forecast", "meteogram", "rainfall", "snow", "mountains", "wind-profiles", "water", "air", "geo", "polar"].includes(id) || registry.get(id)?.family === "information") && registry.matches(id, parentURL);
   if (parentURL.protocol !== "https:" || !(registry.isHomepage(parentURL) || nativeNavigation) ||
       !registry.matches(id, url) || !/^[a-zA-Z0-9-]{8,80}$/.test(session ?? "")) return;
 
@@ -71,6 +71,8 @@
         app.family === "week" ? document.querySelector("html.chmi-week-classic #chmi-week-workspace #chmi-week-forecast") :
         app.family === "monthly" ? document.querySelector("html.chmi-monthly-classic #chmi-monthly-workspace #chmi-monthly-summary") :
         app.family === "regions" ? document.querySelector("html.chmi-regions-classic #chmi-regions-workspace #chmi-regions-forecast") :
+        app.family === "wind-profiles" ? document.querySelector("html.chmi-wind-classic #chmi-wind-workspace[data-chmi-wind-native='verified']") :
+        app.family === "found-sonde" ? document.querySelector("html.chmi-found-sonde-classic #chmi-found-sonde-workspace[data-chmi-found-sonde-native='verified']") :
         app.family === "snow" ? document.querySelector("html.chmi-snow-classic #chmi-snow-workspace[data-chmi-snow-native='verified']") :
         app.family === "mountains" ? document.querySelector("html.chmi-mountain-forecast-classic #chmi-mountain-forecast-workspace main[data-chmi-mountain-forecast-native='verified']") :
         app.family === "rainfall" ? document.getElementById("chmi-rainfall-brand") :
@@ -122,7 +124,11 @@
       const lightningMedia = id === "lightning" && [...document.querySelectorAll('#div_container_data img[src*="/input_data/blesk/"]')]
         .some(node => visible(node) && node.complete && node.naturalWidth > 32 &&
           Number(getComputedStyle(node.parentElement).opacity) > 0);
-      const media = app.family === "information" ? visible(adapter) && adapter.textContent.trim().length >= 50 : id === "lightning" ? lightningMedia : app.family === "sonde" ? sondeMedia : app.family === "klementinum" ? klementinumMedia : app.family === "snow" ? snowMedia : app.family === "mountains" ? mountainMedia : forecastMedia || weekMedia || monthlyMedia || regionsMedia || meteogramMedia || rainfallMedia || synopticMedia || mapMedia || [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img, .playabledata-content-container .chmi-playableimage-img")]
+      const windImage = document.querySelector("#chmi-wind-workspace img.chmi-playableimage-img");
+      const windMedia = visible(windImage) && windImage.complete && windImage.naturalWidth >= 500 && windImage.naturalHeight >= 300;
+      const foundImages = [...document.querySelectorAll("#chmi-found-sonde-workspace img")];
+      const foundMedia = visible(adapter) && foundImages.length >= 5 && foundImages.every(image => image.complete && image.naturalWidth > 0);
+      const media = app.family === "wind-profiles" ? windMedia : app.family === "found-sonde" ? foundMedia : app.family === "information" ? visible(adapter) && adapter.textContent.trim().length >= 50 : id === "lightning" ? lightningMedia : app.family === "sonde" ? sondeMedia : app.family === "klementinum" ? klementinumMedia : app.family === "snow" ? snowMedia : app.family === "mountains" ? mountainMedia : forecastMedia || weekMedia || monthlyMedia || regionsMedia || meteogramMedia || rainfallMedia || synopticMedia || mapMedia || [...document.querySelectorAll("#div_container_data img, #div_gmaps canvas, #map-container img, #map-container canvas, #chmu-map-container canvas, #chmu-map-container img, #modelGrid .is-active img, .playabledata-content-container .chmi-playableimage-img")]
         .some(node => visible(node) && (node.tagName === "CANVAS" ? node.width > 0 && node.height > 0 : node.complete && node.naturalWidth > 32));
       window.parent.postMessage({ type: "chmi-classic-status", app: id, session, state: adapter && media ? "ready" : "loading" }, parentURL.origin);
     }

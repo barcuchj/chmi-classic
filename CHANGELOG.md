@@ -1,5 +1,14 @@
 # Přehled změn
 
+## 0.7.32 – 2026-10-28 (připraveno)
+
+- Tři další položky rozcestníku: živá mapa vývoje kůrovce, měřené profily
+  větru Cheb/Doksany a původní článek pro nálezce radiosondy.
+- Kompaktní samostatné i vložené rozložení, nativní časová osa a fotografie
+  se zachovaným zvětšením; mobilní datum kůrovce nepřekrývá zoom.
+- Přesné URL, ověření nativního obsahu před odkrytím panelu, stejná aktiva
+  v rozšíření a userscriptu. Bez nových oprávnění a datového backendu.
+
 ## 0.7.31 – 2026-10-26
 
 - Synoptická předpověď otevírá živou časovou osu ČHMÚ na prvním termínu
