@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ČHMÚ Classic – meteorologické výstupy",
-  "version": "0.7.31",
+  "version": "0.7.32",
   "description": "Vrací klasický vzhled živým meteorologickým aplikacím ČHMÚ a přidává přehledný rozcestník.",
   "icons": {
     "16": "icons/icon-16.png",
@@ -179,7 +179,8 @@
     {
       "matches": [
         "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*",
-        "https://www.chmi.cz/predpoved-pocasi/rizika/pylovy-semafor*"
+        "https://www.chmi.cz/predpoved-pocasi/rizika/pylovy-semafor*",
+        "https://www.chmi.cz/predpoved-pocasi/rizika/vyvoj-kurovce*"
       ],
       "css": [
         "embedded.css", "navigation.css", "ticks.css"
@@ -255,6 +256,39 @@
     },
     {
       "matches": [
+        "https://www.chmi.cz/letectvi/aerologicka-data/11406-cheb-vyvoj-profilu-vetru*",
+        "https://www.chmi.cz/letectvi/aerologicka-data/11509-doksany-vyvoj-profilu-vetru*"
+      ],
+      "css": [
+        "embedded.css",
+        "wind-profiles.css"
+      ],
+      "js": [
+        "portal-registry.js",
+        "embedded.js",
+        "wind-profiles.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "https://www.chmi.cz/letectvi/aerologicka-mereni/nalezli-jste-radiosondu*"
+      ],
+      "css": [
+        "embedded.css",
+        "found-sonde.css"
+      ],
+      "js": [
+        "portal-registry.js",
+        "embedded.js",
+        "found-sonde.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": [
         "https://www.chmi.cz/predpoved-pocasi*",
         "https://www.chmi.cz/namerena-data*",
         "https://www.chmi.cz/o-chmu*",
@@ -283,10 +317,14 @@
         "https://www.chmi.cz/predpoved-pocasi/synopticka-situace*",
         "https://www.chmi.cz/predpoved-pocasi/lyzarska-strediska-a-hory/*",
         "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa*",
+        "https://www.chmi.cz/letectvi/aerologicka-data/11406-cheb-vyvoj-profilu-vetru*",
+        "https://www.chmi.cz/letectvi/aerologicka-data/11509-doksany-vyvoj-profilu-vetru*",
+        "https://www.chmi.cz/letectvi/aerologicka-mereni/nalezli-jste-radiosondu*",
         "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum*",
         "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke*",
         "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*",
         "https://www.chmi.cz/predpoved-pocasi/rizika/pylovy-semafor*",
+        "https://www.chmi.cz/predpoved-pocasi/rizika/vyvoj-kurovce*",
         "https://www.chmi.cz/predpoved-pocasi/bio-predpoved*",
         "https://www.chmi.cz/predpoved-pocasi/tyden*",
         "https://www.chmi.cz/predpoved-pocasi/mesic*",
@@ -326,10 +364,14 @@
         "https://hydro.chmi.cz/hppsoldv/hpps_snh_list.php*",
         "https://hydro.chmi.cz/hppsoldv/hpps_snh_detail.php*",
         "https://www.chmi.cz/letectvi/aerologicka-data/11520-praha-libus-emagram-100hpa*",
+        "https://www.chmi.cz/letectvi/aerologicka-data/11406-cheb-vyvoj-profilu-vetru*",
+        "https://www.chmi.cz/letectvi/aerologicka-data/11509-doksany-vyvoj-profilu-vetru*",
+        "https://www.chmi.cz/letectvi/aerologicka-mereni/nalezli-jste-radiosondu*",
         "https://www.chmi.cz/namerena-data/merici-stanice/meteorologicke/p1pkle01-praha-klementinum*",
         "https://www.chmi.cz/namerena-data/umisteni-mericich-stanic/meteorologicke*",
         "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*",
         "https://www.chmi.cz/predpoved-pocasi/rizika/pylovy-semafor*",
+        "https://www.chmi.cz/predpoved-pocasi/rizika/vyvoj-kurovce*",
         "https://www.chmi.cz/predpoved-pocasi/bio-predpoved*",
         "https://www.chmi.cz/predpoved-pocasi/tyden*",
         "https://www.chmi.cz/predpoved-pocasi/mesic*",

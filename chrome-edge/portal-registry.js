@@ -12,6 +12,9 @@
     about: { title: "O ČHMÚ", url: "https://www.chmi.cz/o-chmu", family: "information", section: "weather" },
     contacts: { title: "Kontakty", url: "https://www.chmi.cz/o-chmu/kontakty", family: "information", section: "weather" },
     aviation: { title: "Počasí pro létání – rozcestník ČHMÚ", url: "https://www.chmi.cz/letectvi", family: "information", section: "weather" },
+    "bark-beetle": { title: "Počasí a kůrovec – vývoj generace", url: "https://www.chmi.cz/predpoved-pocasi/rizika/vyvoj-kurovce", family: "ticks", section: "weather" },
+    "wind-profiles": { title: "Vertikální profily větru – měřená data", url: "https://www.chmi.cz/letectvi/aerologicka-data/11406-cheb-vyvoj-profilu-vetru", family: "wind-profiles", section: "weather" },
+    "found-sonde": { title: "Nalezli jste radiosondu?", url: "https://www.chmi.cz/letectvi/aerologicka-mereni/nalezli-jste-radiosondu", family: "found-sonde", section: "weather" },
     forecast: { title: "Počasí v České republice – předpověď", url: "https://www.chmi.cz/predpoved-pocasi/dnes", family: "forecast", section: "weather" },
     radar: { title: "Aktuální radarová data", url: "https://produkty.chmi.cz/radar/", family: "radar", section: "weather" },
     lightning: { title: "Detekce blesků – živá vrstva radaru", url: "https://produkty.chmi.cz/radar/?chmi_classic_lightning=1", family: "radar", section: "weather" },
@@ -44,8 +47,8 @@
   const columns = [
     [{ label: "Předpověď pro ČR", app: "forecast" }, { label: "Předpovědi pro kraje", app: "regions" }, { label: "Týdenní předpověď", app: "week" }, { label: "Měsíční výhled", app: "monthly" }, { label: "Synoptická předpověď", app: "synoptic-forecast" }, { label: "Bio předpověď", app: "bio" }, { label: "Počasí pro létání", app: "aviation" }, { label: "Sněhové zpravodajství", app: "snow" }, { label: "Předpovědi pro hory", app: "mountains" }],
     [{ label: "Aladin – animace", app: "aladin-animation" }, { label: "Aladin – mapy", app: "aladin" }, { label: "Aladin – meteogramy", app: "meteogram" }, pending("Přehled počasí v ČR"), { label: "Synoptická situace", app: "synoptic" }, ...["Ozonové zpravodajství", "Družicová měření ozonu"].map(label => pending(label)), { label: "Pylový semafor", app: "pollen" }, { label: "Aktivita klíšťat", app: "ticks" }],
-    [{ label: "Aktuální radarová data", app: "radar" }, { label: "Snímky z družic MSG", app: "meteosat" }, { label: "Snímky z družic NOAA", app: "polar" }, { label: "Detekce blesků", app: "lightning" }, { label: "Radarové odhady srážek", app: "rainfall" }, pending("Aktuální mapy"), pending("Grafy automat. stanic"), { label: "Sondážní měření", app: "sonde" }, pending("Počasí a kůrovec")],
-    [{ label: "Webové kamery", app: "webcams" }, pending("Meteo zprávy – Infomet"), { label: "Měření z Klementina", app: "klementinum" }, ...["Mapa zatížení sněhem", "Nalezli jste radiosondu?", "Vertikální profily větru", "Monitoring sucha"].map(label => pending(label)), { label: "Meteorologické stanice", app: "stations" }]
+    [{ label: "Aktuální radarová data", app: "radar" }, { label: "Snímky z družic MSG", app: "meteosat" }, { label: "Snímky z družic NOAA", app: "polar" }, { label: "Detekce blesků", app: "lightning" }, { label: "Radarové odhady srážek", app: "rainfall" }, pending("Aktuální mapy"), pending("Grafy automat. stanic"), { label: "Sondážní měření", app: "sonde" }, { label: "Počasí a kůrovec", app: "bark-beetle" }],
+    [{ label: "Webové kamery", app: "webcams" }, pending("Meteo zprávy – Infomet"), { label: "Měření z Klementina", app: "klementinum" }, pending("Mapa zatížení sněhem"), { label: "Nalezli jste radiosondu?", app: "found-sonde" }, { label: "Vertikální profily větru", app: "wind-profiles" }, pending("Monitoring sucha"), { label: "Meteorologické stanice", app: "stations" }]
   ];
   const supplementary = [{ label: "Geostacionární družice", app: "geo" }, { label: "Pravděpodobnost růstu hub", app: "mushrooms" }];
   const regionSlugs = new Set(["karlovarsky-kraj", "plzensky-kraj", "ustecky-kraj", "stredocesky-kraj", "praha", "jihocesky-kraj", "liberecky-kraj", "kralovehradecky-kraj", "pardubicky-kraj", "kraj-vysocina", "olomoucky-kraj", "jihomoravsky-kraj", "moravskoslezsky-kraj", "zlinsky-kraj"]);
@@ -70,6 +73,7 @@
       if ((id === "synoptic" || id === "synoptic-forecast") && url.origin === target.origin && normalPath(url.pathname) === normalPath(target.pathname)) {
         return (url.searchParams.get("chmi_classic_synoptic_forecast") === "1") === (id === "synoptic-forecast");
       }
+      if (id === "wind-profiles" && url.origin === target.origin) return /^\/letectvi\/aerologicka-data\/(?:11406-cheb|11509-doksany)-vyvoj-profilu-vetru\/?$/.test(url.pathname);
       if (id === "snow" && url.origin === target.origin) return /^\/hppsoldv\/hpps_snh_(?:list|detail)\.php\/?$/.test(url.pathname);
       if (id === "mountains" && url.origin === target.origin) return /^\/predpoved-pocasi\/lyzarska-strediska-a-hory\/(?:sumava-a-novohradske-hory|cesky-les-a-slavkovsky-les|krusne-hory|jizerske-hory|krkonose|orlicke-hory|jeseniky-a-kralicky-sneznik|beskydy|zdarske-vrchy|bile-karpaty-a-hostynsko-vsetinske-vrchy)\/?$/.test(url.pathname);
       if (app.family === "information") return url.origin === target.origin &&

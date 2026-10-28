@@ -34,6 +34,31 @@ Ověřeno pro implementaci verzí 0.5.0–0.6.0 dne 11. 9. 2026:
 - Historické mapy srážek: <https://www.chmi.cz/namerena-data/historicka-data/mapy-srazkovych-uhrnu>
 - Open Data: <https://opendata.chmi.cz/>
 
+## Další tři položky rozcestníku — 28. 10. 2026
+
+Autor/instituce: Český hydrometeorologický ústav. Živé zdroje ověřeny
+28. 10. 2026 ve skutečném prohlížeči; datum kontroly není datum vydání dat.
+
+- [Vývoj kůrovce](https://www.chmi.cz/predpoved-pocasi/rizika/vyvoj-kurovce):
+  nativní mapa `rizika.kurovce-vyvoj`, vrstva 504, datum 27. 10. 2026.
+  Nepřejmenovávat na předpověď rojení ani nepřidávat vymyšlenou časovou osu.
+- [Cheb – Vývoj profilu větru](https://www.chmi.cz/letectvi/aerologicka-data/11406-cheb-vyvoj-profilu-vetru)
+  a [Doksany – Vývoj profilu větru](https://www.chmi.cz/letectvi/aerologicka-data/11509-doksany-vyvoj-profilu-vetru):
+  oficiální konfigurace `letectvi.WindProfileDev/11406` a `/11509`,
+  dekódované grafy 1000 × 400 a původní 12kroková osa. Měřený produkt je
+  odlišný od modelové pseudosondáže. Doksanský cíl byl odečten ze živého
+  nativního menu, nikoli odvozen změnou čísla stanice.
+- [Windprofilery](https://www.chmi.cz/letectvi/aerologicka-mereni/windprofilery?zalozka=windprofilery):
+  oficiální přehled pro další stanice, bez tvrzení o jejich obnově.
+- [Nalezli jste radiosondu?](https://www.chmi.cz/letectvi/aerologicka-mereni/nalezli-jste-radiosondu):
+  živý původní článek, pět ilustrací, kontaktní odkazy a původní lightbox.
+
+Způsob použití: pouze URL, názvy a vlastní lokální úprava DOM/CSS.
+Meteorologická data, obrázky, text článku a cizí JS/CSS se do distribuovaného
+balíčku nekopírují. Nevytváří se náhradní formulář ani sběr osobních údajů.
+Licence cizího obsahu se z veřejné dostupnosti neodvozuje; původní označení
+zdrojového webu a jeho licenční informace nejsou změněny.
+
 ## Archivní referenční zdroje
 
 - Starý radar INCA:

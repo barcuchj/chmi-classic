@@ -1,11 +1,12 @@
 (() => {
   "use strict";
 
-  // Shared shell for the official three-day risk maps. Only the tick viewer's
+  // Shared shell for official live risk maps. Only the tick viewer's
   // body was recovered from the archive; pollen has a verified directory link.
   // Never substitute archived images for today's native OpenLayers data.
   const riskMaps = {
     "aktivita-klistat": { title: "Aktivita klíšťat", config: "rizika.klistata", timeline: "tlKliste", layer: "501" },
+    "vyvoj-kurovce": { title: "Vývoj kůrovce", config: "rizika.kurovce-vyvoj", timeline: null, layer: "504" },
     "pylovy-semafor": { title: "Pylový semafor", config: "rizika.pyl", timeline: "tlBioBase", layer: "502" }
   };
   function riskMapReady(map, settings) {
@@ -15,17 +16,18 @@
     const timeline = map.querySelector(`.chmu--map--timeline[timelineid="${settings.timeline}"] input[aria-label="Časová osa"]`);
     const selected = map.querySelector(`.ol-menu li[data-menu-id="${settings.layer}"].__selected`);
     return Boolean(canvas && canvas.width >= 300 && canvas.height >= 200 &&
-      timeline && !timeline.disabled && Number(timeline.max) >= 2 && selected);
+      (settings.timeline === null || (timeline && !timeline.disabled && Number(timeline.max) >= 2)) && selected);
   }
+  const barkBeetleMapReady = map => riskMapReady(map, riskMaps["vyvoj-kurovce"]);
   const tickMapReady = map => riskMapReady(map, riskMaps["aktivita-klistat"]);
   const pollenMapReady = map => riskMapReady(map, riskMaps["pylovy-semafor"]);
 
   if (typeof module === "object" && module.exports) {
-    module.exports = { tickMapReady, pollenMapReady };
+    module.exports = { tickMapReady, pollenMapReady, barkBeetleMapReady };
     return;
   }
 
-  const route = /^\/predpoved-pocasi\/rizika\/(aktivita-klistat|pylovy-semafor)\/?$/.exec(location.pathname);
+  const route = /^\/predpoved-pocasi\/rizika\/(aktivita-klistat|pylovy-semafor|vyvoj-kurovce)\/?$/.exec(location.pathname);
   if (window.__chmiClassicTicksLoaded || !["www.chmi.cz", "chmi.cz"].includes(location.hostname) || !route) return;
   const settings = riskMaps[route[1]];
   window.__chmiClassicTicksLoaded = true;
@@ -53,14 +55,26 @@
 
       const workspace = document.createElement("section");
       workspace.id = "chmi-ticks-workspace";
-      workspace.setAttribute("aria-label", `${settings.title} – živá předpovědní mapa ČHMÚ`);
+      workspace.setAttribute("data-chmi-risk", route[1]);
+      workspace.setAttribute("aria-label", `${settings.title} – živá ${settings.timeline === null ? "mapa" : "předpovědní mapa"} ČHMÚ`);
       const header = document.createElement("header");
       header.id = "chmi-ticks-classic-brand";
       const heading = document.createElement("h1");
       heading.textContent = settings.title;
       const note = document.createElement("span");
-      note.textContent = "Živá třídenní předpověď ČHMÚ";
+      note.textContent = settings.timeline === null ? "Vývoj generace podle teplot · data ČHMÚ" : "Živá třídenní předpověď ČHMÚ";
       header.append(heading, note);
+      if (route[1] === "vyvoj-kurovce") {
+        // Keep the first-party explanation reachable without copying its text.
+        const info = document.querySelector('main a[href$="/vyvoj-kurovce/vice-informaci-o-kurovci"]');
+        if (info) {
+          info.className = "chmi-risk-info";
+          info.textContent = "O vývoji kůrovce ↗";
+          info.target = "_blank";
+          info.rel = "noopener";
+          header.append(info);
+        }
+      }
       if (route[1] === "pylovy-semafor") {
         // Retain the official explanation, which would otherwise be hidden
         // with the surrounding article. A separate tab leaves the map in view.

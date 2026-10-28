@@ -9,6 +9,9 @@ const projectRoot = dirname(scriptRoot);
 const sourceRoot = join(projectRoot, "chrome-edge");
 const manifest = JSON.parse(await readFile(join(sourceRoot, "manifest.json"), "utf8"));
 const outputPath = join(projectRoot, "tampermonkey", "chmi-classic.user.js");
+const [windJs, windCss, foundSondeJs, foundSondeCss] = await Promise.all(
+  ["wind-profiles.js", "wind-profiles.css", "found-sonde.js", "found-sonde.css"].map(name => readFile(join(sourceRoot, name), "utf8"))
+);
 const [informationJs, informationCss] = await Promise.all(
   ["information.js", "information.css"].map(name => readFile(join(sourceRoot, name), "utf8"))
 );
@@ -122,6 +125,7 @@ const bridge = `
       "/predpoved-pocasi/synopticka-situace",
       "/predpoved-pocasi/rizika/aktivita-klistat",
       "/predpoved-pocasi/rizika/pylovy-semafor",
+      "/predpoved-pocasi/rizika/vyvoj-kurovce",
       "/predpoved-pocasi/bio-predpoved",
       "/predpoved-pocasi/tyden",
       "/predpoved-pocasi/mesic",
@@ -178,7 +182,7 @@ const bridge = `
     location.reload();
   });
 
-  GM_addStyle(${JSON.stringify(`${informationCss}\n${sharingCss}\n${radarCss}\n${satelliteCss}\n${navigationCss}\n${catalogCss}\n${legacyCss}\n${aladinCss}\n${portalCss}\n${embeddedCss}\n${webcamsCss}\n${meteogramCss}\n${forecastCss}\n${rainfallCss}\n${synopticCss}\n${sondeCss}\n${klementinumCss}\n${stationsCss}\n${ticksCss}\n${bioCss}\n${weekCss}\n${monthlyCss}\n${regionsCss}\n${snowCss}\n${mountainCss}\n
+  GM_addStyle(${JSON.stringify(`${windCss}\n${foundSondeCss}\n${informationCss}\n${sharingCss}\n${radarCss}\n${satelliteCss}\n${navigationCss}\n${catalogCss}\n${legacyCss}\n${aladinCss}\n${portalCss}\n${embeddedCss}\n${webcamsCss}\n${meteogramCss}\n${forecastCss}\n${rainfallCss}\n${synopticCss}\n${sondeCss}\n${klementinumCss}\n${stationsCss}\n${ticksCss}\n${bioCss}\n${weekCss}\n${monthlyCss}\n${regionsCss}\n${snowCss}\n${mountainCss}\n
 #chmi-classic-userscript-restore {
   position: fixed;
   right: 12px;
@@ -196,7 +200,7 @@ const bridge = `
   renderRestoreButton();
 })();`;
 
-const output = `${metadata}\n\n${bridge}\n\n${sharingJs}\n\n${portalRegistryJs}\n\n${embeddedJs}\n\n${portalJs}\n\n${informationJs}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n\n${webcamsJs.trimEnd()}\n\n${meteogramJs.trimEnd()}\n\n${forecastJs.trimEnd()}\n\n${rainfallJs.trimEnd()}\n\n${synopticJs.trimEnd()}\n\n${sondeJs.trimEnd()}\n\n${klementinumJs.trimEnd()}\n\n${stationsJs.trimEnd()}\n\n${ticksJs.trimEnd()}\n\n${bioJs.trimEnd()}\n\n${weekJs.trimEnd()}\n\n${monthlyJs.trimEnd()}\n\n${regionsJs.trimEnd()}\n\n${snowJs.trimEnd()}\n\n${mountainJs.trimEnd()}\n\n${catalogJs.trimEnd()}\n\n${legacyJs.trimEnd()}\n`;
+const output = `${metadata}\n\n${bridge}\n\n${sharingJs}\n\n${portalRegistryJs}\n\n${embeddedJs}\n\n${portalJs}\n\n${informationJs}\n\n${navigationJs.trimEnd()}\n\n${radarJs.trimEnd()}\n\n${satelliteJs.trimEnd()}\n\n${webcamsJs.trimEnd()}\n\n${meteogramJs.trimEnd()}\n\n${forecastJs.trimEnd()}\n\n${rainfallJs.trimEnd()}\n\n${synopticJs.trimEnd()}\n\n${sondeJs.trimEnd()}\n\n${klementinumJs.trimEnd()}\n\n${stationsJs.trimEnd()}\n\n${ticksJs.trimEnd()}\n\n${bioJs.trimEnd()}\n\n${weekJs.trimEnd()}\n\n${monthlyJs.trimEnd()}\n\n${regionsJs.trimEnd()}\n\n${snowJs.trimEnd()}\n\n${mountainJs.trimEnd()}\n\n${windJs.trimEnd()}\n\n${foundSondeJs.trimEnd()}\n\n${catalogJs.trimEnd()}\n\n${legacyJs.trimEnd()}\n`;
 
 await mkdir(dirname(outputPath), { recursive: true });
 await writeFile(outputPath, output, "utf8");

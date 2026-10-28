@@ -70,10 +70,12 @@ test("Chrome and userscript share a numeric version newer than published betas",
 });
 
 test("only explicit live application routes run in child frames", () => {
-  const additional = manifest.content_scripts.filter(rule => rule.all_frames && (rule.js.includes("snow.js") || rule.js.includes("mountain-forecast.js")));
+  const additional = manifest.content_scripts.filter(rule => rule.all_frames && (rule.js.includes("snow.js") || rule.js.includes("mountain-forecast.js") || rule.js.includes("wind-profiles.js") || rule.js.includes("found-sonde.js")));
   assert.deepEqual(additional.map(rule => rule.matches), [
     ["https://hydro.chmi.cz/hppsoldv/hpps_snh_list.php*", "https://hydro.chmi.cz/hppsoldv/hpps_snh_detail.php*"],
-    ["https://www.chmi.cz/predpoved-pocasi/lyzarska-strediska-a-hory/*"]
+    ["https://www.chmi.cz/predpoved-pocasi/lyzarska-strediska-a-hory/*"],
+    ["https://www.chmi.cz/letectvi/aerologicka-data/11406-cheb-vyvoj-profilu-vetru*", "https://www.chmi.cz/letectvi/aerologicka-data/11509-doksany-vyvoj-profilu-vetru*"],
+    ["https://www.chmi.cz/letectvi/aerologicka-mereni/nalezli-jste-radiosondu*"]
   ]);
   const framed = manifest.content_scripts.filter(rule => rule.all_frames && !additional.includes(rule));
   assert.equal(framed.length, 14);
@@ -111,7 +113,8 @@ test("only explicit live application routes run in child frames", () => {
   ]);
   assert.deepEqual(framed[8].matches, [
     "https://www.chmi.cz/predpoved-pocasi/rizika/aktivita-klistat*",
-    "https://www.chmi.cz/predpoved-pocasi/rizika/pylovy-semafor*"
+    "https://www.chmi.cz/predpoved-pocasi/rizika/pylovy-semafor*",
+    "https://www.chmi.cz/predpoved-pocasi/rizika/vyvoj-kurovce*"
   ]);
   assert.deepEqual(framed[9].matches, [
     "https://www.chmi.cz/predpoved-pocasi/bio-predpoved*"
@@ -177,6 +180,9 @@ test("every active portal app has the same adapter assets in Chrome and userscri
     about: ["information.js", "information.css"],
     contacts: ["information.js", "information.css"],
     aviation: ["information.js", "information.css"],
+    "bark-beetle": ["ticks.js", "ticks.css"],
+    "wind-profiles": ["wind-profiles.js", "wind-profiles.css"],
+    "found-sonde": ["found-sonde.js", "found-sonde.css"],
     forecast: ["forecast.js", "forecast.css"],
     radar: ["content.js", "classic.css"],
     lightning: ["content.js", "classic.css"],

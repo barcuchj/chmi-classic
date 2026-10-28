@@ -1,5 +1,33 @@
 # ČHMÚ Classic – meteorologické výstupy
 
+## 0.7.32 – další tři položky rozcestníku
+
+- **Počasí a kůrovec** otevírá současnou živou mapu vývoje generace ČHMÚ.
+  Zachovává vrstvu, datum, legendu a mapové ovládání; nejde o třídenní
+  předpověď rojení. V úzkém okně datum nepřekrývá tlačítka zoomu.
+- **Vertikální profily větru** otevírají měřený vývoj profilu v **Chebu**
+  s přepnutím na **Doksany**, původním grafem a časovou osou. Časy grafu
+  jsou v UTC; údaj v nativním popisku snímku může používat místní čas.
+  Další stanice mají samostatný odkaz na oficiální přehled; jejich adaptace
+  ani radarové profily Brdy/Skalky nejsou součástí této verze.
+- **Nalezli jste radiosondu?** zobrazí úplný současný článek ČHMÚ bez
+  vysokého bočního menu. Zachovává všech pět ilustrací, jejich poměr stran,
+  původní zvětšení a kontaktní odkazy. Žádný vlastní nálezní formulář.
+
+Všechny tři položky fungují v panelu i samostatně. Nativní komponenty a data
+zůstávají na serverech ČHMÚ; historicky totožné rozhraní se netvrdí.
+Ověřeno 28. 10. 2026 v odděleném Chrome for Testing s instalovaným
+rozšířením, při 1280 × 800 a 390 × 844: přepnutí Cheb → Doksany,
+časová osa se změnou snímku, legenda a zoom kůrovcové mapy, všech pět
+obrázků, nativní zvětšení fotografie/Escape a návrat na portál. Bez
+vodorovného overflow dokumentu; široký větrný graf zachovává poměr stran
+(v úzkém okně má drobné popisky). Běžné načítání a návraty prošly bez
+aplikačních chyb konzole. Automaticky **226/226 testů**, syntaxe, shoda
+userscriptu se zdroji a úplnost Chrome ZIPu (64 souborů).
+Samostatná instalace Tampermonkey, Edge a Safari zbývá. Safari příkaz
+`./script/build_and_run.sh --verify` skončil na stávajícím cíli macOS 10.14;
+instalované Xcode podporuje až 12.0+. Safari distribuce se tím neověřila.
+
 ## 0.7.31 – další položky předpovědí
 
 Rozcestník otevírá **Synoptickou předpověď**, **Počasí pro létání**,
